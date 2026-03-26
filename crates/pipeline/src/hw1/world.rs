@@ -216,7 +216,9 @@ impl World {
             // Visual chain: object → .vis → .ugx/.uax
             if let Some(vis_ref) = &obj.visual {
                 stats.objects_with_visual += 1;
-                let vis_base = format!("art\\{}", vis_ref.replace('/', "\\"));
+                let vis_normalized = vis_ref.replace('/', "\\");
+                let vis_normalized = vis_normalized.trim_start_matches('\\');
+                let vis_base = format!("art\\{vis_normalized}");
                 obj_assets.visual = Some(vis_base.clone());
 
                 if let Some(vis_doc) = src.read_xmb(&vis_base) {
