@@ -10,6 +10,8 @@
 //! - [`source::StdFileProvider`] — `std::fs::read`-backed file provider
 //! - [`hw1`] — Halo Wars 1 asset pipeline (ERA load order, world loading)
 
+pub use database;
+pub use xmb;
 pub mod hw1;
 pub mod source;
 

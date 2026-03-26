@@ -113,3 +113,21 @@ pub fn parse_shape(doc: &xmb::Document) -> crate::Result<Shape> {
     let shape: Shape = bdt_serde::from_node(root)?;
     Ok(shape)
 }
+
+/// Serialize a [`Physics`] back into an XMB [`Document`](xmb::Document).
+pub fn physics_to_document(phys: &Physics) -> crate::Result<xmb::Document> {
+    let node = bdt_serde::to_node("physics", phys)?;
+    Ok(xmb::Document::with_root(node))
+}
+
+/// Serialize a [`Blueprint`] back into an XMB [`Document`](xmb::Document).
+pub fn blueprint_to_document(bp: &Blueprint) -> crate::Result<xmb::Document> {
+    let node = bdt_serde::to_node("blueprint", bp)?;
+    Ok(xmb::Document::with_root(node))
+}
+
+/// Serialize a [`Shape`] back into an XMB [`Document`](xmb::Document).
+pub fn shape_to_document(shape: &Shape) -> crate::Result<xmb::Document> {
+    let node = bdt_serde::to_node("hke", shape)?;
+    Ok(xmb::Document::with_root(node))
+}

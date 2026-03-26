@@ -9,14 +9,14 @@
 
 use std::collections::HashMap;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::source::AssetSource;
 
 /// A single scenario descriptor from `scenariodescriptions.xml`.
 ///
 /// All fields are stored as attributes on the `<ScenarioInfo>` element.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct ScenarioDescriptor {
     /// Map file path (e.g. `"CampaignUNSC\\design\\campaignTutorial\\campaignTutorial.scn"`).
     #[serde(rename = "@File", default)]
@@ -66,6 +66,9 @@ pub struct ScenarioList {
 }
 
 impl ScenarioList {
+    /// The game path for the scenario descriptions file.
+    pub const GAME_PATH: &'static str = "data\\scenariodescriptions.xml";
+
     /// Load scenario descriptors from the asset source.
     ///
     /// Parses `data\scenariodescriptions.xml.xmb` and returns all scenario
@@ -73,7 +76,7 @@ impl ScenarioList {
     pub fn load(assets: &mut AssetSource<impl assets::FileProvider>) -> Self {
         let mut list = Self::default();
 
-        let Some(doc) = assets.read_xmb("data\\scenariodescriptions.xml") else {
+        let Some(doc) = assets.read_xmb(Self::GAME_PATH) else {
             return list;
         };
 
@@ -91,5 +94,19 @@ impl ScenarioList {
         }
 
         list
+    }
+
+    /// Serialize all scenario descriptors back into an XMB [`Document`](xmb::Document).
+    ///
+    /// Produces `<ScenarioDescriptions><ScenarioInfo .../>...</ScenarioDescriptions>`.
+    pub fn to_document(&self) -> Result<xmb::Document, bdt_serde::Error> {
+        let mut root = bdt::Node::new("ScenarioDescriptions");
+        // Sort by name for deterministic output
+        let mut entries: Vec<_> = self.scenarios.values().collect();
+        entries.sort_by(|a, b| a.file.cmp(&b.file));
+        for desc in entries {
+            root.add_child(bdt_serde::to_node("ScenarioInfo", desc)?);
+        }
+        Ok(xmb::Document::with_root(root))
     }
 }

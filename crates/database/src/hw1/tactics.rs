@@ -106,3 +106,9 @@ pub fn parse(doc: &xmb::Document) -> crate::Result<TacticData> {
     let data: TacticData = bdt_serde::from_node(root)?;
     Ok(data)
 }
+
+/// Serialize a [`TacticData`] back into an XMB [`Document`](xmb::Document).
+pub fn to_document(td: &TacticData) -> crate::Result<xmb::Document> {
+    let node = bdt_serde::to_node("TacticData", td)?;
+    Ok(xmb::Document::with_root(node))
+}

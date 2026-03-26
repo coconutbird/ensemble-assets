@@ -29,6 +29,7 @@ pub mod techs;
 pub mod visual;
 pub mod weapontypes;
 
+use alloc::string::String;
 use alloc::vec::Vec;
 
 use assets::AssetResolver;
@@ -209,5 +210,96 @@ impl Database {
     pub fn load_game_data(&mut self, doc: &xmb::Document) -> crate::Result<()> {
         self.game_data = Some(gamedata::parse(doc)?);
         Ok(())
+    }
+
+    // ── Serialisation helpers ──────────────────────────────────────────
+
+    /// Rebuild all database XMB documents from the typed structs.
+    ///
+    /// Returns a list of `(game_path, Document)` pairs, one for each
+    /// database file that has data.  The game paths use the same
+    /// backslash-separated convention as the ERA entries
+    /// (e.g. `"data\\objects.xml"`).
+    pub fn to_documents(&self) -> crate::Result<Vec<(String, xmb::Document)>> {
+        let mut docs = Vec::new();
+
+        if !self.objects.is_empty() {
+            docs.push((
+                String::from("data\\objects.xml"),
+                Self::collection_to_doc("Objects", "Object", &self.objects)?,
+            ));
+        }
+        if !self.squads.is_empty() {
+            docs.push((
+                String::from("data\\squads.xml"),
+                Self::collection_to_doc("Squads", "Squad", &self.squads)?,
+            ));
+        }
+        if !self.techs.is_empty() {
+            docs.push((
+                String::from("data\\techs.xml"),
+                Self::collection_to_doc("TechTree", "Tech", &self.techs)?,
+            ));
+        }
+        if !self.abilities.is_empty() {
+            docs.push((
+                String::from("data\\abilities.xml"),
+                Self::collection_to_doc("Abilities", "Ability", &self.abilities)?,
+            ));
+        }
+        if !self.powers.is_empty() {
+            docs.push((
+                String::from("data\\powers.xml"),
+                Self::collection_to_doc("Powers", "Power", &self.powers)?,
+            ));
+        }
+        if !self.civs.is_empty() {
+            docs.push((
+                String::from("data\\civs.xml"),
+                Self::collection_to_doc("Civs", "Civ", &self.civs)?,
+            ));
+        }
+        if !self.leaders.is_empty() {
+            docs.push((
+                String::from("data\\leaders.xml"),
+                Self::collection_to_doc("Leaders", "Leader", &self.leaders)?,
+            ));
+        }
+        if !self.weapon_types.is_empty() {
+            docs.push((
+                String::from("data\\weapontypes.xml"),
+                Self::collection_to_doc("WeaponTypes", "WeaponType", &self.weapon_types)?,
+            ));
+        }
+        if !self.damage_types.is_empty() {
+            docs.push((
+                String::from("data\\damagetypes.xml"),
+                Self::collection_to_doc("DamageTypes", "DamageType", &self.damage_types)?,
+            ));
+        }
+        if let Some(ref gd) = self.game_data {
+            let node = bdt_serde::to_node("GameData", gd)?;
+            docs.push((
+                String::from("data\\gamedata.xml"),
+                xmb::Document::with_root(node),
+            ));
+        }
+
+        Ok(docs)
+    }
+
+    /// Serialize a single collection into an XMB document.
+    ///
+    /// Builds `<root_name><child_name>...</child_name>...</root_name>`.
+    fn collection_to_doc<T: serde::Serialize>(
+        root_name: &str,
+        child_name: &str,
+        items: &[T],
+    ) -> crate::Result<xmb::Document> {
+        let mut root = bdt::Node::new(root_name);
+        for item in items {
+            root.add_child(bdt_serde::to_node(child_name, item)?);
+        }
+        Ok(xmb::Document::with_root(root))
     }
 }

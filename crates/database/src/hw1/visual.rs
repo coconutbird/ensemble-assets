@@ -159,3 +159,9 @@ pub fn parse(doc: &xmb::Document) -> crate::Result<Visual> {
     let vis: Visual = bdt_serde::from_node(root)?;
     Ok(vis)
 }
+
+/// Serialize a [`Visual`] back into an XMB [`Document`](xmb::Document).
+pub fn to_document(vis: &Visual) -> crate::Result<xmb::Document> {
+    let node = bdt_serde::to_node("visual", vis)?;
+    Ok(xmb::Document::with_root(node))
+}

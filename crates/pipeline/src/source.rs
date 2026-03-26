@@ -216,7 +216,52 @@ impl<F: FileProvider> AssetSource<F> {
         if let Some(p) = self.provenance(path) {
             return Some(p);
         }
-        self.provenance(&format!("{path}.xmb"))
+        // Try appending .xmb (handles "data\objects.xml" → "data\objects.xml.xmb")
+        if let Some(p) = self.provenance(&format!("{path}.xmb")) {
+            return Some(p);
+        }
+        // Try replacing .xml with .xmb (handles "art\foo.vis.xml" → "art\foo.vis.xmb")
+        if let Some(base) = path.strip_suffix(".xml") {
+            if let Some(p) = self.provenance(&format!("{base}.xmb")) {
+                return Some(p);
+            }
+        }
+        None
+    }
+
+    /// Like [`provenance`] but **only** checks the ERA archives, ignoring
+    /// the override directory.  Used by the write path so that files we've
+    /// already written don't shadow the original ERA origin.
+    fn provenance_era_only(&self, path: &str) -> Option<Provenance> {
+        let key = normalise_path(path);
+        for archive in self.archives.iter().rev() {
+            if archive.index.contains_key(&key) {
+                return Some(Provenance {
+                    era_label: archive.label.clone(),
+                    game_path: key,
+                });
+            }
+        }
+        None
+    }
+
+    /// Like [`provenance_data`] but only checks ERA archives (ignores
+    /// the override directory).  Used by write helpers to determine the
+    /// correct ERA subdirectory without being confused by files we've
+    /// already written during the same save.
+    fn provenance_data_era_only(&self, path: &str) -> Option<Provenance> {
+        if let Some(p) = self.provenance_era_only(path) {
+            return Some(p);
+        }
+        if let Some(p) = self.provenance_era_only(&format!("{path}.xmb")) {
+            return Some(p);
+        }
+        if let Some(base) = path.strip_suffix(".xml") {
+            if let Some(p) = self.provenance_era_only(&format!("{base}.xmb")) {
+                return Some(p);
+            }
+        }
+        None
     }
 
     // ── Override read / write ──────────────────────────────────────────
@@ -242,7 +287,7 @@ impl<F: FileProvider> AssetSource<F> {
 
         let key = normalise_path(game_path);
         let era_label = self
-            .provenance(&key)
+            .provenance_data_era_only(&key)
             .map(|p| p.era_label)
             .unwrap_or_else(|| "_new".into());
 
@@ -256,13 +301,13 @@ impl<F: FileProvider> AssetSource<F> {
         Ok(fs_path)
     }
 
-    /// Write an XMB document to the override directory.
+    /// Write an XMB document to the override directory as **binary XMB**.
     ///
     /// Convenience wrapper around [`write_file`](Self::write_file) that
-    /// serializes the document with [`xmb::Writer`].
+    /// serializes the document with [`xmb::Writer`].  The output path will
+    /// have an `.xmb` extension.
     pub fn write_xmb(&self, game_path: &str, doc: &xmb::Document) -> Result<PathBuf, String> {
         let bytes = xmb::Writer::write_native(doc).map_err(|e| format!("XMB write error: {e}"))?;
-        // Ensure the path ends with .xmb so the resolver finds it.
         let key = normalise_path(game_path);
         let xmb_path = if key.ends_with(".xmb") {
             key
@@ -270,6 +315,27 @@ impl<F: FileProvider> AssetSource<F> {
             format!("{key}.xmb")
         };
         self.write_file(&xmb_path, &bytes)
+    }
+
+    /// Write an XMB document to the override directory as **human-readable XML**.
+    ///
+    /// The output path will have an `.xml` extension (stripping `.xmb` if
+    /// present in the game path).
+    pub fn write_xml(&self, game_path: &str, doc: &xmb::Document) -> Result<PathBuf, String> {
+        let xml_string = doc.to_xml();
+        let key = normalise_path(game_path);
+        let xml_path = if key.ends_with(".xmb") {
+            key.trim_end_matches(".xmb").to_string()
+        } else {
+            key
+        };
+        // Ensure it ends with .xml
+        let xml_path = if xml_path.ends_with(".xml") {
+            xml_path
+        } else {
+            format!("{xml_path}.xml")
+        };
+        self.write_file(&xml_path, xml_string.as_bytes())
     }
 }
 

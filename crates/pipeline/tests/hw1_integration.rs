@@ -155,3 +155,119 @@ fn load_world_with_scenario() {
         "no scenarios loaded"
     );
 }
+
+
+/// Round-trip test: load every database file, serialize back to XMB via
+/// `Database::to_documents()`, re-parse, and compare counts.
+///
+/// This catches serialization regressions that would silently drop data.
+#[test]
+fn roundtrip_database_serialize() {
+    let dir = match hw1_game_dir() {
+        Some(d) => d,
+        None => {
+            eprintln!("HW1_GAME_DIR not set — skipping roundtrip test");
+            return;
+        }
+    };
+
+    let mut src = load_game_dir(&dir);
+
+    // Parse original database
+    let original = database::hw1::Database::load(&mut src).expect("failed to load database");
+    println!("Original: {} objects, {} squads, {} techs, {} abilities, {} powers, {} civs, {} leaders, {} weapontypes, {} damagetypes",
+        original.objects.len(), original.squads.len(), original.techs.len(),
+        original.abilities.len(), original.powers.len(), original.civs.len(),
+        original.leaders.len(), original.weapon_types.len(), original.damage_types.len());
+
+    // Serialize to documents
+    let docs = original
+        .to_documents()
+        .expect("failed to serialize database");
+    println!("Serialized {} documents", docs.len());
+    assert!(docs.len() >= 10, "expected at least 10 documents, got {}", docs.len());
+
+    // Re-parse each document and compare counts
+    for (path, doc) in &docs {
+        match path.as_str() {
+            "data\\objects.xml" => {
+                let reparsed = database::hw1::objects::parse(doc)
+                    .expect("failed to re-parse objects");
+                assert_eq!(
+                    reparsed.len(),
+                    original.objects.len(),
+                    "objects count mismatch after round-trip"
+                );
+                // Spot-check a few fields on the first object
+                let orig = &original.objects[0];
+                let rt = &reparsed[0];
+                assert_eq!(orig.name, rt.name, "object name mismatch");
+                assert_eq!(orig.hitpoints, rt.hitpoints, "hitpoints mismatch for {}", orig.name);
+                println!("  objects: {} → {} ✓", original.objects.len(), reparsed.len());
+            }
+            "data\\squads.xml" => {
+                let reparsed = database::hw1::squads::parse(doc)
+                    .expect("failed to re-parse squads");
+                assert_eq!(reparsed.len(), original.squads.len(), "squads count mismatch");
+                println!("  squads: {} → {} ✓", original.squads.len(), reparsed.len());
+            }
+            "data\\techs.xml" => {
+                let reparsed = database::hw1::techs::parse(doc)
+                    .expect("failed to re-parse techs");
+                assert_eq!(reparsed.len(), original.techs.len(), "techs count mismatch");
+                println!("  techs: {} → {} ✓", original.techs.len(), reparsed.len());
+            }
+            "data\\abilities.xml" => {
+                let reparsed = database::hw1::abilities::parse(doc)
+                    .expect("failed to re-parse abilities");
+                assert_eq!(reparsed.len(), original.abilities.len(), "abilities count mismatch");
+                println!("  abilities: {} → {} ✓", original.abilities.len(), reparsed.len());
+            }
+            "data\\powers.xml" => {
+                let reparsed = database::hw1::powers::parse(doc)
+                    .expect("failed to re-parse powers");
+                assert_eq!(reparsed.len(), original.powers.len(), "powers count mismatch");
+                println!("  powers: {} → {} ✓", original.powers.len(), reparsed.len());
+            }
+            "data\\civs.xml" => {
+                let reparsed = database::hw1::civs::parse(doc)
+                    .expect("failed to re-parse civs");
+                assert_eq!(reparsed.len(), original.civs.len(), "civs count mismatch");
+                println!("  civs: {} → {} ✓", original.civs.len(), reparsed.len());
+            }
+            "data\\leaders.xml" => {
+                let reparsed = database::hw1::leaders::parse(doc)
+                    .expect("failed to re-parse leaders");
+                assert_eq!(reparsed.len(), original.leaders.len(), "leaders count mismatch");
+                println!("  leaders: {} → {} ✓", original.leaders.len(), reparsed.len());
+            }
+            "data\\weapontypes.xml" => {
+                let reparsed = database::hw1::weapontypes::parse(doc)
+                    .expect("failed to re-parse weapontypes");
+                assert_eq!(reparsed.len(), original.weapon_types.len(), "weapontypes count mismatch");
+                println!("  weapontypes: {} → {} ✓", original.weapon_types.len(), reparsed.len());
+            }
+            "data\\damagetypes.xml" => {
+                let reparsed = database::hw1::damagetypes::parse(doc)
+                    .expect("failed to re-parse damagetypes");
+                assert_eq!(reparsed.len(), original.damage_types.len(), "damagetypes count mismatch");
+                println!("  damagetypes: {} → {} ✓", original.damage_types.len(), reparsed.len());
+            }
+            "data\\gamedata.xml" => {
+                let reparsed = database::hw1::gamedata::parse(doc)
+                    .expect("failed to re-parse gamedata");
+                let orig_gd = original.game_data.as_ref().unwrap();
+                let rt_res = reparsed.resources.as_ref().map(|r| r.entries.len()).unwrap_or(0);
+                let orig_res = orig_gd.resources.as_ref().map(|r| r.entries.len()).unwrap_or(0);
+                let rt_pops = reparsed.pops.as_ref().map(|p| p.entries.len()).unwrap_or(0);
+                let orig_pops = orig_gd.pops.as_ref().map(|p| p.entries.len()).unwrap_or(0);
+                assert_eq!(rt_res, orig_res, "resources count mismatch");
+                assert_eq!(rt_pops, orig_pops, "pops count mismatch");
+                println!("  gamedata: {} resources, {} pops ✓", rt_res, rt_pops);
+            }
+            other => panic!("unexpected document path: {other}"),
+        }
+    }
+
+    println!("Round-trip validation passed!");
+}
