@@ -1,4 +1,4 @@
-//! `validate` subcommand — parse all database XMBs and report success/failure.
+//! Database validation — parse all HW1 database XMBs and report success/failure.
 //!
 //! Uses `bdt_serde::from_node_warned` to collect diagnostic warnings about
 //! extra fields and type mismatches without aborting the parse.
@@ -8,7 +8,7 @@ use std::time::Instant;
 use assets::{AssetResolver, FileProvider};
 use bdt_serde::Warning;
 
-use crate::assets::AssetSource;
+use crate::source::AssetSource;
 
 type ParseResult = Result<(String, Vec<Warning>), String>;
 
@@ -165,7 +165,8 @@ fn db_files() -> Vec<DbFile> {
             label: "civs",
             parse: |d| {
                 let doc = parse_xmb(d)?;
-                let (r, w): (Vec<database::hw1::Civ>, _) = parse_children_warned(&doc, "Civs", "Civ")?;
+                let (r, w): (Vec<database::hw1::Civ>, _) =
+                    parse_children_warned(&doc, "Civs", "Civ")?;
                 Ok((format!("{} civs", r.len()), w))
             },
         },
@@ -242,50 +243,5 @@ pub fn validate(src: &mut AssetSource<impl FileProvider>) -> ValidateReport {
     ValidateReport {
         files,
         elapsed: start.elapsed(),
-    }
-}
-
-/// Run validation, print results to stdout, and exit on failure.
-pub fn run(src: &mut AssetSource<impl FileProvider>) {
-    let report = validate(src);
-
-    for f in &report.files {
-        match &f.outcome {
-            FileOutcome::Ok { summary, warnings } => {
-                if warnings.is_empty() {
-                    println!("  OK    {:<14} {summary}", f.label);
-                } else {
-                    println!(
-                        "  OK    {:<14} {summary}  ({} warnings)",
-                        f.label,
-                        warnings.len()
-                    );
-                    for w in warnings {
-                        println!("        ⚠ {w}");
-                    }
-                }
-            }
-            FileOutcome::Failed(e) => {
-                println!("  FAIL  {:<14} {e}", f.label);
-            }
-            FileOutcome::Missing => {
-                println!("  SKIP  {:<14} not found in archive", f.label);
-            }
-        }
-    }
-
-    let elapsed = report.elapsed;
-    println!("\n--- Summary ---");
-    println!(
-        "{} passed, {} failed, {} missing, {} warnings ({:.1}s)",
-        report.passed(),
-        report.failed(),
-        report.missing(),
-        report.total_warnings(),
-        elapsed.as_secs_f64()
-    );
-
-    if report.failed() > 0 {
-        std::process::exit(1);
     }
 }

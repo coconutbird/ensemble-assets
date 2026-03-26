@@ -41,7 +41,10 @@ impl core::fmt::Display for Error {
             Self::Deserialize(e) => write!(f, "deserialize error: {e}"),
             Self::MissingRoot => f.write_str("missing root element"),
             Self::UnexpectedRoot { expected, actual } => {
-                write!(f, "unexpected root element: expected '{expected}', got '{actual}'")
+                write!(
+                    f,
+                    "unexpected root element: expected '{expected}', got '{actual}'"
+                )
             }
         }
     }

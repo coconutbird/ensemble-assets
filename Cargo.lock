@@ -65,6 +65,7 @@ version = "0.1.0"
 [[package]]
 name = "bdt"
 version = "0.1.0"
+source = "git+https://github.com/coconutbird/ensemble-formats.git#c9dabf94b76f6c0b3119643ebd268b9381ca822e"
 dependencies = [
  "hashbrown",
  "thiserror",
@@ -74,6 +75,7 @@ dependencies = [
 [[package]]
 name = "bdt-serde"
 version = "0.1.0"
+source = "git+https://github.com/coconutbird/ensemble-formats.git#c9dabf94b76f6c0b3119643ebd268b9381ca822e"
 dependencies = [
  "bdt",
  "serde",
@@ -175,6 +177,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28"
 
 [[package]]
+name = "crunchy"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
+
+[[package]]
 name = "crypto-common"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -191,20 +199,6 @@ dependencies = [
  "assets",
  "bdt",
  "bdt-serde",
- "serde",
- "xmb",
-]
-
-[[package]]
-name = "database-cli"
-version = "0.1.0"
-dependencies = [
- "assets",
- "bdt-serde",
- "clap",
- "database",
- "dotenvy",
- "era",
  "serde",
  "xmb",
 ]
@@ -228,6 +222,7 @@ checksum = "1aaf95b3e5c8f23aa320147307562d361db0ae0d51242340f558153b4eb2439b"
 [[package]]
 name = "ecf"
 version = "0.1.0"
+source = "git+https://github.com/coconutbird/ensemble-formats.git#c9dabf94b76f6c0b3119643ebd268b9381ca822e"
 dependencies = [
  "miniz_oxide",
  "nostdio",
@@ -244,6 +239,7 @@ checksum = "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719"
 [[package]]
 name = "era"
 version = "0.1.0"
+source = "git+https://github.com/coconutbird/ensemble-formats.git#c9dabf94b76f6c0b3119643ebd268b9381ca822e"
 dependencies = [
  "ecf",
  "miniz_oxide",
@@ -268,6 +264,17 @@ checksum = "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a"
 dependencies = [
  "typenum",
  "version_check",
+]
+
+[[package]]
+name = "half"
+version = "2.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6ea2d84b969582b4b1864a92dc5d27cd2b77b622a8d79306834f1be5ba20d84b"
+dependencies = [
+ "cfg-if",
+ "crunchy",
+ "zerocopy",
 ]
 
 [[package]]
@@ -310,12 +317,36 @@ dependencies = [
 [[package]]
 name = "nostdio"
 version = "0.1.0"
+source = "git+https://github.com/coconutbird/ensemble-formats.git#c9dabf94b76f6c0b3119643ebd268b9381ca822e"
 
 [[package]]
 name = "once_cell_polyfill"
 version = "1.70.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "384b8ab6d37215f3c5301a95a4accb5d64aa607f1fcb26a11b5303878451b4fe"
+
+[[package]]
+name = "pipeline"
+version = "0.1.0"
+dependencies = [
+ "assets",
+ "bdt",
+ "bdt-serde",
+ "database",
+ "dotenvy",
+ "era",
+ "serde",
+ "ugx",
+ "xmb",
+]
+
+[[package]]
+name = "pipeline-cli"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "pipeline",
+]
 
 [[package]]
 name = "proc-macro2"
@@ -455,6 +486,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "562d481066bde0658276a35467c4af00bdc6ee726305698a55b86e61d7ad82bb"
 
 [[package]]
+name = "ugx"
+version = "0.1.0"
+source = "git+https://github.com/coconutbird/ensemble-formats.git#c9dabf94b76f6c0b3119643ebd268b9381ca822e"
+dependencies = [
+ "bdt",
+ "ecf",
+ "half",
+ "thiserror",
+ "zerocopy",
+]
+
+[[package]]
 name = "unicode-ident"
 version = "1.0.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -490,6 +533,7 @@ dependencies = [
 [[package]]
 name = "xmb"
 version = "0.1.0"
+source = "git+https://github.com/coconutbird/ensemble-formats.git#c9dabf94b76f6c0b3119643ebd268b9381ca822e"
 dependencies = [
  "bdt",
  "ecf",
@@ -501,6 +545,7 @@ dependencies = [
 [[package]]
 name = "xml"
 version = "0.1.0"
+source = "git+https://github.com/coconutbird/ensemble-formats.git#c9dabf94b76f6c0b3119643ebd268b9381ca822e"
 dependencies = [
  "xmlparser",
 ]

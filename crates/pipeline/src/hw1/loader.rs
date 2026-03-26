@@ -1,6 +1,6 @@
 //! HW1 ERA loading — mirrors the engine's `BArchiveManager` load order.
 
-use crate::assets::{AssetSource, StdFileProvider};
+use crate::source::{AssetSource, StdFileProvider};
 
 /// Build an [`AssetSource`] from a game directory, loading ERAs in the
 /// engine's confirmed load order (from IDA `BArchiveManager`).
@@ -58,15 +58,14 @@ pub fn load_game_dir(dir: &str) -> AssetSource<StdFileProvider> {
 }
 
 /// Build an [`AssetSource`] with an optional scenario ERA layered on top.
-pub fn load_with_scenario(dir: &str, scenario: &str) -> AssetSource<StdFileProvider> {
+pub fn load_with_scenario(dir: &str, scenario_era: &str) -> AssetSource<StdFileProvider> {
     let mut src = load_game_dir(dir);
-    let path = format!("{dir}/{scenario}");
+    let path = format!("{dir}/{scenario_era}");
     if std::path::Path::new(&path).exists() {
         match src.add_era(&path) {
-            Ok(n) => println!("  Loaded {scenario:<24} ({n} entries)"),
-            Err(e) => eprintln!("  WARN  {scenario}: {e}"),
+            Ok(n) => println!("  Loaded {scenario_era:<24} ({n} entries)"),
+            Err(e) => eprintln!("  WARN  {scenario_era}: {e}"),
         }
     }
     src
 }
-

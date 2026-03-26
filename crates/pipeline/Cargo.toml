@@ -1,28 +1,22 @@
 [package]
-name = "database-cli"
-description = "CLI tool for validating HW1 game database files"
+name = "pipeline"
+description = "Ensemble asset pipeline — ERA loading, scenario loading, full world resolution"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
 authors.workspace = true
 
-[lib]
-name = "database_cli"
-path = "src/lib.rs"
-
-[[bin]]
-name = "database-validate"
-path = "src/main.rs"
-
 [dependencies]
 assets.workspace = true
+bdt.workspace = true
 bdt-serde.workspace = true
 database.workspace = true
 era.workspace = true
 serde.workspace = true
+ugx.workspace = true
 xmb.workspace = true
-clap.workspace = true
 
 [dev-dependencies]
 dotenvy.workspace = true
+

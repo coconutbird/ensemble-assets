@@ -81,16 +81,46 @@ impl Database {
 
         // Each entry: (virtual path, loader method)
         let loaders: &[(&str, DbLoader)] = &[
-            ("data\\objects.xml.xmb", |db, doc| { db.load_objects(doc)?; Ok(()) }),
-            ("data\\squads.xml.xmb", |db, doc| { db.load_squads(doc)?; Ok(()) }),
-            ("data\\techs.xml.xmb", |db, doc| { db.load_techs(doc)?; Ok(()) }),
-            ("data\\abilities.xml.xmb", |db, doc| { db.load_abilities(doc)?; Ok(()) }),
-            ("data\\powers.xml.xmb", |db, doc| { db.load_powers(doc)?; Ok(()) }),
-            ("data\\civs.xml.xmb", |db, doc| { db.load_civs(doc)?; Ok(()) }),
-            ("data\\leaders.xml.xmb", |db, doc| { db.load_leaders(doc)?; Ok(()) }),
-            ("data\\weapontypes.xml.xmb", |db, doc| { db.load_weapon_types(doc)?; Ok(()) }),
-            ("data\\damagetypes.xml.xmb", |db, doc| { db.load_damage_types(doc)?; Ok(()) }),
-            ("data\\gamedata.xml.xmb", |db, doc| { db.load_game_data(doc)?; Ok(()) }),
+            ("data\\objects.xml.xmb", |db, doc| {
+                db.load_objects(doc)?;
+                Ok(())
+            }),
+            ("data\\squads.xml.xmb", |db, doc| {
+                db.load_squads(doc)?;
+                Ok(())
+            }),
+            ("data\\techs.xml.xmb", |db, doc| {
+                db.load_techs(doc)?;
+                Ok(())
+            }),
+            ("data\\abilities.xml.xmb", |db, doc| {
+                db.load_abilities(doc)?;
+                Ok(())
+            }),
+            ("data\\powers.xml.xmb", |db, doc| {
+                db.load_powers(doc)?;
+                Ok(())
+            }),
+            ("data\\civs.xml.xmb", |db, doc| {
+                db.load_civs(doc)?;
+                Ok(())
+            }),
+            ("data\\leaders.xml.xmb", |db, doc| {
+                db.load_leaders(doc)?;
+                Ok(())
+            }),
+            ("data\\weapontypes.xml.xmb", |db, doc| {
+                db.load_weapon_types(doc)?;
+                Ok(())
+            }),
+            ("data\\damagetypes.xml.xmb", |db, doc| {
+                db.load_damage_types(doc)?;
+                Ok(())
+            }),
+            ("data\\gamedata.xml.xmb", |db, doc| {
+                db.load_game_data(doc)?;
+                Ok(())
+            }),
         ];
 
         for &(path, loader) in loaders {
@@ -181,4 +211,3 @@ impl Database {
         Ok(())
     }
 }
-

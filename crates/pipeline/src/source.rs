@@ -78,9 +78,39 @@ impl<F: FileProvider> AssetSource<F> {
         Ok(entry_count)
     }
 
-    /// Read and parse an XMB document by virtual path.
+    /// Resolve a file by its real path, with fallback suffixes.
+    ///
+    /// Tries the exact path first, then appends each suffix in order.
+    /// For example, `resolve_with_fallback("data\\objects.xml", &[".xmb"])`
+    /// tries `data\objects.xml` then `data\objects.xml.xmb`.
+    ///
+    /// This is generic so we can add more compiled formats later.
+    pub fn resolve_with_fallback(&mut self, path: &str, suffixes: &[&str]) -> Option<Vec<u8>> {
+        if let Some(data) = self.resolve_exact(path) {
+            return Some(data);
+        }
+        for suffix in suffixes {
+            let fallback = format!("{path}{suffix}");
+            if let Some(data) = self.resolve_exact(&fallback) {
+                return Some(data);
+            }
+        }
+        None
+    }
+
+    /// Resolve a data file by its real path (e.g. `data\objects.xml`,
+    /// `art\foo.vis`), trying the compiled `.xmb` variant as fallback.
+    pub fn resolve_data(&mut self, path: &str) -> Option<Vec<u8>> {
+        self.resolve_with_fallback(path, &[".xmb"])
+    }
+
+    /// Read and parse an XMB document by its real path, with `.xmb` fallback.
+    ///
+    /// Pass the path you intend (e.g. `data\objects.xml`, `art\foo.vis`).
+    /// The file bytes are parsed as XMB binary regardless of which variant
+    /// was found — plain XML text is not yet supported.
     pub fn read_xmb(&mut self, path: &str) -> Option<xmb::Document> {
-        let data = self.resolve(path)?;
+        let data = self.resolve_data(path)?;
         xmb::Reader::read(&data).ok()
     }
 
@@ -107,6 +137,19 @@ impl<F: FileProvider> AssetSource<F> {
 
 impl<F: FileProvider> AssetResolver for AssetSource<F> {
     fn resolve(&mut self, path: &str) -> Option<Vec<u8>> {
+        // Same fallback as resolve_data — try exact, then append .xmb.
+        self.resolve_with_fallback(path, &[".xmb"])
+    }
+
+    fn exists(&self, path: &str) -> bool {
+        let key = normalise_path(path);
+        self.archives.iter().any(|a| a.index.contains_key(&key))
+    }
+}
+
+impl<F: FileProvider> AssetSource<F> {
+    /// Resolve an exact path with no extension fallback.
+    pub fn resolve_exact(&mut self, path: &str) -> Option<Vec<u8>> {
         let key = normalise_path(path);
         // Last loaded archive wins — iterate in reverse.
         for archive in self.archives.iter_mut().rev() {
@@ -116,13 +159,7 @@ impl<F: FileProvider> AssetResolver for AssetSource<F> {
         }
         None
     }
-
-    fn exists(&self, path: &str) -> bool {
-        let key = normalise_path(path);
-        self.archives.iter().any(|a| a.index.contains_key(&key))
-    }
 }
-
 
 // ---------------------------------------------------------------------------
 // Concrete FileProvider for std environments
@@ -144,6 +181,6 @@ impl FileProvider for StdFileProvider {
 }
 
 /// Normalise a game path to lowercase with backslash separators.
-fn normalise_path(path: &str) -> String {
+pub fn normalise_path(path: &str) -> String {
     path.to_lowercase().replace('/', "\\")
 }

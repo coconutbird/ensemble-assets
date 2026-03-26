@@ -3,7 +3,8 @@ resolver = "3"
 members = [
     "crates/assets",
     "crates/database",
-    "crates/database-cli",
+    "crates/pipeline",
+    "crates/pipeline-cli",
 ]
 
 [workspace.package]
@@ -17,12 +18,14 @@ authors = ["coconutbird"]
 # Internal crates
 assets = { path = "crates/assets" }
 database = { path = "crates/database" }
+pipeline = { path = "crates/pipeline" }
 
-# ensemble-formats crates (path deps for local dev)
-bdt = { path = "../ensemble-rs/crates/bdt" }
-bdt-serde = { path = "../ensemble-rs/crates/bdt-serde" }
-era = { path = "../ensemble-rs/crates/era" }
-xmb = { path = "../ensemble-rs/crates/xmb" }
+# ensemble-formats crates (git deps)
+bdt = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+bdt-serde = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+era = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+ugx = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+xmb = { git = "https://github.com/coconutbird/ensemble-formats.git" }
 
 # External dependencies
 clap = { version = "4.5", features = ["derive"] }

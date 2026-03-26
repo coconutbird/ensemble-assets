@@ -1,0 +1,16 @@
+[package]
+name = "pipeline-cli"
+description = "CLI tool for the Ensemble asset pipeline"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "pipeline"
+path = "src/main.rs"
+
+[dependencies]
+pipeline.workspace = true
+clap.workspace = true
