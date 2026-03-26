@@ -1,0 +1,31 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/assets",
+    "crates/database",
+    "crates/database-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/coconutbird/ensemble-assets"
+authors = ["coconutbird"]
+
+[workspace.dependencies]
+# Internal crates
+assets = { path = "crates/assets" }
+database = { path = "crates/database" }
+
+# ensemble-formats crates (path deps for local dev)
+bdt = { path = "../ensemble-rs/crates/bdt" }
+bdt-serde = { path = "../ensemble-rs/crates/bdt-serde" }
+era = { path = "../ensemble-rs/crates/era" }
+xmb = { path = "../ensemble-rs/crates/xmb" }
+
+# External dependencies
+clap = { version = "4.5", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+dotenvy = "0.15"
+

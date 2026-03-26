@@ -1,0 +1,15 @@
+[package]
+name = "database"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Ensemble game database — schemas, asset loading, validation"
+
+[dependencies]
+assets.workspace = true
+bdt.workspace = true
+bdt-serde.workspace = true
+serde.workspace = true
+xmb.workspace = true
