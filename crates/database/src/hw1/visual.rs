@@ -5,12 +5,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// A complete visual definition from a `.vis.xmb` file.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Visual {
     /// Default model name (from `defaultmodel` attribute on root).
     #[serde(rename = "@defaultmodel")]
@@ -21,7 +21,7 @@ pub struct Visual {
 }
 
 /// A named model within a visual.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Model {
     /// Model name (e.g. `"Default"`, `"Turret"`).
     #[serde(rename = "@name", default)]
@@ -35,7 +35,7 @@ pub struct Model {
 }
 
 /// Component data: model files and attachment points.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Component {
     /// Direct asset references in the component.
     #[serde(rename = "asset", default)]
@@ -52,7 +52,7 @@ pub struct Component {
 }
 
 /// An asset reference (model or animation file).
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Asset {
     /// Asset type: `"Model"` or `"Anim"`.
     #[serde(rename = "@type", default)]
@@ -69,7 +69,7 @@ pub struct Asset {
 }
 
 /// An attachment point.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Attachment {
     /// Attachment type: `"ModelRef"`, `"ParticleFile"`, `"TerrainEffect"`.
     #[serde(rename = "@type", default)]
@@ -89,7 +89,7 @@ pub struct Attachment {
 }
 
 /// A point on a component (impact, board, launch, pickup).
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Point {
     /// Point type: `"Impact"`, `"Board"`, `"Launch"`, `"Pickup"`.
     #[serde(rename = "@pointType", default)]
@@ -103,7 +103,7 @@ pub struct Point {
 }
 
 /// Logic switch for tech-based model variants.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Logic {
     /// Logic type: `"Tech"`.
     #[serde(rename = "@type", default)]
@@ -114,7 +114,7 @@ pub struct Logic {
 }
 
 /// A single logic entry (maps a tech value to an asset).
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct LogicEntry {
     /// Tech value that activates this variant (empty = default).
     #[serde(rename = "@value", default)]
@@ -131,7 +131,7 @@ pub struct LogicEntry {
 }
 
 /// An animation definition.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Anim {
     /// Animation type: `"Idle"`, `"Walk"`, `"Death"`, etc.
     #[serde(rename = "@type", default)]

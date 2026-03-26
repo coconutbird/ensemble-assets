@@ -4,12 +4,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// A single weapon type with its damage modifier table.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct WeaponType {
     /// Weapon type name, e.g. `"AntiInfantry"`, `"ArmorPiercing"`.
     #[serde(rename = "Name", default)]
@@ -23,7 +23,7 @@ pub struct WeaponType {
 }
 
 /// A damage modifier entry: multiplier against a specific damage/armor type.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct DamageModifier {
     /// Target damage type, e.g. `"Light"`, `"Heavy"`, `"Building"`.
     #[serde(rename = "@type", default)]

@@ -7,12 +7,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// Physics configuration from a `.physics.xmb` file.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Physics {
     /// Blueprint name reference.
     #[serde(rename = "blueprint")]
@@ -32,7 +32,7 @@ pub struct Physics {
 }
 
 /// Physical properties from a `.blueprint.xmb` file.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Blueprint {
     /// Mass in kg.
     #[serde(rename = "mass")]
@@ -55,7 +55,7 @@ pub struct Blueprint {
 }
 
 /// A Havok collision shape from a `.shp.xmb` file.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Shape {
     /// Havok version string (e.g. `"V_20200_B_20031014"`).
     #[serde(rename = "@version")]
@@ -66,7 +66,7 @@ pub struct Shape {
 }
 
 /// A single Havok object (shape primitive).
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct HavokObject {
     /// Object name (e.g. `"body"`).
     #[serde(rename = "@name", default)]
@@ -80,7 +80,7 @@ pub struct HavokObject {
 }
 
 /// A Havok parameter.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct HavokParam {
     /// Parameter name (e.g. `"halfExtents"`, `"radius"`).
     #[serde(rename = "@name", default)]

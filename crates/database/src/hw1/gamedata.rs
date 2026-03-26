@@ -5,12 +5,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// Global game data from `gamedata.xml`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct GameData {
     /// Resource definitions wrapper.
     #[serde(rename = "Resources")]
@@ -346,7 +346,7 @@ pub struct GameData {
 }
 
 /// Wrapper for `<BurningEffectLimits>`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct BurningEffectLimitsWrapper {
     #[serde(rename = "@DefaultLimit")]
     pub default_limit: Option<i32>,
@@ -355,7 +355,7 @@ pub struct BurningEffectLimitsWrapper {
 }
 
 /// A burning effect limit entry.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct BurningEffectLimitEntry {
     #[serde(rename = "@Limit")]
     pub limit: Option<i32>,
@@ -364,14 +364,14 @@ pub struct BurningEffectLimitEntry {
 }
 
 /// Wrapper for `<Resources>` containing `<Resource>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct ResourcesWrapper {
     #[serde(rename = "Resource", default)]
     pub entries: Vec<ResourceDef>,
 }
 
 /// A resource definition.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct ResourceDef {
     #[serde(rename = "$text", default)]
     pub name: String,
@@ -380,70 +380,70 @@ pub struct ResourceDef {
 }
 
 /// Wrapper for `<Rates>` containing `<Rate>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct RatesWrapper {
     #[serde(rename = "Rate", default)]
     pub entries: Vec<String>,
 }
 
 /// Wrapper for `<Pops>` containing `<Pop>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PopsWrapper {
     #[serde(rename = "Pop", default)]
     pub entries: Vec<String>,
 }
 
 /// Wrapper for `<RefCounts>` containing `<RefCount>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct RefCountsWrapper {
     #[serde(rename = "RefCount", default)]
     pub entries: Vec<String>,
 }
 
 /// Wrapper for `<HUDItems>` containing `<HUDItem>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct HUDItemsWrapper {
     #[serde(rename = "HUDItem", default)]
     pub entries: Vec<String>,
 }
 
 /// Wrapper for `<FlashableItems>` containing `<Item>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct FlashableItemsWrapper {
     #[serde(rename = "Item", default)]
     pub entries: Vec<String>,
 }
 
 /// Wrapper for `<UnitFlags>` containing `<UnitFlag>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct UnitFlagsWrapper {
     #[serde(rename = "UnitFlag", default)]
     pub entries: Vec<String>,
 }
 
 /// Wrapper for `<SquadFlags>` containing `<SquadFlag>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct SquadFlagsWrapper {
     #[serde(rename = "SquadFlag", default)]
     pub entries: Vec<String>,
 }
 
 /// Wrapper for `<PlayerStates>` containing `<PlayerState>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PlayerStatesWrapper {
     #[serde(rename = "PlayerState", default)]
     pub entries: Vec<String>,
 }
 
 /// Wrapper for `<CodeProtoObjects>`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct CodeProtoObjectsWrapper {
     #[serde(rename = "CodeProtoObject", default)]
     pub entries: Vec<CodeProtoObject>,
 }
 
 /// A code proto-object mapping.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct CodeProtoObject {
     #[serde(rename = "@Type", default)]
     pub object_type: String,
@@ -452,14 +452,14 @@ pub struct CodeProtoObject {
 }
 
 /// Wrapper for `<CodeObjectTypes>`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct CodeObjectTypesWrapper {
     #[serde(rename = "CodeObjectType", default)]
     pub entries: Vec<CodeObjectType>,
 }
 
 /// A code object type mapping.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct CodeObjectType {
     #[serde(rename = "@Type", default)]
     pub object_type: String,

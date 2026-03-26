@@ -4,12 +4,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// A squad definition from `squads.xml`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Squad {
     /// Squad name (unique key), e.g. `"unsc_veh_warthog_01"`.
     #[serde(rename = "@name", default)]
@@ -110,14 +110,14 @@ pub struct Squad {
 }
 
 /// Wrapper for the `<Units>` element containing `<Unit>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct UnitsWrapper {
     #[serde(rename = "Unit", default)]
     pub entries: Vec<UnitEntry>,
 }
 
 /// A resource cost entry.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Cost {
     #[serde(rename = "@resourcetype", default)]
     pub resource_type: String,
@@ -126,7 +126,7 @@ pub struct Cost {
 }
 
 /// A unit entry within a squad.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct UnitEntry {
     /// Proto-object name this unit references.
     #[serde(rename = "$text", default)]
@@ -140,7 +140,7 @@ pub struct UnitEntry {
 }
 
 /// Turn radius element: `<TurnRadius min="..." max="...">value</TurnRadius>`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TurnRadius {
     #[serde(rename = "@min")]
     pub min: Option<f32>,

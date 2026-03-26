@@ -4,12 +4,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// A single damage type definition from `damagetypes.xml`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct DamageType {
     /// Damage type name, e.g. `"Light"`, `"Heavy"`, `"Building"`.
     #[serde(rename = "$text", default)]

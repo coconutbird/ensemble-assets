@@ -4,12 +4,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// A single leader definition from `leaders.xml`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Leader {
     /// Leader name (unique key), e.g. `"Cutter"`, `"Arbiter"`.
     #[serde(rename = "@Name", default)]
@@ -92,7 +92,7 @@ pub struct Leader {
 }
 
 /// A resource entry (type + amount).
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct ResourceEntry {
     #[serde(rename = "@Type", default)]
     pub resource_type: String,
@@ -101,7 +101,7 @@ pub struct ResourceEntry {
 }
 
 /// A starting unit definition.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct StartingUnit {
     #[serde(rename = "$text", default)]
     pub proto_object: String,
@@ -114,7 +114,7 @@ pub struct StartingUnit {
 }
 
 /// A starting squad definition.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct StartingSquad {
     #[serde(rename = "$text", default)]
     pub proto_squad: String,
@@ -125,7 +125,7 @@ pub struct StartingSquad {
 }
 
 /// A population entry (type + count + max).
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PopEntry {
     #[serde(rename = "@Type", default)]
     pub pop_type: String,

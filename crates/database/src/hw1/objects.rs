@@ -4,7 +4,7 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
@@ -13,7 +13,7 @@ use crate::node_ext::expect_root;
 /// Every field below is confirmed present in the engine's `BProtoObject::loadFromXml`
 /// (IDA @ `0x140341620`) and cross-referenced against the 2006 source leak
 /// (`BProtoObject::load`). Fields are sorted alphabetically within each group.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct ProtoObject {
     /// Object name (unique key), e.g. `"unsc_veh_warthog_01"`.
     #[serde(rename = "@name", default)]
@@ -628,7 +628,7 @@ pub struct ProtoObject {
 ///
 /// Loaded by `BHardpoint::load`. Each hardpoint has a yaw and pitch bone
 /// attachment, rotation rates, angle limits, and optional sound cues.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Hardpoint {
     /// Hardpoint name (unique within the object).
     #[serde(rename = "@name", default)]
@@ -720,7 +720,7 @@ pub struct Hardpoint {
 ///
 /// Each level defines an XP threshold and stat multipliers stored as half-floats
 /// in the engine. Only levels with `Level > 0` are loaded.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct VeterancyLevel {
     /// Veterancy level number (must be > 0 to be loaded).
     #[serde(rename = "@Level", default)]

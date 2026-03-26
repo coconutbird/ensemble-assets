@@ -4,12 +4,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// A complete tactics definition from a `.tactics.xmb` file.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TacticData {
     /// Weapons available to this unit.
     #[serde(rename = "Weapon", default)]
@@ -20,7 +20,7 @@ pub struct TacticData {
 }
 
 /// A weapon definition.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Weapon {
     /// Weapon name, e.g. `"Machinegun"`, `"GaussCannon"`.
     #[serde(rename = "Name", default)]
@@ -70,7 +70,7 @@ pub struct Weapon {
 }
 
 /// Target priority for a weapon.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TargetPriority {
     /// Target type: `"Infantry"`, `"Aircraft"`, etc.
     #[serde(rename = "@type", default)]
@@ -81,7 +81,7 @@ pub struct TargetPriority {
 }
 
 /// An action a unit can perform.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Action {
     /// Action name.
     #[serde(rename = "Name", default)]

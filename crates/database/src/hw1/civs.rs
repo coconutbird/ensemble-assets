@@ -4,12 +4,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// A single civilization definition from `civs.xml`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Civ {
     /// Civilization name, e.g. `"UNSC"`, `"Covenant"`, `"Gaia"`.
     #[serde(rename = "Name", default)]

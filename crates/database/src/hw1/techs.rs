@@ -4,12 +4,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// A tech definition from `techs.xml`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Tech {
     /// Tech name (unique key), e.g. `"Unsc_warthog_upgrade1"`.
     #[serde(rename = "@name", default)]
@@ -65,14 +65,14 @@ pub struct Tech {
 }
 
 /// Wrapper for the `<Effects>` element containing `<Effect>` children.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct EffectsWrapper {
     #[serde(rename = "Effect", default)]
     pub entries: Vec<TechEffect>,
 }
 
 /// A single tech effect.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TechEffect {
     /// Effect type: `"Data"`, etc.
     #[serde(rename = "@type", default)]
@@ -146,7 +146,7 @@ pub struct TechEffect {
 }
 
 /// Target element within an effect: `<Target type="...">value</Target>`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct EffectTarget {
     #[serde(rename = "@type")]
     pub target_type: Option<String>,
@@ -155,7 +155,7 @@ pub struct EffectTarget {
 }
 
 /// A resource cost entry for a tech.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TechCost {
     #[serde(rename = "@resourcetype", default)]
     pub resource_type: String,
@@ -164,14 +164,14 @@ pub struct TechCost {
 }
 
 /// Prerequisites wrapper containing tech status entries.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PrereqsWrapper {
     #[serde(rename = "TechStatus", default)]
     pub entries: Vec<TechStatusEntry>,
 }
 
 /// A prerequisite tech status entry.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TechStatusEntry {
     #[serde(rename = "@tech", default)]
     pub tech: String,

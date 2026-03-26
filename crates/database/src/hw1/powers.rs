@@ -4,12 +4,12 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::node_ext::expect_root;
 
 /// A single leader power definition from `powers.xml`.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Power {
     /// Power name (unique key), e.g. `"UnscLeaderNuke"`.
     #[serde(rename = "@name", default)]
@@ -23,7 +23,7 @@ pub struct Power {
 }
 
 /// Attributes block for a power.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PowerAttributes {
     /// Power type: `"Transport"`, `"Cleansing"`, etc.
     #[serde(rename = "PowerType")]
@@ -137,7 +137,7 @@ pub struct PowerAttributes {
 }
 
 /// Cost element with attribute-based supplies/power.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PowerCost {
     #[serde(rename = "@Supplies")]
     pub supplies: Option<f32>,
@@ -146,7 +146,7 @@ pub struct PowerCost {
 }
 
 /// A data level entry (level-specific power parameters).
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct DataLevel {
     /// Level index (0-based). Absent for BaseDataLevel.
     #[serde(rename = "@level")]
@@ -157,7 +157,7 @@ pub struct DataLevel {
 }
 
 /// A single data entry within a data level.
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct DataEntry {
     /// Data type: `"float"`, `"int"`, `"sound"`, `"protoobject"`, `"texture"`, etc.
     #[serde(rename = "@type", default)]
