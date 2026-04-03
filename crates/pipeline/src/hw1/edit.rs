@@ -22,10 +22,12 @@ pub enum TableId {
     Visuals,
     Tactics,
     Physics,
+    TerrainData,
+    TerrainTextures,
 }
 
 impl TableId {
-    pub const COUNT: usize = 14;
+    pub const COUNT: usize = 16;
 
     pub const ALL: [TableId; Self::COUNT] = [
         Self::Objects,
@@ -42,6 +44,8 @@ impl TableId {
         Self::Visuals,
         Self::Tactics,
         Self::Physics,
+        Self::TerrainData,
+        Self::TerrainTextures,
     ];
 
     fn index(self) -> usize {
@@ -84,7 +88,12 @@ impl TableId {
             Self::WeaponTypes => Some("data\\weapontypes.xml"),
             Self::DamageTypes => Some("data\\damagetypes.xml"),
             Self::GameData => Some("data\\gamedata.xml"),
-            Self::Scenario | Self::Visuals | Self::Tactics | Self::Physics => None,
+            Self::Scenario
+            | Self::Visuals
+            | Self::Tactics
+            | Self::Physics
+            | Self::TerrainData
+            | Self::TerrainTextures => None,
         }
     }
 }

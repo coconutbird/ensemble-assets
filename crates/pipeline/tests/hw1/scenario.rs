@@ -509,3 +509,150 @@ fn edit_save_round_trip() {
 
     println!("\n✅ Edit-save round-trip passed!");
 }
+
+#[test]
+fn terrain_edit_save_round_trip() {
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("SKIP: HW1_GAME_DIR not set");
+        return;
+    };
+
+    let scenario_path = format!("{dir}/PHXscn01.era");
+    if !std::path::Path::new(&scenario_path).exists() {
+        eprintln!("SKIP: PHXscn01.era not found");
+        return;
+    }
+
+    // 1. Load world with scenario — terrain should be eagerly loaded
+    let mut world =
+        pipeline::hw1::World::load(&dir, Some("PHXscn01")).expect("failed to load world");
+    let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "PHXscn01.era");
+
+    let tmp = tempfile::tempdir().expect("failed to create tempdir");
+    src.set_override_dir(tmp.path());
+
+    assert!(
+        world.terrain_data.is_some(),
+        "terrain data should be eagerly loaded for scenario"
+    );
+    assert!(
+        world.terrain_textures.is_some(),
+        "terrain textures should be eagerly loaded for scenario"
+    );
+    assert!(!world.is_dirty(), "world should start clean");
+
+    // 2. Record original XTD header values
+    let original_tile_scale = world.terrain_data.as_ref().unwrap().header.tile_scale;
+    let original_world_min_y = world.terrain_data.as_ref().unwrap().header.world_min[1];
+    println!("  Original tile_scale: {original_tile_scale}, world_min.y: {original_world_min_y}");
+
+    // 3. Mutate terrain data via DirtyGuard
+    {
+        let mut xtd = world.terrain_data_mut();
+        if let Some(ref mut xtd_file) = *xtd {
+            xtd_file.header.tile_scale = 42.0;
+            xtd_file.header.world_min[1] = -999.0;
+        }
+    }
+    assert!(world.is_dirty(), "world should be dirty after XTD mutation");
+    assert!(
+        world
+            .dirty_tables()
+            .contains(&pipeline::hw1::TableId::TerrainData),
+        "TerrainData should be in dirty tables"
+    );
+
+    // 4. Mutate terrain textures — change a texture scale
+    let original_tex_count = world
+        .terrain_textures
+        .as_ref()
+        .unwrap()
+        .active_textures
+        .len();
+    println!("  Active textures: {original_tex_count}");
+
+    if original_tex_count > 0 {
+        let original_u_scale = world.terrain_textures.as_ref().unwrap().active_textures[0].u_scale;
+        {
+            let mut xtt = world.terrain_textures_mut();
+            if let Some(ref mut xtt_file) = *xtt {
+                xtt_file.active_textures[0].u_scale = 777;
+            }
+        }
+        assert!(
+            world
+                .dirty_tables()
+                .contains(&pipeline::hw1::TableId::TerrainTextures),
+            "TerrainTextures should be in dirty tables"
+        );
+        println!("  Changed u_scale from {original_u_scale} to 777");
+    }
+
+    // 5. Save via save() — should write both XTD and XTT
+    let written = world.save(&src).expect("save failed");
+    assert!(!written.is_empty(), "should have written terrain files");
+    println!("  Written {} files:", written.len());
+    for p in &written {
+        println!("    {}", p.display());
+    }
+    assert!(!world.is_dirty(), "world should be clean after save");
+
+    // 6. Verify files exist on disk
+    let xtd_files: Vec<_> = written
+        .iter()
+        .filter(|p| p.to_string_lossy().contains(".xtd"))
+        .collect();
+    let xtt_files: Vec<_> = written
+        .iter()
+        .filter(|p| p.to_string_lossy().contains(".xtt"))
+        .collect();
+    assert_eq!(xtd_files.len(), 1, "should have written exactly one .xtd");
+    assert!(
+        xtd_files[0].exists(),
+        "XTD file should exist: {}",
+        xtd_files[0].display()
+    );
+
+    if original_tex_count > 0 {
+        assert_eq!(xtt_files.len(), 1, "should have written exactly one .xtt");
+        assert!(
+            xtt_files[0].exists(),
+            "XTT file should exist: {}",
+            xtt_files[0].display()
+        );
+    }
+
+    // 7. Re-read the saved XTD and verify mutations persisted
+    let saved_xtd_bytes = std::fs::read(xtd_files[0]).expect("read saved XTD");
+    let saved_xtd = xtd::Reader::read(&saved_xtd_bytes).expect("parse saved XTD");
+    assert_eq!(
+        saved_xtd.header.tile_scale, 42.0,
+        "saved XTD tile_scale should be 42.0"
+    );
+    assert_eq!(
+        saved_xtd.header.world_min[1], -999.0,
+        "saved XTD world_min.y should be -999.0"
+    );
+
+    // 8. Per-file save: mutate + save_terrain_data individually
+    {
+        let mut xtd = world.terrain_data_mut();
+        if let Some(ref mut xtd_file) = *xtd {
+            xtd_file.header.tile_scale = 123.0;
+        }
+    }
+    let xtd_path = world
+        .save_terrain_data(&src)
+        .expect("save_terrain_data failed");
+    assert!(xtd_path.exists(), "per-file XTD save should create file");
+    assert!(!world.is_dirty(), "should be clean after per-file save");
+
+    let re_read_bytes = std::fs::read(&xtd_path).expect("read re-saved XTD");
+    let re_read = xtd::Reader::read(&re_read_bytes).expect("parse re-saved XTD");
+    assert_eq!(
+        re_read.header.tile_scale, 123.0,
+        "per-file saved XTD tile_scale should be 123.0"
+    );
+
+    println!("\n✅ Terrain edit-save round-trip passed!");
+}

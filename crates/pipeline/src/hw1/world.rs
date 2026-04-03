@@ -31,6 +31,10 @@ pub struct World {
     pub stats: LoadStats,
     /// Localized string table (default: English).
     pub strings: Option<super::stringtable::StringTable>,
+    /// Cached terrain heightmap/lighting (lazy-loaded on first access).
+    pub terrain_data: Option<xtd::XtdFile>,
+    /// Cached terrain textures/foliage/roads (lazy-loaded on first access).
+    pub terrain_textures: Option<xtt::XttFile>,
     dirty: DirtySet,
 }
 
@@ -179,6 +183,18 @@ impl World {
         // 8. Load the default (English) string table from locale.era
         let strings = super::stringtable::load_default(src);
 
+        // 9. Eagerly load terrain data if a scenario is present
+        let terrain_data = scenario.as_ref().and_then(|s| {
+            let path = s.xtd_path()?;
+            let data = src.resolve_exact(&path)?;
+            xtd::Reader::read(&data).ok()
+        });
+        let terrain_textures = scenario.as_ref().and_then(|s| {
+            let path = s.xtt_path()?;
+            let data = src.resolve_exact(&path)?;
+            xtt::Reader::read(&data).ok()
+        });
+
         Ok(World {
             database,
             assets: assets_map,
@@ -191,6 +207,8 @@ impl World {
             manifest,
             stats,
             strings,
+            terrain_data,
+            terrain_textures,
             dirty: DirtySet::default(),
         })
     }
@@ -316,6 +334,13 @@ impl World {
                 scn.objects().len(),
                 scn.players().len(),
                 scn.positions().len()
+            );
+        }
+        if self.terrain_data.is_some() || self.terrain_textures.is_some() {
+            println!(
+                "  XTD loaded:   {}   XTT loaded: {}",
+                self.terrain_data.is_some(),
+                self.terrain_textures.is_some()
             );
         }
         if let Some(st) = &self.strings {
@@ -617,6 +642,20 @@ impl World {
         DirtyGuard::new(&mut self.physics, self.dirty.flag(TableId::Physics))
     }
 
+    pub fn terrain_data_mut(&mut self) -> DirtyGuard<'_, Option<xtd::XtdFile>> {
+        DirtyGuard::new(
+            &mut self.terrain_data,
+            self.dirty.flag(TableId::TerrainData),
+        )
+    }
+
+    pub fn terrain_textures_mut(&mut self) -> DirtyGuard<'_, Option<xtt::XttFile>> {
+        DirtyGuard::new(
+            &mut self.terrain_textures,
+            self.dirty.flag(TableId::TerrainTextures),
+        )
+    }
+
     // ---- Per-key mutable accessors ----
 
     /// Get a mutable reference to a single visual, marking only that key dirty.
@@ -747,6 +786,42 @@ impl World {
         }
         self.dirty.clear_key(TableId::Physics, name);
         Ok(written)
+    }
+
+    /// Save the terrain heightmap/lighting (XTD) to the override directory.
+    ///
+    /// Writes the binary XTD file and clears the dirty flag.
+    pub fn save_terrain_data(
+        &mut self,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<PathBuf, String> {
+        let xtd = self.terrain_data.as_ref().ok_or("no terrain data loaded")?;
+        let scenario = self.scenario.as_ref().ok_or("no scenario loaded")?;
+        let game_path = scenario.xtd_path().ok_or("scenario has no XTD path")?;
+        let bytes = xtd::Writer::write(xtd).map_err(|e| format!("serialize terrain data: {e}"))?;
+        let path = src.write_file(&game_path, &bytes)?;
+        self.dirty.flag(TableId::TerrainData).set(false);
+        Ok(path)
+    }
+
+    /// Save the terrain textures/foliage/roads (XTT) to the override directory.
+    ///
+    /// Writes the binary XTT file and clears the dirty flag.
+    pub fn save_terrain_textures(
+        &mut self,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<PathBuf, String> {
+        let xtt = self
+            .terrain_textures
+            .as_ref()
+            .ok_or("no terrain textures loaded")?;
+        let scenario = self.scenario.as_ref().ok_or("no scenario loaded")?;
+        let game_path = scenario.xtt_path().ok_or("scenario has no XTT path")?;
+        let bytes =
+            xtt::Writer::write(xtt).map_err(|e| format!("serialize terrain textures: {e}"))?;
+        let path = src.write_file(&game_path, &bytes)?;
+        self.dirty.flag(TableId::TerrainTextures).set(false);
+        Ok(path)
     }
 
     /// Save all dirty tables to the override directory.
@@ -933,6 +1008,26 @@ impl World {
                         }
                     }
                 }
+                TableId::TerrainData => {
+                    if let Some(ref xtd) = self.terrain_data
+                        && let Some(ref scenario) = self.scenario
+                        && let Some(game_path) = scenario.xtd_path()
+                    {
+                        let bytes = xtd::Writer::write(xtd)
+                            .map_err(|e| format!("serialize terrain data: {e}"))?;
+                        written.push(src.write_file(&game_path, &bytes)?);
+                    }
+                }
+                TableId::TerrainTextures => {
+                    if let Some(ref xtt) = self.terrain_textures
+                        && let Some(ref scenario) = self.scenario
+                        && let Some(game_path) = scenario.xtt_path()
+                    {
+                        let bytes = xtt::Writer::write(xtt)
+                            .map_err(|e| format!("serialize terrain textures: {e}"))?;
+                        written.push(src.write_file(&game_path, &bytes)?);
+                    }
+                }
             }
         }
 
@@ -1047,6 +1142,26 @@ impl World {
             }
             TableId::Visuals | TableId::Tactics | TableId::Physics => {
                 // These are per-file — use reload_asset() instead.
+                Ok(false)
+            }
+            TableId::TerrainData => {
+                if let Some(ref scenario) = self.scenario
+                    && let Some(path) = scenario.xtd_path()
+                    && let Some(data) = src.resolve_exact(&path)
+                {
+                    self.terrain_data = xtd::Reader::read(&data).ok();
+                    return Ok(true);
+                }
+                Ok(false)
+            }
+            TableId::TerrainTextures => {
+                if let Some(ref scenario) = self.scenario
+                    && let Some(path) = scenario.xtt_path()
+                    && let Some(data) = src.resolve_exact(&path)
+                {
+                    self.terrain_textures = xtt::Reader::read(&data).ok();
+                    return Ok(true);
+                }
                 Ok(false)
             }
         }
@@ -1186,14 +1301,28 @@ impl World {
                 Ok(false)
             }
 
-            // Binary assets are loaded lazily — we don't cache them
-            // in World. Returning Ok(true) signals consumers (engine,
-            // LSP) that the file changed and they should re-read it.
-            AssetKind::Model(_)
-            | AssetKind::Animation(_)
-            | AssetKind::Texture(_)
-            | AssetKind::TerrainData(_)
-            | AssetKind::TerrainTextures(_) => Ok(true),
+            AssetKind::TerrainData(path) => {
+                // Re-read into cache if we had it loaded.
+                if self.terrain_data.is_some()
+                    && let Some(data) = src.resolve_exact(path)
+                {
+                    self.terrain_data = xtd::Reader::read(&data).ok();
+                }
+                Ok(true)
+            }
+
+            AssetKind::TerrainTextures(path) => {
+                if self.terrain_textures.is_some()
+                    && let Some(data) = src.resolve_exact(path)
+                {
+                    self.terrain_textures = xtt::Reader::read(&data).ok();
+                }
+                Ok(true)
+            }
+
+            // Binary assets not cached in World. Returning Ok(true)
+            // signals consumers that the file changed.
+            AssetKind::Model(_) | AssetKind::Animation(_) | AssetKind::Texture(_) => Ok(true),
         }
     }
 }
