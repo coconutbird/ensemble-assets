@@ -6,8 +6,6 @@
 
 use crate::source::AssetSource;
 
-// ── Types ───────────────────────────────────────────────────────────────
-
 /// A fully resolved physics chain for a single object.
 #[derive(Debug, Clone, Default)]
 pub struct PhysicsChain {
@@ -98,8 +96,6 @@ impl ObjectAssets {
         files
     }
 }
-
-// ── Physics chain resolution ────────────────────────────────────────
 
 /// Resolve the blueprint → shape chain from a physics entry.
 pub(crate) fn resolve_physics_chain(

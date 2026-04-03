@@ -4,8 +4,6 @@
 use super::{hw1_game_dir, load_hw1, print_report};
 use pipeline::hw1::loader::load_game_dir;
 
-// ── Validation tests ────────────────────────────────────────────────────
-
 #[test]
 fn validate_base_game() {
     let Some(dir) = hw1_game_dir() else {
@@ -25,8 +23,6 @@ fn validate_base_game() {
         report.passed()
     );
 }
-
-// ── World loading tests ─────────────────────────────────────────────────
 
 #[test]
 fn load_world_base_game() {
@@ -234,8 +230,6 @@ fn roundtrip_database_serialize() {
     println!("Round-trip validation passed!");
 }
 
-// ── Lazy model loading tests ───────────────────────────────────────────
-
 #[test]
 fn read_model_ugx() {
     let Some(dir) = hw1_game_dir() else {
@@ -275,8 +269,6 @@ fn read_model_ugx() {
         assert!(!geom.sections.is_empty(), "model should have sections");
     }
 }
-
-// ── Lazy animation loading tests ──────────────────────────────────────
 
 #[test]
 fn read_animation_uax() {
@@ -318,8 +310,6 @@ fn read_animation_uax() {
         println!("  {path}: name='{name}' duration={duration:.3}s");
     }
 }
-
-// ── Lazy texture loading tests ─────────────────────────────────────────
 
 #[test]
 fn read_texture_ddx() {
@@ -374,8 +364,6 @@ fn read_texture_ddx() {
     println!("  Loaded {loaded}, missing {failed}");
     assert!(loaded > 0, "should have loaded at least one texture");
 }
-
-// ── Binary asset validation test ───────────────────────────────────────
 
 #[test]
 fn validate_binary_assets_sample() {
@@ -452,8 +440,6 @@ fn validate_binary_assets_sample() {
         "some animations failed to parse"
     );
 }
-
-// ── Eager texture discovery test ──────────────────────────────────────
 
 #[test]
 fn texture_refs_populated_eagerly() {

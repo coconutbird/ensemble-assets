@@ -1,23 +1,10 @@
-//! HW1 scenario descriptor and scene data parsing.
-//!
-//! Scenarios in HW1 are described in `scenariodescriptions.xml.xmb` which
-//! lists all available maps. Each scenario has an associated ERA file
-//! containing map-specific assets (terrain, lightmaps, trigger scripts).
-//!
-//! The `.scn` file itself is an XMB document containing the full scene:
-//! placed objects, player definitions, start positions, terrain references,
-//! cinematics, objectives, triggers, and more.
-//!
-//! The engine loads scenario descriptors via `BScenarioList::load` which
-//! reads `data\scenariodescriptions.xml.xmb` from the asset source.
+//! HW1 scenario descriptors and `.scn` scene data parsing.
 
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
 use crate::source::AssetSource;
-
-// ── Scene data types ───────────────────────────────────────────────────
 
 /// A placed object in the scenario.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -566,8 +553,6 @@ impl ScenarioList {
         Ok(xmb::Document::with_root(root))
     }
 }
-
-// ── SCN parsing ─────────────────────────────────────────────────────────
 
 /// Parse a `<Scenario>` XMB root node into [`ScenarioData`] via `bdt-serde`.
 fn parse_scenario_data(root: &bdt::Node) -> ScenarioData {

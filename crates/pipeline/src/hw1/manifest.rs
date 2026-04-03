@@ -1,9 +1,4 @@
-//! Asset manifest — tracks all binary asset references discovered during
-//! world loading.
-//!
-//! The manifest is a passive inventory: it records every file path referenced
-//! by visual chains, scenario data, and preload lists. Call [`AssetManifest::verify`]
-//! to check existence, or [`super::World::validate_binary_assets`] to parse each file.
+//! Asset manifest — tracks all binary asset references discovered during world loading.
 
 use std::collections::BTreeSet;
 
@@ -14,8 +9,6 @@ use crate::source::AssetSource;
 use super::resolve::ObjectAssets;
 use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList};
 
-// ── Manifest ────────────────────────────────────────────────────────────
-
 /// Manifest of all binary asset references discovered during resolution.
 ///
 /// This is a passive inventory of every asset path referenced by the
@@ -24,7 +17,6 @@ use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList};
 /// archives — call [`AssetManifest::verify`] for that.
 #[derive(Debug, Clone, Default)]
 pub struct AssetManifest {
-    // ── Object visual chain refs ────────────────────────────────────
     /// Unique model file paths (.ugx) referenced by visuals.
     pub model_refs: BTreeSet<String>,
     /// Unique animation file paths (.uax) referenced by visuals.
@@ -34,7 +26,6 @@ pub struct AssetManifest {
     /// Unique texture file paths (.ddx) extracted from UGX material chunks.
     pub texture_refs: BTreeSet<String>,
 
-    // ── Preload lists (from scenario ERA) ───────────────────────────
     /// Visual files listed in `visFileList.txt`.
     pub preload_vis_refs: Vec<String>,
     /// Effect files listed in `tfxFileList.txt`.
@@ -42,7 +33,6 @@ pub struct AssetManifest {
     /// Particle effect files listed in `pfxFileList.txt`.
     pub preload_pfx_refs: Vec<String>,
 
-    // ── Scenario-level refs (from .scn) ────────────────────────────
     /// Lightset file paths (.gls/.fls) from the scenario.
     pub lightset_refs: Vec<String>,
     /// Cinematic file paths (.cin) from the scenario.
@@ -128,8 +118,6 @@ impl AssetManifest {
         result
     }
 }
-
-// ── Visual chain collection ─────────────────────────────────────────
 
 /// Collect all model/anim asset references from a parsed visual.
 pub(crate) fn collect_visual_assets(vis: &database::hw1::Visual, manifest: &mut AssetManifest) {
@@ -219,8 +207,6 @@ fn register_object_asset(asset: &database::hw1::visual::Asset, obj: &mut ObjectA
     }
 }
 
-// ── Preload lists ───────────────────────────────────────────────────
-
 /// Parse a preload list file (e.g. `visFileList.txt`) from the asset source.
 ///
 /// These are plain-text files with one asset path per line, found in
@@ -246,8 +232,6 @@ pub(crate) fn parse_preload_list(
         }
     }
 }
-
-// ── Texture discovery ───────────────────────────────────────────────
 
 /// Eagerly discover texture references from UGX material chunks.
 ///
@@ -336,8 +320,6 @@ pub(crate) fn resolve_textures_for(
     textures.into_iter().collect()
 }
 
-// ── XTT terrain texture discovery ───────────────────────────────────
-
 /// Discover texture references from XTT terrain files.
 ///
 /// XTT files contain three kinds of texture references:
@@ -407,7 +389,6 @@ pub(crate) fn discover_terrain_textures(
     }
 }
 
-// ── Stub processors ────────────────────────────────────────────────
 //
 // Placeholder functions for binary format processors that we track by
 // path but have no HW1-compatible crate for yet. Each function panics
@@ -461,8 +442,6 @@ pub fn parse_cinematic(_data: &[u8]) -> ! {
 pub fn parse_sound_bank(_name: &str) -> ! {
     unimplemented!("Sound bank parsing is not yet implemented for HW1")
 }
-
-// ── Scenario asset collection ───────────────────────────────────────
 
 /// Try to find a scenario whose `.scn` file resolves from the loaded ERAs.
 ///

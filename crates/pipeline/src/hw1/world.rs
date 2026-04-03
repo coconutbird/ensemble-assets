@@ -1,12 +1,4 @@
-//! HW1 loaded world — the complete result of the asset pipeline.
-//!
-//! [`World`] is the top-level struct that proves end-to-end asset loading:
-//! database, per-object visuals/tactics/physics, scenario metadata, and a
-//! manifest of all referenced binary assets.
-//!
-//! Types and helpers are split across sibling modules:
-//! - [`super::manifest`] — `AssetManifest`, `BinaryValidation`, collection helpers
-//! - [`super::resolve`] — `ObjectAssets`, `PhysicsChain`, `LoadStats`, chain resolution
+//! HW1 world — database, resolved assets, scenario, and asset manifest.
 
 use std::collections::HashMap;
 
@@ -21,65 +13,27 @@ use super::manifest::{
 use super::resolve::{LoadStats, ObjectAssets, PhysicsChain, resolve_physics_chain};
 use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList};
 
-// ── World ───────────────────────────────────────────────────────────────
-
-/// A fully loaded HW1 game world.
-///
-/// Contains the complete database, all resolved per-object assets, scenario
-/// metadata, and a manifest of binary asset references. This struct proves
-/// end-to-end that we can load and parse all game assets from ERA archives.
-///
-/// When loaded with a scenario, the scenario's SCN file is automatically
-/// parsed and its assets are collected into the manifest. You don't need
-/// to call `collect_scenario_assets` manually.
+/// A fully loaded HW1 game world: database, resolved assets, scenario, and manifest.
 pub struct World {
-    /// The full game database (objects, squads, techs, etc.).
     pub database: database::hw1::Database,
-    /// Per-object asset bundles keyed by object name.
-    ///
-    /// Every proto-object gets an entry here with all its resolved file
-    /// paths (visual, tactics, physics, models, anims, etc.).
+    /// Per-object resolved file paths, keyed by object name.
     pub assets: HashMap<String, ObjectAssets>,
-    /// Parsed visual definitions keyed by object name.
     pub visuals: HashMap<String, database::hw1::Visual>,
-    /// Parsed tactics definitions keyed by object name.
     pub tactics: HashMap<String, database::hw1::TacticData>,
-    /// Parsed physics chains keyed by object name.
     pub physics: HashMap<String, PhysicsChain>,
-    /// Scenario descriptor (if a scenario was loaded).
     pub scenario: Option<ScenarioDescriptor>,
-    /// Parsed scenario data from the `.scn` file (if a scenario was loaded).
-    ///
-    /// Contains all placed objects, player definitions, terrain references,
-    /// cinematics, talking heads, sound banks, etc. Populated automatically
-    /// during [`World::load`] when a scenario is specified.
+    /// Parsed `.scn` data (placed objects, players, terrain, etc.).
     pub scenario_data: Option<ScenarioData>,
-    /// All available scenario descriptors.
     pub scenario_list: ScenarioList,
-    /// Manifest of all binary asset references (global, not per-object).
     pub manifest: AssetManifest,
-    /// Loading statistics.
     pub stats: LoadStats,
 }
 
 impl World {
     /// Load a complete HW1 world from a game directory.
     ///
-    /// This is the main entry point for the HW1 asset pipeline. It:
-    /// 1. Loads all base game ERAs in the engine's load order
-    /// 2. Optionally layers a scenario ERA on top
-    /// 3. Loads the full game database (objects, squads, techs, etc.)
-    /// 4. Resolves all per-object asset chains (visuals, tactics, physics)
-    /// 5. Eagerly discovers texture references from UGX material chunks
-    /// 6. If a scenario is loaded: parses the `.scn`, collects all scenario
-    ///    assets (terrain, lightsets, cinematics, etc.) into the manifest
-    ///
-    /// # Arguments
-    /// * `game_dir` — path to the HW1 game directory containing ERA files
-    /// * `scenario` — optional scenario identifier. Accepts:
-    ///   - ERA filename: `"PHXscn01.era"`, `"blood_gulch.era"`
-    ///   - Map name: `"blood_gulch"`, `"PHXscn01"`
-    ///   - SCN path: `"skirmish\\design\\blood_gulch\\blood_gulch.scn"`
+    /// `scenario` accepts an ERA filename (`"PHXscn01.era"`), a map name
+    /// (`"PHXscn01"`), or an SCN path.
     pub fn load(game_dir: &str, scenario: Option<&str>) -> crate::Result<Self> {
         let mut src = loader::load_game_dir(game_dir);
 
@@ -95,11 +49,7 @@ impl World {
         Self::load_from_source(&mut src)
     }
 
-    /// Load a complete HW1 world from a pre-configured [`AssetSource`].
-    ///
-    /// If a scenario ERA has been loaded into `src`, this will automatically
-    /// find the matching scenario descriptor, parse the `.scn` file, and
-    /// collect all scenario-level asset references into the manifest.
+    /// Load from a pre-configured [`AssetSource`].
     pub fn load_from_source(
         src: &mut AssetSource<impl assets::FileProvider>,
     ) -> crate::Result<Self> {
@@ -350,17 +300,12 @@ impl World {
         }
     }
 
-    // ── Asset queries ───────────────────────────────────────────────────
-
     /// Get the asset bundle for a specific object by exact name.
     pub fn object_assets(&self, name: &str) -> Option<&ObjectAssets> {
         self.assets.get(name)
     }
 
     /// Search for objects whose name contains `pattern` (case-insensitive).
-    ///
-    /// Returns all matching [`ObjectAssets`] entries. Use this for queries
-    /// like "give me everything related to gorgon".
     pub fn search_assets(&self, pattern: &str) -> Vec<&ObjectAssets> {
         let lower = pattern.to_lowercase();
         self.assets
@@ -385,18 +330,7 @@ impl World {
             .collect()
     }
 
-    // ── Terrain (lazy) ──────────────────────────────────────────────────
-
-    /// Read and parse the XTD (terrain displacement/heightmap) file for a
-    /// scenario.
-    ///
-    /// This is intentionally **lazy** — terrain data is large and only
-    /// needed when the consumer actually wants heightmaps, lighting, or
-    /// tessellation data. The path is derived from the scenario's `.scn`
-    /// path following the engine's `BTerrainIOLoader::loadXTDInternal`
-    /// logic.
-    ///
-    /// Pass either `self.scenario` or any entry from `self.scenario_list`.
+    /// Read and parse the XTD terrain heightmap/lighting for a scenario (lazy).
     pub fn read_terrain_data(
         &self,
         scenario: &ScenarioDescriptor,
@@ -407,14 +341,7 @@ impl World {
         xtd::Reader::read(&data).ok()
     }
 
-    /// Read and parse the XTT (terrain textures/foliage/roads) file for a
-    /// scenario.
-    ///
-    /// This is intentionally **lazy** — terrain texture data is large and
-    /// only needed when the consumer actually wants albedo atlases, foliage
-    /// geometry, or road data. The path is derived from the scenario's
-    /// `.scn` path following the engine's `BTerrainIOLoader::loadXTTInternal`
-    /// logic.
+    /// Read and parse the XTT terrain textures/foliage for a scenario (lazy).
     pub fn read_terrain_textures(
         &self,
         scenario: &ScenarioDescriptor,
@@ -425,15 +352,7 @@ impl World {
         xtt::Reader::read(&data).ok()
     }
 
-    /// Resolve texture paths for an object by reading its UGX model materials.
-    ///
-    /// This is intentionally **lazy** — it decompresses and parses only the
-    /// material chunk (0x704) of each `.ugx` file, skipping geometry, bones,
-    /// and vertex/index buffers. Call this when you actually need to know
-    /// which `.ddx` textures a unit uses.
-    ///
-    /// Returns a deduplicated, sorted list of texture paths (normalised with
-    /// `art\` prefix and `.ddx` extension).
+    /// Resolve texture paths for an object by reading UGX material chunks (lazy).
     pub fn resolve_textures(
         &self,
         name: &str,
@@ -446,10 +365,7 @@ impl World {
         resolve_textures_for(obj, src)
     }
 
-    /// Resolve texture paths for an already-retrieved [`ObjectAssets`].
-    ///
-    /// Convenience wrapper when you already have the object from
-    /// [`search_assets`] or [`assets_by_class`].
+    /// Like [`resolve_textures`](Self::resolve_textures) but takes an [`ObjectAssets`] directly.
     pub fn resolve_textures_for_obj(
         &self,
         obj: &ObjectAssets,
@@ -458,13 +374,7 @@ impl World {
         resolve_textures_for(obj, src)
     }
 
-    // ── Validation ──────────────────────────────────────────────────────
-
-    /// Validate that all referenced binary assets can be found and parsed.
-    ///
-    /// This goes beyond [`AssetManifest::verify`] — it actually decompresses
-    /// and parses each `.ugx`, `.uax`, and `.ddx` file referenced by the
-    /// manifest. Returns counts and lists of files that failed to parse.
+    /// Deep-validate all manifest binary assets (parse each `.ugx`, `.uax`, `.ddx`).
     pub fn validate_binary_assets(
         &self,
         src: &mut AssetSource<impl assets::FileProvider>,
@@ -510,13 +420,7 @@ impl World {
         result
     }
 
-    // ── Scenario (lazy) ────────────────────────────────────────────────
-
-    /// Read and parse the `.scn` file for a scenario descriptor.
-    ///
-    /// Returns the parsed scene data including all placed objects, players,
-    /// positions, cinematics, etc. This is lazy — the `.scn` XMB is only
-    /// decompressed and parsed on demand.
+    /// Read and parse the `.scn` file for a scenario descriptor (lazy).
     pub fn read_scenario(
         &self,
         scenario: &ScenarioDescriptor,
@@ -526,21 +430,11 @@ impl World {
     }
 
     /// Collect all asset references from a parsed scenario into the manifest.
-    ///
-    /// **Note:** When using [`World::load`] with a scenario, this is called
-    /// automatically. You only need to call this manually if you're loading
-    /// additional scenarios or using `load_from_source` without a scenario ERA.
     pub fn collect_scenario_assets(&mut self, scenario: &ScenarioDescriptor, scn: &ScenarioData) {
         collect_scenario_assets_into(scenario, scn, &mut self.manifest);
     }
 
-    // ── Models (lazy) ──────────────────────────────────────────────────
-
-    /// Read and parse a full UGX model file (geometry, bones, materials).
-    ///
-    /// This is lazy — the full UGX is only decompressed and parsed on
-    /// demand. The path should be an `art\...\.ugx` path as stored in
-    /// [`ObjectAssets::models`] or [`AssetManifest::model_refs`].
+    /// Read and parse a UGX model file (lazy).
     pub fn read_model(
         &self,
         path: &str,
@@ -550,10 +444,7 @@ impl World {
         ugx::UgxGeom::from_bytes(&data).ok()
     }
 
-    /// Read and parse all models for a named object.
-    ///
-    /// Returns a vec of `(path, UgxGeom)` pairs for every model that
-    /// successfully parses. Skips missing or corrupt files silently.
+    /// Read and parse all models for a named object (lazy).
     pub fn read_object_models(
         &self,
         name: &str,
@@ -573,13 +464,7 @@ impl World {
             .collect()
     }
 
-    // ── Animations (lazy) ──────────────────────────────────────────────
-
-    /// Read and parse a UAX animation file.
-    ///
-    /// This is lazy — the animation data is only decompressed and parsed
-    /// on demand. The path should be an `art\...\.uax` path as stored in
-    /// [`ObjectAssets::anims`] or [`AssetManifest::anim_refs`].
+    /// Read and parse a UAX animation file (lazy).
     pub fn read_animation(
         &self,
         path: &str,
@@ -589,10 +474,7 @@ impl World {
         uax::UaxFile::from_bytes(&data).ok()
     }
 
-    /// Read and parse all animations for a named object.
-    ///
-    /// Returns a vec of `(path, UaxFile)` pairs for every animation
-    /// that successfully parses. Skips missing or corrupt files silently.
+    /// Read and parse all animations for a named object (lazy).
     pub fn read_object_animations(
         &self,
         name: &str,
@@ -612,12 +494,7 @@ impl World {
             .collect()
     }
 
-    // ── Textures (lazy) ────────────────────────────────────────────────
-
-    /// Read and parse a DDX texture file.
-    ///
-    /// This is lazy — the texture is only decompressed and parsed on
-    /// demand. The path should be an `art\...\.ddx` path.
+    /// Read and parse a DDX texture file (lazy).
     pub fn read_texture(
         &self,
         path: &str,

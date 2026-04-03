@@ -3,8 +3,6 @@
 
 use super::hw1_game_dir;
 
-// ── Validation with scenario ERA ─────────────────────────────────────
-
 #[test]
 fn validate_with_scenario_era() {
     let Some(dir) = hw1_game_dir() else {
@@ -30,8 +28,6 @@ fn validate_with_scenario_era() {
         report.passed()
     );
 }
-
-// ── World loading with scenario ──────────────────────────────────────
 
 #[test]
 fn load_world_with_scenario() {
@@ -68,8 +64,6 @@ fn load_world_with_scenario() {
     assert!(!scn.players().is_empty(), "SCN should have players");
     assert!(!scn.terrain().is_empty(), "SCN should reference terrain");
 }
-
-// ── SCN structure dump ───────────────────────────────────────────────
 
 #[test]
 fn dump_scn_structure() {
@@ -147,8 +141,6 @@ fn dump_node(node: &bdt::Node, depth: usize) {
     }
 }
 
-// ── Scenario (SCN) parsing tests ─────────────────────────────────────
-
 #[test]
 fn read_scenario_scn() {
     let Some(dir) = hw1_game_dir() else {
@@ -207,8 +199,6 @@ fn read_scenario_scn() {
         p1.name, p1.civ, p1.team, p1.supplies
     );
 }
-
-// ── Scenario asset collection test ───────────────────────────────────
 
 #[test]
 fn scenario_manifest_collection() {
@@ -272,8 +262,6 @@ fn scenario_manifest_collection() {
     );
 }
 
-// ── Full scenario validation test ────────────────────────────────────
-
 #[test]
 fn full_scenario_validation() {
     let Some(dir) = hw1_game_dir() else {
@@ -292,7 +280,6 @@ fn full_scenario_validation() {
 
     world.print_summary();
 
-    // ── 1. Scenario auto-detection ──
     let desc = world
         .scenario
         .as_ref()
@@ -301,7 +288,6 @@ fn full_scenario_validation() {
     println!("\n=== Full Scenario Validation ===");
     println!("Scenario: {} ({})", desc.name(), desc.file);
 
-    // ── 2. SCN content ──
     assert!(!scn.objects().is_empty(), "SCN should have placed objects");
     assert!(!scn.players().is_empty(), "SCN should have players");
     assert!(!scn.terrain().is_empty(), "SCN should reference terrain");
@@ -309,7 +295,6 @@ fn full_scenario_validation() {
     println!("  Players:        {}", scn.players().len());
     println!("  Terrain:        '{}'", scn.terrain());
 
-    // ── 3. Manifest: preload lists ──
     let total_preload = world.manifest.preload_vis_refs.len()
         + world.manifest.preload_pfx_refs.len()
         + world.manifest.preload_tfx_refs.len();
@@ -319,7 +304,6 @@ fn full_scenario_validation() {
         "vis preload list should have entries for campaign scenario"
     );
 
-    // ── 4. Manifest: terrain ──
     assert!(
         world.manifest.terrain_refs.len() >= 2,
         "expected at least .xtd and .xtt terrain refs, got {}",
@@ -329,7 +313,6 @@ fn full_scenario_validation() {
         println!("  Terrain ref: {tr}");
     }
 
-    // ── 5. Manifest: SCN-level assets ──
     assert!(!world.manifest.lightset_refs.is_empty(), "lightset refs");
     assert!(!world.manifest.cinematic_refs.is_empty(), "cinematic refs");
     assert!(
@@ -337,14 +320,12 @@ fn full_scenario_validation() {
         "talking head refs"
     );
 
-    // ── 6. Texture discovery still works ──
     assert!(
         world.manifest.texture_refs.len() > 600,
         "expected 600+ texture refs, got {}",
         world.manifest.texture_refs.len()
     );
 
-    // ── 7. Scenario ERA should bring MORE assets than base-only ──
     let base_world = pipeline::hw1::World::load(&dir, None).expect("failed to load base world");
 
     let scenario_models = world.manifest.model_refs.len();
@@ -371,8 +352,6 @@ fn full_scenario_validation() {
 
     println!("\n✅ Full scenario validation passed!");
 }
-
-// ── Terrain texture discovery ───────────────────────────────────────
 
 #[test]
 fn terrain_textures_from_xtt() {

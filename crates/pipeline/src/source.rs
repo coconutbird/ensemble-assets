@@ -1,28 +1,7 @@
-//! ERA-backed asset resolution using a [`FileProvider`] for I/O.
+//! ERA-backed asset resolution with optional filesystem override layer.
 //!
-//! [`AssetSource`] owns the ERA resolution logic (load order, index lookups,
-//! decompression) while delegating raw file reads to a generic
-//! [`FileProvider`].  The CLI uses [`StdFileProvider`] (backed by
-//! `std::fs::read`); an engine could swap in memory-mapped I/O.
-//!
-//! The "last loaded wins" priority rule matches the engine's
-//! `BFileManager::resolveFile` (confirmed in IDA at 0x140807090).
-//!
-//! ## Override layer
-//!
-//! An optional **override directory** sits in front of the ERA archives.
-//! When set, [`AssetSource`] checks the override dir first on every resolve.
-//! Write-back methods serialize files into the override dir, organised by
-//! source ERA label so the tree mirrors the archive structure:
-//!
-//! ```text
-//! overrides/
-//!   root.era/
-//!     data\objects.xml.xmb
-//!     art\unsc\vehicle\warthog_01\warthog_01.vis.xmb
-//!   scenarioshared.era/
-//!     ...
-//! ```
+//! Last-loaded ERA wins (matches engine `BFileManager::resolveFile`).
+//! Override directory layout: `{override_dir}/{era_label}/{game_path}`.
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -30,10 +9,6 @@ use std::path::{Path, PathBuf};
 use assets::{AssetResolver, FileProvider};
 
 /// A loaded ERA archive with a pre-built filename → entry index map.
-///
-/// `D` is the data handle from [`FileProvider::Data`] (e.g. `Vec<u8>`, `Mmap`).
-/// `std::io::Cursor<D>` owns the data and provides `Read + Seek` — no
-/// self-referential borrows needed.
 struct LoadedArchive<D: AsRef<[u8]>> {
     reader: era::Reader<era::crypto::decrypt::Reader<std::io::Cursor<D>>>,
     /// Archive label for diagnostics (e.g. "root.era").
@@ -54,9 +29,8 @@ pub struct Provenance {
 /// Unified asset source backed by one or more ERA archives, with an
 /// optional filesystem override layer for read/write support.
 ///
-/// Generic over a [`FileProvider`] that supplies the raw ERA file bytes.
-/// Resolution follows the engine rule: **highest load order (last loaded) wins**.
-/// When an override directory is set, it is checked **before** any ERA.
+/// Resolution follows the engine rule: last loaded ERA wins.
+/// The override directory is checked before any ERA.
 pub struct AssetSource<F: FileProvider> {
     provider: F,
     archives: Vec<LoadedArchive<F::Data>>,
@@ -122,13 +96,7 @@ impl<F: FileProvider> AssetSource<F> {
         Ok(entry_count)
     }
 
-    /// Resolve a file by its real path, with fallback suffixes.
-    ///
-    /// Tries the exact path first, then appends each suffix in order.
-    /// For example, `resolve_with_fallback("data\\objects.xml", &[".xmb"])`
-    /// tries `data\objects.xml` then `data\objects.xml.xmb`.
-    ///
-    /// This is generic so we can add more compiled formats later.
+    /// Resolve a file, trying `suffixes` as fallback extensions.
     pub fn resolve_with_fallback(&mut self, path: &str, suffixes: &[&str]) -> Option<Vec<u8>> {
         if let Some(data) = self.resolve_exact(path) {
             return Some(data);
@@ -148,11 +116,7 @@ impl<F: FileProvider> AssetSource<F> {
         self.resolve_with_fallback(path, &[".xmb"])
     }
 
-    /// Read and parse an XMB document by its real path, with `.xmb` fallback.
-    ///
-    /// Pass the path you intend (e.g. `data\objects.xml`, `art\foo.vis`).
-    /// The file bytes are parsed as XMB binary regardless of which variant
-    /// was found — plain XML text is not yet supported.
+    /// Read and parse an XMB document, with `.xmb` fallback.
     pub fn read_xmb(&mut self, path: &str) -> Option<xmb::Document> {
         let data = self.resolve_data(path)?;
         xmb::Reader::read(&data).ok()
@@ -177,8 +141,6 @@ impl<F: FileProvider> AssetSource<F> {
             })
             .collect()
     }
-
-    // ── Provenance ─────────────────────────────────────────────────────
 
     /// Return which ERA archive a file would be resolved from.
     ///
@@ -229,9 +191,7 @@ impl<F: FileProvider> AssetSource<F> {
         None
     }
 
-    /// Like [`provenance`] but **only** checks the ERA archives, ignoring
-    /// the override directory.  Used by the write path so that files we've
-    /// already written don't shadow the original ERA origin.
+    /// Like [`provenance`] but only checks ERA archives (ignores overrides).
     fn provenance_era_only(&self, path: &str) -> Option<Provenance> {
         let key = normalise_path(path);
         for archive in self.archives.iter().rev() {
@@ -245,10 +205,7 @@ impl<F: FileProvider> AssetSource<F> {
         None
     }
 
-    /// Like [`provenance_data`] but only checks ERA archives (ignores
-    /// the override directory).  Used by write helpers to determine the
-    /// correct ERA subdirectory without being confused by files we've
-    /// already written during the same save.
+    /// Like [`provenance_data`] but only checks ERA archives (ignores overrides).
     fn provenance_data_era_only(&self, path: &str) -> Option<Provenance> {
         if let Some(p) = self.provenance_era_only(path) {
             return Some(p);
@@ -264,21 +221,7 @@ impl<F: FileProvider> AssetSource<F> {
         None
     }
 
-    // ── Override read / write ──────────────────────────────────────────
-
-    /// Write raw bytes to the override directory.
-    ///
-    /// The file is placed under `{override_dir}/{era_label}/{game_path}`,
-    /// where `era_label` is determined by [`provenance`](Self::provenance)
-    /// (i.e. which ERA the file originally came from). If the file has no
-    /// provenance (new file), it goes under `_new/`.
-    ///
-    /// Backslash game paths are converted to the OS path separator.
-    ///
-    /// # Errors
-    ///
-    /// Returns an error if no override directory is set, or if the
-    /// filesystem write fails.
+    /// Write raw bytes to `{override_dir}/{era_label}/{game_path}`.
     pub fn write_file(&self, game_path: &str, data: &[u8]) -> Result<PathBuf, String> {
         let dir = self
             .override_dir
@@ -317,10 +260,7 @@ impl<F: FileProvider> AssetSource<F> {
         self.write_file(&xmb_path, &bytes)
     }
 
-    /// Write an XMB document to the override directory as **human-readable XML**.
-    ///
-    /// The output path will have an `.xml` extension (stripping `.xmb` if
-    /// present in the game path).
+    /// Write an XMB document as human-readable XML to the override directory.
     pub fn write_xml(&self, game_path: &str, doc: &xmb::Document) -> Result<PathBuf, String> {
         let xml_string = doc.to_xml();
         let key = normalise_path(game_path);
@@ -378,9 +318,7 @@ impl<F: FileProvider> AssetSource<F> {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Override directory helpers
-// ---------------------------------------------------------------------------
 
 /// Build the filesystem path for a file in the override directory.
 ///
@@ -396,9 +334,6 @@ fn override_fs_path(override_dir: &Path, era_label: &str, game_path: &str) -> Pa
 }
 
 /// Scan all ERA subdirectories in the override dir for a matching file.
-///
-/// Used by `resolve_exact` and `exists` — we don't know which ERA label
-/// the override was written under, so we check all of them.
 fn override_fs_path_scan(override_dir: &Path, game_path: &str) -> PathBuf {
     // Build the relative portion once.
     let rel: PathBuf = game_path.split('\\').collect();
@@ -417,9 +352,7 @@ fn override_fs_path_scan(override_dir: &Path, game_path: &str) -> PathBuf {
     override_dir.join("_none").join(&rel)
 }
 
-// ---------------------------------------------------------------------------
 // Concrete FileProvider for std environments
-// ---------------------------------------------------------------------------
 
 /// [`FileProvider`] backed by `std::fs::read` — reads entire files into heap.
 pub struct StdFileProvider;

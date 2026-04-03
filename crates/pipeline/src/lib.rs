@@ -1,14 +1,4 @@
 //! Ensemble asset pipeline — ERA loading, scenario loading, full world resolution.
-//!
-//! This crate provides the infrastructure for loading game assets from ERA
-//! archives and resolving the full asset dependency chain. Game-specific
-//! pipelines live in sub-modules (`hw1`, future `hw2`).
-//!
-//! # Architecture
-//!
-//! - [`source::AssetSource`] — ERA-backed asset resolver (generic over I/O)
-//! - [`source::StdFileProvider`] — `std::fs::read`-backed file provider
-//! - [`hw1`] — Halo Wars 1 asset pipeline (ERA load order, world loading)
 
 pub use database;
 pub use xmb;
