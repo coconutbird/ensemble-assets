@@ -15,8 +15,8 @@ use crate::source::AssetSource;
 use super::loader;
 use super::manifest::{
     AssetManifest, BinaryValidation, collect_object_visual_assets, collect_scenario_assets_into,
-    collect_visual_assets, discover_textures, parse_preload_list, resolve_scenario,
-    resolve_textures_for,
+    collect_visual_assets, discover_terrain_textures, discover_textures, parse_preload_list,
+    resolve_scenario, resolve_textures_for,
 };
 use super::resolve::{LoadStats, ObjectAssets, PhysicsChain, resolve_physics_chain};
 use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList};
@@ -217,6 +217,9 @@ impl World {
 
         // 6. Auto-detect and load scenario from the SCN file
         let (scenario, scenario_data) = resolve_scenario(src, &scenario_list, &mut manifest);
+
+        // 7. Discover terrain texture references from XTT files
+        discover_terrain_textures(src, &manifest.terrain_refs, &mut manifest.texture_refs);
 
         Ok(World {
             database,

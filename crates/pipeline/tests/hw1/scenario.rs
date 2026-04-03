@@ -371,3 +371,58 @@ fn full_scenario_validation() {
 
     println!("\n✅ Full scenario validation passed!");
 }
+
+// ── Terrain texture discovery ───────────────────────────────────────
+
+#[test]
+fn terrain_textures_from_xtt() {
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("SKIP: HW1_GAME_DIR not set");
+        return;
+    };
+
+    let world = pipeline::hw1::World::load(&dir, Some("PHXscn01.era"))
+        .expect("failed to load world with scenario");
+
+    // Terrain refs should include at least one .xtt file
+    let xtt_refs: Vec<_> = world
+        .manifest
+        .terrain_refs
+        .iter()
+        .filter(|p| p.ends_with(".xtt"))
+        .collect();
+    assert!(
+        !xtt_refs.is_empty(),
+        "expected at least one .xtt terrain ref"
+    );
+    println!("  XTT refs: {:?}", xtt_refs);
+
+    // Terrain textures should be discovered — look for typical splat patterns
+    let terrain_textures: Vec<_> = world
+        .manifest
+        .texture_refs
+        .iter()
+        .filter(|t| t.contains("_df.ddx") || t.contains("_nm.ddx") || t.contains("_sp.ddx"))
+        .filter(|t| {
+            // Terrain textures typically live in paths without unit/building names
+            !t.contains("\\unit\\") && !t.contains("\\building\\")
+        })
+        .collect();
+
+    println!(
+        "  Terrain-style textures discovered: {}",
+        terrain_textures.len()
+    );
+    for t in terrain_textures.iter().take(10) {
+        println!("    {t}");
+    }
+
+    // With XTT parsing, we should discover splat/foliage textures
+    assert!(
+        terrain_textures.len() > 5,
+        "expected terrain textures from XTT, got {}",
+        terrain_textures.len()
+    );
+
+    println!("\n✅ Terrain texture discovery passed!");
+}
