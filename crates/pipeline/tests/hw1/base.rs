@@ -468,3 +468,74 @@ fn texture_refs_populated_eagerly() {
         println!("  {path}");
     }
 }
+
+#[test]
+fn cross_reference_diagnostics() {
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("SKIP: HW1_GAME_DIR not set");
+        return;
+    };
+
+    let world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
+    let report = pipeline::hw1::validate_world(&world);
+
+    println!("Cross-reference diagnostics:");
+    report.print_summary();
+
+    // Real game data should have very few (if any) errors
+    let errors = report.errors();
+    assert!(
+        errors == 0,
+        "expected 0 errors on clean game data, got {errors}"
+    );
+}
+
+#[test]
+fn inject_bad_reference_produces_diagnostic() {
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("SKIP: HW1_GAME_DIR not set");
+        return;
+    };
+
+    let mut world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
+
+    // Inject a bad visual reference
+    {
+        let mut objects = world.objects_mut();
+        objects[0].visual = Some("nonexistent_visual_12345".to_string());
+    }
+
+    // Inject a bad squad → object reference
+    {
+        let mut squads = world.squads_mut();
+        if let Some(ref mut units) = squads[0].units {
+            units.entries[0].proto_object = "nonexistent_object_12345".to_string();
+        }
+    }
+
+    let report = pipeline::hw1::validate_world(&world);
+
+    println!("Injected-error diagnostics:");
+    for d in &report.diagnostics {
+        println!("  {d}");
+    }
+
+    // Should find our injected bad references
+    let missing_refs: Vec<_> = report
+        .diagnostics
+        .iter()
+        .filter(|d| d.code == pipeline::hw1::DiagnosticCode::MissingReference)
+        .collect();
+
+    let has_visual_diag = missing_refs
+        .iter()
+        .any(|d| d.message.contains("nonexistent_visual_12345"));
+    let has_squad_diag = missing_refs
+        .iter()
+        .any(|d| d.message.contains("nonexistent_object_12345"));
+
+    assert!(has_visual_diag, "should detect bad visual reference");
+    assert!(has_squad_diag, "should detect bad squad→object reference");
+
+    println!("\n✅ Injected bad reference diagnostics detected!");
+}

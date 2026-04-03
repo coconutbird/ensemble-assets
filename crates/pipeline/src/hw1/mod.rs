@@ -19,6 +19,7 @@
 //! println!("Resolved {} visuals", world.visuals.len());
 //! ```
 
+pub mod diagnostics;
 pub mod edit;
 pub mod loader;
 pub mod manifest;
@@ -27,6 +28,9 @@ pub mod scenario;
 pub mod validate;
 pub mod world;
 
+pub use diagnostics::{
+    Diagnostic, DiagnosticCode, DiagnosticReport, Location, Severity, validate_world,
+};
 pub use edit::{DirtyGuard, DirtySet, TableId};
 pub use manifest::{AssetManifest, BinaryValidation, VerifyResult};
 pub use resolve::{LoadStats, ObjectAssets, PhysicsChain};
