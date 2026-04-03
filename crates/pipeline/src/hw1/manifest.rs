@@ -509,46 +509,51 @@ pub(crate) fn collect_scenario_assets_into(
     }
 
     // Lightsets
-    if !scn.lightset.is_empty() {
-        manifest.lightset_refs.push(scn.lightset.clone());
+    let ls = scn.lightset();
+    if !ls.is_empty() {
+        manifest.lightset_refs.push(ls.to_string());
     }
-    for ls in &scn.lightsets {
+
+    for ls in scn.lightsets() {
         if !ls.is_empty() {
             manifest.lightset_refs.push(ls.clone());
         }
     }
 
     // Cinematics
-    for (_, path) in &scn.cinematics {
-        if !path.is_empty() {
-            manifest.cinematic_refs.push(path.clone());
+    for cin in scn.cinematics() {
+        if !cin.path.is_empty() {
+            manifest.cinematic_refs.push(cin.path.clone());
         }
     }
 
     // Talking heads
-    for (_, name) in &scn.talking_heads {
-        if !name.is_empty() {
-            manifest.talking_head_refs.push(name.clone());
+    for th in scn.talking_heads() {
+        if !th.name.is_empty() {
+            manifest.talking_head_refs.push(th.name.clone());
         }
     }
 
     // Sky
-    if !scn.sky.is_empty() {
-        manifest.sky_ref = Some(scn.sky.clone());
+    let sky = scn.sky();
+    if !sky.is_empty() {
+        manifest.sky_ref = Some(sky.to_string());
     }
 
     // Terrain environment texture
-    if !scn.terrain_env.is_empty() {
-        manifest.terrain_env_ref = Some(scn.terrain_env.clone());
+    let te = scn.terrain_env();
+    if !te.is_empty() {
+        manifest.terrain_env_ref = Some(te.to_string());
     }
 
     // Minimap
-    if !scn.minimap_texture.is_empty() {
-        manifest.minimap_ref = Some(scn.minimap_texture.clone());
+    let mm = scn.minimap_texture();
+    if !mm.is_empty() {
+        manifest.minimap_ref = Some(mm.to_string());
     }
 
     // Sound banks
-    for sb in &scn.sound_banks {
+    for sb in scn.sound_banks() {
         if !sb.is_empty() {
             manifest.sound_bank_refs.push(sb.clone());
         }

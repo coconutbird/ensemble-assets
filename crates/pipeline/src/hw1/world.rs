@@ -343,9 +343,9 @@ impl World {
         if let Some(scn) = &self.scenario_data {
             println!(
                 "  SCN objects:  {} placed, {} players, {} positions",
-                scn.objects.len(),
-                scn.players.len(),
-                scn.positions.len()
+                scn.objects().len(),
+                scn.players().len(),
+                scn.positions().len()
             );
         }
     }

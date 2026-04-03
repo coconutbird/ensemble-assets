@@ -29,7 +29,8 @@ pub mod world;
 pub use manifest::{AssetManifest, BinaryValidation, VerifyResult};
 pub use resolve::{LoadStats, ObjectAssets, PhysicsChain};
 pub use scenario::{
-    ScenarioData, ScenarioDescriptor, ScenarioObject, ScenarioPlayer, ScenarioPosition,
+    CinematicRef, ObjectiveRef, ScenarioData, ScenarioDescriptor, ScenarioObject, ScenarioPlayer,
+    ScenarioPosition, TalkingHeadRef,
 };
 pub use validate::{ValidateReport, validate};
 pub use world::World;

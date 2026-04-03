@@ -64,9 +64,9 @@ fn load_world_with_scenario() {
     );
 
     let scn = world.scenario_data.as_ref().unwrap();
-    assert!(!scn.objects.is_empty(), "SCN should have placed objects");
-    assert!(!scn.players.is_empty(), "SCN should have players");
-    assert!(!scn.terrain.is_empty(), "SCN should reference terrain");
+    assert!(!scn.objects().is_empty(), "SCN should have placed objects");
+    assert!(!scn.players().is_empty(), "SCN should have players");
+    assert!(!scn.terrain().is_empty(), "SCN should reference terrain");
 }
 
 // ── SCN structure dump ───────────────────────────────────────────────
@@ -170,28 +170,28 @@ fn read_scenario_scn() {
         .expect("failed to read scenario");
 
     println!("Scenario: {}", desc.name());
-    println!("  Terrain:      '{}'", scene.terrain);
-    println!("  TerrainEnv:   '{}'", scene.terrain_env);
-    println!("  Lightset:     '{}'", scene.lightset);
-    println!("  Pathing:      '{}'", scene.pathing);
-    println!("  Minimap:      '{}'", scene.minimap_texture);
-    println!("  Placement:    '{}'", scene.player_placement_type);
-    println!("  Objects:      {}", scene.objects.len());
-    println!("  Players:      {}", scene.players.len());
-    println!("  Positions:    {}", scene.positions.len());
-    println!("  Cinematics:   {}", scene.cinematics.len());
-    println!("  TalkingHeads: {}", scene.talking_heads.len());
-    println!("  Objectives:   {}", scene.objectives.len());
+    println!("  Terrain:      '{}'", scene.terrain());
+    println!("  TerrainEnv:   '{}'", scene.terrain_env());
+    println!("  Lightset:     '{}'", scene.lightset());
+    println!("  Pathing:      '{}'", scene.pathing());
+    println!("  Minimap:      '{}'", scene.minimap_texture());
+    println!("  Placement:    '{}'", scene.player_placement_type());
+    println!("  Objects:      {}", scene.objects().len());
+    println!("  Players:      {}", scene.players().len());
+    println!("  Positions:    {}", scene.positions().len());
+    println!("  Cinematics:   {}", scene.cinematics().len());
+    println!("  TalkingHeads: {}", scene.talking_heads().len());
+    println!("  Objectives:   {}", scene.objectives().len());
 
     assert!(
-        !scene.terrain.is_empty(),
+        !scene.terrain().is_empty(),
         "terrain name should not be empty"
     );
-    assert!(!scene.objects.is_empty(), "should have placed objects");
-    assert!(!scene.players.is_empty(), "should have players");
-    assert!(!scene.positions.is_empty(), "should have positions");
+    assert!(!scene.objects().is_empty(), "should have placed objects");
+    assert!(!scene.players().is_empty(), "should have players");
+    assert!(!scene.positions().is_empty(), "should have positions");
 
-    let first = &scene.objects[0];
+    let first = &scene.objects()[0];
     assert!(!first.proto_name.is_empty(), "object proto name empty");
     assert_ne!(first.id, 0, "object ID should not be zero");
     println!(
@@ -199,7 +199,7 @@ fn read_scenario_scn() {
         first.proto_name, first.id, first.player, first.position
     );
 
-    let p1 = &scene.players[0];
+    let p1 = &scene.players()[0];
     assert!(!p1.name.is_empty(), "player name empty");
     assert!(!p1.civ.is_empty(), "player civ empty");
     println!(
@@ -249,10 +249,10 @@ fn scenario_manifest_collection() {
     println!("  Sky ref:          {:?}", world.manifest.sky_ref);
     println!("  TerrainEnv ref:   {:?}", world.manifest.terrain_env_ref);
     println!("  Minimap ref:      {:?}", world.manifest.minimap_ref);
-    println!("  SCN sky:          '{}'", scn.sky);
-    println!("  SCN lightsets:    {:?}", scn.lightsets);
-    println!("  SCN sound_banks:  {:?}", scn.sound_banks);
-    println!("  SCN sim_bounds:   {:?}", scn.sim_bounds);
+    println!("  SCN sky:          '{}'", scn.sky());
+    println!("  SCN lightsets:    {:?}", scn.lightsets());
+    println!("  SCN sound_banks:  {:?}", scn.sound_banks());
+    println!("  SCN sim_bounds:   {:?}", scn.sim_bounds());
 
     assert!(
         world.manifest.terrain_refs.len() >= 2,
@@ -302,12 +302,12 @@ fn full_scenario_validation() {
     println!("Scenario: {} ({})", desc.name(), desc.file);
 
     // ── 2. SCN content ──
-    assert!(!scn.objects.is_empty(), "SCN should have placed objects");
-    assert!(!scn.players.is_empty(), "SCN should have players");
-    assert!(!scn.terrain.is_empty(), "SCN should reference terrain");
-    println!("  Placed objects: {}", scn.objects.len());
-    println!("  Players:        {}", scn.players.len());
-    println!("  Terrain:        '{}'", scn.terrain);
+    assert!(!scn.objects().is_empty(), "SCN should have placed objects");
+    assert!(!scn.players().is_empty(), "SCN should have players");
+    assert!(!scn.terrain().is_empty(), "SCN should reference terrain");
+    println!("  Placed objects: {}", scn.objects().len());
+    println!("  Players:        {}", scn.players().len());
+    println!("  Terrain:        '{}'", scn.terrain());
 
     // ── 3. Manifest: preload lists ──
     let total_preload = world.manifest.preload_vis_refs.len()
