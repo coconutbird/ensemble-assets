@@ -1,0 +1,23 @@
+[package]
+name = "watch"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+pipeline = { workspace = true }
+database = { workspace = true }
+assets = { workspace = true }
+xmb = { workspace = true }
+notify = "7"
+notify-debouncer-mini = "0.5"
+
+[dev-dependencies]
+dotenvy.workspace = true
+tempfile = "3"
+
+[[test]]
+name = "watch_integration"
+path = "tests/integration.rs"

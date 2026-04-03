@@ -30,8 +30,9 @@ pub mod world;
 
 pub use diagnostics::{
     Diagnostic, DiagnosticCode, DiagnosticReport, Location, Severity, validate_world,
+    validate_world_assets,
 };
-pub use edit::{DirtyGuard, DirtySet, TableId};
+pub use edit::{AssetKind, DirtyGuard, DirtySet, TableId};
 pub use manifest::{AssetManifest, BinaryValidation, VerifyResult};
 pub use resolve::{LoadStats, ObjectAssets, PhysicsChain};
 pub use scenario::{

@@ -561,7 +561,7 @@ impl ScenarioList {
 }
 
 /// Parse a `<Scenario>` XMB root node into [`ScenarioData`] via `bdt-serde`.
-fn parse_scenario_data(root: &bdt::Node) -> ScenarioData {
+pub(crate) fn parse_scenario_data(root: &bdt::Node) -> ScenarioData {
     bdt_serde::from_node(root).unwrap_or_default()
 }
 

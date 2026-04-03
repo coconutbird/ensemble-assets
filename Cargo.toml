@@ -5,6 +5,7 @@ members = [
     "crates/database",
     "crates/pipeline",
     "crates/pipeline-cli",
+    "crates/watch",
 ]
 
 [workspace.package]
@@ -30,6 +31,8 @@ ugx = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "d
 xmb = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
 xtd = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
 xtt = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
+
+watch = { path = "crates/watch" }
 
 # External dependencies
 clap = { version = "4.5", features = ["derive"] }

@@ -151,23 +151,29 @@ pub enum DiagnosticCode {
 
 ## Phase 3 — Incremental Watch
 
-Goal: File-watching loop that re-validates on change (language server core).
+Goal: File-watching loop that re-validates on change (language server core + engine hot-reload).
 
 ### 3.1 File Watcher
 
 Watch the override directory for changes. On file write:
 
-1. Determine which table(s) the file maps to
-2. Re-parse just that table
+1. Classify the changed file via `AssetKind::from_game_path`
+2. Re-parse / invalidate just that asset (database table, visual, tactics, physics, model, texture, etc.)
 3. Re-run cross-reference validation for affected entries
 4. Emit updated diagnostics
 
 ### 3.2 Deliverables
 
-- [ ] File → table mapping
-- [ ] Incremental re-parse on change
-- [ ] Dependency-aware re-validation
-- [ ] `notify` crate integration for filesystem watching
+- [x] File → table mapping (`TableId::from_game_path` / `table_for_override_path`)
+- [x] Universal asset classification (`AssetKind` enum + `from_game_path`)
+- [x] Reverse lookup (`World::owners_of_asset`) — maps file paths back to object names
+- [x] Incremental re-parse on change (`World::reload_table` for DB, `World::reload_asset` for all)
+- [x] Per-file XML reload (visuals, tactics, physics) with HashMap entry replacement
+- [x] Binary asset invalidation (models, animations, textures, terrain)
+- [x] Dependency-aware re-validation (`validate_world` after reload)
+- [x] `notify` crate integration for filesystem watching (`WorldWatcher` in `crates/watch`)
+- [x] `WorldEvent::AssetReloaded(AssetKind)` — events for all asset types
+- [x] Integration tests (manual reload + filesystem watcher)
 
 ## Repo Split Point
 

@@ -477,16 +477,49 @@ fn cross_reference_diagnostics() {
     };
 
     let world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let report = pipeline::hw1::validate_world(&world);
 
+    // In-memory cross-reference checks
+    let report = pipeline::hw1::validate_world(&world);
     println!("Cross-reference diagnostics:");
     report.print_summary();
 
-    // Real game data should have very few (if any) errors
     let errors = report.errors();
     assert!(
         errors == 0,
         "expected 0 errors on clean game data, got {errors}"
+    );
+
+    // Print a few representative warnings/info so we can see the new checks working
+    let by_code = |code: pipeline::hw1::DiagnosticCode| {
+        report.diagnostics.iter().filter(|d| d.code == code).count()
+    };
+    println!(
+        "  DuplicateName:     {}",
+        by_code(pipeline::hw1::DiagnosticCode::DuplicateName)
+    );
+    println!(
+        "  MissingReference:  {}",
+        by_code(pipeline::hw1::DiagnosticCode::MissingReference)
+    );
+
+    // Asset existence checks (needs AssetSource)
+    let src = load_hw1(&dir);
+    let asset_report = pipeline::hw1::validate_world_assets(&world, &src);
+    println!("\nAsset existence diagnostics:");
+    asset_report.print_summary();
+
+    let asset_errors = asset_report.errors();
+    assert!(
+        asset_errors == 0,
+        "expected 0 asset errors on clean game data, got {asset_errors}"
+    );
+    println!(
+        "  MissingAsset:      {}",
+        asset_report
+            .diagnostics
+            .iter()
+            .filter(|d| d.code == pipeline::hw1::DiagnosticCode::MissingAsset)
+            .count()
     );
 }
 
@@ -513,6 +546,24 @@ fn inject_bad_reference_produces_diagnostic() {
         }
     }
 
+    // Inject a bad leader → civ reference
+    {
+        let mut leaders = world.leaders_mut();
+        if !leaders.is_empty() {
+            leaders[0].civ = Some("nonexistent_civ_99999".to_string());
+        }
+    }
+
+    // Inject a bad tactics weapon → weapon_type reference
+    {
+        let mut tactics = world.tactics_mut();
+        if let Some((_key, tac)) = tactics.iter_mut().next()
+            && !tac.weapons.is_empty()
+        {
+            tac.weapons[0].weapon_type = Some("nonexistent_wt_99999".to_string());
+        }
+    }
+
     let report = pipeline::hw1::validate_world(&world);
 
     println!("Injected-error diagnostics:");
@@ -533,9 +584,23 @@ fn inject_bad_reference_produces_diagnostic() {
     let has_squad_diag = missing_refs
         .iter()
         .any(|d| d.message.contains("nonexistent_object_12345"));
+    let has_leader_civ_diag = missing_refs
+        .iter()
+        .any(|d| d.message.contains("nonexistent_civ_99999"));
+    let has_tactics_wt_diag = missing_refs
+        .iter()
+        .any(|d| d.message.contains("nonexistent_wt_99999"));
 
     assert!(has_visual_diag, "should detect bad visual reference");
     assert!(has_squad_diag, "should detect bad squad→object reference");
+    assert!(
+        has_leader_civ_diag,
+        "should detect bad leader→civ reference"
+    );
+    assert!(
+        has_tactics_wt_diag,
+        "should detect bad tactics weapon→weapon_type reference"
+    );
 
-    println!("\n✅ Injected bad reference diagnostics detected!");
+    println!("\n✅ All injected bad reference diagnostics detected!");
 }
