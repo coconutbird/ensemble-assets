@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>hook\building\civbuscover_01\civbuscover_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint06" syncanims="false"/>
+            <point pointType="Cover" bone="bone_attachpoint01" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint02" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint03" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint04" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint05" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint06" pointData="Metal"/>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\forebridgeBridge_01\forebridgeBridge_01</file>
+            </asset>
+            <attach type="ModelRef" name="lightmesh" tobone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\forebridge_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Research" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\forebridge_01\research_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\forebridge_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Bored" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\forebridge_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_threeseconds</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="lightmesh">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\forebridge_01\lightmesh_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\forebridge_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx06" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx08" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeblips_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridge_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot02" syncanims="false"/>
+        </anim>
+        <anim type="Research" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\forebridge_01\research_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx08" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeblips_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridge_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot02" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\forebridge_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Bored" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\forebridge_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_threeseconds</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot02" syncanims="false"/>
+        </anim>
+    </model>
+</visual>

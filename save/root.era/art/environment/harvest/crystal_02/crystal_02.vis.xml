@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <logic type="Variation">
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>environment\harvest\crystal_02\crystal_a02</file>
+                        <damagefile>environment\harvest\crystal_02\crystal_a02</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>environment\harvest\crystal_02\crystal_b02</file>
+                        <damagefile>environment\harvest\crystal_02\crystal_b02</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>environment\harvest\crystal_02\crystal_c02</file>
+                        <damagefile>environment\harvest\crystal_02\crystal_c02</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>environment\harvest\crystal_02\crystal_e02</file>
+                        <damagefile>environment\harvest\crystal_02\crystal_e02</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Death" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\crystal_02\crystal_a02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\unsc\unscsatellite_01\unscsatellite_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\pelican\redblinkinglight_01" tobone="BoneBeaconLight" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\unsc\unscsatellite_01\unscsatelliteIdle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

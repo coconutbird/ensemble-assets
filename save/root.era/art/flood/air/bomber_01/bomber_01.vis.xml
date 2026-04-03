@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>flood\Air\bomber_01\bomber_01</file>
+                <damagefile>flood\air\bomber_01\bomber_01</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\idle_01</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\idle_01</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\idle_01</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\idle_01</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="10" tweenToAnimation="Build">
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\idle_01</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="BombAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\bombAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpawnEgg" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\bombAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Loop" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>flood\Air\bomber_01\flail_01</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

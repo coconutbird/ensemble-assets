@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn15\activationNode_01\activationNode_01</file>
+            </asset>
+            <attach type="ModelRef" name="Fin" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Sliders" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Glow" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Fin">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn15\activationNode_01\activation_node_fin_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Sliders">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn15\activationNode_01\activation_node_sliders_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Lockdown">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn15\activationNode_01\activationNode_01</file>
+            </asset>
+            <attach type="ModelRef" name="Fin_Lockdown" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Sliders_Lockdown" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Glow lockdown" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\idle_open_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Fin_Lockdown">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn15\activationNode_01\activation_node_fin_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\idle_open_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Sliders_Lockdown">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn15\activationNode_01\activation_node_sliders_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\idle_open_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Glow">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn15\activationNode_01\Glow</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Glow lockdown">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn15\activationNode_01\Glow</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN15_Interlock_on_02" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn15\activationNode_01\close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

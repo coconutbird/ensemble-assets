@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\Unit_FX\unsc\spartan\jackoffmesh</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\spartan\jackingoff" tobone="bone_anim02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\spartan\jackingoff" tobone="bone_anim03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\spartan\jackingoff" tobone="bone_anim04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\spartan\jackingoff" tobone="bone_anim06" syncanims="false"/>
+            <attach type="LightFile" name="effects\Unit_FX\unsc\spartan\jack_light" tobone="bone_anim02" syncanims="false"/>
+            <attach type="LightFile" name="effects\Unit_FX\unsc\spartan\jack_light" tobone="bone_anim03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\spartan\jackingoff2" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\Unit_FX\unsc\spartan\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

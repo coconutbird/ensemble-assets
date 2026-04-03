@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>flood\building\artillery_01\artillery_01</file>
+                <damagefile>flood\building\artillery_01\artillery_01</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\building\artillery_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>flood\building\artillery_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CannonAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\building\artillery_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\building\artillery_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

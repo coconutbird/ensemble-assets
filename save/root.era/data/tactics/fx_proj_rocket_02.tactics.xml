@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>RocketLauncher</Name>
+        <DamagePerSecond>0</DamagePerSecond>
+        <WeaponType>Cannon</WeaponType>
+        <Projectile>fx_proj_rocket_02</Projectile>
+        <MaxRange>35</MaxRange>
+        <Accuracy>0.33</Accuracy>
+        <MaxDeviation>3</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>4.5</MovingMaxDeviation>
+    </Weapon>
+    <Action>
+        <Name>GenericInfoAttackAction</Name>
+        <Weapon>&gt;RocketLauncher</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

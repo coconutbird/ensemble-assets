@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\wolverine_01\wolverine_damaged_01</file>
+                <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="BoneTurret" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="GrenadeLauncher" tobone="Bone_gLauncher" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Wheel" tobone="BoneLWheel" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Wheel" tobone="BoneRWheel" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="TreadL" tobone="BoneLTread" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="TreadR" tobone="BoneRTread" frombone="GrannyRootBone" syncanims="false"/>
+            <point pointType="Impact" bone="impact_bone_01" pointData="Metal"/>
+            <point pointType="Impact" bone="impact_bone_02" pointData="Metal"/>
+            <point pointType="Impact" bone="impact_bone_03" pointData="Metal"/>
+            <point pointType="Impact" bone="impact_bone_04" pointData="Metal"/>
+            <point pointType="Impact" bone="impact_bone_05" pointData="Metal"/>
+            <point pointType="Impact" bone="impact_bone_06" pointData="Metal"/>
+            <point pointType="Impact" bone="impact_bone_07" pointData="Metal"/>
+            <point pointType="Impact" bone="impact_bone_08" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_wolverine_upgrade3" weight="2">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_damaged_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_wolverine_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_damaged_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_damaged_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_walk_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\cobra_trail" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_death_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_death_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="BoneLTread" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="BoneRTread" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="BoneLWheel" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="BoneWolverine" syncanims="false"/>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="MissileAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MissileAttack2" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="GrenadeLauncherAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="GrenadeLauncherAttack">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_gl_attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_gl_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BarrageAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_barrage_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpartanWolverineJack" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_wolverine_jack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Marine" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\wolverine_01\wolverine_turret_01</file>
+            </asset>
+            <attach type="ModelRef" name="MissileHousing" tobone="BoneMissileHousing" frombone="GrannyRootBone" syncanims="true"/>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_wolverine_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_turret_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_wolverine_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_turret_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_turret_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="MissileHousing">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\wolverine_01\wolverine_missilehousing_01</file>
+                <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+            </asset>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_wolverine_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_missilehousing_02</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_wolverine_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_missilehousing_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_missilehousing_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="MissileAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MissileAttack2" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BarrageAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_barrage_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="GrenadeLauncher">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\wolverine_01\wolverine_mg_R_01</file>
+            </asset>
+            <attach type="ModelRef" name="GrenadeLauncherTurret" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_wolverine_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_mg_R_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_wolverine_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_mg_R_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_mg_R_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="Wheel">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\warthog_01\wheel_01</file>
+            </asset>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="TreadL">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\wolverine_01\wolverine_tread_L_01</file>
+            </asset>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="TreadR">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\wolverine_01\wolverine_tread_R_01</file>
+            </asset>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="Marine">
+        <component>
+            <asset type="Model">
+                <file>unsc\infantry\marine_01\marine_01</file>
+            </asset>
+        </component>
+        <anim type="SpartanWolverineJack" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_wolverinedriver_jack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="GrenadeLauncherTurret">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\wolverine_01\wolverine_gl_gun_01</file>
+            </asset>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_wolverine_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_gl_gun_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_wolverine_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_gl_gun_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\vehicle\wolverine_01\wolverine_gl_gun_01</file>
+                        <damagefile>unsc\vehicle\wolverine_01\wolverine_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="GrenadeLauncherAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="GrenadeLauncherAttack">
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_gl_attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\vehicle\wolverine_01\wolverine_gl_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

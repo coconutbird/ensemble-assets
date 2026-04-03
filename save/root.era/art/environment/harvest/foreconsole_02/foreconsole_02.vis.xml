@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\foreconsole_02\foreconsole_02</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\foreconsole_02" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\foreconsole_02B" tobone="bone_FX01" syncanims="false"/>
+            <attach type="LightFile" name="environment\harvest\artrubix_01\artrubixLight_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

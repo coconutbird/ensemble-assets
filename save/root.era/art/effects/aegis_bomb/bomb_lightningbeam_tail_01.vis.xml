@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="model_2">
+    <model name="model_2">
+        <component>
+            <asset type="Model">
+                <file>effects\projectiles\Beam\chimera_beam\beamtail_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\Aegis_bomb\bomb_lightning_tail_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="LightFile" name="effects\projectiles\Beam\chimera_beam\targetLight_01" tobone="bone_FX01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\locust_01\locust_damaged_01</file>
+                <damagefile>covenant\vehicle\locust_01\locust_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="bone_head_attach" frombone="GrannyRootBone" syncanims="true"/>
+            <point pointType="Pickup" bone="Bone L FrontLeg00" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_04" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_body" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone Pump_01" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone Pump_02" pointData="Metal"/>
+            <point pointType="Board" bone="bone_body" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\vehicle\locust_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>covenant\vehicle\locust_01\walk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\vehicle\locust_01\walk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\vehicle\chimera_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="BeamAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\vehicle\locust_01\beamAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="OverburnAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\vehicle\locust_01\overburnAttack_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\locust\overdrive_01" tobone="bone_body" syncanims="false"/>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\vehicle\locust_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>covenant\vehicle\locust_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpartanLocustJack" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_locust_jack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\locust_01\locust_head_01</file>
+            </asset>
+            <point pointType="Pickup" bone="Bone HeadAttach" pointData="Metal"/>
+        </component>
+        <anim type="BeamAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\vehicle\locust_01\beamAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="OverburnAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\vehicle\locust_01\overburnAttack_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="LightFile" name="effects\projectiles\Beam\chimera_beam\overdrivelight_01" tobone="bone_launchpoint" syncanims="false"/>
+        </anim>
+    </model>
+</visual>

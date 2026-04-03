@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>melee</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>73.1</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <MaxRange>2</MaxRange>
+    </Weapon>
+    <Action>
+        <Name>MeleeAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>melee</Weapon>
+    </Action>
+    <Action>
+        <Name>AmbientLife</Name>
+        <ActionType>AmbientLife</ActionType>
+    </Action>
+</TacticData>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn06\oniobtowerd_01\oniobtowerd_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\electricaldamage_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\electricaldamage_01" tobone="bone_FX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/fire/rollingfireball_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_03" tobone="bone_FX02" syncanims="false"/>
+        </component>
+    </model>
+</visual>

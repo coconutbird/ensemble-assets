@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Flamethrower1</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>40</DamagePerSecond>
+        <WeaponType>Fire</WeaponType>
+        <MaxRange>15</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <AOERadius>3</AOERadius>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>Flamethrower2</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>50</DamagePerSecond>
+        <WeaponType>Fire</WeaponType>
+        <MaxRange>15</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <AOERadius>3</AOERadius>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>Flamethrower3</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>62.5</DamagePerSecond>
+        <WeaponType>Fire</WeaponType>
+        <MaxRange>15</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <AOERadius>3</AOERadius>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>Flamethrower4</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>78.1</DamagePerSecond>
+        <WeaponType>Fire</WeaponType>
+        <MaxRange>15</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <AOERadius>3</AOERadius>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>FlashBang</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>20</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_flashGrenade_01</Projectile>
+        <MaxRange>35</MaxRange>
+        <Accuracy>0.3</Accuracy>
+        <MaxDeviation>4</MaxDeviation>
+        <MovingAccuracy>0.15</MovingAccuracy>
+        <MovingMaxDeviation>6</MovingMaxDeviation>
+        <AOERadius>4</AOERadius>
+    </Weapon>
+    <Weapon>
+        <Name>InCoverFlashBang</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>20</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_flashGrenade_01</Projectile>
+        <MaxRange>15</MaxRange>
+        <Accuracy>0.3</Accuracy>
+        <MaxDeviation>4</MaxDeviation>
+        <MovingAccuracy>0.15</MovingAccuracy>
+        <MovingMaxDeviation>6</MovingMaxDeviation>
+        <AOERadius>4</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>FlamethrowerAttackAction1</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Flamethrower1</Weapon>
+    </Action>
+    <Action>
+        <Name>FlamethrowerAttackAction2</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Flamethrower2</Weapon>
+    </Action>
+    <Action>
+        <Name>FlamethrowerAttackAction3</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Flamethrower3</Weapon>
+    </Action>
+    <Action>
+        <Name>FlamethrowerAttackAction4</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Flamethrower4</Weapon>
+    </Action>
+    <Action>
+        <Name>FlashBangAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>FlashBang</Weapon>
+    </Action>
+    <Action>
+        <Name>InCoverFlashBangAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>InCoverFlashBang</Weapon>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

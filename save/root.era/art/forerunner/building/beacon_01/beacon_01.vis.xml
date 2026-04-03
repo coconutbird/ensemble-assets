@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>forerunner\building\beacon_01\beacon_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\for\beacon_02" tobone="bone_fx01" syncanims="false"/>
+            <attach type="LightFile" name="forerunner\building\beacon_02\beacon_light_01" tobone="bone_fx01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

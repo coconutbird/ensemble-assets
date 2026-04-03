@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>hook\building\wall_02\wall_02</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Lockdown">
+        <component>
+            <asset type="Model">
+                <file>hook\building\wall_02\wall_02</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\Cov\shieldwall\shieldwallTower_02" tobone="Bone_FX03" syncanims="false"/>
+        </anim>
+    </model>
+</visual>

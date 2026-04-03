@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn02\shieldpower_01\shieldpower_01</file>
+                <damagefile>campaign\scn02\shieldpower_01\shieldpower_01</damagefile>
+            </asset>
+        </component>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\building_death01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

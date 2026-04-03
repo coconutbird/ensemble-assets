@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\shieldexterior\floodpod_01\floodpod_01</file>
+                <damagefile>environment\shieldexterior\floodpod_01\floodpod_01</damagefile>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\shieldworldEXT\floodpod_03" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>environment\shieldexterior\floodpod_01\idle_01</file>
+                <weight>35</weight>
+            </asset>
+            <asset type="Anim">
+                <file>environment\shieldexterior\floodpod_01\idle_02</file>
+                <weight>65</weight>
+            </asset>
+            <asset type="Anim">
+                <file>environment\shieldexterior\floodpod_01\idle_03</file>
+                <weight>90</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\shieldexterior\floodpod_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

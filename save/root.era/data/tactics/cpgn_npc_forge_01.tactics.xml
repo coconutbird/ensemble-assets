@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Shotgun</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>250</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_shotgun_01</Projectile>
+        <MaxRange>50</MaxRange>
+        <Accuracy>1</Accuracy>
+        <MaxDeviation>0</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>0</MovingMaxDeviation>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>SpecialWeapon</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>3000</DamagePerSecond>
+        <WeaponType>AntiInfantry</WeaponType>
+        <Projectile>fx_proj_shotgun_01</Projectile>
+        <MaxRange>25</MaxRange>
+        <AOERadius>6</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>ShotgunAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Shotgun</Weapon>
+    </Action>
+    <Action>
+        <Name>SpecialAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>SpecialWeapon</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>CaptureScn03Console</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>Dodge</Name>
+        <ActionType>Dodge</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+</TacticData>

@@ -12,11 +12,19 @@ assets.workspace = true
 bdt.workspace = true
 bdt-serde.workspace = true
 database.workspace = true
+ddx.workspace = true
 era.workspace = true
 serde.workspace = true
+uax.workspace = true
 ugx.workspace = true
 xmb.workspace = true
+xtd.workspace = true
+xtt.workspace = true
 
 [dev-dependencies]
 dotenvy.workspace = true
 
+
+[[test]]
+name = "hw1"
+path = "tests/hw1/mod.rs"

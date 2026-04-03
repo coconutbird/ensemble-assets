@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>system\marker\highlight_03\highlight_03</file>
+            </asset>
+            <attach type="ParticleFile" name="system\marker\highlight_03\highlight_03" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>system\marker\highlight_03\idle_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>InCoverSniperRifle</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>40</DamagePerSecond>
+        <WeaponType>AntiInfantry</WeaponType>
+        <Projectile>fx_proj_rifle_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>3</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>4.5</MovingMaxDeviation>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="Infantry">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>SniperRifle</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>40</DamagePerSecond>
+        <WeaponType>AntiInfantry</WeaponType>
+        <Projectile>fx_proj_rifle_01</Projectile>
+        <MaxRange>50</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>3</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>4.5</MovingMaxDeviation>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="Infantry">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>InCoverSniperAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>InCoverSniperRifle</Weapon>
+    </Action>
+    <Action>
+        <Name>SniperAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>SniperRifle</Weapon>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>CampaignAction</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+</TacticData>

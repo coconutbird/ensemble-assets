@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\wasteland\deadstump_01\deadstump_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\wasteland\deadstumpgas" tobone="bone_main" syncanims="false"/>
+        </component>
+    </model>
+</visual>

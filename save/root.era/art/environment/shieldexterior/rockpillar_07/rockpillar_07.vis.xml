@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\shieldexterior\rockpillar_07\rockpillar_damaged_07</file>
+                <damagefile>environment\shieldexterior\rockpillar_07\rockpillar_07</damagefile>
+            </asset>
+        </component>
+    </model>
+</visual>

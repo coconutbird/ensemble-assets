@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>hook\building\turretSocketFoundation_01\turretSocketFoundation_01</file>
+            </asset>
+        </component>
+    </model>
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turretSocket_01\turretSocket_01</file>
+            </asset>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocketTrim_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\idleClosed_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

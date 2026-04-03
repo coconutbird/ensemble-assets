@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn11\dockingbridge_01\dockingbridge_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx06" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocket_01" tobone="bone_fx08" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocketSmall_01" tobone="bone_fx09" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocketSmall_01" tobone="bone_fx10" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocketSmall_01" tobone="bone_fx11" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocketSmall_01" tobone="bone_fx12" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocketMedium_01" tobone="bone_fx13" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocketMedium_01" tobone="bone_fx14" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocketMedium_01" tobone="bone_fx15" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgesocketMedium_01" tobone="bone_fx16" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeblips_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn11\dockingbridge_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Research" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn11\dockingbridge_01\research_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn11\dockingbridge_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Bored" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\forebridge_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

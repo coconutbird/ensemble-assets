@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\hoteldestroyed_13\hoteldestroyed_13</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_04" tobone="bone_VFXsmoke01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/fire/rollingfireball_01" tobone="bone_VFXsmoke02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/environment/harvest/wreckageFX_03" tobone="bone_VFXsmoke03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/fire/rollingfireball_01" tobone="bone_VFXsmoke04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_01" tobone="bone_VFXfire01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/environment/harvest/wreckageFX_04" tobone="bone_VFXfire02" syncanims="false"/>
+        </component>
+    </model>
+</visual>

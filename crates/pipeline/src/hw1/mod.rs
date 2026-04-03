@@ -20,10 +20,16 @@
 //! ```
 
 pub mod loader;
+pub mod manifest;
+pub mod resolve;
 pub mod scenario;
 pub mod validate;
 pub mod world;
 
-pub use scenario::ScenarioDescriptor;
+pub use manifest::{AssetManifest, BinaryValidation, VerifyResult};
+pub use resolve::{LoadStats, ObjectAssets, PhysicsChain};
+pub use scenario::{
+    ScenarioData, ScenarioDescriptor, ScenarioObject, ScenarioPlayer, ScenarioPosition,
+};
 pub use validate::{ValidateReport, validate};
 pub use world::World;

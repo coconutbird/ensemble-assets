@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Lockdown">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>hook\bonus\house_01\house_01</file>
+            </asset>
+            <point pointType="Cover" bone="bone_attachpoint01" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint02" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint03" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint04" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>hook\bonus\house_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>hook\bonus\house_01\unpack_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="LightFile" name="hook\building\sniperplatform_01\sniperplatform_light_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\Cov\sniperplatform\gravitylight_01" tobone="Bone FX01" syncanims="false"/>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>hook\bonus\house_01\pack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Lockdown">
+        <component>
+            <asset type="Model">
+                <file>hook\bonus\house_01\house_01</file>
+            </asset>
+            <attach type="LightFile" name="hook\building\sniperplatform_01\sniperplatform_light_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\Cov\sniperplatform\gravitylight_01" tobone="Bone FX01" syncanims="false"/>
+            <point pointType="Cover" bone="bone_attachpoint01" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint02" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint03" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint04" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>hook\bonus\house_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>hook\bonus\house_01\unpack_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="LightFile" name="hook\building\sniperplatform_01\sniperplatform_light_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\Cov\sniperplatform\gravitylight_01" tobone="Bone FX01" syncanims="false"/>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>hook\bonus\house_01\pack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

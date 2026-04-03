@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\ruins_02\ruins_damaged_02</file>
+                <damagefile>environment\arcadia\ruins_02\ruins_02</damagefile>
+            </asset>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\infantry\mark1Suit_01\mark1Suit_01</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+            <point pointType="Impact" bone="Bone Spine02" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone R Upperarm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone L Upperarm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone R Calf" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone L Calf" pointData="Metal"/>
+            <point pointType="Carry" bone="Bone R Finger01" pointData="Metal"/>
+            <point pointType="Pickup" bone="Bone Pelvis" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\jog_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\run_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\UNSC_cyclops_FX" tobone="Bone L Foot" syncanims="false"/>
+            <attach type="TerrainEffect" name="effects\terraineffects\UNSC_cyclops_FX" tobone="Bone R Foot" syncanims="false"/>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\run_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\UNSC_cyclops_FX" tobone="Bone L Foot" syncanims="false"/>
+            <attach type="TerrainEffect" name="effects\terraineffects\UNSC_cyclops_FX" tobone="Bone R Foot" syncanims="false"/>
+        </anim>
+        <anim type="MeleeAttack" exitAction="Transition" tweenTime="10" tweenToAnimation="MeleeAttack">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\meleeAttack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\meleeAttack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\meleeAttack_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\meleeAttack_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\meleeAttack_05</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\meleeAttack_06</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="Bone Mark1" syncanims="false"/>
+        </anim>
+        <anim type="Build" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_MarkIMarine_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_01A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_03A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_04A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_05A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_06A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_09A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_10A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_11A</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ClamShell" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\clamshell_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\pelicanDeploy_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison2" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\pelicanDeploy_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Transition" tweenTime="2" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Heal" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\repair_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PickUpItem" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\meleeAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="RipOffPart" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\meleeAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_SpartanCyclops_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanCyclops_Victim_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanCyclops_Victim_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanCyclops_Victim_07</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanCyclops_Victim_10</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\heal_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="Bone Mark1" syncanims="false"/>
+        </anim>
+        <anim type="BuildingAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="BuildingAttack">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\building_attack_01</file>
+                <weight>25</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\building_attack_02</file>
+                <weight>25</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\building_attack_04</file>
+                <weight>25</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_MarkIBrute_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_01A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_03A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_04A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_05A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_09A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_10A</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIMarine_11A</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TrainAirlock" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\trainAirlock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Loaded">
+        <component>
+            <asset type="Model">
+                <file>unsc\infantry\mark1Suit_01\mark1Suit_01</file>
+            </asset>
+            <point pointType="Impact" bone="Bone Spine02" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone R Upperarm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone L Upperarm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone R Calf" pointData="Metal"/>
+            <point pointType="Impact" bone="Bone L Calf" pointData="Metal"/>
+            <point pointType="Carry" bone="Bone R Finger01" pointData="Metal"/>
+            <point pointType="Pickup" bone="Bone Pelvis" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\IdleLoaded_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\WalkLoaded_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\WalkLoaded_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\WalkLoaded_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Build" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ClamShell" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\clamshell_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\pelicanDeploy_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison2" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\pelicanDeploy_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Transition" tweenTime="2" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Heal" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\repair_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Throw" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\throw_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BuildingAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\building_attack_01</file>
+                <weight>25</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\building_attack_02</file>
+                <weight>25</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\building_attack_04</file>
+                <weight>25</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\heal_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="Bone Mark1" syncanims="false"/>
+        </anim>
+    </model>
+</visual>

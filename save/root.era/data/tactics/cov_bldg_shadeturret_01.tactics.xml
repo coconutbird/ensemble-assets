@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>ShadePlasma</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>216</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_shadeplasma_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">5</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>ShadePlasmaAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>ShadePlasma</Weapon>
+    </Action>
+</TacticData>

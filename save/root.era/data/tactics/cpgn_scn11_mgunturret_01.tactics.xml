@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Machinegun</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>150</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_machineGun_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.33</Accuracy>
+        <MaxDeviation>1</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>1.5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>MachinegunAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Machinegun</Weapon>
+    </Action>
+</TacticData>

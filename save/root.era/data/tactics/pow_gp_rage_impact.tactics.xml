@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Rage</Name>
+        <DamagePerSecond>1655</DamagePerSecond>
+        <WeaponType>LeaderPower</WeaponType>
+        <Projectile>pow_gp_rage_impact</Projectile>
+        <AOERadius>10</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>RageAttackAction</Name>
+        <Weapon>Rage</Weapon>
+        <Default>true</Default>
+    </Action>
+    <Action>
+        <Name>RageShockwaveAction</Name>
+        <Weapon>RageShockwave</Weapon>
+    </Action>
+</TacticData>

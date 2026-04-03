@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\shieldexterior\FldReleaseDoorB_01\FldReleaseDoorB_01</file>
+            </asset>
+            <attach type="ModelRef" name="DoorBmouth" tobone="bone_attachpoint" frombone="bone_mastermouth" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\shieldexterior\FldReleaseDoorB_01\FldReleaseDoorB_idle</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Incoming" exitAction="Transition" tweenTime="0" tweenToAnimation="OpenIdle">
+            <asset type="Anim">
+                <file>environment\shieldexterior\FldReleaseDoorB_01\FldReleaseDoorB_idle</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="OpenIdle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\shieldexterior\FldReleaseDoorB_01\FldReleaseDoorB_idle</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Outgoing" exitAction="Transition" tweenTime="0" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>environment\shieldexterior\FldReleaseDoorB_01\FldReleaseDoorB_idle</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

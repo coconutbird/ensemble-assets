@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\shieldexterior\forerunnervent_01\forerunnervent_01</file>
+            </asset>
+            <attach type="ModelFile" name="environment\shieldexterior\forerunnervent_01\building" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\shieldinterior\forerunnervent_01\idleA_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

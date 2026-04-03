@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>creep\rebel\watchtower_01\watchtower_damaged_01</file>
+                <damagefile>creep\rebel\watchtower_01\watchtower_01</damagefile>
+            </asset>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocket_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocketTrim_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

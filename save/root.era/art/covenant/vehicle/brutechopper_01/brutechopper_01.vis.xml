@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\bruteChopper_01\brutechopper_01</file>
+                <damagefile>covenant\vehicle\bruteChopper_01\brutechopper_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Gyro" tobone="BoneGyro" frombone="BoneGyro" syncanims="true"/>
+            <attach type="ModelRef" name="RamUpgrade" tobone="BoneGyro" frombone="Bone Gyro" syncanims="false"/>
+            <attach type="ModelRef" name="StabilizersUpgrade" tobone="BoneChopper" frombone="Bone Chopper" syncanims="false"/>
+            <attach type="ModelRef" name="StabilizersFxUpgrade" tobone="BoneChopper" frombone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\vehicle\bruteChopper_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10" tweenToAnimation="Walk">
+            <asset type="Anim">
+                <file>covenant\vehicle\bruteChopper_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\warthog_tail" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="TerrainEffect" name="effects\terraineffects\warthog_tiredirt" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="MachinegunAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\bruteChopper_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\bruteChopper_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>covenant\vehicle\bruteChopper_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="BoneChopper" syncanims="false"/>
+        </anim>
+        <anim type="SpartanChopperJack" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_chopper_jack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_chopper_jack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Freeze" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\vehicle\bruteChopper_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\bruteChopper_01\gun_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="cov_bruteChopper_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\vehicle\bruteChopper_01\gun_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_bruteChopper_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\vehicle\bruteChopper_01\gun_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_bruteChopper_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\vehicle\bruteChopper_01\gun_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="MachinegunAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\bruteChopper_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Gyro">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\bruteChopper_01\brutechopper_gyro_01</file>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="BoneGun01" frombone="BoneGun01" syncanims="true"/>
+            <attach type="ModelFile" name="covenant\vehicle\bruteChopper_01\wheel_01" tobone="Bone Wheel01" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelFile" name="covenant\vehicle\bruteChopper_01\wheel_01" tobone="Bone Wheel02" frombone="GrannyRootBone" syncanims="false"/>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="RamUpgrade">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\bruteChopper_01\ramUpgrade_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="cov_bruteChopper_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\vehicle\bruteChopper_01\ramUpgrade_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_bruteChopper_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_bruteChopper_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="StabilizersUpgrade">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\bruteChopper_01\stabalizerUpgrade_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="cov_bruteChopper_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\vehicle\bruteChopper_01\stabalizerUpgrade_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_bruteChopper_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\vehicle\bruteChopper_01\stabalizerUpgrade_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_bruteChopper_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="StabilizersFxUpgrade">
+        <component>
+            <asset type="Model">
+                <file>unsc\infantry\marine_01\nothing_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="cov_bruteChopper_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_bruteChopper_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_bruteChopper_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+</visual>

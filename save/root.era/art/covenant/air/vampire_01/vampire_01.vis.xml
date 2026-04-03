@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\air\vampire_01\vampire_damaged_01</file>
+                <damagefile>covenant\air\vampire_01\vampire_01</damagefile>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\contrail_01" tobone="bone_fx" syncanims="false"/>
+            <attach type="ModelRef" name="NeedlerTurret" tobone="BoneTurret" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="PlasmaTurretLeft" tobone="BoneLGun" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="PlasmaTurretRight" tobone="BoneRGun" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="StasisBeam" tobone="bone_stasisbeam" syncanims="true"/>
+            <point pointType="Board" bone="BoneVampire" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="15" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="PlasmaCannonRightAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PlasmaCannonLeftAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HeavyNeedlerAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="StasisAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\vampire\stasismuzzle_01" tobone="bone_stasisbeam" syncanims="false"/>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpartanVampireJack" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_vampire_hijack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="NeedlerTurret">
+        <component>
+            <asset type="Model">
+                <file>covenant\air\vampire_01\needlerTurret_01</file>
+            </asset>
+        </component>
+        <anim type="HeavyNeedlerAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\HeavyNeedlerAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="PlasmaTurretRight">
+        <component>
+            <asset type="Model">
+                <file>covenant\air\vampire_01\plasmaTurret_01</file>
+            </asset>
+        </component>
+        <anim type="PlasmaCannonRightAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="PlasmaTurretLeft">
+        <component>
+            <asset type="Model">
+                <file>covenant\air\vampire_01\plasmaTurret_01</file>
+            </asset>
+        </component>
+        <anim type="PlasmaCannonLeftAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="StasisBeam">
+        <component>
+            <asset type="Model">
+                <file>effects\fx_dummy</file>
+            </asset>
+        </component>
+        <anim type="StasisAttack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\vampire_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Artillery</Name>
+        <DamagePerSecond>0</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>unsc_air_odstPod_01</Projectile>
+        <MaxRange>150</MaxRange>
+        <Accuracy>0</Accuracy>
+        <MaxDeviation>18</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>18</MovingMaxDeviation>
+        <AOERadius>8</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>GenericInfoAttackAction</Name>
+        <Weapon>Artillery</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

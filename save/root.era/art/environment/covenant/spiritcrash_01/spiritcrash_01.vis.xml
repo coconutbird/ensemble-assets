@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\covenant\spiritcrash_01\spiritcrash_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects/environment/harvest/covplasmawreckage_03" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/environment/harvest/covplasmawreckage_02" tobone="bone_FX04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\covplasmawreckage_01" tobone="bone_FX05" syncanims="false"/>
+        </component>
+    </model>
+</visual>

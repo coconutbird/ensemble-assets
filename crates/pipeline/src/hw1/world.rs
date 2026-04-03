@@ -3,129 +3,23 @@
 //! [`World`] is the top-level struct that proves end-to-end asset loading:
 //! database, per-object visuals/tactics/physics, scenario metadata, and a
 //! manifest of all referenced binary assets.
+//!
+//! Types and helpers are split across sibling modules:
+//! - [`super::manifest`] — `AssetManifest`, `BinaryValidation`, collection helpers
+//! - [`super::resolve`] — `ObjectAssets`, `PhysicsChain`, `LoadStats`, chain resolution
 
-use std::collections::{BTreeSet, HashMap};
-
-use assets::AssetResolver;
+use std::collections::HashMap;
 
 use crate::source::AssetSource;
 
 use super::loader;
-use super::scenario::{ScenarioDescriptor, ScenarioList};
-
-// ── Resolved asset types ────────────────────────────────────────────────
-
-/// A fully resolved physics chain for a single object.
-#[derive(Debug, Clone, Default)]
-pub struct PhysicsChain {
-    /// The parsed `.physics.xmb` data.
-    pub physics: database::hw1::Physics,
-    /// The parsed `.blueprint.xmb` data (if the physics references one).
-    pub blueprint: Option<database::hw1::Blueprint>,
-    /// The parsed `.shp.xmb` data (if the blueprint references one).
-    pub shape: Option<database::hw1::Shape>,
-}
-
-/// All file paths associated with a single proto-object.
-///
-/// Built eagerly during [`World::load`] by walking the visual, tactics,
-/// and physics chains. Lets you answer "give me everything related to
-/// the Gorgon" without touching the archives again.
-#[derive(Debug, Clone, Default)]
-pub struct ObjectAssets {
-    /// Object name (same key as the `HashMap`).
-    pub name: String,
-    /// Object class from the database (e.g. `"Unit"`, `"Building"`, `"Projectile"`).
-    pub object_class: Option<String>,
-    /// Object type tags (e.g. `["Military", "CovVehicle"]`).
-    pub object_types: Vec<String>,
-    /// Path to the `.vis` / `.vis.xmb` file (e.g. `art\covenant\vehicle\gorgon_01\gorgon_01.vis`).
-    pub visual: Option<String>,
-    /// Path to the `.tactics` / `.tactics.xmb` file.
-    pub tactics: Option<String>,
-    /// Path to the `.physics` / `.physics.xmb` file.
-    pub physics: Option<String>,
-    /// Path to the `.blueprint` / `.blueprint.xmb` file.
-    pub blueprint: Option<String>,
-    /// Path to the `.shp` / `.shp.xmb` file.
-    pub shape: Option<String>,
-    /// Model files (.ugx) referenced by the visual.
-    pub models: Vec<String>,
-    /// Animation files (.uax) referenced by the visual.
-    pub anims: Vec<String>,
-    /// Damage model files (.ugx) referenced by the visual.
-    pub damage_models: Vec<String>,
-}
-
-/// Manifest of all binary asset references discovered during resolution.
-///
-/// This is a passive inventory of every `.ugx`, `.uax`, etc. path
-/// referenced by the resolved visual chains. It does **not** verify
-/// whether those files actually exist in the loaded archives — call
-/// [`AssetManifest::verify`] for that.
-#[derive(Debug, Clone, Default)]
-pub struct AssetManifest {
-    /// Unique model file paths (.ugx) referenced by visuals.
-    pub model_refs: BTreeSet<String>,
-    /// Unique animation file paths (.uax) referenced by visuals.
-    pub anim_refs: BTreeSet<String>,
-    /// Unique damage model file paths (.ugx) referenced by visuals.
-    pub damage_model_refs: BTreeSet<String>,
-}
-
-/// Result of verifying binary asset references against loaded archives.
-#[derive(Debug, Clone, Default)]
-pub struct VerifyResult {
-    pub models_found: usize,
-    pub models_missing: Vec<String>,
-    pub anims_found: usize,
-    pub anims_missing: Vec<String>,
-}
-
-impl AssetManifest {
-    /// Check which referenced binary assets actually exist in `src`.
-    ///
-    /// This is cheap — just index lookups, no decompression.
-    /// Run it after loading whatever ERAs are relevant (e.g. a scenario ERA)
-    /// to see what's present vs genuinely missing.
-    pub fn verify(&self, src: &AssetSource<impl assets::FileProvider>) -> VerifyResult {
-        let mut result = VerifyResult::default();
-        for path in &self.model_refs {
-            if src.exists(path) {
-                result.models_found += 1;
-            } else {
-                result.models_missing.push(path.clone());
-            }
-        }
-
-        for path in &self.anim_refs {
-            if src.exists(path) {
-                result.anims_found += 1;
-            } else {
-                result.anims_missing.push(path.clone());
-            }
-        }
-
-        result
-    }
-}
-
-/// Statistics from the world loading process.
-#[derive(Debug, Clone, Default)]
-pub struct LoadStats {
-    pub objects_total: usize,
-    pub objects_with_visual: usize,
-    pub objects_with_tactics: usize,
-    pub objects_with_physics: usize,
-    pub visuals_resolved: usize,
-    pub visuals_failed: Vec<String>,
-    pub tactics_resolved: usize,
-    pub tactics_failed: Vec<String>,
-    pub physics_resolved: usize,
-    pub physics_failed: Vec<String>,
-    pub blueprints_resolved: usize,
-    pub shapes_resolved: usize,
-}
+use super::manifest::{
+    AssetManifest, BinaryValidation, collect_object_visual_assets, collect_scenario_assets_into,
+    collect_visual_assets, discover_textures, parse_preload_list, resolve_scenario,
+    resolve_textures_for,
+};
+use super::resolve::{LoadStats, ObjectAssets, PhysicsChain, resolve_physics_chain};
+use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList};
 
 // ── World ───────────────────────────────────────────────────────────────
 
@@ -134,6 +28,10 @@ pub struct LoadStats {
 /// Contains the complete database, all resolved per-object assets, scenario
 /// metadata, and a manifest of binary asset references. This struct proves
 /// end-to-end that we can load and parse all game assets from ERA archives.
+///
+/// When loaded with a scenario, the scenario's SCN file is automatically
+/// parsed and its assets are collected into the manifest. You don't need
+/// to call `collect_scenario_assets` manually.
 pub struct World {
     /// The full game database (objects, squads, techs, etc.).
     pub database: database::hw1::Database,
@@ -150,6 +48,12 @@ pub struct World {
     pub physics: HashMap<String, PhysicsChain>,
     /// Scenario descriptor (if a scenario was loaded).
     pub scenario: Option<ScenarioDescriptor>,
+    /// Parsed scenario data from the `.scn` file (if a scenario was loaded).
+    ///
+    /// Contains all placed objects, player definitions, terrain references,
+    /// cinematics, talking heads, sound banks, etc. Populated automatically
+    /// during [`World::load`] when a scenario is specified.
+    pub scenario_data: Option<ScenarioData>,
     /// All available scenario descriptors.
     pub scenario_list: ScenarioList,
     /// Manifest of all binary asset references (global, not per-object).
@@ -166,25 +70,36 @@ impl World {
     /// 2. Optionally layers a scenario ERA on top
     /// 3. Loads the full game database (objects, squads, techs, etc.)
     /// 4. Resolves all per-object asset chains (visuals, tactics, physics)
-    /// 5. Verifies binary assets (models, animations) exist
-    /// 6. Loads scenario descriptors
+    /// 5. Eagerly discovers texture references from UGX material chunks
+    /// 6. If a scenario is loaded: parses the `.scn`, collects all scenario
+    ///    assets (terrain, lightsets, cinematics, etc.) into the manifest
     ///
     /// # Arguments
     /// * `game_dir` — path to the HW1 game directory containing ERA files
-    /// * `scenario_era` — optional scenario ERA filename (e.g. `"PHXscn01.era"`)
-    pub fn load(game_dir: &str, scenario_era: Option<&str>) -> crate::Result<Self> {
-        let mut src = match scenario_era {
-            Some(era) => loader::load_with_scenario(game_dir, era),
-            None => loader::load_game_dir(game_dir),
-        };
+    /// * `scenario` — optional scenario identifier. Accepts:
+    ///   - ERA filename: `"PHXscn01.era"`, `"blood_gulch.era"`
+    ///   - Map name: `"blood_gulch"`, `"PHXscn01"`
+    ///   - SCN path: `"skirmish\\design\\blood_gulch\\blood_gulch.scn"`
+    pub fn load(game_dir: &str, scenario: Option<&str>) -> crate::Result<Self> {
+        let mut src = loader::load_game_dir(game_dir);
+
+        // Resolve and load the scenario ERA if requested.
+        if let Some(scen) = scenario {
+            if let Some(era_name) = loader::find_scenario_era(game_dir, scen) {
+                loader::load_scenario_era(&mut src, game_dir, &era_name);
+            } else {
+                eprintln!("  WARN  could not find scenario ERA for '{scen}'");
+            }
+        }
 
         Self::load_from_source(&mut src)
     }
 
     /// Load a complete HW1 world from a pre-configured [`AssetSource`].
     ///
-    /// Use this when you need custom ERA loading (e.g. explicit ERA list
-    /// instead of the standard game directory layout).
+    /// If a scenario ERA has been loaded into `src`, this will automatically
+    /// find the matching scenario descriptor, parse the `.scn` file, and
+    /// collect all scenario-level asset references into the manifest.
     pub fn load_from_source(
         src: &mut AssetSource<impl assets::FileProvider>,
     ) -> crate::Result<Self> {
@@ -270,7 +185,6 @@ impl World {
                                 ..Default::default()
                             };
                             resolve_physics_chain(src, &mut chain, &mut stats);
-                            // Record blueprint/shape paths
                             if let Some(bp) = &chain.blueprint {
                                 if let Some(bp_ref) = &chain.physics.blueprint {
                                     obj_assets.blueprint =
@@ -292,13 +206,26 @@ impl World {
             assets_map.insert(obj.name.clone(), obj_assets);
         }
 
+        // 4. Parse preload lists from scenario ERAs
+        parse_preload_list(src, "visFileList.txt", &mut manifest.preload_vis_refs);
+        parse_preload_list(src, "pfxFileList.txt", &mut manifest.preload_pfx_refs);
+        parse_preload_list(src, "tfxFileList.txt", &mut manifest.preload_tfx_refs);
+
+        // 5. Eagerly discover texture references from UGX material chunks
+        discover_textures(src, &manifest.model_refs, &mut manifest.texture_refs);
+        discover_textures(src, &manifest.damage_model_refs, &mut manifest.texture_refs);
+
+        // 6. Auto-detect and load scenario from the SCN file
+        let (scenario, scenario_data) = resolve_scenario(src, &scenario_list, &mut manifest);
+
         Ok(World {
             database,
             assets: assets_map,
             visuals,
             tactics,
             physics,
-            scenario: None,
+            scenario,
+            scenario_data,
             scenario_list,
             manifest,
             stats,
@@ -351,19 +278,73 @@ impl World {
         println!();
         println!("Binary Asset References:");
         println!(
-            "  Model refs:  {} unique .ugx",
+            "  Model refs:   {} unique .ugx",
             self.manifest.model_refs.len()
         );
         println!(
-            "  Anim refs:   {} unique .uax",
+            "  Anim refs:    {} unique .uax",
             self.manifest.anim_refs.len()
         );
-        println!("  Damage refs: {}", self.manifest.damage_model_refs.len());
+        println!("  Damage refs:  {}", self.manifest.damage_model_refs.len());
+        println!(
+            "  Texture refs: {} unique .ddx",
+            self.manifest.texture_refs.len()
+        );
+        println!();
+        println!("Preload Lists:");
+        println!(
+            "  VIS preload:  {} entries",
+            self.manifest.preload_vis_refs.len()
+        );
+        println!(
+            "  TFX preload:  {} entries",
+            self.manifest.preload_tfx_refs.len()
+        );
+        println!(
+            "  PFX preload:  {} entries",
+            self.manifest.preload_pfx_refs.len()
+        );
+        println!();
+        println!("Scenario Refs:");
+        println!("  Lightsets:    {} refs", self.manifest.lightset_refs.len());
+        println!(
+            "  Cinematics:   {} refs",
+            self.manifest.cinematic_refs.len()
+        );
+        println!(
+            "  Talking Heads:{} refs",
+            self.manifest.talking_head_refs.len()
+        );
+        println!("  Terrain:      {} refs", self.manifest.terrain_refs.len());
+        println!(
+            "  Sound Banks:  {} refs",
+            self.manifest.sound_bank_refs.len()
+        );
+        if let Some(sky) = &self.manifest.sky_ref {
+            println!("  Sky:          {sky}");
+        }
+        if let Some(env) = &self.manifest.terrain_env_ref {
+            println!("  TerrainEnv:   {env}");
+        }
+        if let Some(mm) = &self.manifest.minimap_ref {
+            println!("  Minimap:      {mm}");
+        }
         println!();
         println!(
             "Scenarios:     {} descriptors",
             self.scenario_list.scenarios.len()
         );
+        if let Some(desc) = &self.scenario {
+            println!("Active:        {}", desc.name());
+        }
+        if let Some(scn) = &self.scenario_data {
+            println!(
+                "  SCN objects:  {} placed, {} players, {} positions",
+                scn.objects.len(),
+                scn.players.len(),
+                scn.positions.len()
+            );
+        }
     }
 
     // ── Asset queries ───────────────────────────────────────────────────
@@ -401,6 +382,46 @@ impl World {
             .collect()
     }
 
+    // ── Terrain (lazy) ──────────────────────────────────────────────────
+
+    /// Read and parse the XTD (terrain displacement/heightmap) file for a
+    /// scenario.
+    ///
+    /// This is intentionally **lazy** — terrain data is large and only
+    /// needed when the consumer actually wants heightmaps, lighting, or
+    /// tessellation data. The path is derived from the scenario's `.scn`
+    /// path following the engine's `BTerrainIOLoader::loadXTDInternal`
+    /// logic.
+    ///
+    /// Pass either `self.scenario` or any entry from `self.scenario_list`.
+    pub fn read_terrain_data(
+        &self,
+        scenario: &ScenarioDescriptor,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Option<xtd::XtdFile> {
+        let path = scenario.xtd_path()?;
+        let data = src.resolve_exact(&path)?;
+        xtd::Reader::read(&data).ok()
+    }
+
+    /// Read and parse the XTT (terrain textures/foliage/roads) file for a
+    /// scenario.
+    ///
+    /// This is intentionally **lazy** — terrain texture data is large and
+    /// only needed when the consumer actually wants albedo atlases, foliage
+    /// geometry, or road data. The path is derived from the scenario's
+    /// `.scn` path following the engine's `BTerrainIOLoader::loadXTTInternal`
+    /// logic.
+    pub fn read_terrain_textures(
+        &self,
+        scenario: &ScenarioDescriptor,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Option<xtt::XttFile> {
+        let path = scenario.xtt_path()?;
+        let data = src.resolve_exact(&path)?;
+        xtt::Reader::read(&data).ok()
+    }
+
     /// Resolve texture paths for an object by reading its UGX model materials.
     ///
     /// This is intentionally **lazy** — it decompresses and parses only the
@@ -433,210 +454,173 @@ impl World {
     ) -> Vec<String> {
         resolve_textures_for(obj, src)
     }
-}
 
-impl ObjectAssets {
-    /// All file paths referenced by this object, in no particular order.
-    pub fn all_files(&self) -> Vec<&str> {
-        let mut files = Vec::new();
-        if let Some(v) = &self.visual {
-            files.push(v.as_str());
-        }
+    // ── Validation ──────────────────────────────────────────────────────
 
-        if let Some(t) = &self.tactics {
-            files.push(t.as_str());
-        }
+    /// Validate that all referenced binary assets can be found and parsed.
+    ///
+    /// This goes beyond [`AssetManifest::verify`] — it actually decompresses
+    /// and parses each `.ugx`, `.uax`, and `.ddx` file referenced by the
+    /// manifest. Returns counts and lists of files that failed to parse.
+    pub fn validate_binary_assets(
+        &self,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> BinaryValidation {
+        let mut result = BinaryValidation::default();
 
-        if let Some(p) = &self.physics {
-            files.push(p.as_str());
-        }
-
-        if let Some(b) = &self.blueprint {
-            files.push(b.as_str());
-        }
-
-        if let Some(s) = &self.shape {
-            files.push(s.as_str());
-        }
-
-        for m in &self.models {
-            files.push(m.as_str());
-        }
-
-        for a in &self.anims {
-            files.push(a.as_str());
-        }
-
-        for d in &self.damage_models {
-            files.push(d.as_str());
-        }
-
-        files
-    }
-}
-
-// ── Helper functions ────────────────────────────────────────────────────
-
-/// Resolve the blueprint → shape chain from a physics entry.
-fn resolve_physics_chain(
-    src: &mut AssetSource<impl assets::FileProvider>,
-    chain: &mut PhysicsChain,
-    stats: &mut LoadStats,
-) {
-    if let Some(bp_ref) = &chain.physics.blueprint {
-        let bp_base = format!("physics\\{}.blueprint", bp_ref);
-        if let Some(bp_doc) = src.read_xmb(&bp_base) {
-            if let Ok(bp) = database::hw1::physics::parse_blueprint(&bp_doc) {
-                stats.blueprints_resolved += 1;
-
-                // Shape chain
-                if let Some(shp_ref) = &bp.shape {
-                    let shp_base = format!("physics\\{}.shp", shp_ref);
-                    if let Some(shp_doc) = src.read_xmb(&shp_base) {
-                        if let Ok(shp) = database::hw1::physics::parse_shape(&shp_doc) {
-                            stats.shapes_resolved += 1;
-                            chain.shape = Some(shp);
-                        }
-                    }
-                }
-
-                chain.blueprint = Some(bp);
-            }
-        }
-    }
-}
-
-/// Collect all model/anim asset references from a parsed visual.
-fn collect_visual_assets(vis: &database::hw1::Visual, manifest: &mut AssetManifest) {
-    for model in &vis.models {
-        if let Some(comp) = &model.component {
-            for asset in &comp.assets {
-                register_asset(asset, manifest);
-            }
-
-            if let Some(logic) = &comp.logic {
-                for entry in &logic.entries {
-                    if let Some(asset) = &entry.asset {
-                        register_asset(asset, manifest);
-                    }
-                }
+        // Validate models (including damage models)
+        let all_models = self
+            .manifest
+            .model_refs
+            .iter()
+            .chain(self.manifest.damage_model_refs.iter());
+        for path in all_models {
+            match src.resolve_exact(path) {
+                Some(data) => match ugx::UgxGeom::from_bytes(&data) {
+                    Ok(_) => result.models_ok += 1,
+                    Err(e) => result.models_failed.push(format!("{path}: {e}")),
+                },
+                None => result.models_missing.push(path.clone()),
             }
         }
 
-        for anim in &model.anims {
-            for asset in &anim.assets {
-                register_asset(asset, manifest);
+        for path in &self.manifest.anim_refs {
+            match src.resolve_exact(path) {
+                Some(data) => match uax::UaxFile::from_bytes(&data) {
+                    Ok(_) => result.anims_ok += 1,
+                    Err(e) => result.anims_failed.push(format!("{path}: {e}")),
+                },
+                None => result.anims_missing.push(path.clone()),
             }
         }
-    }
-}
 
-/// Register a single asset reference in the manifest.
-fn register_asset(asset: &database::hw1::visual::Asset, manifest: &mut AssetManifest) {
-    if let Some(file) = &asset.file {
-        let normalized = file.replace('/', "\\");
-        match asset.asset_type.as_str() {
-            "Model" => {
-                manifest.model_refs.insert(format!("art\\{normalized}.ugx"));
+        for path in &self.manifest.texture_refs {
+            match src.resolve_exact(path) {
+                Some(data) => match ddx::DdxTexture::from_bytes(&data) {
+                    Ok(_) => result.textures_ok += 1,
+                    Err(e) => result.textures_failed.push(format!("{path}: {e}")),
+                },
+                None => result.textures_missing.push(path.clone()),
             }
-            "Anim" => {
-                manifest.anim_refs.insert(format!("art\\{normalized}.uax"));
-            }
-            _ => {}
         }
+
+        result
     }
 
-    if let Some(dmg) = &asset.damage_file {
-        manifest
-            .damage_model_refs
-            .insert(format!("art\\{}.ugx", dmg.replace('/', "\\")));
+    // ── Scenario (lazy) ────────────────────────────────────────────────
+
+    /// Read and parse the `.scn` file for a scenario descriptor.
+    ///
+    /// Returns the parsed scene data including all placed objects, players,
+    /// positions, cinematics, etc. This is lazy — the `.scn` XMB is only
+    /// decompressed and parsed on demand.
+    pub fn read_scenario(
+        &self,
+        scenario: &ScenarioDescriptor,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Option<ScenarioData> {
+        scenario.read_scenario(src)
     }
-}
 
-/// Collect model/anim/damage paths from a visual into a per-object bundle.
-fn collect_object_visual_assets(vis: &database::hw1::Visual, obj: &mut ObjectAssets) {
-    for model in &vis.models {
-        if let Some(comp) = &model.component {
-            for asset in &comp.assets {
-                register_object_asset(asset, obj);
-            }
-
-            if let Some(logic) = &comp.logic {
-                for entry in &logic.entries {
-                    if let Some(asset) = &entry.asset {
-                        register_object_asset(asset, obj);
-                    }
-                }
-            }
-        }
-
-        for anim in &model.anims {
-            for asset in &anim.assets {
-                register_object_asset(asset, obj);
-            }
-        }
+    /// Collect all asset references from a parsed scenario into the manifest.
+    ///
+    /// **Note:** When using [`World::load`] with a scenario, this is called
+    /// automatically. You only need to call this manually if you're loading
+    /// additional scenarios or using `load_from_source` without a scenario ERA.
+    pub fn collect_scenario_assets(&mut self, scenario: &ScenarioDescriptor, scn: &ScenarioData) {
+        collect_scenario_assets_into(scenario, scn, &mut self.manifest);
     }
-}
 
-/// Register a single asset reference in a per-object bundle.
-fn register_object_asset(asset: &database::hw1::visual::Asset, obj: &mut ObjectAssets) {
-    if let Some(file) = &asset.file {
-        let normalized = file.replace('/', "\\");
-        match asset.asset_type.as_str() {
-            "Model" => obj.models.push(format!("art\\{normalized}.ugx")),
-            "Anim" => obj.anims.push(format!("art\\{normalized}.uax")),
-            _ => {}
-        }
+    // ── Models (lazy) ──────────────────────────────────────────────────
+
+    /// Read and parse a full UGX model file (geometry, bones, materials).
+    ///
+    /// This is lazy — the full UGX is only decompressed and parsed on
+    /// demand. The path should be an `art\...\.ugx` path as stored in
+    /// [`ObjectAssets::models`] or [`AssetManifest::model_refs`].
+    pub fn read_model(
+        &self,
+        path: &str,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Option<ugx::UgxGeom> {
+        let data = src.resolve_exact(path)?;
+        ugx::UgxGeom::from_bytes(&data).ok()
     }
-    if let Some(dmg) = &asset.damage_file {
-        obj.damage_models
-            .push(format!("art\\{}.ugx", dmg.replace('/', "\\")));
-    }
-}
 
-/// Read UGX materials for all models in an object and return the
-/// deduplicated, sorted list of texture paths they reference.
-///
-/// Only decompresses the material chunk (0x704) of each UGX — geometry,
-/// vertex buffers, and index buffers are never touched.
-fn resolve_textures_for(
-    obj: &ObjectAssets,
-    src: &mut AssetSource<impl assets::FileProvider>,
-) -> Vec<String> {
-    let mut textures = BTreeSet::new();
-
-    // Collect all UGX paths (models + damage models).
-    let ugx_paths: Vec<&str> = obj
-        .models
-        .iter()
-        .chain(obj.damage_models.iter())
-        .map(|s| s.as_str())
-        .collect();
-
-    for ugx_path in ugx_paths {
-        let data = match src.resolve_exact(ugx_path) {
-            Some(d) => d,
-            None => continue,
+    /// Read and parse all models for a named object.
+    ///
+    /// Returns a vec of `(path, UgxGeom)` pairs for every model that
+    /// successfully parses. Skips missing or corrupt files silently.
+    pub fn read_object_models(
+        &self,
+        name: &str,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Vec<(String, ugx::UgxGeom)> {
+        let obj = match self.assets.get(name) {
+            Some(o) => o,
+            None => return Vec::new(),
         };
-        let materials = match ugx::read_materials(&data) {
-            Ok(m) => m,
-            Err(_) => continue,
-        };
-        for mat in &materials {
-            for maps in &mat.maps {
-                for map in maps {
-                    if !map.name.is_empty() {
-                        // Texture names in UGX are absolute from the art root,
-                        // e.g. `\unsc\vehicle\warthog_01\warthog_01_df`.
-                        // Strip leading separators and prepend `art\`.
-                        let tex_name = map.name.trim_start_matches(['\\', '/']);
-                        let tex_name = tex_name.replace('/', "\\");
-                        textures.insert(format!("art\\{tex_name}.ddx"));
-                    }
-                }
-            }
-        }
+        obj.models
+            .iter()
+            .filter_map(|path| {
+                let data = src.resolve_exact(path)?;
+                let geom = ugx::UgxGeom::from_bytes(&data).ok()?;
+                Some((path.clone(), geom))
+            })
+            .collect()
     }
 
-    textures.into_iter().collect()
+    // ── Animations (lazy) ──────────────────────────────────────────────
+
+    /// Read and parse a UAX animation file.
+    ///
+    /// This is lazy — the animation data is only decompressed and parsed
+    /// on demand. The path should be an `art\...\.uax` path as stored in
+    /// [`ObjectAssets::anims`] or [`AssetManifest::anim_refs`].
+    pub fn read_animation(
+        &self,
+        path: &str,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Option<uax::UaxFile> {
+        let data = src.resolve_exact(path)?;
+        uax::UaxFile::from_bytes(&data).ok()
+    }
+
+    /// Read and parse all animations for a named object.
+    ///
+    /// Returns a vec of `(path, UaxFile)` pairs for every animation
+    /// that successfully parses. Skips missing or corrupt files silently.
+    pub fn read_object_animations(
+        &self,
+        name: &str,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Vec<(String, uax::UaxFile)> {
+        let obj = match self.assets.get(name) {
+            Some(o) => o,
+            None => return Vec::new(),
+        };
+        obj.anims
+            .iter()
+            .filter_map(|path| {
+                let data = src.resolve_exact(path)?;
+                let anim = uax::UaxFile::from_bytes(&data).ok()?;
+                Some((path.clone(), anim))
+            })
+            .collect()
+    }
+
+    // ── Textures (lazy) ────────────────────────────────────────────────
+
+    /// Read and parse a DDX texture file.
+    ///
+    /// This is lazy — the texture is only decompressed and parsed on
+    /// demand. The path should be an `art\...\.ddx` path.
+    pub fn read_texture(
+        &self,
+        path: &str,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Option<ddx::DdxTexture> {
+        let data = src.resolve_exact(path)?;
+        ddx::DdxTexture::from_bytes(&data).ok()
+    }
 }

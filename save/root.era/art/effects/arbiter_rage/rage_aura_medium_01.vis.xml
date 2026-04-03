@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\fx_dummy</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\arbiter_rage\rage_unit_medium_01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

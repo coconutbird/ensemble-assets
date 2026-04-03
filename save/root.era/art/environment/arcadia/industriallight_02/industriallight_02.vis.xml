@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\industriallight_02\industriallight_damaged_02</file>
+                <damagefile>environment\arcadia\industriallight_02\industriallight_02</damagefile>
+            </asset>
+        </component>
+    </model>
+</visual>

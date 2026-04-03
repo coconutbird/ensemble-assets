@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Machinegun</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>136.35</DamagePerSecond>
+        <WeaponType>AASmallArms</WeaponType>
+        <Projectile>fx_proj_machineGun_01</Projectile>
+        <MaxRange>60</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>4</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>6</MovingMaxDeviation>
+        <Hardpoint>MGTurret</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Flying">5</TargetPriority>
+        <TargetPriority type="GroundVehicle">0</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>Cannon</Name>
+        <AttackRate>3</AttackRate>
+        <DamagePerSecond>136.35</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_cannon_01</Projectile>
+        <MaxRange>65</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>7</MaxDeviation>
+        <MovingAccuracy>0.1</MovingAccuracy>
+        <MovingMaxDeviation>10</MovingMaxDeviation>
+        <Hardpoint>CannonTurret</Hardpoint>
+        <AOERadius>8</AOERadius>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Infantry">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>specialAttack</Name>
+        <AttackRate>30</AttackRate>
+        <DamagePerSecond>2000</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_canistershell_01</Projectile>
+        <MaxRange>80</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>7</MaxDeviation>
+        <MovingAccuracy>0.1</MovingAccuracy>
+        <MovingMaxDeviation>10</MovingMaxDeviation>
+        <Hardpoint>CannonTurret</Hardpoint>
+        <AOERadius>12</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>CannonAttackAction</Name>
+        <ActionType>SlaveTurretAttack</ActionType>
+        <Weapon>Cannon</Weapon>
+    </Action>
+    <Action>
+        <Name>MachinegunAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Machinegun</Weapon>
+    </Action>
+    <Action>
+        <Name>specialAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>specialAttack</Weapon>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

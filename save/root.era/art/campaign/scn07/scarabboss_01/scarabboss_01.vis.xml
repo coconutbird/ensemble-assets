@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn07\scarabboss_01\scarabboss_damaged_01</file>
+                <damagefile>campaign\scn07\scarabboss_01\scarabboss_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="BoneTurret" frombone="BoneTurret" syncanims="true"/>
+            <attach type="ModelRef" name="ShadeTurret" tobone="BoneShadeTurret" frombone="Bone Turret" syncanims="true"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\scarabbossconnectors_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\scarabbossconnectors_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\scarabbossconnectors_01" tobone="bone_FX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\scarabbossconnectors_01" tobone="bone_FX04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\scarabbossconnectors_01" tobone="bone_FX05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\scarabbossconnectors_01" tobone="bone_FX06" syncanims="false"/>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_04" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_05" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_06" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_07" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_08" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="8" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="shadeTurretAttack" exitAction="Transition" tweenTime="2" tweenToAnimation="shadeTurretAttack">
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="scarabBeamAttack" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="15">
+            <asset type="Anim">
+                <file>unsc\building\building_death01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Transition" tweenTime="8" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn07\scarabboss_01\scarabboss_turret_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="8" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="shadeTurretAttack" exitAction="Transition" tweenTime="2" tweenToAnimation="shadeTurretAttack">
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="scarabBeamAttack" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Transition" tweenTime="8" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="ShadeTurret">
+        <component>
+            <asset type="Model">
+                <file>campaign\unit\scarabBoss_01\scarab_shadeTurret</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="8" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="shadeTurretAttack" exitAction="Transition" tweenTime="2" tweenToAnimation="shadeTurretAttack">
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>campaign\unit\scarabBoss_01\shadeTurretAttack_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="scarabBeamAttack" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Transition" tweenTime="8" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>campaign\scn07\scarabboss_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

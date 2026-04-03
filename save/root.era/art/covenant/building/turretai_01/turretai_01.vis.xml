@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="built">
+    <model name="built">
+        <component>
+            <asset type="Model">
+                <file>covenant\building\turret_01\turretBase_01</file>
+            </asset>
+            <attach type="ModelRef" name="Socket" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Turret" tobone="BoneTurret" frombone="GrannyRootBone" syncanims="true"/>
+            <logic type="Tech">
+                <logicdata value="cov_turret_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\building\turret_03\turretBase_damaged_03</file>
+                        <damagefile>covenant\building\turret_03\turret_03</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_turret_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\building\turret_02\turretBase_damaged_02</file>
+                        <damagefile>covenant\building\turret_02\turret_02</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>covenant\building\turret_01\turretBase_01</file>
+                        <damagefile>covenant\building\turret_01\turret_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\building\turret_02\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack2" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_02\attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack3" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_03\attack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\building_death01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>covenant\building\turret_01\turret_01</file>
+            </asset>
+            <attach type="ModelRef" name="Gun" tobone="BoneHead" frombone="GrannyRootBone" syncanims="true"/>
+            <logic type="Tech">
+                <logicdata value="cov_turret_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\building\turret_03\turret_03</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_turret_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\building\turret_02\turret_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>covenant\building\turret_01\turret_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\building\turret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack2" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_02\attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack3" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_03\attack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\building_death01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Gun">
+        <component>
+            <asset type="Model">
+                <file>covenant\building\turret_01\turretGun_01</file>
+            </asset>
+            <attach type="ModelRef" name="AddOnGun" tobone="boneAttachpoint01" frombone="GrannyRootBone" syncanims="true"/>
+            <point pointType="Launch" bone="bone_launchpoint" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="cov_turret_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\building\turret_03\turretGun_03</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_turret_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\building\turret_02\turretGun_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>covenant\building\turret_01\turretGun_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack2" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_02\attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack3" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turret_03\attack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\building_death01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Socket">
+        <component>
+            <asset type="Model">
+                <file>covenant\building\turretSocket_01\turretsocket_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\Cov\turret\socketenergy_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+    <model name="AddOnGun">
+        <component>
+            <asset type="Model">
+                <file>covenant\building\turretAI_01\turretAI_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\building\turret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AddOnAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\turretAI_01\AIattack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\building_death01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

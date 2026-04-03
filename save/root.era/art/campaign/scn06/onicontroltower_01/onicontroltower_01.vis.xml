@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn06\onicontroltower_01\onicontroltower_01</file>
+            </asset>
+            <attach type="ModelRef" name="Anders" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5" tweenToAnimation="Research">
+            <asset type="Anim">
+                <file>campaign\npc\anders_01\scn_06_tower_idle</file>
+                <weight>30</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Anders">
+        <component>
+            <asset type="Model">
+                <file>campaign\npc\anders_01\anders_02</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5" tweenToAnimation="Research">
+            <asset type="Anim">
+                <file>campaign\npc\anders_01\scn_06_tower_idle</file>
+                <weight>30</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

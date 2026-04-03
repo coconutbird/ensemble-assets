@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn02\methanerefine_01\methanerefine_damaged_01</file>
+                <damagefile>campaign\scn02\methanerefine_01\methanerefine_01</damagefile>
+            </asset>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_04" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_05" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_06" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_07" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn02\methanerefine_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\methanerefinerylights_01" tobone="Bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\methanerefinerylights_01" tobone="Bone_FX02" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\building_death01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

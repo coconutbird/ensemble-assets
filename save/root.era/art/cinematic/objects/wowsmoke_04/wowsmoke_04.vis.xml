@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>cinematic\objects\wowsmoke_04\wowsmoke_04</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\wow_moments\s01_scene_02_smoke_fire" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>cinematic\objects\wowsmoke_04\wowsmoke_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

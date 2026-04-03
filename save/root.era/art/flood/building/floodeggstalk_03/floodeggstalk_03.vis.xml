@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>flood\building\FloodEggstalk_03\stalk_tree_03</file>
+                <damagefile>flood\building\FloodEggStalk_01\FloodEggStalk_01</damagefile>
+            </asset>
+            <logic type="Variation">
+                <logicdata value="EggRed" weight="1">
+                    <asset type="Model">
+                        <file>flood\building\FloodEggstalk_03\stalk_tree_03</file>
+                        <damagefile>flood\building\FloodEggStalk_01\FloodEggStalk_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="EggGreen" weight="1">
+                    <asset type="Model">
+                        <file>flood\building\FloodEggstalk_03\stalk_tree_03</file>
+                        <damagefile>flood\building\FloodEggStalk_01\FloodEggStalk_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>flood\building\FloodEggstalk_03\idle_01</file>
+                <weight>35</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\building\FloodEggstalk_03\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

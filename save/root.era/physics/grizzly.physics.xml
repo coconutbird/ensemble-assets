@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<physics>
+    <blueprint>grizzly</blueprint>
+    <ThrownByProjectiles>true</ThrownByProjectiles>
+    <Vehicle>grizzly
+      
+   </Vehicle>
+    <CenterOffset>0,2.28,0</CenterOffset>
+    <TerrainEffects>effects\terraineffects\grizzly_physics</TerrainEffects>
+</physics>

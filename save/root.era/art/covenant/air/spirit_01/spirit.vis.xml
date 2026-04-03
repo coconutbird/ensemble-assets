@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\air\spirit_01\spirit_damaged_01</file>
+                <damagefile>covenant\air\spirit_01\spirit</damagefile>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\spirit\energyfield_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\spirit\energyfield_01" tobone="bone_FX02" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="30">
+            <asset type="Anim">
+                <file>covenant\air\spirit_01\hoveridle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="30">
+            <asset type="Anim">
+                <file>covenant\air\spirit_01\hoveridle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Incoming" exitAction="Transition" tweenTime="30" tweenToAnimation="idle">
+            <asset type="Anim">
+                <file>covenant\air\spirit_01\incoming_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Outgoing" exitAction="Freeze" tweenTime="30">
+            <asset type="Anim">
+                <file>covenant\air\spirit_01\outgoing_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>covenant\air\spirit_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn11\vehiclespawnd_01\vehiclespawnd_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_01" tobone="bone_clippivot" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="bone_impact_05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="bone_FX03" syncanims="false"/>
+        </component>
+    </model>
+</visual>

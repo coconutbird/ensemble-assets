@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\unscprops\vent_01\vent_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\generic\steamventSmall_01" tobone="grannyrootbone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

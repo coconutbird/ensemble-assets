@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\unsctower\unsctower</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\pelican\redblinkinglight_01" tobone="Bone Light01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\steam_01" tobone="Bone Steam" syncanims="false"/>
+        </component>
+    </model>
+</visual>

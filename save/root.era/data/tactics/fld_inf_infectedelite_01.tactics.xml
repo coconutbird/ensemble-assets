@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Claw</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>55</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>3</MaxRange>
+        <AOERadius>2</AOERadius>
+        <TargetPriority type="Infantry">25</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>ClawAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>Claw</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonSpirit</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonSpirit</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+</TacticData>

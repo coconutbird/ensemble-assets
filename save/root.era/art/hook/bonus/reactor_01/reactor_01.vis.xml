@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>hook\bonus\reactor_01\reactor_01</file>
+            </asset>
+            <point pointType="Cover" bone="bone_attachpoint01" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint02" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint03" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint04" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>hook\bonus\reactor_01\uncaptured_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\for\reactoridle_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>hook\bonus\reactor_01\lock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>hook\bonus\reactor_01\unlock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Captured">
+        <component>
+            <asset type="Model">
+                <file>hook\bonus\reactor_01\reactor_01</file>
+            </asset>
+            <point pointType="Cover" bone="bone_attachpoint01" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint02" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint03" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint04" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>hook\bonus\reactor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\for\reactor_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="AnchorDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>hook\bonus\reactor_01\lock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>hook\bonus\reactor_01\unlock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

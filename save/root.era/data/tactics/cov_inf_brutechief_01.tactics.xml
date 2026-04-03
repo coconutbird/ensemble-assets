@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Hammer</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>221.5</DamagePerSecond>
+        <WeaponType>leaderPower</WeaponType>
+        <MaxRange>3</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="groundVehicle">25</TargetPriority>
+        <TargetPriority type="Infantry">20</TargetPriority>
+        <TargetPriority type="TurretBuilding">0</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>stunHammer</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>221.5</DamagePerSecond>
+        <WeaponType>leaderPower</WeaponType>
+        <MaxRange>3</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="groundVehicle">25</TargetPriority>
+        <TargetPriority type="Infantry">20</TargetPriority>
+        <TargetPriority type="TurretBuilding">0</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>stunPullHammer</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>221.5</DamagePerSecond>
+        <WeaponType>leaderPower</WeaponType>
+        <MaxRange>3</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="groundVehicle">25</TargetPriority>
+        <TargetPriority type="Infantry">20</TargetPriority>
+        <TargetPriority type="TurretBuilding">0</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>AreaStunHammer</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>221.5</DamagePerSecond>
+        <WeaponType>leaderPower</WeaponType>
+        <MaxRange>3</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <AOERadius>6</AOERadius>
+        <TargetPriority type="groundVehicle">25</TargetPriority>
+        <TargetPriority type="Infantry">20</TargetPriority>
+        <TargetPriority type="TurretBuilding">0</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>Charge</Name>
+        <ActionType>Charge</ActionType>
+    </Action>
+    <Action>
+        <Name>HammerAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>Hammer</Weapon>
+    </Action>
+    <Action>
+        <Name>StunHammerAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>StunHammer</Weapon>
+    </Action>
+    <Action>
+        <Name>StunPullHammerAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>StunPullHammer</Weapon>
+    </Action>
+    <Action>
+        <Name>AreaStunHammerAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>AreaStunHammer</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonSpirit</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonSpirit</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonHotDrop</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonHotDrop</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\fx_dummy</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11wallimpact_02" syncanims="false"/>
+        </component>
+    </model>
+</visual>

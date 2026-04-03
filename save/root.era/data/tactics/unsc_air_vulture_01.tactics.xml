@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>LeftMissileLauncher</Name>
+        <AttackRate>3</AttackRate>
+        <DamagePerSecond>50</DamagePerSecond>
+        <WeaponType>AntiAir</WeaponType>
+        <Projectile>fx_proj_missile_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Hardpoint>LeftMissileTurret</Hardpoint>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="Flying">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Infantry">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>RightMissileLauncher</Name>
+        <AttackRate>3</AttackRate>
+        <DamagePerSecond>50</DamagePerSecond>
+        <WeaponType>AntiAir</WeaponType>
+        <Projectile>fx_proj_missile_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Hardpoint>RightMissileTurret</Hardpoint>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="Flying">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Infantry">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LeftCannon</Name>
+        <AttackRate>3</AttackRate>
+        <DamagePerSecond>200</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_cannon_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>7</MaxDeviation>
+        <MovingAccuracy>0.1</MovingAccuracy>
+        <MovingMaxDeviation>10</MovingMaxDeviation>
+        <Hardpoint>LeftCannonTurret</Hardpoint>
+        <AOERadius>8</AOERadius>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="Flying">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Infantry">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>RightCannon</Name>
+        <AttackRate>3</AttackRate>
+        <DamagePerSecond>200</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_cannon_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>7</MaxDeviation>
+        <MovingAccuracy>0.1</MovingAccuracy>
+        <MovingMaxDeviation>10</MovingMaxDeviation>
+        <Hardpoint>RightCannonTurret</Hardpoint>
+        <AOERadius>8</AOERadius>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="Flying">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Infantry">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>BarrageWeapon</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>3200</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_vultureMissile_01</Projectile>
+        <MaxRange>100</MaxRange>
+        <Accuracy>0</Accuracy>
+        <MaxDeviation>10</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>15</MovingMaxDeviation>
+        <AOERadius>8</AOERadius>
+    </Weapon>
+    <Weapon>
+        <Name>Barrage2Weapon</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>8000</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_vultureMissile_01</Projectile>
+        <MaxRange>100</MaxRange>
+        <Accuracy>0</Accuracy>
+        <MaxDeviation>10</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>15</MovingMaxDeviation>
+        <AOERadius>8</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>LeftMissileAttackAction</Name>
+        <ActionType>SecondaryTurretAttack</ActionType>
+        <Weapon>LeftMissileLauncher</Weapon>
+    </Action>
+    <Action>
+        <Name>RightMissileAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>RightMissileLauncher</Weapon>
+    </Action>
+    <Action>
+        <Name>LeftCannonAttackAction</Name>
+        <ActionType>SecondaryTurretAttack</ActionType>
+        <Weapon>LeftCannon</Weapon>
+    </Action>
+    <Action>
+        <Name>RightCannonAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>RightCannon</Weapon>
+    </Action>
+    <Action>
+        <Name>BarrageAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>BarrageWeapon</Weapon>
+    </Action>
+    <Action>
+        <Name>Barrage2AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Barrage2Weapon</Weapon>
+    </Action>
+    <Action>
+        <Name>AvoidCollisionAir</Name>
+        <ActionType>AvoidCollisionAir</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

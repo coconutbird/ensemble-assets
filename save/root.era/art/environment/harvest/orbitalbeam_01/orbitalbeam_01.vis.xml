@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\fx_axis_helper_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\cleansing\cleansing_a" tobone="bone_FX01" syncanims="false"/>
+        </component>
+        <anim type="" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_axis_helper_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

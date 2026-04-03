@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\pelicanwreck_02\pelicanwreck_02</file>
+            </asset>
+            <attach type="LightFile" name="environment\harvest\pelicanwreck_01\pelicanwreck_light_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\pelicansmoke_01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\pelicanwreck_02" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\pelicanwreck_02" tobone="bone_FX01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

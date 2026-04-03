@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\building\socket_01\socket_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\socket_01\idleNoLights_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\socket_01\idleNoLights_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

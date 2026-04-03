@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\environment\harvest\scn01heavysnow_01\scn01heavysnow_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\scn01heavysnow_01\heavysnow_01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

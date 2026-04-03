@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\creepbase_01\creepbase_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\fire\smallgenFire_01" tobone="bone_fire" syncanims="false"/>
+        </component>
+    </model>
+</visual>

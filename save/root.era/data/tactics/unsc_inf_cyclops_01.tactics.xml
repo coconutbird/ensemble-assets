@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>melee</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>93.6</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>3</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="TurretBuilding">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>meleePickup</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>93.6</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>3</MaxRange>
+        <TargetPriority type="TurretBuilding">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>jackhammer</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>117</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>3</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="TurretBuilding">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>BuildingJackhammer</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>146.25</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>3</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="TurretBuilding">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>ThrowWeapon</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>600</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_rock_01</Projectile>
+        <MaxRange>65</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>8</MaxDeviation>
+        <MovingAccuracy>0.9</MovingAccuracy>
+        <MovingMaxDeviation>12</MovingMaxDeviation>
+        <AOERadius>3</AOERadius>
+    </Weapon>
+    <Weapon>
+        <Name>RipOffPart</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>117</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>3</MaxRange>
+        <TargetPriority type="TurretBuilding">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>SmashInfantry</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>93.6</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>3</MaxRange>
+        <TargetPriority type="Infantry">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>MeleeAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>melee</Weapon>
+    </Action>
+    <Action>
+        <Name>jackhammerAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>jackhammer</Weapon>
+    </Action>
+    <Action>
+        <Name>BuildingjackhammerAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>Buildingjackhammer</Weapon>
+    </Action>
+    <Action>
+        <Name>MeleeAttackActionPickup</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>meleePickup</Weapon>
+    </Action>
+    <Action>
+        <Name>jackhammerAttackActionPickup</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>jackhammer</Weapon>
+    </Action>
+    <Action>
+        <Name>BuildingjackhammerAttackActionPickup</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>Buildingjackhammer</Weapon>
+    </Action>
+    <Action>
+        <Name>RipOffPart</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>RipOffPart</Weapon>
+    </Action>
+    <Action>
+        <Name>SmashInfantry</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>SmashInfantry</Weapon>
+    </Action>
+    <Action>
+        <Name>ThrowAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>ThrowWeapon</Weapon>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>RepairOther</Name>
+        <ActionType>RepairOther</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

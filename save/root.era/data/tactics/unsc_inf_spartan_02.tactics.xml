@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Minigun</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>180</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_rotaryMG_01</Projectile>
+        <MaxRange>50</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>1</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>0</MovingMaxDeviation>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">8</TargetPriority>
+        <TargetPriority type="GroundVehicle">6</TargetPriority>
+        <TargetPriority type="TurretBuilding">4</TargetPriority>
+        <TargetPriority type="Building">2</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>Melee</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>180</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <MaxRange>3</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">8</TargetPriority>
+        <TargetPriority type="GroundVehicle">6</TargetPriority>
+        <TargetPriority type="TurretBuilding">4</TargetPriority>
+        <TargetPriority type="Building">2</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>MinigunAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Minigun</Weapon>
+    </Action>
+    <Action>
+        <Name>MeleeAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>Melee</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>InfantryJoin</Name>
+        <ActionType>Join</ActionType>
+    </Action>
+    <Action>
+        <Name>VehicleJoin</Name>
+        <ActionType>Join</ActionType>
+    </Action>
+    <Action>
+        <Name>UpgradedVehicleJoin</Name>
+        <ActionType>Join</ActionType>
+    </Action>
+    <Action>
+        <Name>VehicleTakeOver</Name>
+        <ActionType>Join</ActionType>
+    </Action>
+    <Action>
+        <Name>AircraftTakeOver</Name>
+        <ActionType>Join</ActionType>
+    </Action>
+    <Action>
+        <Name>UpgradedVehicleTakeOver</Name>
+        <ActionType>Join</ActionType>
+    </Action>
+    <Action>
+        <Name>UpgradedAircraftTakeOver</Name>
+        <ActionType>Join</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Dodge</Name>
+        <ActionType>Dodge</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

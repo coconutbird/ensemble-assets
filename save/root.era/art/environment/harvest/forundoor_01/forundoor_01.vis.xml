@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\forundoor_01\forundoor_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\forundoor_01" tobone="Bone FX" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>environment\harvest\forundoor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Research" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>environment\harvest\forundoor_01\explode_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

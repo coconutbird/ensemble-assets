@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Artillery</Name>
+        <AttackRate>5</AttackRate>
+        <DamagePerSecond>175</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_plasmaartillery_01</Projectile>
+        <MaxRange>60</MaxRange>
+        <Accuracy>0.33</Accuracy>
+        <MaxDeviation>4</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>6</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <AOERadius>6</AOERadius>
+        <TargetPriority type="TurretBuilding">10</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LockdownArtillery</Name>
+        <AttackRate>5</AttackRate>
+        <DamagePerSecond>275</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_plasmaartillery_01</Projectile>
+        <MaxRange>120</MaxRange>
+        <Accuracy>0</Accuracy>
+        <MaxDeviation>18</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>18</MovingMaxDeviation>
+        <Hardpoint>LockDownTurret</Hardpoint>
+        <AOERadius>9</AOERadius>
+        <TargetPriority type="TurretBuilding">10</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>ArtilleryAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Artillery</Weapon>
+    </Action>
+    <Action>
+        <Name>LockdownAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>LockdownArtillery</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>LockdownMove</Name>
+        <ActionType>Move</ActionType>
+    </Action>
+    <Action>
+        <Name>Unlock</Name>
+        <ActionType>ChangeMode</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

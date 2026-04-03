@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>cinematic\objects\wowsmoke_03\wowsmoke_03</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\fire\fire_loop_medium" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

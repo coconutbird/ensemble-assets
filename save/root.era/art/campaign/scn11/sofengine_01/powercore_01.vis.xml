@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn11\SoFengine_01\powercore_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\smokecolumn_looping_01" tobone="bone_smoke01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="bone_sparks01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="bone_sparks03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\techdamage_01" tobone="bone_sparks02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\reactorleak_02" tobone="bone_sparks04" syncanims="false"/>
+        </component>
+    </model>
+</visual>

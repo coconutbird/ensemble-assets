@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\HotelRDestroyed_02\HotelRDestroyed_02</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\arcadia\electricityarcadia_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

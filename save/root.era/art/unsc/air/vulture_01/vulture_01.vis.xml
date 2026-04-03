@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\vulture_01\vulture_damaged_01</file>
+                <damagefile>unsc\air\vulture_01\vulture_01</damagefile>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\vulture\jets_01" tobone="bonethrust01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\vulture\jets_01" tobone="bonethrust02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\vulture\jets_01" tobone="bonethrust03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\vulture\jets_01" tobone="bonethrust04" syncanims="false"/>
+            <attach type="ModelRef" name="CannonLeft" tobone="BoneTurretL" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="CannonRight" tobone="BoneTurretR" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="MissleLeft" tobone="BoneMissleL" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="MissleRight" tobone="BoneMissleR" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="BayDoors" tobone="BoneVulture" frombone="BoneVulture" syncanims="false"/>
+            <point pointType="Impact" bone="bone_impact_09" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_08" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_07" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_06" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_05" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_04" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+            <point pointType="Board" bone="BoneVulture" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_vulture_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\vulture_damaged_01</file>
+                        <damagefile>unsc\air\vulture_01\vulture_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\vulture_damaged_01</file>
+                        <damagefile>unsc\air\vulture_01\vulture_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="CloseBay" exitAction="Freeze" tweenTime="5" tweenToAnimation="Recover">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="OpenBay" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_open_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CannonAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CannonAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MissleAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MissleAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Recover" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BarrageAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="CloseBay">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BarrageAttack2" exitAction="Transition" tweenTime="5" tweenToAnimation="CloseBay">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="CannonLeft">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\vulture_01\turret_01</file>
+            </asset>
+            <point pointType="Impact" bone="impactbone01" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone02" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone03" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone04" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone05" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone06" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_vulture_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\turret_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\turret_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="CannonAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\cannonattack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CannonAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\cannonattack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="CannonRight">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\vulture_01\turret_01</file>
+            </asset>
+            <point pointType="Impact" bone="impactbone01" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone02" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone03" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone04" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone05" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone06" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_vulture_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\turret_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\turret_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="CannonAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\cannonattack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CannonAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\cannonattack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="MissleLeft">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\vulture_01\missle_01</file>
+            </asset>
+            <point pointType="Impact" bone="impactbone01" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone02" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone03" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone04" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone05" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone06" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_vulture_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\missle_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\missle_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="MissleAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="MissleRight">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\vulture_01\missle_01</file>
+            </asset>
+            <point pointType="Impact" bone="impactbone01" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone02" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone03" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone04" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone05" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone06" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_vulture_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\missle_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\missle_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="MissleAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="BayDoors">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\vulture_01\baydoors_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_vulture_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\baydoors_up_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\vulture_01\baydoors_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CloseBay" exitAction="Freeze" tweenTime="5" tweenToAnimation="Recover">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_close_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="OpenBay" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_open_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Recover" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BarrageAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="CloseBay">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BarrageAttack2" exitAction="Transition" tweenTime="5" tweenToAnimation="CloseBay">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CannonAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CannonAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MissleAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MissleAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\vulture_01\barrage_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

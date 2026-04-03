@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>LightCannon1</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>120</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_beam_01</Projectile>
+        <MaxRange>60</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>2</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>1.5</MovingMaxDeviation>
+        <Hardpoint>Turret1</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="Aircraft">10</TargetPriority>
+        <TargetPriority type="Turretbuilding">3</TargetPriority>
+        <TargetPriority type="building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LightCannon2</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>120</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_beam_01</Projectile>
+        <MaxRange>60</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>2</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>1.5</MovingMaxDeviation>
+        <Hardpoint>Turret2</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="Aircraft">10</TargetPriority>
+        <TargetPriority type="Turretbuilding">3</TargetPriority>
+        <TargetPriority type="building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LightCannon3</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>120</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_beam_01</Projectile>
+        <MaxRange>60</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>2</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>1.5</MovingMaxDeviation>
+        <Hardpoint>Turret3</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="Aircraft">10</TargetPriority>
+        <TargetPriority type="Turretbuilding">3</TargetPriority>
+        <TargetPriority type="building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LightCannon4</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>120</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_beam_01</Projectile>
+        <MaxRange>60</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>2</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>1.5</MovingMaxDeviation>
+        <Hardpoint>Turret4</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="Aircraft">10</TargetPriority>
+        <TargetPriority type="Turretbuilding">3</TargetPriority>
+        <TargetPriority type="building">1</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>LightCannon1AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>LightCannon1</Weapon>
+    </Action>
+    <Action>
+        <Name>LightCannon2AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>LightCannon2</Weapon>
+    </Action>
+    <Action>
+        <Name>LightCannon3AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>LightCannon3</Weapon>
+    </Action>
+    <Action>
+        <Name>LightCannon4AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>LightCannon4</Weapon>
+    </Action>
+</TacticData>

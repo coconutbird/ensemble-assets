@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn06\oniobtower_01\oniobtower_01</file>
+            </asset>
+            <point pointType="Cover" bone="bone_attachpoint01" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint02" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint03" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint04" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint05" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint06" pointData="Metal"/>
+        </component>
+    </model>
+</visual>

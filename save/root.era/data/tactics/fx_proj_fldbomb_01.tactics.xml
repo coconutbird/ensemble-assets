@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>None</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>0</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <MaxRange>1</MaxRange>
+    </Weapon>
+    <Weapon>
+        <Name>Bomb</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>50</DamagePerSecond>
+        <WeaponType>AntiInfantry</WeaponType>
+        <Projectile>fx_proj_missile_01</Projectile>
+        <MaxRange>2</MaxRange>
+        <AOERadius>8</AOERadius>
+        <TargetPriority type="Infantry">10</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>Detonate</Name>
+        <ActionType>Detonate</ActionType>
+        <Weapon>Bomb</Weapon>
+        <Duration>3</Duration>
+    </Action>
+    <Action>
+        <Name>Bomb</Name>
+        <ActionType>Bomb</ActionType>
+    </Action>
+</TacticData>

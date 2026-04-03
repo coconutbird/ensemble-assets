@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>GaussCannon</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>375</DamagePerSecond>
+        <WeaponType>GaussCannon</WeaponType>
+        <Projectile>fx_proj_gaussCannon_01</Projectile>
+        <MaxRange>45</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>3</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>4.5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <AOERadius>10</AOERadius>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">5</TargetPriority>
+        <TargetPriority type="GroundVehicle">1</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>GrenadeLauncher</Name>
+        <AttackRate>3</AttackRate>
+        <DamagePerSecond>200</DamagePerSecond>
+        <WeaponType>Grenade</WeaponType>
+        <Projectile>fx_proj_autoGrenade_01</Projectile>
+        <MaxRange>45</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>10</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>12</MovingMaxDeviation>
+        <Hardpoint>PassengerTurret</Hardpoint>
+        <AOERadius>3</AOERadius>
+        <TargetPriority type="Infantry">4</TargetPriority>
+        <TargetPriority type="GroundVehicle">3</TargetPriority>
+        <TargetPriority type="TurretBuilding">0</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>Ram</Name>
+        <DamagePerSecond>500</DamagePerSecond>
+        <WeaponType>WarthogRam</WeaponType>
+        <MaxRange>5</MaxRange>
+        <AOERadius>40</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>GrenadeLauncherAttackAction</Name>
+        <ActionType>SecondaryTurretAttack</ActionType>
+        <Weapon>GrenadeLauncher</Weapon>
+    </Action>
+    <Action>
+        <Name>GaussCannonAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>GaussCannon</Weapon>
+    </Action>
+    <Action>
+        <Name>PersistentCollisionAttack</Name>
+        <ActionType>CollisionAttack</ActionType>
+        <Weapon>Ram</Weapon>
+    </Action>
+    <Action>
+        <Name>RamAttack</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Ram</Weapon>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

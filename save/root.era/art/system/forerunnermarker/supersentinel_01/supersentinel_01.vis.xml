@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>system\ForeRunnerMarker\superSentinel_01\superSentinel_01</file>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="BoneHead" frombone="BoneHead" syncanims="true"/>
+            <attach type="ModelRef" name="Tail" tobone="BoneTail" frombone="BoneTail" syncanims="true"/>
+            <attach type="ModelRef" name="BeamTurretLeft" tobone="BoneTurret01" frombone="BoneTurret01" syncanims="true"/>
+            <attach type="ModelRef" name="BeamTurretRight" tobone="BoneTurret02" frombone="BoneTurret02" syncanims="true"/>
+        </component>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn11\supersentinel_01\supersentinelGun_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BeamAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\turretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BeamAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\turretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Tail">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn11\supersentinel_01\supersentinelTail_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BeamAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\turretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BeamAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\turretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="BeamTurretLeft">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn11\supersentinel_01\supersentinelTurret_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BeamAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\turretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BeamAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\turretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="BeamTurretRight">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn11\supersentinel_01\supersentinelTurret_02</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BeamAttackLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\turretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BeamAttackRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\turretAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\supersentinel_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

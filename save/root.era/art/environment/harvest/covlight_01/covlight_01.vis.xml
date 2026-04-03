@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\covlight_01\covlight_damaged_01</file>
+                <damagefile>environment\harvest\covlight_01\covlight_01</damagefile>
+            </asset>
+        </component>
+    </model>
+</visual>

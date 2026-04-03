@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>SniperRifle</Name>
+        <AttackRate>2</AttackRate>
+        <DamagePerSecond>42</DamagePerSecond>
+        <WeaponType>AntiInfantry</WeaponType>
+        <Projectile>fx_proj_sniperRifle_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.4</Accuracy>
+        <MaxDeviation>8</MaxDeviation>
+        <MovingAccuracy>0.2</MovingAccuracy>
+        <MovingMaxDeviation>12</MovingMaxDeviation>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>SniperRifleAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>SniperRifle</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonSpirit</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonSpirit</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonHotDrop</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonHotDrop</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+</TacticData>

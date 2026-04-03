@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>cinematic\objects\wowsmoke_01\wowsmoke_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\smoke\smoke_loop_large" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>cinematic\objects\wowsmoke_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

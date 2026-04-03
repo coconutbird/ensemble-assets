@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>hook\building\PelicanMediumCover_03\PelicanMediumCover_03</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint06" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint08" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint09" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint10" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint11" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\coverLogo_01" tobone="bone_attachpoint12" syncanims="false"/>
+            <point pointType="Cover" bone="bone_attachpoint01" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint02" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint03" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint04" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint05" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint06" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint07" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint08" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint09" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint10" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint11" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_attachpoint12" pointData="Metal"/>
+        </component>
+    </model>
+</visual>

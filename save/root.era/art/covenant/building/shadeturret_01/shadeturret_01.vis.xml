@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\building\shadeturret_01\shadeturret_base_01</file>
+                <damagefile>covenant\building\shadeturret_01\shadeturret_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="BoneTurret" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\shadeturret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\shadeturret_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\shadeturret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\building\shadeturret_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\Cov\damage\plasmafire_03" tobone="BoneBody" syncanims="false"/>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>covenant\building\shadeturret_01\shadeturret_turret_01</file>
+            </asset>
+            <point pointType="Launch" bone="bone_launchpoint" pointData="Metal"/>
+            <point pointType="Impact" bone="BoneFloating" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\shadeturret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ShadePlasmaAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\shadeturret_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\building\shadeturret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\building\shadeturret_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\Cov\damage\teenystreamer_01" tobone="BoneFloating" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\Cov\damage\plasmafire_02" tobone="BoneFloating" syncanims="false"/>
+        </anim>
+    </model>
+</visual>

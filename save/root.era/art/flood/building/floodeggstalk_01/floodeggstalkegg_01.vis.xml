@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>flood\building\FloodEggstalk_01\stalk_egg_reg_01</file>
+                <damagefile>flood\building\FloodEggStalk_01\FloodEggStalkEgg_01</damagefile>
+            </asset>
+            <attach type="ParticleFile" name="flood\Air\sporecloud_01\spore_egg_cloud_01" tobone="GrannyRootBone" syncanims="false"/>
+            <logic type="Variation">
+                <logicdata value="EggRed" weight="1">
+                    <asset type="Model">
+                        <file>flood\building\FloodEggstalk_01\stalk_egg_reg_01</file>
+                        <damagefile>flood\building\FloodEggStalk_01\FloodEggStalkEgg_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="EggGreen" weight="1">
+                    <asset type="Model">
+                        <file>flood\building\FloodEggstalk_01\stalk_egg_green_01</file>
+                        <damagefile>flood\building\FloodEggStalk_01\FloodEggStalkEgg_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\building\FloodEggstalk_01\stalk_egg_idle</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\building\FloodEggstalk_01\stalk_egg_death</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

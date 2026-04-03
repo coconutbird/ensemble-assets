@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Particle">
+                <file>effects\projectiles\cov\sniperRifle_01\sniperRifle_01</file>
+            </asset>
+        </component>
+    </model>
+</visual>

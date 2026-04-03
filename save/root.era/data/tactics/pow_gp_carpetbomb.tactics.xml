@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>bombingRun</Name>
+        <DamagePerSecond>0</DamagePerSecond>
+        <WeaponType>LeaderPower</WeaponType>
+        <Projectile>pow_gp_carpetbomb</Projectile>
+        <MaxRange>10</MaxRange>
+        <Accuracy>0.33</Accuracy>
+        <MaxDeviation>2</MaxDeviation>
+        <MovingAccuracy>0.33</MovingAccuracy>
+        <MovingMaxDeviation>2</MovingMaxDeviation>
+        <AOERadius>8</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>bombingRunAttackAction</Name>
+        <Weapon>bombingRun</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

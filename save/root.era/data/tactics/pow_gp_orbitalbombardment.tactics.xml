@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>OrbitalBombardmentShockwave</Name>
+        <DamagePerSecond>200</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <AOERadius>60</AOERadius>
+    </Weapon>
+    <Weapon>
+        <Name>OrbitalBombardment</Name>
+        <DamagePerSecond>30000</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>pow_gp_orbitalbombardment</Projectile>
+        <AOERadius>20</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>OrbitalBombardmentAttackAction</Name>
+        <Weapon>OrbitalBombardment</Weapon>
+        <Default>true</Default>
+    </Action>
+    <Action>
+        <Name>OrbitalBombardmentShockwaveAction</Name>
+        <Weapon>OrbitalBombardmentShockwave</Weapon>
+    </Action>
+</TacticData>

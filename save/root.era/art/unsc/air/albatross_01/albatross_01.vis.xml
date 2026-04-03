@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\albatross_01\albatross_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\pelican\redblinkinglight_01" tobone="bone_top blinking light" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\pelican\redblinkinglight_01" tobone="bone_top blinking light01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\albatross\jets_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\albatross\jets_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\albatross\jets_01" tobone="bone_FX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\albatross\jets_01" tobone="bone_FX04" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\air\albatross_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

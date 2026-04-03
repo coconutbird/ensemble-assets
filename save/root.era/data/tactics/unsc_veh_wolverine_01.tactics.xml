@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>MissileLauncher</Name>
+        <AttackRate>6</AttackRate>
+        <DamagePerSecond>131.5</DamagePerSecond>
+        <WeaponType>AntiAir</WeaponType>
+        <Projectile>fx_proj_missile_01</Projectile>
+        <MaxRange>90</MaxRange>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Flying">10</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>UpgradedMissileLauncher</Name>
+        <AttackRate>6</AttackRate>
+        <DamagePerSecond>131.5</DamagePerSecond>
+        <WeaponType>AntiAir</WeaponType>
+        <Projectile>fx_proj_missile_01</Projectile>
+        <MaxRange>90</MaxRange>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Flying">10</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>GrenadeLauncher</Name>
+        <AttackRate>3</AttackRate>
+        <DamagePerSecond>75</DamagePerSecond>
+        <WeaponType>Grenade</WeaponType>
+        <Projectile>fx_proj_autoGrenade_01</Projectile>
+        <MaxRange>45</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>10</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>12</MovingMaxDeviation>
+        <Hardpoint>GrenadeLauncherTurret</Hardpoint>
+        <AOERadius>3</AOERadius>
+        <TargetPriority type="Infantry">4</TargetPriority>
+        <TargetPriority type="GroundVehicle">3</TargetPriority>
+        <TargetPriority type="TurretBuilding">0</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>BarrageWeapon</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>2000</DamagePerSecond>
+        <WeaponType>AntiAir</WeaponType>
+        <Projectile>fx_proj_ballisticMissile_01</Projectile>
+        <MaxRange>90</MaxRange>
+        <Accuracy>0</Accuracy>
+        <MaxDeviation>12</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>15</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <AOERadius>4</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>GrenadeLauncherAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>GrenadeLauncher</Weapon>
+    </Action>
+    <Action>
+        <Name>MissileAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>MissileLauncher</Weapon>
+    </Action>
+    <Action>
+        <Name>UpgradedMissileAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>UpgradedMissileLauncher</Weapon>
+    </Action>
+    <Action>
+        <Name>BarrageAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>BarrageWeapon</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\trashcan_01\trashcan_damage_01</file>
+                <damagefile>environment\arcadia\trashcan_01\trashcan_01</damagefile>
+            </asset>
+        </component>
+    </model>
+</visual>

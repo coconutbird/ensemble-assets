@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn06\rhino2shots_01\rhino2shots_01</file>
+            </asset>
+        </component>
+        <anim type="Attack" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn06\rhino2shots_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn06\rhino2shots_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

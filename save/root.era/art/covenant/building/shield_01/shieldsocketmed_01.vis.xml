@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\building\shield_01\shield_socketMed_01</file>
+            </asset>
+        </component>
+        <anim type="100health" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="75health" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="50health" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_sixseconds</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="25health" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\odstpod_01\odstpod_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\odst\odst_pod_smoke_01" tobone="bonefx" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\odst\odst_pod_streak_01" tobone="streakbone_01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\odst\odst_pod_streak_01" tobone="streakbone_02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\odst\odst_pod_streak_01" tobone="streakbone_03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\odst\odst_pod_streak_01" tobone="streakbone_04" syncanims="false"/>
+        </component>
+    </model>
+</visual>

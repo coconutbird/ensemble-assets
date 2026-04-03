@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\air\banshee_01\banshee_damage_01</file>
+                <damagefile>covenant\air\banshee_01\banshee_01</damagefile>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\contrail_01" tobone="bone_contrail_01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\contrail_01" tobone="bone_contrail_02" syncanims="false"/>
+            <attach type="ModelRef" name="Upgrade" tobone="bone_banshee" frombone="bone_banshee" syncanims="true"/>
+            <point pointType="Impact" bone="bone_smallpart01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_smallpart02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_smallpart03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_smallpart04" pointData="Metal"/>
+            <point pointType="Board" bone="bone_banshee" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_05</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_05</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\contrail_01" tobone="bone_contrail_01" syncanims="false"/>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_05</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\contrail_01" tobone="bone_contrail_01" syncanims="false"/>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_05</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\boostcontrail_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\boostcontrail_01" tobone="bone_fx02" syncanims="false"/>
+        </anim>
+        <anim type="evadeBack" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\evadeUp</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\boostcontrail_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\boostcontrail_01" tobone="bone_fx02" syncanims="false"/>
+        </anim>
+        <anim type="evadeRight" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\evadeRight_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\boostcontrail_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\boostcontrail_01" tobone="bone_fx02" syncanims="false"/>
+        </anim>
+        <anim type="evadeLeft" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\evadeLeft_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\boostcontrail_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\boostcontrail_01" tobone="bone_fx02" syncanims="false"/>
+        </anim>
+        <anim type="PlasmaCannonAttack" exitAction="Loop" tweenTime="15" tweenToAnimation="PlasmaCannonAttack">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FuelRodAttack" exitAction="Loop" tweenTime="15" tweenToAnimation="FuelRodAttack">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\fuelrod_attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\fuelrod_attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Kamikaze" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\kamikaze_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\kamikaze_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\banshee\kamakazifire_01" tobone="bone_banshee" syncanims="false"/>
+        </anim>
+        <anim type="Cinematic" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\air\banshee_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Freeze" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpartanBansheeJack" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_banshee_hijack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Upgrade">
+        <component>
+            <asset type="Model">
+                <file>covenant\air\banshee_01\upgrade_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="cov_banshee_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\air\banshee_01\upgrade_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_banshee_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\air\banshee_01\upgrade_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_banshee_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\air\banshee_01\upgrade_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+</visual>

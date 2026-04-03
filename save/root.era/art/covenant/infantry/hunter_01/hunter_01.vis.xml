@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\hunter_01\hunter_01</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+            <attach type="ModelRef" name="SquadModes" syncanims="false"/>
+            <attach type="ModelRef" name="ShieldUpper" tobone="Bip01 L UpperArm" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="ShieldLower" tobone="Bip01 L Forearm" frombone="GrannyRootBone" syncanims="false"/>
+            <logic type="Tech">
+                <logicdata value="cov_hunter_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_01</file>
+                        <damagefile>template\defaultInfantry</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_hunter_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_01</file>
+                        <damagefile>template\defaultInfantry</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_hunter_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_01</file>
+                        <damagefile>template\defaultInfantry</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_01</file>
+                        <damagefile>template\defaultInfantry</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\lockdown_idle_01</file>
+                <weight>8</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\lockdown_idle_02</file>
+                <weight>2</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\idle_01</file>
+                <weight>4</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\lockdown_walk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\jog_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\jog_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\run_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\run_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FuelRodAttack" exitAction="Transition" tweenTime="15" tweenToAnimation="FuelRodAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\attack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\attack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\death_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\death_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\death_05</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\lockdown_idle_01</file>
+                <weight>8</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\lockdown_idle_02</file>
+                <weight>2</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\idle_01</file>
+                <weight>4</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="Bip01" syncanims="false"/>
+        </anim>
+        <anim type="Build" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\lockdown_idle_01</file>
+                <weight>60</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\lockdown_idle_01</file>
+                <weight>8</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\lockdown_idle_02</file>
+                <weight>2</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\idle_01</file>
+                <weight>4</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="Bip01" syncanims="false"/>
+        </anim>
+        <anim type="Stunned" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\stunned_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeRight" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\evadeRight_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\evadeRight_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\evadeLeft_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\evadeLeft_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeFront" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\evadeFront_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\evadeFront_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeBack" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\evadeBack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\evadeBack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Block" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\block_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Deflect" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\deflect_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BeamAttack" exitAction="Loop" tweenTime="15" tweenToAnimation="BeamAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\beam_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Clamshell" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\clamshell_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\clamshell_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\hunter_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train2" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train3" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train4" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train5" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train6" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train7" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train8" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="SquadModes">
+        <component>
+            <logic type="SquadMode">
+                <logicdata value="Normal" weight="1">
+                    <asset type="Model">
+                        <file>effects\fxdummy</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="Sprint" modelref="SprintSquadMode" weight="1">
+                    <asset type="Particle">
+                        <file>effects\special\unit_serenaWisp_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="Recover" weight="1">
+                    <asset type="Particle">
+                        <file>effects\Unit_FX\unsc\generic\weldingsparks_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="ShieldUpper">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\hunter_01\hunter_shieldLower_02</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="cov_hunter_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_shieldLower_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_hunter_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_shieldLower_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_hunter_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_shieldLower_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="ShieldLower">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\hunter_01\hunter_shieldLower_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="cov_hunter_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_shieldLower_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_hunter_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_shieldLower_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_hunter_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\hunter_01\hunter_shieldLower_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+</visual>

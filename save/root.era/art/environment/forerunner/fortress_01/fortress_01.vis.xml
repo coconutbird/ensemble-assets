@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\forerunner\fortress_01\fortress_01</file>
+            </asset>
+            <attach type="LightFile" name="environment\forerunner\fortress_01\fortress_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>megaTurret</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>20000</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>pow_gp_megaTurret</Projectile>
+        <MaxRange>500</MaxRange>
+        <AOERadius>7</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>megaTurretAttackAction</Name>
+        <Weapon>megaTurret</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

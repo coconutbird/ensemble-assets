@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\fx_dummy</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\powers\unsc\repairstation_01" syncanims="false"/>
+            <attach type="LightFile" name="effects\powers\unsc\repairstationLight_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

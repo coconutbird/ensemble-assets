@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn11\cleansingring_01\cleansingring_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energywall_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energyarcs_01" tobone="bone_lightning01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energyarcs_01" tobone="bone_lightning02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energyarcs_01" tobone="bone_lightning03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energyarcs_01" tobone="bone_lightning04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energyarcs_01" tobone="bone_lightning05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energyarcs_01" tobone="bone_lightning06" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energyarcs_01" tobone="bone_lightning07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energyarcs_01" tobone="bone_lightning08" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN11energywallstart_01" tobone="bone_FX01" syncanims="false"/>
+        </component>
+        <anim type="Train" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\cleansingring_01\birth_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn11\cleansingring_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>campaign\scn11\cleansingring_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

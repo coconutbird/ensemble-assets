@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>hook\building\parkingLotUNSC_01\parkingLotUNSC_hologram_01</file>
+            </asset>
+        </component>
+        <anim type="Research" exitAction="Transition" tweenTime="0" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_30seconds</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>game\base\socket_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

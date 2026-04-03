@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Flamethrower</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>40</DamagePerSecond>
+        <WeaponType>Fire</WeaponType>
+        <MaxRange>15</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <AOERadius>3</AOERadius>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>FlamethrowerAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Flamethrower</Weapon>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+</TacticData>

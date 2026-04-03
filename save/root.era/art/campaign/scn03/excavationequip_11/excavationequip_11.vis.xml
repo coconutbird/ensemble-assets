@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn03\excavationequip_11\excavationequip_11</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\pelican\headlight_02" tobone="bone_FXlight" syncanims="false"/>
+        </component>
+    </model>
+</visual>

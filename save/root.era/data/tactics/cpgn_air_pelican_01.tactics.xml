@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Action>
+        <Name>Transport</Name>
+        <ActionType>Transport</ActionType>
+    </Action>
+    <Action>
+        <Name>AvoidCollisionAir</Name>
+        <ActionType>AvoidCollisionAir</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+</TacticData>

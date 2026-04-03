@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\mtruckdestroyed_01\mtruckdestroyed_01</file>
+            </asset>
+            <point pointType="Cover" bone="Bone_attachpoint_01" pointData="Metal"/>
+            <point pointType="Cover" bone="Bone_attachpoint_04" pointData="Metal"/>
+            <point pointType="Cover" bone="Bone_attachpoint_03" pointData="Metal"/>
+            <point pointType="Cover" bone="Bone_attachpoint_05" pointData="Metal"/>
+            <point pointType="Cover" bone="Bone_attachpoint_02" pointData="Metal"/>
+            <point pointType="Cover" bone="Bone_attachpoint_06" pointData="Metal"/>
+        </component>
+    </model>
+</visual>

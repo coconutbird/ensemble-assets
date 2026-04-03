@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_damaged_01</file>
+                <damagefile>unsc\vehicle\rhino_01\rhino_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="bone_turret" frombone="bone_turret" syncanims="true"/>
+            <attach type="ModelRef" name="TreadFL" tobone="bone_tread_FL" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TreadFR" tobone="bone_tread_FR" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TreadML" tobone="bone_tread_ML" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TreadMR" tobone="bone_tread_MR" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TreadRL" tobone="bone_tread_RL" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TreadRR" tobone="bone_tread_RR" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\scorpion_trail" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\ArtilleryAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="bone_turret" syncanims="false"/>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_turret_01</file>
+            </asset>
+            <attach type="ModelRef" name="Cannon" tobone="bone_cannon" frombone="bone_cannon" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\artilleryAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Cannon">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_cannon_01</file>
+            </asset>
+            <point pointType="Launch" bone="bone_fx01" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\artilleryAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Lockdown">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_01</file>
+            </asset>
+            <attach type="ModelRef" name="LockdownTurret" tobone="bone_turret" frombone="bone_turret" syncanims="true"/>
+            <attach type="ModelRef" name="TreadFL" tobone="bone_tread_FL" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TreadFR" tobone="bone_tread_FR" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TreadML" tobone="bone_tread_ML" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TreadMR" tobone="bone_tread_MR" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="LockdownTreadRL" tobone="bone_tread_RL" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="LockdownTreadRR" tobone="bone_tread_RR" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LockdownArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\LockdownArtilleryAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="bone_turret" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="LockdownTurret">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_turret_01</file>
+            </asset>
+            <attach type="ModelRef" name="LockdownCannon" tobone="bone_cannon" frombone="bone_cannon" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LockdownArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\LockdownArtilleryAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="LockdownCannon">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_cannon_01</file>
+            </asset>
+            <point pointType="Launch" bone="bone_fx01" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LockdownArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\LockdownArtilleryAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TreadFL">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_treadFL_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\artilleryAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LockdownArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\LockdownArtilleryAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TreadFR">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_treadFR_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\artilleryAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LockdownArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\LockdownArtilleryAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TreadML">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_treadML_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\artilleryAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LockdownArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\LockdownArtilleryAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TreadMR">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_treadMR_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\artilleryAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LockdownArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\LockdownArtilleryAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TreadRL">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_treadRL_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\artilleryAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TreadRR">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_treadRR_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\artilleryAttack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="LockdownTreadRL">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_treadRL_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LockdownArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\LockdownArtilleryAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="LockdownTreadRR">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\rhino_01\rhino_treadRR_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_down_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_up_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LockdownArtilleryAttack" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\LockdownArtilleryAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>unsc\vehicle\rhino_01\anchor_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

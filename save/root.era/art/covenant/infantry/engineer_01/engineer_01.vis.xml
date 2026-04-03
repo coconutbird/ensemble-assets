@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\engineer_01\engineer_01</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+            <point pointType="Impact" bone="Bip01 Spine1" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 Head" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Forearm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Forearm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Calf" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Calf" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\engineer_01\idle_01</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="20">
+            <asset type="Anim">
+                <file>covenant\infantry\engineer_01\walk_01</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="20">
+            <asset type="Anim">
+                <file>covenant\infantry\engineer_01\jog_01</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="20">
+            <asset type="Anim">
+                <file>covenant\infantry\engineer_01\jog_01</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="5" tweenToAnimation="Gather">
+            <asset type="Anim">
+                <file>covenant\infantry\engineer_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Build" exitAction="Loop" tweenTime="5" tweenToAnimation="Build">
+            <asset type="Anim">
+                <file>covenant\infantry\engineer_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="5" tweenToAnimation="Build">
+            <asset type="Anim">
+                <file>covenant\infantry\engineer_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Heal" exitAction="Loop" tweenTime="5" tweenToAnimation="Build">
+            <asset type="Anim">
+                <file>covenant\infantry\engineer_01\repair_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Freeze" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\engineer_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

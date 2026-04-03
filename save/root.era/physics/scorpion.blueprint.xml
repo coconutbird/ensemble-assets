@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blueprint>
+    <mass>1000</mass>
+    <friction>1</friction>
+    <restitution>0.5</restitution>
+    <angularDamping>0.01</angularDamping>
+    <shape>scorpion</shape>
+</blueprint>

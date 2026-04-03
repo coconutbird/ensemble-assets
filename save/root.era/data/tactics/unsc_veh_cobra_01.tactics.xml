@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Artillery</Name>
+        <AttackRate>5</AttackRate>
+        <DamagePerSecond>172</DamagePerSecond>
+        <WeaponType>ArmorPiercing</WeaponType>
+        <Projectile>fx_proj_lightRailgun_01</Projectile>
+        <MaxRange>60</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>3</MaxDeviation>
+        <MovingAccuracy>0.1</MovingAccuracy>
+        <MovingMaxDeviation>5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LockdownArtillery</Name>
+        <AttackRate>5</AttackRate>
+        <DamagePerSecond>210</DamagePerSecond>
+        <WeaponType>ArmorPiercing</WeaponType>
+        <Projectile>fx_proj_Railgun_01</Projectile>
+        <MaxRange>120</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>5</MaxDeviation>
+        <Hardpoint>LockdownTurret</Hardpoint>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>UpgradedArtillery</Name>
+        <AttackRate>5</AttackRate>
+        <DamagePerSecond>172</DamagePerSecond>
+        <WeaponType>ArmorPiercing</WeaponType>
+        <Projectile>fx_proj_lightRailgun_02</Projectile>
+        <MaxRange>60</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>3</MaxDeviation>
+        <MovingAccuracy>0.1</MovingAccuracy>
+        <MovingMaxDeviation>5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <AOERadius>10</AOERadius>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>UpgradedLockdownArtillery</Name>
+        <AttackRate>5</AttackRate>
+        <DamagePerSecond>210</DamagePerSecond>
+        <WeaponType>ArmorPiercing</WeaponType>
+        <Projectile>fx_proj_Railgun_02</Projectile>
+        <MaxRange>120</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>5</MaxDeviation>
+        <Hardpoint>LockdownTurret</Hardpoint>
+        <AOERadius>15</AOERadius>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>ArtilleryAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Artillery</Weapon>
+    </Action>
+    <Action>
+        <Name>LockdownAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>LockdownArtillery</Weapon>
+    </Action>
+    <Action>
+        <Name>UpgradedArtilleryAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>UpgradedArtillery</Weapon>
+    </Action>
+    <Action>
+        <Name>UpgradedLockdownAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>UpgradedLockdownArtillery</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonPelican</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonPelican</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>LockdownMove</Name>
+        <ActionType>Move</ActionType>
+    </Action>
+    <Action>
+        <Name>Unlock</Name>
+        <ActionType>ChangeMode</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Deflect</Name>
+        <ActionType>Deflect</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

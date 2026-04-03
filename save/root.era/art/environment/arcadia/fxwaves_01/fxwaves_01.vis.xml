@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\fxdummy</file>
+            </asset>
+            <attach type="ParticleFile" name="environment\arcadia\fxwaves_01\Fx_wave_01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\shieldexterior\vacuum_01\vacuum_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\shieldworldEXT\vacuum_01" tobone="bone_fx01" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\shieldexterior\vacuum_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>environment\shieldexterior\vacuum_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>environment\shieldexterior\vacuum_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

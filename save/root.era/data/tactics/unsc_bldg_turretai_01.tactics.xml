@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>FlameMortar</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>25.5</DamagePerSecond>
+        <WeaponType>Fire</WeaponType>
+        <Projectile>fx_proj_flameMortar_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Hardpoint>AddOnTurret</Hardpoint>
+        <AOERadius>8</AOERadius>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">8</TargetPriority>
+        <TargetPriority type="TurretBuilding">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LightCannon1</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>187</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_lightCannon_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>5</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>1.5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">8</TargetPriority>
+        <TargetPriority type="Aircraft">5</TargetPriority>
+        <TargetPriority type="Turretbuilding">3</TargetPriority>
+        <TargetPriority type="building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LightCannon2</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>187</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_lightCannon_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>5</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>1.5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">8</TargetPriority>
+        <TargetPriority type="Aircraft">5</TargetPriority>
+        <TargetPriority type="Turretbuilding">3</TargetPriority>
+        <TargetPriority type="building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LightCannon3</Name>
+        <AttackRate>0.25</AttackRate>
+        <DamagePerSecond>187</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_lightCannon_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>5</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>1.5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">8</TargetPriority>
+        <TargetPriority type="Aircraft">5</TargetPriority>
+        <TargetPriority type="Turretbuilding">3</TargetPriority>
+        <TargetPriority type="building">1</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>FlameMortarAttackAction</Name>
+        <ActionType>SlaveTurretAttack</ActionType>
+        <Weapon>FlameMortar</Weapon>
+    </Action>
+    <Action>
+        <Name>LightCannon1AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>LightCannon1</Weapon>
+    </Action>
+    <Action>
+        <Name>LightCannon2AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>LightCannon2</Weapon>
+    </Action>
+    <Action>
+        <Name>LightCannon3AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>LightCannon3</Weapon>
+    </Action>
+</TacticData>

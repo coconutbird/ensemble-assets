@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>ShadeTurret</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>300</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_shadePlasma_02</Projectile>
+        <MaxRange>100</MaxRange>
+        <Hardpoint>ShadeTurret</Hardpoint>
+        <TargetPriority type="Aircraft">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>scarabBeam</Name>
+        <AttackRate>0.1</AttackRate>
+        <DamagePerSecond>1234.6</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_scarabBeam_01</Projectile>
+        <MaxRange>100</MaxRange>
+        <Hardpoint>Turret</Hardpoint>
+        <AOERadius>6</AOERadius>
+        <TargetPriority type="TurretBuilding">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">5</TargetPriority>
+        <TargetPriority type="Flying">2</TargetPriority>
+        <TargetPriority type="Infantry">1</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>ShadeTurretAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>ShadeTurret</Weapon>
+    </Action>
+    <Action>
+        <Name>scarabBeamAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>scarabBeam</Weapon>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>AvoidCollisionAir</Name>
+        <ActionType>AvoidCollisionAir</ActionType>
+    </Action>
+</TacticData>

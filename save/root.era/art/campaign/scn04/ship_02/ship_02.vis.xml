@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\escapeship_02\escapeship_damaged_02</file>
+                <damagefile>environment\arcadia\escapeship_01\escapeship_01</damagefile>
+            </asset>
+        </component>
+    </model>
+</visual>

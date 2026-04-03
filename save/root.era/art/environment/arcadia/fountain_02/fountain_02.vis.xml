@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\fountain_02\fountain_02</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bone_fx02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bone_fx03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bone_fx04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bone_fx05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bone_fx06" syncanims="false"/>
+        </component>
+    </model>
+</visual>

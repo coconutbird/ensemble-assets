@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\atomicblast_01\atomicblast_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\arcadia\atomicblast_01\atomicblast_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\arcadia\atomicblast_01\atomicblast_anim_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX06" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX08" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX09" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX10" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX11" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX12" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX13" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX14" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX15" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX16" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX17" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_donut_01" tobone="bone_FX18" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_center_01" tobone="bone_mushroomRoot" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_column_01" tobone="bone_main" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\impacts\artillery_impacts\atomic_impact_01" tobone="bone_main" syncanims="false"/>
+        </anim>
+    </model>
+</visual>

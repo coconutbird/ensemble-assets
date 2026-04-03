@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn02\detonator_01\detonator_damaged_01</file>
+                <damagefile>campaign\scn02\detonator_01\detonator_01</damagefile>
+            </asset>
+        </component>
+    </model>
+</visual>

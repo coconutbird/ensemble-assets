@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn02\methanestorage_01\methanestorage_damaged_01</file>
+                <damagefile>campaign\scn02\methanestorage_01\methanestorage_01</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn02\methanestorage_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\methanestorageTank_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\methanestorageTank_01" tobone="bone_FX02" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\building_death01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

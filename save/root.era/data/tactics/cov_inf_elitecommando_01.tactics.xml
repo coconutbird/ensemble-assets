@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Sword</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>144</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <MaxRange>3</MaxRange>
+        <Hardpoint>Torso</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">6</TargetPriority>
+        <TargetPriority type="TurretBuilding">3</TargetPriority>
+        <TargetPriority type="Building">2</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>SwordAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>Sword</Weapon>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonSpirit</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonSpirit</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Cloak</Name>
+        <ActionType>Cloak</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonHotDrop</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonHotDrop</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>ShieldAction</Name>
+        <ActionType>InfantryEnergyShield</ActionType>
+        <Duration>1</Duration>
+    </Action>
+</TacticData>

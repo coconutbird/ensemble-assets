@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>SwipMelee</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>50</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <MaxRange>2</MaxRange>
+    </Weapon>
+    <Weapon>
+        <Name>BashMelee</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>180</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <MaxRange>2</MaxRange>
+        <AOERadius>12</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>SwipMeleeAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>SwipMelee</Weapon>
+    </Action>
+    <Action>
+        <Name>BashMeleeAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>BashMelee</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>RoarAction</Name>
+        <ActionType>Roar</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+</TacticData>

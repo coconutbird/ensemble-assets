@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\hornet_damaged_01</file>
+                <damagefile>unsc\air\hornet_01\hornet_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="bone_turett01" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Turbine L" tobone="BoneLTurbine" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Turbine R" tobone="BoneRTurbine" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Rocket" tobone="BoneHornet" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="LeftWingmen" tobone="BoneWingMenLeftTurret" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="RightWingmen" tobone="BoneWingMenRightTurret" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="ChaffPod" tobone="BoneHornet" frombone="BoneHornet" syncanims="true"/>
+            <attach type="ModelRef" name="LeftWingmenBase" tobone="BoneWingMenLeftBase" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="RightWingmenBase" tobone="BoneWingMenRightBase" frombone="GrannyRootBone" syncanims="true"/>
+            <point pointType="Impact" bone="impactbone01" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone02" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone03" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone04" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone05" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone06" pointData="Metal"/>
+            <point pointType="Impact" bone="impactbone07" pointData="Metal"/>
+            <point pointType="Board" bone="BoneHornet" pointData="Metal"/>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_damaged_01</file>
+                        <damagefile>unsc\air\hornet_01\hornet_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_damaged_01</file>
+                        <damagefile>unsc\air\hornet_01\hornet_01</damagefile>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_damaged_01</file>
+                        <damagefile>unsc\air\hornet_01\hornet_01</damagefile>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="20" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_05</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack" exitAction="Loop" tweenTime="0" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\machinegun_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Prefire" exitAction="Transition" tweenTime="5" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\machinegun_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Postfire" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\machinegun_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="20">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Cinematic" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="RocketAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="RocketAttack">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="20" tweenToAnimation="Walk">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="20" tweenToAnimation="Jog">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="20" tweenToAnimation="Run">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="RocketAttackLeft" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\wingmen\assaultrifle_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="RocketAttackRight" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\wingmen\assaultrifle_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpecialRocketAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RocketAttack">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\specialRocketAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpartanHornetJack" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_hornet_hijack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Loop" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\evadeLeft_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeRight" exitAction="Loop" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\evadeRight_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\hornet_mg_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_mg_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_mg_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_mg_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="MachinegunAttack" exitAction="Loop" tweenTime="0" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\machinegun_attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hornet\chaingunmuzzle_02" tobone="bonelaunchpoint04" syncanims="false"/>
+        </anim>
+        <anim type="Prefire" exitAction="Transition" tweenTime="5" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\machinegun_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Postfire" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\machinegun_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Rocket">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\hornet_rpg_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_rpg_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_rpg_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_rpg_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="RocketAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="RocketAttack">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpecialRocketAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RocketAttack">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\specialRocketAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turbine L">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\hornet_l_turbine_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hornet\rotorL_01" tobone="BoneFX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hornet\thrust_01" tobone="BoneFX02" syncanims="false"/>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_l_turbine_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_l_turbine_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_l_turbine_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Jog" exitAction="Loop" tweenTime="20" tweenToAnimation="Jog">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hornet\thrustBig_01" tobone="BoneFX02" syncanims="false"/>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="20" tweenToAnimation="Run">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hornet\thrustBig_01" tobone="BoneFX02" syncanims="false"/>
+        </anim>
+    </model>
+    <model name="Turbine R">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\hornet_r_turbine_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hornet\rotorR_01" tobone="BoneFX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hornet\thrust_01" tobone="BoneFX01" syncanims="false"/>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_r_turbine_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_r_turbine_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_r_turbine_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Walk" exitAction="Loop" tweenTime="20" tweenToAnimation="Walk">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="20" tweenToAnimation="Jog">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\idle_04</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hornet\thrustBig_01" tobone="BoneFX01" syncanims="false"/>
+        </anim>
+    </model>
+    <model name="RightWingmenBase">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\wingmen\wingmenbase_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\wingmen\wingmenbase_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\wingmen\wingmenbase_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="RightWingmen">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\wingmen\wingmenturret_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\wingmen\wingmenturret_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\wingmen\wingmenturret_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="RocketAttackRight" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\wingmen\assaultrifle_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="LeftWingmenBase">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\wingmen\wingmenbase_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\wingmen\wingmenbase_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\wingmen\wingmenbase_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="LeftWingmen">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\wingmen\wingmenturret_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\wingmen\wingmenturret_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\wingmen\wingmenturret_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="RocketAttackLeft" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\wingmen\assaultrifle_attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="ChaffPod">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hornet_01\hornet_chaff_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_hornet_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>unsc\air\hornet_01\hornet_chaff_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_hornet_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="EvadeLeft" exitAction="Loop" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\evadeLeft_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeRight" exitAction="Loop" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\air\hornet_01\evadeRight_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

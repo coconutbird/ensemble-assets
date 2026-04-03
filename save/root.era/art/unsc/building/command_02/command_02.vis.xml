@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\command_damaged_01</file>
+                <damagefile>unsc\building\command_01\command_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Hatch" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Cover" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelFile" name="unsc\building\command_01\commandBase_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <point pointType="Impact" bone="bone_impact_00" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_04" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_05" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_06" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_07" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_08" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_09" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_10" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_11" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_12" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\lockdown_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\unlock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Research" exitAction="Loop" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_air_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\commandcenter\blueblinkingLight_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\commandcenter\blueblinkingLight_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\commandcenter\blueblinkingLight_01" tobone="bone_FX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\commandcenter\blueblinkingLight_01" tobone="bone_FX04" syncanims="false"/>
+        </anim>
+        <anim type="TrainInfantry" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_infantry_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="LightFile" name="effects\building_FX\unsc\commandcenter\spawnFrontLights_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="TrainVehicles" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_vehicles_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="LightFile" name="effects\building_FX\unsc\commandcenter\spawnFrontLights_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="TrainAir" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_air_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\commandcenter\yellowblinkingLight_01" tobone="bone_FX05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\commandcenter\yellowblinkingLight_01" tobone="bone_FX06" syncanims="false"/>
+        </anim>
+    </model>
+    <model name="Cover">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\command_cover_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="deathObject" tobone="GrannyRootBone" frombone="bone_main" syncanims="true"/>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\lockdown_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\unlock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TrainInfantry" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_infantry_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TrainVehicles" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_vehicles_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TrainAir" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_air_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Hatch">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\command_hatch_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="deathObject" tobone="GrannyRootBone" frombone="bone_main" syncanims="true"/>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\lockdown_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\unlock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TrainInfantry" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_infantry_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TrainVehicles" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_vehicles_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TrainAir" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\train_air_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Lockdown">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\command_damaged_01</file>
+                <damagefile>unsc\building\command_01\command_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Hatch" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="LockdownCover" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelFile" name="unsc\building\command_01\commandBase_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\lockdown_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\lockdown_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="deathObject" tobone="GrannyRootBone" frombone="bone_main" syncanims="true"/>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\lockdown_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\unlock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="LockdownCover">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\command_cover_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\lockdown_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\lockdown_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="deathObject" tobone="GrannyRootBone" frombone="bone_main" syncanims="true"/>
+        </anim>
+        <anim type="AnchorDown" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\lockdown_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AnchorUp" exitAction="Freeze" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\command_01\unlock_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_Building">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\command_damaged_01</file>
+                <damagefile>unsc\building\command_01\command_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Con1_Cover" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con1_Hatch" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelFile" name="unsc\building\command_01\command_base_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Con1_Helper" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con1_BuildPod" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Con1_Foundation" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\constructionIdle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="deathObject" tobone="GrannyRootBone" frombone="bone_main" syncanims="true"/>
+        </anim>
+    </model>
+    <model name="Con1_Cover">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\command_cover_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\constructionIdle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_Hatch">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\command_hatch_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\constructionIdle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_BuildPod">
+        <component>
+            <asset type="Model">
+                <file>unsc\constructor\buildpod_01\buildpod_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\generic\podFWDthrusters_01" tobone="BoneFX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\generic\podFWDthrusters_01" tobone="BoneFX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\generic\podFWDthrusters_01" tobone="BoneFX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\generic\podFWDthrusters_01" tobone="BoneFX04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\generic\podRetrothrusters_01" tobone="BoneFXFR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\generic\podRetrothrusters_01" tobone="BoneFXRL" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\generic\podRetrothrusters_01" tobone="BoneFXRR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\generic\podRetrothrusters_01" tobone="BoneFXFL" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\PodIdle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_Foundation">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\foundation_05</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\constructionIdle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con_Socket">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\socket_01\socket_01</file>
+            </asset>
+            <attach type="ModelFile" name="unsc\building\socket_01\socketTrim_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\constructionIdle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con_TurretSocket">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turretSocket_01\turretSocket_01</file>
+            </asset>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocketTrim_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\constructionIdle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_Helper">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\command_01\command_conHelper_01</file>
+            </asset>
+            <attach type="ModelRef" name="Con_Socket" tobone="BoneSocket01" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con_Socket" tobone="BoneSocket02" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con_Socket" tobone="BoneSocket03" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con_Socket" tobone="BoneSocket04" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con_Socket" tobone="BoneSocket05" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con_TurretSocket" tobone="BoneTurret02" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con_TurretSocket" tobone="BoneTurret03" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con_TurretSocket" tobone="BoneTurret00" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Con_TurretSocket" tobone="BoneTurret01" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\conHelper_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\command_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

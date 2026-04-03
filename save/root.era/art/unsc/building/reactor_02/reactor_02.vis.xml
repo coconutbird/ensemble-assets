@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\reactor_02\reactor_damage_02</file>
+                <damagefile>unsc\building\reactor_02\reactor_02</damagefile>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\powerfacility\single_thruster_stack_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\powerfacility\single_thruster_stack_01" tobone="bone_fx02" syncanims="false"/>
+            <attach type="ModelFile" name="unsc\building\socket_01\socketTrim_01" syncanims="false"/>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_04" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_05" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_06" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_07" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_08" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_09" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_10" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\reactor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\reactor_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

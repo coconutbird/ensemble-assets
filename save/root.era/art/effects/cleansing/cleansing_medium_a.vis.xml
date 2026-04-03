@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\cleansing\cleansing_a</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\cleansing\cleansing_a_idle</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

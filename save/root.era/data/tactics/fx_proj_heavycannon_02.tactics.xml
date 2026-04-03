@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Cannon</Name>
+        <DamagePerSecond>0</DamagePerSecond>
+        <WeaponType>Cannon</WeaponType>
+        <Projectile>fx_proj_heavyCannon_02</Projectile>
+        <MaxRange>50</MaxRange>
+        <Accuracy>0.33</Accuracy>
+        <MaxDeviation>4</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>6</MovingMaxDeviation>
+        <AOERadius>4</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>GenericInfoAttackAction</Name>
+        <Weapon>Cannon</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

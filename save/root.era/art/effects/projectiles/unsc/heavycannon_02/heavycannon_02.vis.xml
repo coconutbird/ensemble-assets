@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Particle">
+                <file>effects\projectiles\unsc\heavyCannon_02\heavyCannon_02</file>
+            </asset>
+            <attach type="LightFile" name="effects\projectiles\unsc\heavyCannon_02\heavyCannon_light_02" syncanims="false"/>
+        </component>
+    </model>
+</visual>

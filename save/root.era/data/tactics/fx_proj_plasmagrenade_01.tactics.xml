@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Grenade</Name>
+        <DamagePerSecond>0</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_plasmaGrenade_01</Projectile>
+        <MaxRange>20</MaxRange>
+        <AOERadius>3</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>GenericInfoAttackAction</Name>
+        <Weapon>Grenade</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

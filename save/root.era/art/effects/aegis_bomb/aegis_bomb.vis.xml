@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\Aegis_bomb\bomb_mesh_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\Aegis_bomb\bomb_impact" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="0" tweenToAnimation="research">
+            <asset type="Anim">
+                <file>effects\Aegis_bomb\bomb_impact_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\Aegis_bomb\bomb_death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

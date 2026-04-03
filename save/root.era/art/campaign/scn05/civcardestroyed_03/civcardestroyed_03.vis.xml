@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn05\civcardestroyed_03\civcardestroyed_03</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_02" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

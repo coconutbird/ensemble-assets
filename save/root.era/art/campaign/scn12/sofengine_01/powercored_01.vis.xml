@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn12\sofengine_01\powercore_damaged_01</file>
+                <damagefile>campaign\scn12\sofengine_01\powercore_01</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_threeseconds</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

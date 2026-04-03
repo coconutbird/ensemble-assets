@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\projectiles\unsc\artillery_03\artillery_03</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\projectiles\unsc\artillery_01\artillery_01" tobone="bone_projectile" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\projectiles\unsc\artillery_01\artillery_spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

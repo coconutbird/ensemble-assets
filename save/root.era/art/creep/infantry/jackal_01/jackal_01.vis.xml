@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>creep\infantry\jackal_01\jackal_01</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\idle_01</file>
+                <weight>40</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\idle_02</file>
+                <weight>60</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\walk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\jog_nodshield_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\jog_nodshield_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\jog_nodshield_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\run_nodshield_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\evade_left_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeRight" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\evade_right_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PlasmaPistolAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="PlasmaPistolAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\attack_01</file>
+                <weight>60</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\attack_02</file>
+                <weight>15</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\attack_03</file>
+                <weight>50</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\attack_04</file>
+                <weight>95</weight>
+            </asset>
+        </anim>
+        <anim type="PlasmaPistolReload" exitAction="Transition" tweenTime="5" tweenToAnimation="PlasmaPistolAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\combat_action_01</file>
+                <weight>60</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\combat_action_02</file>
+                <weight>60</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\combat_action_03</file>
+                <weight>60</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ClamShell" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\clamshell_01_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\clamshell_01_2</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\clamshell_02_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\clamshell_02_2</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Stunned" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\stunned_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PlasmaGrenadeAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\grenade_attack_01</file>
+                <weight>60</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_ArbiterJackal_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_01b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_02b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_03b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_04b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_05b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_06b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_07b</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_EliteJackal_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_elitejackal_01b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_elitejackal_02b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_05b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_07b</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

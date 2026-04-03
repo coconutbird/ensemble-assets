@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Bomb</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>6000</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_artillery_01</Projectile>
+        <AOERadius>15</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>DetonateDeath</Name>
+        <ActionType>Detonate</ActionType>
+        <Weapon>Bomb</Weapon>
+        <Duration>0.5</Duration>
+    </Action>
+</TacticData>

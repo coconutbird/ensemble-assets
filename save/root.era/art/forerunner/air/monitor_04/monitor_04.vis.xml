@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>forerunner\air\monitor_04\monitor_damaged_04</file>
+                <damagefile>forerunner\air\monitor_04\monitor_04</damagefile>
+            </asset>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_04" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_05" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_01</file>
+                <weight>40</weight>
+            </asset>
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_02</file>
+                <weight>40</weight>
+            </asset>
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_03</file>
+                <weight>10</weight>
+            </asset>
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_04</file>
+                <weight>10</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="RangedAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Heal" exitAction="Transition" tweenTime="5" tweenToAnimation="Heal">
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\medic\medicheal_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\medic\medicheal_02" tobone="Bip01 L Hand" syncanims="false"/>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\idle_04</file>
+                <weight>10</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>forerunner\air\monitor_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

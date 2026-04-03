@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="model_1">
+    <model name="model_1">
+        <component>
+            <asset type="Model">
+                <file>effects\fx_dummy</file>
+            </asset>
+        </component>
+    </model>
+</visual>

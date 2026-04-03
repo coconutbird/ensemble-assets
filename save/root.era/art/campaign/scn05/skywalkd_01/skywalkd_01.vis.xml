@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn05\skywalkd_01\skywalkd_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="BoneAttachpoint_01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="BoneAttachpoint_02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="BoneAttachpoint_03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="BoneAttachpoint_04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="BoneAttachpoint_05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="BoneAttachpoint_06" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="BoneAttachpoint_07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\SmokeFire_looping_01" tobone="BoneAttachpoint_08" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\SmokeFire_looping_01" tobone="BoneAttachpoint_04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\smokecolumn_looping_01" tobone="BoneAttachpoint_08" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\smokecolumn_looping_01" tobone="BoneAttachpoint_04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\SmokeFire_looping_01" tobone="BoneAttachpoint_02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\smokecolumn_looping_01" tobone="BoneAttachpoint_02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\SmokeFire_looping_01" tobone="BoneAttachpoint_09" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\smokecolumn_looping_01" tobone="BoneAttachpoint_09" syncanims="false"/>
+        </component>
+    </model>
+</visual>

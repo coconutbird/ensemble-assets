@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>PlasmaMortar</Name>
+        <DamagePerSecond>0</DamagePerSecond>
+        <WeaponType>HeavyPlasma</WeaponType>
+        <Projectile>fx_proj_plasmaMortar_01</Projectile>
+        <MaxRange>100</MaxRange>
+        <Accuracy>0</Accuracy>
+        <MaxDeviation>6</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>18</MovingMaxDeviation>
+        <AOERadius>5</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>GenericInfoAttackAction</Name>
+        <Weapon>PlasmaMortar</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

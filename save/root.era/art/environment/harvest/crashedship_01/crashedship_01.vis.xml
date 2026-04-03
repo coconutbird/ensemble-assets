@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\crashedship_01\crashedship_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\crashedcovfirelarge_01" tobone="bone_main" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\flamingstreamers_01" tobone="bone_fx01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

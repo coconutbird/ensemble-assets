@@ -192,7 +192,10 @@ fn main() {
 
             // 1b. Scenario descriptions
             if !world.scenario_list.scenarios.is_empty() {
-                println!("\nWriting scenario descriptions ({} scenarios)...", world.scenario_list.scenarios.len());
+                println!(
+                    "\nWriting scenario descriptions ({} scenarios)...",
+                    world.scenario_list.scenarios.len()
+                );
                 match world.scenario_list.to_document() {
                     Ok(doc) => {
                         let path = pipeline::hw1::scenario::ScenarioList::GAME_PATH;
@@ -246,8 +249,7 @@ fn main() {
                 world.tactics.len()
             );
             for (obj_name, tac) in &world.tactics {
-                if let Some(tac_path) =
-                    world.assets.get(obj_name).and_then(|a| a.tactics.as_ref())
+                if let Some(tac_path) = world.assets.get(obj_name).and_then(|a| a.tactics.as_ref())
                 {
                     match pipeline::database::hw1::tactics::to_document(tac) {
                         Ok(doc) => match write_doc(&src, tac_path, &doc) {

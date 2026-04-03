@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\ftruck_01\ftruck_01</file>
+            </asset>
+            <attach type="LightFile" name="environment\arcadia\ftruck_01\ftruck_lights_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="LightFile" name="environment\arcadia\ftruck_01\ftruck_lights_01" tobone="bone_fx02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\redstrobelights_01" tobone="bone_fx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\redstrobelights_01" tobone="bone_fx02" syncanims="false"/>
+        </component>
+    </model>
+</visual>

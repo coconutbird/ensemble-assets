@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn07\powersource_01\powersource_damaged_01</file>
+                <damagefile>campaign\scn07\powersource_01\powersource_01</damagefile>
+            </asset>
+            <point pointType="Impact" bone="bone_impact_04" pointData="Metal"/>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Particle">
+                <file>effects\projectiles\Beam\scarab_beam\scarabbeam_tail</file>
+            </asset>
+            <attach type="LightFile" name="effects\projectiles\Beam\scarab_beam\targetlight_01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

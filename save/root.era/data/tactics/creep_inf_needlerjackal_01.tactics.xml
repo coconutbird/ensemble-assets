@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>InCoverNeedler</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>18</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_needler_01</Projectile>
+        <MaxRange>60</MaxRange>
+        <TargetPriority type="Infantry">10</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>Needler</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>18</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_needler_01</Projectile>
+        <MaxRange>25</MaxRange>
+        <TargetPriority type="Infantry">10</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>InCoverNeedlerAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>InCoverNeedler</Weapon>
+    </Action>
+    <Action>
+        <Name>NeedlerAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>Needler</Weapon>
+    </Action>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>Capture</Name>
+        <ActionType>Capture</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonSpirit</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonSpirit</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+</TacticData>

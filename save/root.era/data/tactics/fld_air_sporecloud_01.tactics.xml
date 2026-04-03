@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Action>
+        <Name>InfectAction</Name>
+        <ActionType>Infect</ActionType>
+    </Action>
+    <Action>
+        <Name>WanderAction</Name>
+        <ActionType>Wander</ActionType>
+    </Action>
+</TacticData>

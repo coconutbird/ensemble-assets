@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WeaponTypes>
+    <WeaponType>
+        <Name>Basic</Name>
+        <DamageModifier type="Light" rating="1">1</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.25</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1</DamageModifier>
+        <DamageModifier type="Medium" rating="1">1</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">1</DamageModifier>
+        <DamageModifier type="Building" rating="1">1</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>LeaderPower</Name>
+        <DamageModifier type="Light" rating="1">1</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.25</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">0.5</DamageModifier>
+        <DamageModifier type="Medium" rating="1">1</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">1</DamageModifier>
+        <DamageModifier type="Building" rating="1">0.5</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">0.5</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>AntiInfantry</Name>
+        <DeathAnimation>DeathByHeadshot</DeathAnimation>
+        <DamageModifier type="Light" rating="1">4</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">1.7</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">3</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">2.6</DamageModifier>
+        <DamageModifier type="Medium" rating="1">0.4</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">0.4</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">0.2</DamageModifier>
+        <DamageModifier type="Building" rating="1">0.2</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>Fire</Name>
+        <DeathAnimation>DeathByFire</DeathAnimation>
+        <DamageModifier type="Light" rating="1">3</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">2</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">2</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">2</DamageModifier>
+        <DamageModifier type="Medium" rating="1">0.4</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">0</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">0.2</DamageModifier>
+        <DamageModifier type="Building" rating="1">0.4</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1.5</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>SmallArms</Name>
+        <DeathAnimation>DeathByMachinegun</DeathAnimation>
+        <DamageModifier type="Light" rating="1">1.6</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.2</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1.2</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1.2</DamageModifier>
+        <DamageModifier type="Medium" rating="1">1.2</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">0.4</DamageModifier>
+        <DamageModifier type="Building" rating="1">0.4</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1.2</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>AASmallArms</Name>
+        <DeathAnimation>DeathByMachinegun</DeathAnimation>
+        <DamageModifier type="Light" rating="1">1.6</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.2</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1.2</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1.2</DamageModifier>
+        <DamageModifier type="Medium" rating="1">1.2</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1.8</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">0.4</DamageModifier>
+        <DamageModifier type="Building" rating="1">0.4</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1.2</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>ArmorPiercing</Name>
+        <DeathAnimation>DeathByMelee</DeathAnimation>
+        <DamageModifier type="Light" rating="1">0.8</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.2</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1</DamageModifier>
+        <DamageModifier type="Medium" rating="1">3</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1.8</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">3</DamageModifier>
+        <DamageModifier type="Building" rating="1">1.2</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>FuelRod</Name>
+        <DamageModifier type="Light" rating="1">0.8</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.2</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1</DamageModifier>
+        <DamageModifier type="Medium" rating="1">3</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1.8</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">3</DamageModifier>
+        <DamageModifier type="Building" rating="1">0.8</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>BansheeFuelRod</Name>
+        <DamageModifier type="Light" rating="1">0.8</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.2</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1</DamageModifier>
+        <DamageModifier type="Medium" rating="1">2.4</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1.8</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">3</DamageModifier>
+        <DamageModifier type="Building" rating="1">1.4</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>AntiAir</Name>
+        <DamageModifier type="Light" rating="1">1.2</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.3</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1.2</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1.2</DamageModifier>
+        <DamageModifier type="Medium" rating="1">1</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">3</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">0.6</DamageModifier>
+        <DamageModifier type="Building" rating="1">0.6</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>Explosive</Name>
+        <DamageModifier type="Light" rating="1">1.2</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.3</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1.4</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1.4</DamageModifier>
+        <DamageModifier type="Medium" rating="1">1.5</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">1.5</DamageModifier>
+        <DamageModifier type="Building" rating="1">1.3</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>Missile</Name>
+        <DamageModifier type="Light" rating="1">1</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.25</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1</DamageModifier>
+        <DamageModifier type="Medium" rating="1">1.1</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1.1</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">2.6</DamageModifier>
+        <DamageModifier type="Building" rating="1">1</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>Grenade</Name>
+        <DamageModifier type="Light" rating="1">0.8</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.4</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">0.6</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">0.6</DamageModifier>
+        <DamageModifier type="Medium" rating="1">2</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">0.8</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">1.2</DamageModifier>
+        <DamageModifier type="Building" rating="1">1.6</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>Beam</Name>
+        <DeathAnimation>DeathByFire</DeathAnimation>
+        <DamageModifier type="Light" rating="1">0.8</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.2</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">0.8</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">0.8</DamageModifier>
+        <DamageModifier type="Medium" rating="1">0.8</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">0.8</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">0.8</DamageModifier>
+        <DamageModifier type="Building" rating="1">2</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">2</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>WarthogRam</Name>
+        <DamageModifier type="Light" rating="1" reflectDamageFactor="0.3" bowlable="true">2</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1" reflectDamageFactor="0" bowlable="false">0</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1" reflectDamageFactor="0.4" bowlable="true">2</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1" reflectDamageFactor="0.8" rammable="true">1.5</DamageModifier>
+        <DamageModifier type="Medium" rating="1" reflectDamageFactor="0.8" rammable="true">0.8</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1</DamageModifier>
+        <DamageModifier type="Heavy" rating="1" reflectDamageFactor="2" rammable="true">0.6</DamageModifier>
+        <DamageModifier type="Building" rating="1" reflectDamageFactor="3" rammable="true">0.4</DamageModifier>
+        <DamageModifier type="Shielded" rating="1" reflectDamageFactor="0.2" rammable="true">1.8</DamageModifier>
+        <DamageModifier type="Flood" rating="1" reflectDamageFactor="1" rammable="true">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>GaussCannon</Name>
+        <DamageModifier type="Light" rating="1">1.6</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.2</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1.4</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1.4</DamageModifier>
+        <DamageModifier type="Medium" rating="1">1.2</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">1.8</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">0.6</DamageModifier>
+        <DamageModifier type="Building" rating="1">0.6</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1.2</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+    <WeaponType>
+        <Name>BruteShot</Name>
+        <DamageModifier type="Light" rating="1">1</DamageModifier>
+        <DamageModifier type="LightInCover" rating="1">0.25</DamageModifier>
+        <DamageModifier type="LightArmored" rating="1">1</DamageModifier>
+        <DamageModifier type="CovenantLeader" rating="1">1</DamageModifier>
+        <DamageModifier type="Medium" rating="1">1.2</DamageModifier>
+        <DamageModifier type="MediumAir" rating="1">0.8</DamageModifier>
+        <DamageModifier type="Heavy" rating="1">1</DamageModifier>
+        <DamageModifier type="Building" rating="1">0.8</DamageModifier>
+        <DamageModifier type="Shielded" rating="1">1</DamageModifier>
+        <DamageModifier type="Flood" rating="1">1</DamageModifier>
+    </WeaponType>
+</WeaponTypes>

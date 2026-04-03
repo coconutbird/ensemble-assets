@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>FloodMelee</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>0</DamagePerSecond>
+        <WeaponType>AntiInfantry</WeaponType>
+        <MaxRange>50</MaxRange>
+    </Weapon>
+    <Action>
+        <Name>FloodMeleeAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>FloodMelee</Weapon>
+    </Action>
+</TacticData>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Wave</Name>
+        <DamagePerSecond>750</DamagePerSecond>
+        <WeaponType>leaderPower</WeaponType>
+        <Projectile>pow_proj_wave_explode_01</Projectile>
+        <AOERadius>20</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>WaveAttackAction</Name>
+        <Weapon>Wave</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Action>
+        <Name>Deflect</Name>
+        <ActionType>Deflect</ActionType>
+    </Action>
+</TacticData>

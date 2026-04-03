@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<physics>
+    <blueprint>gremlin</blueprint>
+    <ThrownByProjectiles>true</ThrownByProjectiles>
+    <Vehicle>gremlin
+      
+   </Vehicle>
+    <CenterOffset>0,1.9,0</CenterOffset>
+    <TerrainEffects>effects\terraineffects\cobra_physics</TerrainEffects>
+</physics>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>InfantryMelee</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>700</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>30</MaxRange>
+        <AOERadius>3</AOERadius>
+    </Weapon>
+    <Weapon>
+        <Name>VehicleMelee</Name>
+        <DamagePerSecond>700</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>30</MaxRange>
+    </Weapon>
+    <Action>
+        <Name>Dormant</Name>
+        <ActionType>TentacleDormant</ActionType>
+    </Action>
+    <Action>
+        <Name>InfantryMeleeAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>InfantryMelee</Weapon>
+    </Action>
+    <Action>
+        <Name>VehicleMeleeAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>VehicleMelee</Weapon>
+    </Action>
+</TacticData>

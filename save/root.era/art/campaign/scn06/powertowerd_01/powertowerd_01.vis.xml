@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn06\powertowerd_01\powertowerd_01</file>
+            </asset>
+            <attach type="ModelRef" name="model_2" tobone="Bone01" frombone="Bone01" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn06\powertowerd_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="model_2">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn06\powertowerd_01\cables</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn06\powertowerd_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\wraith_01\wraith_damaged_01</file>
+                <damagefile>covenant\vehicle\wraith_01\wraith_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Mortar" tobone="Bone Wraith Turret" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Turret" tobone="Bone Wraith PlasmaTurret" frombone="GrannyRootBone" syncanims="true"/>
+            <point pointType="Board" bone="BoneSpartan" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_03" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="20">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\wraith_dust" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="20">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\wraith_dust" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="PlasmaCannonAttack" exitAction="Loop" tweenTime="3">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\wraith_dust" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="PlasmaMortarAttack" exitAction="Transition" tweenTime="20" tweenToAnimation="PlasmaMortarAttack">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\mortarAttack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\mortarAttack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\mortarAttack_03</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\wraith_dust" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="20">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="Bone Wraith" syncanims="false"/>
+            <attach type="TerrainEffect" name="effects\terraineffects\wraith_dust" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="SpartanWraithJack" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_wraith_jack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Elite" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="TerrainEffect" name="effects\terraineffects\wraith_dust" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="PlasmaMortarBurnAttack" exitAction="Loop" tweenTime="20" tweenToAnimation="PlasmaMortarBurnAttack">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\specialAttack_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\wraith_dust" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Mortar">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\wraith_01\turret</file>
+            </asset>
+            <point pointType="Pickup" bone="Bone Wraith Turret" pointData="Metal"/>
+        </component>
+        <anim type="PlasmaMortarAttack" exitAction="Transition" tweenTime="20" tweenToAnimation="PlasmaMortarAttack">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\mortarAttack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\mortarAttack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\mortarAttack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PlasmaMortarBurnAttack" exitAction="Loop" tweenTime="20" tweenToAnimation="PlasmaMortarBurnAttack">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\specialAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\wraith_01\plasmaturret</file>
+            </asset>
+            <point pointType="Impact" bone="Bone Wraith PlasmaTurret" pointData="Metal"/>
+        </component>
+        <anim type="PlasmaCannonAttack" exitAction="Loop" tweenTime="3">
+            <asset type="Anim">
+                <file>covenant\vehicle\wraith_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Elite">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\elite_01\elite_01</file>
+            </asset>
+        </component>
+        <anim type="SpartanWraithJack" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_wraithdriver_jack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

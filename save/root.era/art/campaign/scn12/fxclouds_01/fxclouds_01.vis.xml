@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\shieldinterior\clouds_01\clouds_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\SCN12cloudParent" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\ghost_01\ghost_damaged_01</file>
+                <damagefile>covenant\vehicle\ghost_01\ghost_01</damagefile>
+            </asset>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_04" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_05" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact_06" pointData="Metal"/>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+            <point pointType="Board" bone="Bone Seat" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\ghost_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\ghost_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\ghost_hover" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Run" exitAction="Transition" tweenTime="5" tweenToAnimation="Run">
+            <asset type="Anim">
+                <file>covenant\vehicle\ghost_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\ghost_hover" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="LightFile" name="effects\vehicle_fx\cov\ghost\boostlight_01" tobone="bone_ghost" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\ghost\boostglow_01" tobone="Bone Wing" syncanims="false"/>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\ghost_01\evade_left_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\ghost_hover" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="LightFile" name="effects\vehicle_fx\cov\ghost\boostlight_01" tobone="bone_ghost" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\ghost\boostglow_01" tobone="Bone Wing" syncanims="false"/>
+        </anim>
+        <anim type="EvadeRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\ghost_01\evade_right_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\ghost_hover" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="LightFile" name="effects\vehicle_fx\cov\ghost\boostlight_01" tobone="bone_ghost" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\ghost\boostglow_01" tobone="Bone Wing" syncanims="false"/>
+        </anim>
+        <anim type="PlasmaCannonAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\ghost_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\ghost_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\ghost_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\vehicle\ghost_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="SpartanGhostJack" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_ghost_jack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_ghost_jack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Freeze" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

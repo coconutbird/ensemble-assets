@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Particle">
+                <file>effects\projectiles\unsc\spartanlaser_01\spartanlaser_01</file>
+            </asset>
+            <attach type="LightFile" name="effects\projectiles\unsc\cannon_01\cannon_light_01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

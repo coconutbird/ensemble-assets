@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <logic type="Variation">
+                <logicdata value="v1" weight="1">
+                    <asset type="Model">
+                        <file>resource\supplies\crate_01\crate_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="v3" weight="1">
+                    <asset type="Model">
+                        <file>resource\supplies\crate_01\crate_03</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="v4" weight="1">
+                    <asset type="Model">
+                        <file>resource\supplies\crate_01\crate_04</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="v1" weight="1">
+                    <asset type="Model">
+                        <file>resource\supplies\crate_01\crate_05</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="v2" weight="1">
+                    <asset type="Model">
+                        <file>resource\supplies\crate_01\crate_02</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\tunnel_01\tunnel_01</file>
+            </asset>
+            <attach type="ParticleFile" name="environment\arcadia\tunnel_01\tunnel_waterfall_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

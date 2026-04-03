@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hawk_01\hawk_damaged_01</file>
+                <damagefile>unsc\air\hawk_01\hawk_01</damagefile>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hawk\idle_01" tobone="BoneBody" syncanims="false"/>
+            <attach type="ModelRef" name="Laser" tobone="BoneBody" frombone="BoneBody" syncanims="true"/>
+            <attach type="ModelRef" name="TurbineR" tobone="BoneRTurbine" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TurbineL" tobone="BoneLTurbine" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="MachineGunR" tobone="BoneRGun" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="MachineGunL" tobone="BoneLGun" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="ChaffPod" tobone="BoneTail" frombone="GrannyRootBone" syncanims="true"/>
+            <point pointType="Board" bone="BoneSpartan" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\hawk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="LaserAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\cannonAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttackL" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\mgAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttackR" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\mgAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpartanHawkJack" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_hawk_hijack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\evadeLeft_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\evadeRight_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Laser">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hawk_01\hawk_rail_gun_01</file>
+            </asset>
+        </component>
+        <anim type="LaserAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\cannonAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TurbineR">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hawk_01\hawk_r_turbine_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hawk\rotor_01" tobone="BoneRotorFxR" syncanims="false"/>
+        </component>
+    </model>
+    <model name="TurbineL">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hawk_01\hawk_l_turbine_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\hawk\rotor_01" tobone="BoneRotorFxL" syncanims="false"/>
+        </component>
+    </model>
+    <model name="MachineGunR">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hawk_01\hawk_r_mg_01</file>
+            </asset>
+        </component>
+        <anim type="MachinegunAttackR" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\mgAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="MachineGunL">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\hawk_01\hawk_l_mg_01</file>
+            </asset>
+        </component>
+        <anim type="MachinegunAttackL" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\mgAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="ChaffPod">
+        <component>
+            <asset type="Model">
+                <file>effects\fx_dummy</file>
+            </asset>
+        </component>
+        <anim type="EvadeLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\evadeLeft_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\air\hawk_01\evadeRight_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

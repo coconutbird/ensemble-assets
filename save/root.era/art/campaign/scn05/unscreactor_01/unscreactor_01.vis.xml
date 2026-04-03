@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn05\unscreactor_01\unscreactor_01</file>
+            </asset>
+            <point pointType="Cover" bone="bone_sniperpoint01" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint02" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint03" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint04" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint05" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint06" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn05\unscreactor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Lockdown">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn05\unscreactor_01\unscreactor_01</file>
+            </asset>
+            <point pointType="Cover" bone="bone_sniperpoint01" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint02" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint03" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint04" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint05" pointData="Metal"/>
+            <point pointType="Cover" bone="bone_sniperpoint06" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>campaign\scn05\unscreactor_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\powerfacility\single_thruster_stack_01" tobone="bone_fx02" syncanims="false"/>
+        </anim>
+    </model>
+</visual>

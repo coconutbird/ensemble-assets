@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Action>
+        <Name>PlasmaShieldGen</Name>
+        <ActionType>PlasmaShieldGen</ActionType>
+        <Duration>5</Duration>
+    </Action>
+</TacticData>

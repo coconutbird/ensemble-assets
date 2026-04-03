@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turret_01\turretbase_damaged_01</file>
+                <damagefile>unsc\building\turret_01\turret_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="Bone Turret" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocket_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocketTrim_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack2" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack3" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\attack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turret_01\turret_01</file>
+            </asset>
+            <attach type="ModelRef" name="Gun" tobone="BoneGun" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack2" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack3" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\attack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Gun">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turret_01\turretgun_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_turret_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_03</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_turret_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_turret_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_03</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_turret_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack2" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\attack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MachinegunAttack3" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\attack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_Queued">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turretSocket_01\turretSocket_01</file>
+            </asset>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocketSubTerrain_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocketTrim_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Con1_Building" tobone="bone_attachpoint" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\turretsocketsteamque_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\turretsocketsteamstart_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\open_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_Building">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turret_01\turretbase_damaged_01</file>
+                <damagefile>unsc\building\turret_01\turret_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Con1_Turret" tobone="Bone Turret" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\turretWait_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_Turret">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turret_01\turret_01</file>
+            </asset>
+            <attach type="ModelRef" name="Con1_Gun" tobone="BoneGun" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\turretWait_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_Gun">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turret_01\turretgun_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_turret_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_03</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_turret_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_turret_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_03</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_turret_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\turretWait_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con2_Rise">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turretSocket_01\turretSocket_01</file>
+            </asset>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocketSubTerrain_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelFile" name="unsc\building\turretSocket_01\turretSocketTrim_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Con2_Building" tobone="bone_attachpoint" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\turretsocketsteam_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\turretRaise_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\socket_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con2_Building">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turret_01\turretbase_damaged_01</file>
+                <damagefile>unsc\building\turret_01\turret_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Con2_Turret" tobone="Bone Turret" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\turretBuild_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con2_Turret">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turret_01\turret_01</file>
+            </asset>
+            <attach type="ModelRef" name="Con2_Gun" tobone="BoneGun" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\turretBuild_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con2_Gun">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\turret_01\turretgun_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="unsc_turret_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_03</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="unsc_turret_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_turret_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_03</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_turret_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_02</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\building\turret_01\turretgun_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turretSocket_01\turretBuild_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\turret_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

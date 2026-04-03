@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Action>
+        <Name>GatherSupplies</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+    <Action>
+        <Name>ChangeOwner</Name>
+        <ActionType>ChangeOwner</ActionType>
+    </Action>
+</TacticData>

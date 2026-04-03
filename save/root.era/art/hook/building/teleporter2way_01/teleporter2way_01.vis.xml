@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>hook\building\teleporter2way_01\teleporter2way_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\teleporter_02" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\teleporter_02" tobone="bone_FX02" syncanims="false"/>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Cleansing</Name>
+        <DamagePerSecond>330</DamagePerSecond>
+        <WeaponType>leaderPower</WeaponType>
+        <Projectile>pow_proj_cleansing_01</Projectile>
+        <AOERadius>8</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>CleansingAttackAction</Name>
+        <Weapon>Cleansing</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

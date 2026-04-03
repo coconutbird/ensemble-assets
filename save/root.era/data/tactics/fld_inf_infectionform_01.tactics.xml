@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>FloodInfection</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>800</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>2</MaxRange>
+        <TargetPriority type="Infantry">10</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LesserFloodInfection</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>240</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>2</MaxRange>
+        <TargetPriority type="Infantry">10</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>FloodMelee</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>26</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <MaxRange>2</MaxRange>
+        <TargetPriority type="Infantry">10</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>FloodInfectionAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>FloodInfection</Weapon>
+    </Action>
+    <Action>
+        <Name>LesserFloodInfectionAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>LesserFloodInfection</Weapon>
+    </Action>
+    <Action>
+        <Name>FloodMeleeAttackAction</Name>
+        <ActionType>HandAttack</ActionType>
+        <Weapon>FloodMelee</Weapon>
+    </Action>
+    <Action>
+        <Name>GaggleMove</Name>
+        <ActionType>GaggleMove</ActionType>
+    </Action>
+</TacticData>

@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\arbiter_01\arbiter_01</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+            <point pointType="Launch" bone="bone_launchpoint" pointData="Metal"/>
+            <point pointType="Launch" bone="bone_launchpoint2" pointData="Metal"/>
+            <point pointType="Launch" bone="bone_launchpoint3" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 Spine1" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 Head" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Upperarm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Upperarm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Calf" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Calf" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_jog_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_run_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_sprint_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Sprint" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_sprint_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ClamShell" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\clamshell_01_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\clamshell_01_2</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\clamshell_02_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\clamshell_02_2</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Stunned" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\stunned_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Build" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="Bip01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="DualSwordAttack" exitAction="Transition" tweenTime="10" tweenToAnimation="DualSwordAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_attack_05</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_attack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_attack_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_attack_04</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Fatality_ArbiterMarine_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_01a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_02a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_03a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_04a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_05a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_06a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_07a</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Fatality_SpartanArbiter_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_05</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_06</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_07</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_08</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_09</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_10</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Fatality_ArbiterArbiter_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_01b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_02b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_03b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_04b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_05b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_06b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_07b</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_EliteArbiter_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_elitearbiter_01b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_elitearbiter_02b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_05b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_07b</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="RageStart" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_start_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageEnd" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_end_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_attack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_attack_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_attack_04</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="HotDropDown" exitAction="Freeze" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\arbiter_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageBansheeAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_banshee_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageVampireAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_vampire_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageVultureAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_vulture_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageHawkAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_hawk_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageHornetAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_hornet_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\juke_left_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\jump_left_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dive_left_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="EvadeRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\juke_right_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\jump_right_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dive_right_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+    </model>
+    <model name="Rage">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\arbiter_01\arbiter_01</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+            <point pointType="Launch" bone="bone_launchpoint" pointData="Metal"/>
+            <point pointType="Launch" bone="bone_launchpoint2" pointData="Metal"/>
+            <point pointType="Launch" bone="bone_launchpoint3" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 Spine1" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 Head" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Upperarm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Upperarm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Calf" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Calf" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_jog_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dualsword_run_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_sprint_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Sprint" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_sprint_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ClamShell" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\clamshell_01_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\clamshell_01_2</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\clamshell_02_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\clamshell_02_2</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Stunned" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\stunned_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Build" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageStart" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_start_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageLeap" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_leap_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_leap_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_leap_03</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageEnd" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_end_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_attack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_attack_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_dual_attack_04</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="HotDropDown" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Fatality_ArbiterMarine_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_01a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_02a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_03a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_04a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_05a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_06a</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbitermarine_07a</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Fatality_SpartanArbiter_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_04</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_05</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_06</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_07</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_08</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_09</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\Fatality_SpartanArbiter_Victim_10</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="Fatality_ArbiterArbiter_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_01b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_02b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_03b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_04b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_05b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_06b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_07b</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_EliteArbiter_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_elitearbiter_01b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_elitearbiter_02b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_05b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\fatality_arbiterarbiter_07b</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="RageBansheeAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_banshee_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageVampireAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_vampire_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageVultureAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_vulture_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageHawkAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_hawk_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="RageHornetAttack" exitAction="Loop" tweenTime="5" tweenToAnimation="RageAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\rage_air_hornet_attack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\juke_left_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\jump_left_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dive_left_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+        <anim type="EvadeRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\juke_right_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\jump_right_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\arbiter_01\dive_right_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\Unit_FX\cov\elite\energysword_01" tobone="BoneHiltL" syncanims="false"/>
+        </anim>
+    </model>
+</visual>

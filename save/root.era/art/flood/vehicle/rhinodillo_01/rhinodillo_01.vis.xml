@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>flood\vehicle\rhinodillo_01\rhinodillo_01</file>
+                <damagefile>flood\vehicle\Rhinodillo_01\Rhinodillo_01</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Roar" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\roar_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="MeleeAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\meleeattack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\meleeattack_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="BashAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\BashAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Clamshell" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\clamshell_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\walk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\run_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\run_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\clamshell_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\vehicle\rhinodillo_01\clamshell_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

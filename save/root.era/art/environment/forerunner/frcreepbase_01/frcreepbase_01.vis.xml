@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\forerunner\FRcreepbase_01\FRcreepbase_01</file>
+            </asset>
+            <attach type="ModelRef" name="TurretFL" tobone="bone_attachment02" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TurretFR" tobone="bone_attachment03" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TurretRR" tobone="bone_attachment04" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="TurretRL" tobone="bone_attachment01" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbase_01\FRcreepHole_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Attachment" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepbase_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="LaserAttackFL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="LaserAttackFR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="LaserAttackRR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="LaserAttackRL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepbase_01\limber_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TurretFL">
+        <component>
+            <asset type="Model">
+                <file>environment\forerunner\FRcreepBaseTurret_01\FRcreepBaseTurret_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepBaseTurret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackFL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackFR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackRR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackRL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepbase_01\limber_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TurretFR">
+        <component>
+            <asset type="Model">
+                <file>environment\forerunner\FRcreepBaseTurret_01\FRcreepBaseTurret_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepBaseTurret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackFL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackFR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackRR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackRL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepbase_01\limber_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TurretRR">
+        <component>
+            <asset type="Model">
+                <file>environment\forerunner\FRcreepBaseTurret_01\FRcreepBaseTurret_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepBaseTurret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackFL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackFR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackRR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackRL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepbase_01\limber_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="TurretRL">
+        <component>
+            <asset type="Model">
+                <file>environment\forerunner\FRcreepBaseTurret_01\FRcreepBaseTurret_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepBaseTurret_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackFL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackFR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackRR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="LaserAttackRL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepbase_01\limber_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Attachment">
+        <component>
+            <asset type="Model">
+                <file>environment\forerunner\FRcreepbase_01\FRcreepbaseAttach_01</file>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepbase_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="LaserAttackFL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="LaserAttackFR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="LaserAttackRR" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="LaserAttackRL" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelFile" name="environment\forerunner\FRcreepbaseWall_01\FRcreepbaseWall_01" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>environment\forerunner\FRcreepbase_01\limber_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

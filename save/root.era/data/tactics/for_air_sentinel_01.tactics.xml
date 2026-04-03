@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>BeamCannon</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>90</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_beam_01</Projectile>
+        <MaxRange>35</MaxRange>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>BeamCannonAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>BeamCannon</Weapon>
+    </Action>
+    <Action>
+        <Name>AvoidCollisionAir</Name>
+        <ActionType>AvoidCollisionAir</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonHotDrop</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonHotDrop</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

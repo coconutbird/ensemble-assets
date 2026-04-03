@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Action>
+        <Name>Revive</Name>
+        <ActionType>Revive</ActionType>
+    </Action>
+</TacticData>

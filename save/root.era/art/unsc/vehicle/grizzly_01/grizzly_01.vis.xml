@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\Grizzly_01\grizzly_damaged_01</file>
+                <damagefile>unsc\vehicle\Grizzly_01\grizzly_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="Bone Turret" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tread FL" tobone="Bone Grizzly Tread FL" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tread FR" tobone="Bone Grizzly Tread FR" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tread RL" tobone="Bone Grizzly Tread RL" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tread RR" tobone="Bone Grizzly Tread RR" frombone="GrannyRootBone" syncanims="true"/>
+            <point pointType="Board" bone="Bone Grizzly" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact01" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact02" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact03" pointData="Metal"/>
+            <point pointType="Impact" bone="bone_impact04" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\walk_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="TerrainEffect" name="effects\terraineffects\scorpion_trail" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="CannonAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\CannonAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\train_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Build" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="Bone Grizzly Tread RL" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="Bone Grizzly Tread FL" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="Bone FlameTurret03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="Bone Grizzly Tread FR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="Bone Grizzly Tread RR" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="Bone Turret" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="Bone FlameTurret04" syncanims="false"/>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="MachinegunAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\machineGunAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Prefire" exitAction="Transition" tweenTime="5" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\machineGunAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Postfire" exitAction="Transition" tweenTime="5" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\machineGunAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\vehicle\Grizzly_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="SpartanGrizzlyJack" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_grizzly_jack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Marine" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="true"/>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\Grizzly_01\grizzly_turret_01</file>
+            </asset>
+            <attach type="ModelRef" name="Cannon" tobone="Bone Grizzly Barrels" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="MG" tobone="Bone MG" frombone="GrannyRootBone" syncanims="true"/>
+            <point pointType="Pickup" bone="Bone Grizzly Cannon" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="Cannon">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\Grizzly_01\grizzly_cannon_01</file>
+            </asset>
+            <point pointType="Pickup" bone="Bone Grizzly Barrel02" pointData="Metal"/>
+        </component>
+        <anim type="CannonAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\CannonAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="MG">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\Grizzly_01\grizzly_mg_01</file>
+            </asset>
+            <point pointType="Pickup" bone="bone_mg_launchpoint01" pointData="Metal"/>
+        </component>
+        <anim type="MachinegunAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\machineGunAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Prefire" exitAction="Transition" tweenTime="5" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\machineGunAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Postfire" exitAction="Transition" tweenTime="5" tweenToAnimation="MachinegunAttack">
+            <asset type="Anim">
+                <file>unsc\vehicle\grizzly_01\machineGunAttack_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Tread FL">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\Grizzly_01\tread_FL_01</file>
+            </asset>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="Tread FR">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\Grizzly_01\tread_FR_01</file>
+            </asset>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="Tread RL">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\Grizzly_01\tread_RL_01</file>
+            </asset>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="Tread RR">
+        <component>
+            <asset type="Model">
+                <file>unsc\vehicle\Grizzly_01\tread_RR_01</file>
+            </asset>
+            <point pointType="Pickup" bone="GrannyRootBone" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="Marine">
+        <component>
+            <asset type="Model">
+                <file>unsc\infantry\marine_01\marine_01</file>
+            </asset>
+        </component>
+        <anim type="SpartanGrizzlyJack" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\spartan_01\spartan_grizzlydriver_jack_coolRIG01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

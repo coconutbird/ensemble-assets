@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blueprint>
+    <mass>200</mass>
+    <friction>2</friction>
+    <restitution>0.5</restitution>
+    <angularDamping>0.5</angularDamping>
+    <shape>cpgn_scn11_vehiclespawn_01</shape>
+</blueprint>

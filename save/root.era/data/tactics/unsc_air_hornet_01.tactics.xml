@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>RocketLauncher</Name>
+        <AttackRate>6</AttackRate>
+        <DamagePerSecond>70.15</DamagePerSecond>
+        <WeaponType>Missile</WeaponType>
+        <Projectile>fx_proj_missile_01</Projectile>
+        <MaxRange>35</MaxRange>
+        <Hardpoint>RocketTurret</Hardpoint>
+        <AOERadius>5</AOERadius>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>Machinegun</Name>
+        <AttackRate>0.125</AttackRate>
+        <DamagePerSecond>70.15</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_rotaryMG_01</Projectile>
+        <MaxRange>40</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>4</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>6</MovingMaxDeviation>
+        <Hardpoint>MGTurret</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">10</TargetPriority>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>LeftWingman</Name>
+        <DamagePerSecond>17.5</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_rocket_01</Projectile>
+        <MaxRange>40</MaxRange>
+        <Accuracy>1</Accuracy>
+        <Hardpoint>LeftWingmanTurret</Hardpoint>
+        <AOERadius>4</AOERadius>
+    </Weapon>
+    <Weapon>
+        <Name>RightWingMan</Name>
+        <DamagePerSecond>17.5</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_rocket_01</Projectile>
+        <MaxRange>40</MaxRange>
+        <Accuracy>1</Accuracy>
+        <Hardpoint>RightWingmanTurret</Hardpoint>
+        <AOERadius>4</AOERadius>
+    </Weapon>
+    <Weapon>
+        <Name>ChaffWeapon</Name>
+        <AttackRate>6</AttackRate>
+        <DamagePerSecond>70.15</DamagePerSecond>
+        <WeaponType>Missile</WeaponType>
+        <Projectile>fx_proj_flare_01</Projectile>
+        <MaxRange>35</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>4</MaxDeviation>
+        <Hardpoint>ChaffTurret</Hardpoint>
+    </Weapon>
+    <Action>
+        <Name>RocketLauncherAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>RocketLauncher</Weapon>
+    </Action>
+    <Action>
+        <Name>MachinegunAttackAction</Name>
+        <ActionType>SecondaryTurretAttack</ActionType>
+        <Weapon>Machinegun</Weapon>
+    </Action>
+    <Action>
+        <Name>LeftWingmanAttackAction</Name>
+        <ActionType>SecondaryTurretAttack</ActionType>
+        <Weapon>LeftWingman</Weapon>
+    </Action>
+    <Action>
+        <Name>RightWingmanAttackAction</Name>
+        <ActionType>SecondaryTurretAttack</ActionType>
+        <Weapon>RightWingMan</Weapon>
+    </Action>
+    <Action>
+        <Name>AvoidCollisionAir</Name>
+        <ActionType>AvoidCollisionAir</ActionType>
+    </Action>
+    <Action>
+        <Name>Chaff</Name>
+        <ActionType>PointBlankAttack</ActionType>
+        <Weapon>ChaffWeapon</Weapon>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

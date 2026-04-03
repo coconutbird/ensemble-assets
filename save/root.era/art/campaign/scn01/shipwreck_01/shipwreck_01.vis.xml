@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn01\shipwreck_01\shipwreck_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\shipwreck_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\shipwreck_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\shipwreck_01" tobone="bone_FX03" syncanims="false"/>
+        </component>
+    </model>
+</visual>

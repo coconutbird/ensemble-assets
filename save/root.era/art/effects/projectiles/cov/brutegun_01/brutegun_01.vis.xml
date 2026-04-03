@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Particle">
+                <file>effects\projectiles\cov\bruteGun_01\bruteGun_01</file>
+            </asset>
+            <attach type="LightFile" name="effects\projectiles\cov\bruteGun_01\bruteGun_light_01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

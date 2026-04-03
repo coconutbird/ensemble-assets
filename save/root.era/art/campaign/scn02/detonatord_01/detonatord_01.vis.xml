@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn02\detonatord_01\detonatord_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\building_FX\Cov\damage\plasmafire_02" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="bone_FX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\damage\electricity_looping_01" tobone="bone_impact_01" syncanims="false"/>
+        </component>
+    </model>
+</visual>

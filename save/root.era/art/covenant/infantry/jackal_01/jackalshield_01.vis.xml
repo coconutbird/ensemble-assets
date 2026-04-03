@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\jackal_01\jackal_01</file>
+            </asset>
+            <attach type="ModelRef" name="Shield" tobone="bone_shield" frombone="GrannyRootBone" syncanims="false"/>
+            <logic type="Tech">
+                <logicdata value="cov_jackal_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\jackal_01\jackal_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_jackal_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\jackal_01\jackal_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_jackal_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\jackal_01\jackal_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\jackal_01\jackal_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\idle_01</file>
+                <weight>15</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\idle_02</file>
+                <weight>85</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\walk_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\jog_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\jog_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\jog_03</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\run_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\evade_left_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="EvadeRight" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\evade_right_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Build" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathByFire" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_fire_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_fire_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_fire_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathByHeadshot" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_headshot_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_headshot_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_headshot_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathByMachinegun" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_machinegun_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_machinegun_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_machinegun_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathByMelee" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_melee_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_melee_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_melee_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\death_melee_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ClamShell" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\clamshell_01_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\clamshell_01_2</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\clamshell_02_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\clamshell_02_2</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Stunned" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\stunned_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="SniperRifleAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="SniperRifleAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\beam_rifle_attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\beam_rifle_attack_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\beam_rifle_attack_04</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="SniperRifleReload" exitAction="Transition" tweenTime="5" tweenToAnimation="SniperRifleAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\beam_rifle_combat_action_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\combat_action_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\combat_action_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\combat_action_03</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="CarbineAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="CarbineeAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\beam_rifle_attack_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="CarbineReload" exitAction="Transition" tweenTime="5" tweenToAnimation="CarbineAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\beam_rifle_combat_action_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\combat_action_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\combat_action_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\combat_action_03</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="ShieldUp" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\shield_open_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="ShieldDown" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\shield_close_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="ShieldGuard" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\shield_guard_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="HotDropDown" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Weapon" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="FloodDeathJog" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\flood_death_jog_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 Head" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles2" tobone="Bip01 R Hand" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 R Forearm" frombone="GrannyRootBone" syncanims="true"/>
+        </anim>
+        <anim type="FloodDeath" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\flood_death_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 Head" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles2" tobone="Bip01 R Hand" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 R Forearm" frombone="GrannyRootBone" syncanims="true"/>
+        </anim>
+        <anim type="Fatality_MarkIJackal_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIJackal_01B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIJackal_03B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIJackal_04B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIJackal_05B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIJackal_09B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIJackal_10B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIJackal_11B</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_ArbiterJackal_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_01b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_02b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_03b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_04b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_05b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_06b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_07b</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_EliteJackal_01" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_elitejackal_01b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_elitejackal_02b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_05b</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\jackal_01\fatality_arbiterjackal_07b</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train2" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train3" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train4" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train5" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train6" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train7" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train8" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Shield">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\weapons_01\jackal_shield_01\jackal_shield_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="cov_jackal_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\weapons_01\jackal_shield_01\jackal_shield_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_jackal_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\weapons_01\jackal_shield_01\jackal_shield_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_jackal_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\weapons_01\jackal_shield_01\jackal_shield_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>unsc\infantry\marine_01\nothing_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="Weapon">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\weapons_01\beam_rifle_01\beam_rifle_01</file>
+            </asset>
+            <logic type="Tech">
+                <logicdata value="cov_jackal_upgrade3" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\weapons_01\beam_rifle_01\beam_rifle_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_jackal_upgrade2" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\weapons_01\beam_rifle_01\beam_rifle_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="cov_jackal_upgrade1" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\weapons_01\carbine_01\carbine_01</file>
+                    </asset>
+                </logicdata>
+                <logicdata value="" weight="1">
+                    <asset type="Model">
+                        <file>covenant\infantry\weapons_01\carbine_01\carbine_01</file>
+                    </asset>
+                </logicdata>
+            </logic>
+        </component>
+    </model>
+    <model name="Tenticles1">
+        <component>
+            <asset type="Model">
+                <file>flood\Infantry\Attachments_01\tenticles_01\tenticles_01</file>
+            </asset>
+        </component>
+        <anim type="FloodDeathJog" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\Infantry\Attachments_01\tenticles_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FloodDeath" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\Infantry\Attachments_01\tenticles_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Tenticles2">
+        <component>
+            <asset type="Model">
+                <file>flood\Infantry\Attachments_01\tenticles_02\tenticles_02</file>
+            </asset>
+        </component>
+        <anim type="FloodDeathJog" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\Infantry\Attachments_01\tenticles_02\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FloodDeath" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>flood\Infantry\Attachments_01\tenticles_02\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

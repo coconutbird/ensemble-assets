@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\methanetank_03\methanetank_damaged_03</file>
+                <damagefile>environment\harvest\methanetank_03\methanetank_03</damagefile>
+            </asset>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\methanetankbubbles_02" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Detonated" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

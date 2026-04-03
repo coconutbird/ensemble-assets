@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Particle">
+                <file>campaign\scn06\platform_01\target_01</file>
+            </asset>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\scarab_01\scarab_damaged_01</file>
+                <damagefile>covenant\vehicle\scarab_01\scarab_01</damagefile>
+            </asset>
+            <attach type="ModelRef" name="Turret" tobone="Bone Head" frombone="Bone Head" syncanims="true"/>
+            <attach type="ModelRef" name="FrontShadePitch" tobone="Bone Turret_Base" frombone="Bone Turret_Base" syncanims="true"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="8">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\walk_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FrontShadeTurretAttack" exitAction="Loop" tweenTime="10" tweenToAnimation="shadeTurretAttack">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="scarabBeamAttack" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\cov\scarab\megadethfire_01" tobone="Bone Body" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/vehicle_fx/cov/scarab/megadethooze_01" tobone="Bone Head" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/building_FX/Cov/damage/teenystreamer_01" tobone="Bone_Leg_RF_01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/building_FX/Cov/damage/teenystreamer_01" tobone="Bone_Leg_LF_01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/building_FX/Cov/damage/teenystreamer_01" tobone="Bone Head" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/building_FX/Cov/damage/teenystreamer_01" tobone="Bone Turret_Base" syncanims="false"/>
+            <attach type="ParticleFile" name="effects/building_FX/Cov/damage/teenystreamer_01" tobone="Bone_Leg_LR_01" syncanims="false"/>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Cinematic" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnLeft" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\turn_left_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnRight" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\turn_right_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="IdleWalk" exitAction="Transition" tweenTime="10" tweenToAnimation="Walk">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\idle_to_walk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="WalkIdle" exitAction="Transition" tweenTime="0" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Turret">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\scarab_01\scarab_head_01</file>
+            </asset>
+            <point pointType="Pickup" bone="Bone Head" pointData="Metal"/>
+        </component>
+        <anim type="scarabBeamAttack" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="FrontShadePitch">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\scarab_01\scarab_rearTurret</file>
+            </asset>
+            <attach type="ModelRef" name="FrontShadeTurret" tobone="Bone Turret" frombone="Bone Turret" syncanims="true"/>
+            <point pointType="Pickup" bone="Bone Turret" pointData="Metal"/>
+        </component>
+    </model>
+    <model name="FrontShadeTurret">
+        <component>
+            <asset type="Model">
+                <file>covenant\vehicle\scarab_01\plasmaGun_01</file>
+            </asset>
+            <point pointType="Pickup" bone="Bone Turret" pointData="Metal"/>
+        </component>
+        <anim type="FrontShadeTurretAttack" exitAction="Loop" tweenTime="10" tweenToAnimation="shadeTurretAttack">
+            <asset type="Anim">
+                <file>covenant\vehicle\scarab_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn06\reaconsole_01\reaconsole_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\reactorconsole_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\shieldworldINT\reactorconsole_02" tobone="bone_FX02" syncanims="false"/>
+        </component>
+    </model>
+</visual>

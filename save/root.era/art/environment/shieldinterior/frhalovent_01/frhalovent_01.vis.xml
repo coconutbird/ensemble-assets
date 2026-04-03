@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\shieldinterior\FRHaloVent_01\FRHaloVent_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\halo\vents_01" tobone="GrannyRootBone" syncanims="false"/>
+        </component>
+    </model>
+</visual>

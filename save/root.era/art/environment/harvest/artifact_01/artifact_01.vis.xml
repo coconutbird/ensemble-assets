@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\harvest\artifact_01\artifact_01</file>
+            </asset>
+            <attach type="ModelFile" name="environment\harvest\artifact_01\artifactBridgeFX_01" tobone="bone_bridgeFX" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\artifactbridgeglyphs_01" tobone="bone_bridgeFX" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>environment\harvest\artifact_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\shieldinterior\swinteriorwalls_02\swinteriorwalls_02</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\lightbridgeroot_01" tobone="bone_fxLightroot06" syncanims="false"/>
+        </component>
+    </model>
+</visual>

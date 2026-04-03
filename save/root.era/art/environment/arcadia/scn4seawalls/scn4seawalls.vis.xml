@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\scn4Seawalls\scn4Seawalls</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\arcadia\Drain_fall" tobone="bone_01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\Drain_fall" tobone="bone_02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\Drain_fall" tobone="bone_03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\Drain_fall" tobone="bone_04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\Drain_fall" tobone="bone_05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\Drain_fall" tobone="bone_06" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\Drain_fall" tobone="bone_07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\Drain_fall" tobone="bone_08" syncanims="false"/>
+        </component>
+    </model>
+</visual>

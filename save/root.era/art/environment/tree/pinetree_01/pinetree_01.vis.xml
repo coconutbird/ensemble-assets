@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\tree\pinetree_01\destructionTree_01</file>
+                <damagefile>environment\tree\pinetree_01\destructionTree_01</damagefile>
+            </asset>
+            <point pointType="Impact" bone="BoneImpactPoint" pointData="Metal"/>
+        </component>
+    </model>
+</visual>

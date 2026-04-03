@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>megaTurret</Name>
+        <AttackRate>1</AttackRate>
+        <DamagePerSecond>60000</DamagePerSecond>
+        <WeaponType>LeaderPower</WeaponType>
+        <Projectile>pow_gp_megaTurret</Projectile>
+        <MaxRange>5000</MaxRange>
+        <Accuracy>0.25</Accuracy>
+        <MaxDeviation>100</MaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <AOERadius>20</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>megaTurretAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>megaTurret</Weapon>
+    </Action>
+</TacticData>

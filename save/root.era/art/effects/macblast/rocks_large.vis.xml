@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>effects\macblast\mb_rocks_large</file>
+                <damagefile>effects\macblast\rocks_large</damagefile>
+            </asset>
+            <point pointType="Impact" bone="bone_impact_a" pointData="Metal"/>
+        </component>
+    </model>
+</visual>

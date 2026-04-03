@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>CarpetBomb</Name>
+        <DamagePerSecond>3500</DamagePerSecond>
+        <WeaponType>LeaderPower</WeaponType>
+        <Projectile>pow_proj_cleansing_01</Projectile>
+        <AOERadius>10</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>CarpetBombingAttackAction</Name>
+        <Weapon>CarpetBomb</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

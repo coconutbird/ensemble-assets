@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>Lightning</Name>
+        <DamagePerSecond>210</DamagePerSecond>
+        <WeaponType>leaderPower</WeaponType>
+        <Projectile>pow_proj_wave_lightning_01</Projectile>
+        <MaxRange>120</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>5</MaxDeviation>
+        <AOERadius>5</AOERadius>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="TurretBuilding">5</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>LightningAction</Name>
+        <Weapon>Lightning</Weapon>
+        <Default>true</Default>
+    </Action>
+</TacticData>

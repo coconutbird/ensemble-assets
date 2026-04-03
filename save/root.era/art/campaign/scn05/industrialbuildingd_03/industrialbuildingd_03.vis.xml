@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn05\industrialbuildingd_03\industrialbuildingd_03</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_01" tobone="bone_FX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\electricaldamage_01" tobone="bone_FX04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\electricaldamage_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\canisterthrustloop_01" tobone="bone_FX05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\canisterthrustloop_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_04" tobone="bone_FX06" syncanims="false"/>
+        </component>
+    </model>
+</visual>

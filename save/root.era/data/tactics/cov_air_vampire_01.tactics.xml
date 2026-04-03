@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>PlasmaCannonLeft</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>60</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_plasmaCannon_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>3</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>4.5</MovingMaxDeviation>
+        <Hardpoint>PlasmaTurretLeft</Hardpoint>
+        <TargetPriority type="Flying">10</TargetPriority>
+        <TargetPriority type="Infantry">4</TargetPriority>
+        <TargetPriority type="GroundVehicle">3</TargetPriority>
+        <TargetPriority type="TurretBuilding">0</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>PlasmaCannonRight</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>60</DamagePerSecond>
+        <WeaponType>SmallArms</WeaponType>
+        <Projectile>fx_proj_plasmaCannon_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>3</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>4.5</MovingMaxDeviation>
+        <Hardpoint>PlasmaTurretRight</Hardpoint>
+        <TargetPriority type="Flying">10</TargetPriority>
+        <TargetPriority type="Infantry">4</TargetPriority>
+        <TargetPriority type="GroundVehicle">3</TargetPriority>
+        <TargetPriority type="TurretBuilding">0</TargetPriority>
+        <TargetPriority type="Building">-3</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>HeavyNeedler</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>70</DamagePerSecond>
+        <WeaponType>AntiAir</WeaponType>
+        <Projectile>fx_proj_heavyNeedler_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Hardpoint>NeedlerTurret</Hardpoint>
+        <TargetPriority type="Flying">10</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>StasisBeam</Name>
+        <AttackRate>0.1</AttackRate>
+        <DamagePerSecond>0</DamagePerSecond>
+        <WeaponType>AntiAir</WeaponType>
+        <Projectile>fx_proj_stasisBeam_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Hardpoint>StasisBeam</Hardpoint>
+    </Weapon>
+    <Weapon>
+        <Name>StasisDrainBeam</Name>
+        <AttackRate>0.1</AttackRate>
+        <DamagePerSecond>30</DamagePerSecond>
+        <WeaponType>AntiAir</WeaponType>
+        <Projectile>fx_proj_stasisBeam_02</Projectile>
+        <MaxRange>75</MaxRange>
+        <Hardpoint>StasisBeam</Hardpoint>
+        <AOERadius>6</AOERadius>
+    </Weapon>
+    <Weapon>
+        <Name>StasisBombBeam</Name>
+        <AttackRate>0.1</AttackRate>
+        <DamagePerSecond>30</DamagePerSecond>
+        <WeaponType>AntiAir</WeaponType>
+        <Projectile>fx_proj_stasisBeam_02</Projectile>
+        <MaxRange>75</MaxRange>
+        <Hardpoint>StasisBeam</Hardpoint>
+        <AOERadius>6</AOERadius>
+    </Weapon>
+    <Weapon>
+        <Name>StasisBomb</Name>
+        <AttackRate>0.1</AttackRate>
+        <DamagePerSecond>1000</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <AOERadius>20</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>PlasmaCannonRightAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>PlasmaCannonRight</Weapon>
+    </Action>
+    <Action>
+        <Name>PlasmaCannonLeftAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>PlasmaCannonLeft</Weapon>
+    </Action>
+    <Action>
+        <Name>HeavyNeedlerAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>HeavyNeedler</Weapon>
+    </Action>
+    <Action>
+        <Name>AvoidCollisionAir</Name>
+        <ActionType>AvoidCollisionAir</ActionType>
+    </Action>
+    <Action>
+        <Name>StasisBeamAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>StasisBeam</Weapon>
+    </Action>
+    <Action>
+        <Name>StasisDrainBeamAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>StasisDrainBeam</Weapon>
+    </Action>
+    <Action>
+        <Name>StasisBombAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>StasisBomb</Weapon>
+    </Action>
+    <Action>
+        <Name>StasisBombBeamAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>StasisBombBeam</Weapon>
+    </Action>
+    <Action>
+        <Name>GarrisonHotDrop</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonHotDrop</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

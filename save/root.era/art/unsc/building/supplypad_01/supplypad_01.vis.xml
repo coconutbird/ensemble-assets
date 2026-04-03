@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\supplypad_01\supplypad_damaged_01</file>
+                <damagefile>unsc\building\supplypad_01\supplypad_01</damagefile>
+            </asset>
+            <attach type="ModelFile" name="unsc\building\socket_01\socketTrim_01" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="0" tweenToAnimation="Idle2">
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Albatross" tobone="bone_attachpoint01" frombone="GrannyRootBone" syncanims="true"/>
+        </anim>
+        <anim type="Idle2" exitAction="Transition" tweenTime="0" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\idle_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Upgrade" exitAction="Freeze" tweenTime="1">
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\upgrade_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Albatross">
+        <component>
+            <asset type="Model">
+                <file>unsc\air\albatross_01\albatross_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\pelican\redblinkinglight_01" tobone="BoneLight01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\pelican\redblinkinglight_01" tobone="BoneLight02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\pelican\redblinkinglight_01" tobone="BoneLight03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\albatross\jets_01" tobone="BoneFX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\albatross\jets_01" tobone="BoneFX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\albatross\jets_01" tobone="BoneFX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\vehicle_fx\unsc\albatross\jets_01" tobone="BoneFX04" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="0" tweenToAnimation="Idle2">
+            <asset type="Anim">
+                <file>unsc\air\albatross_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con_Building">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\supplypad_01\supplypad_damaged_01</file>
+                <damagefile>unsc\building\supplypad_01\supplypad_01</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="0" tweenToAnimation="Idle2">
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\wait_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con_Building2">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\supplypad_01\supplypad_damaged_01</file>
+                <damagefile>unsc\building\supplypad_01\supplypad_01</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="0" tweenToAnimation="Idle2">
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\birth_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\supplypad_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con1_Queued">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\socket_01\socket_01</file>
+            </asset>
+            <attach type="ModelFile" name="unsc\building\socket_01\socketSubTerrain_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelFile" name="unsc\building\socket_01\socketTrim_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Con_Building" tobone="bone_attachpoint" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="LightFile" name="unsc\building\socket_01\socketambientlight_01" tobone="GrannyRootBone" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\popoffvalves_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\popoffvalves_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\popoffvalves_01" tobone="bone_FX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\popoffvalves_01" tobone="bone_FX04" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\socket_01\openBasic_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\socket_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Con2_Rise">
+        <component>
+            <asset type="Model">
+                <file>unsc\building\socket_01\socket_01</file>
+            </asset>
+            <attach type="ModelFile" name="unsc\building\socket_01\socketSubTerrain_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelFile" name="unsc\building\socket_01\socketTrim_01" tobone="GrannyRootBone" frombone="GrannyRootBone" syncanims="false"/>
+            <attach type="ModelRef" name="Con_Building2" tobone="bone_attachpoint" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="LightFile" name="unsc\building\socket_01\socketlights_01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\popoffvalves_01" tobone="bone_FX01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\popoffvalves_01" tobone="bone_FX02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\popoffvalves_01" tobone="bone_FX03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\building_FX\unsc\socket\popoffvalves_01" tobone="bone_FX04" syncanims="false"/>
+        </component>
+        <anim type="Idle" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\socket_01\raiseBasic30_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\building\socket_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

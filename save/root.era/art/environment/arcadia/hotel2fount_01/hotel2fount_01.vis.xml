@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\arcadia\hotel2fount_01\hotel2fount_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bonefx01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bonefx02" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bonefx03" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bonefx04" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bonefx05" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bonefx06" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bonefx07" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\environment\arcadia\fountain_01" tobone="bonefx08" syncanims="false"/>
+        </component>
+    </model>
+</visual>

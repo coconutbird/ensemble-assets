@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<physics>
+    <blueprint>scarab</blueprint>
+    <ThrownByProjectiles>false</ThrownByProjectiles>
+    <Vehicle>ground
+      
+   </Vehicle>
+    <CenterOffset>0,10.28,0</CenterOffset>
+</physics>

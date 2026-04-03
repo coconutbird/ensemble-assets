@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Fire">
+    <model name="Fire">
+        <component>
+            <asset type="Model">
+                <file>environment\tree\palmdead_01\palmdead_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\environment\harvest\wreckageFX_03" syncanims="false"/>
+        </component>
+    </model>
+</visual>

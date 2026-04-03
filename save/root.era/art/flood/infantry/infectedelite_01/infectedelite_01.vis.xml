@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>flood\Infantry\InfectedElite_01\InfectedElite_01</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+        </component>
+        <anim type="Idle" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\idle_01</file>
+                <weight>80</weight>
+            </asset>
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\idle_02</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\idle_03</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="ClawAttack" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\attack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\attack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\jog_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\jog_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\run_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Clamshell" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\clamshell_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>flood\Infantry\InfectedElite_01\birth_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>PlasmaCannon</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>60</DamagePerSecond>
+        <WeaponType>AASmallArms</WeaponType>
+        <Projectile>fx_proj_plasmaCannon_01</Projectile>
+        <MaxRange>55</MaxRange>
+        <Accuracy>0.1</Accuracy>
+        <MaxDeviation>4</MaxDeviation>
+        <MovingAccuracy>0.05</MovingAccuracy>
+        <MovingMaxDeviation>6</MovingMaxDeviation>
+        <Hardpoint>PlasmaCannonTurret</Hardpoint>
+        <TargetPriority type="Infantry">10</TargetPriority>
+        <TargetPriority type="Aircraft">7</TargetPriority>
+        <TargetPriority type="GroundVehicle">5</TargetPriority>
+        <TargetPriority type="TurretBuilding">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>PlasmaMortar</Name>
+        <AttackRate>5</AttackRate>
+        <DamagePerSecond>110</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_plasmaMortar_01</Projectile>
+        <MaxRange>70</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>10</MaxDeviation>
+        <MovingAccuracy>0.1</MovingAccuracy>
+        <MovingMaxDeviation>15</MovingMaxDeviation>
+        <Hardpoint>PlasmaMortarTurret</Hardpoint>
+        <AOERadius>6</AOERadius>
+        <TargetPriority type="GroundVehicle">10</TargetPriority>
+        <TargetPriority type="Infantry">5</TargetPriority>
+        <TargetPriority type="TurretBuilding">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>PlasmaBurnMortar</Name>
+        <AttackRate>30</AttackRate>
+        <DamagePerSecond>110</DamagePerSecond>
+        <WeaponType>Explosive</WeaponType>
+        <Projectile>fx_proj_plasmaburn_01</Projectile>
+        <MaxRange>80</MaxRange>
+        <Accuracy>0.2</Accuracy>
+        <MaxDeviation>7</MaxDeviation>
+        <MovingAccuracy>0.1</MovingAccuracy>
+        <MovingMaxDeviation>10</MovingMaxDeviation>
+        <Hardpoint>PlasmaMortarTurret</Hardpoint>
+        <AOERadius>12</AOERadius>
+    </Weapon>
+    <Action>
+        <Name>PlasmaCannonAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>PlasmaCannon</Weapon>
+    </Action>
+    <Action>
+        <Name>PlasmaMortarAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>PlasmaMortar</Weapon>
+    </Action>
+    <Action>
+        <Name>PlasmaBurnAttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>PlasmaBurnMortar</Weapon>
+    </Action>
+    <Action>
+        <Name>Garrison</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonSpirit</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonSpirit</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonHotDrop</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonHotDrop</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>GarrisonTeleport</Name>
+        <ActionType>Garrison</ActionType>
+    </Action>
+    <Action>
+        <Name>UngarrisonTeleport</Name>
+        <ActionType>Ungarrison</ActionType>
+    </Action>
+    <Action>
+        <Name>ShieldAction</Name>
+        <ActionType>EnergyShield</ActionType>
+    </Action>
+    <Action>
+        <Name>GatherCollectables</Name>
+        <ActionType>Gather</ActionType>
+    </Action>
+</TacticData>

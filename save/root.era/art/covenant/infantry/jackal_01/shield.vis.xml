@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\jackal_01\shield_01</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+        </component>
+    </model>
+</visual>

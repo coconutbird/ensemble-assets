@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>covenant\infantry\grunt_01\grunt_01</file>
+                <damagefile>template\defaultInfantry</damagefile>
+            </asset>
+            <point pointType="Launch" bone="bone_launchpoint" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 Spine1" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 Head" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Forearm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Forearm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Calf" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Calf" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_01</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_02</file>
+                <weight>5</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_03</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_04</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_05</file>
+                <weight>30</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_06</file>
+                <weight>5</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\walk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\run_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\run_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\evadeleft_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\evadeleft_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\evaderight_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\evaderight_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Clamshell" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\clamshell_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\clamshell_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\clamshell_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\clamshell_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ClamshellRocket" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\clamshell_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\clamshell_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\clamshell_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\clamshell_04</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\projectiles\missiles\missile_smoke_01" tobone="Bip01 Spine1" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\projectiles\bullets\artillery_shell\artillery_shell_01" tobone="Bip01 Spine1" syncanims="false"/>
+        </anim>
+        <anim type="FlailRocket" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\projectiles\missiles\missile_smoke_01" tobone="Bip01 Spine1" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\projectiles\bullets\artillery_shell\artillery_shell_01" tobone="Bip01 Spine1" syncanims="false"/>
+        </anim>
+        <anim type="SpinRocket" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\projectiles\missiles\missile_smoke_01" tobone="Bip01 Spine1" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\projectiles\bullets\artillery_shell\artillery_shell_01" tobone="Bip01 Spine1" syncanims="false"/>
+        </anim>
+        <anim type="Stunned" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\stunned_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Gather" exitAction="Transition" tweenTime="10" tweenToAnimation="Gather">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_01</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_03</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_05</file>
+                <weight>30</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Build" exitAction="Transition" tweenTime="10" tweenToAnimation="Build">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Repair" exitAction="Transition" tweenTime="10" tweenToAnimation="Build">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="PlasmaGrenadeAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\grenade_throw_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\grenade_throw_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="NeedlerAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="NeedlerAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\attack_01</file>
+                <weight>10</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\attack_02</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\attack_03</file>
+                <weight>95</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\attack_04</file>
+                <weight>100</weight>
+            </asset>
+        </anim>
+        <anim type="NeedlerReload" exitAction="Transition" tweenTime="5" tweenToAnimation="NeedlerAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\combat_action_01</file>
+                <weight>65</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\combat_action_02</file>
+                <weight>90</weight>
+            </asset>
+        </anim>
+        <anim type="Support" exitAction="Transition" tweenTime="5" tweenToAnimation="PlasmaPistolAttack">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\combat_action_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\combat_action_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathByFire" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_fire_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_fire_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_fire_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathByHeadshot" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_headshot_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_headshot_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_headshot_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathByMachinegun" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_machinegun_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_machinegun_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_machinegun_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathByMelee" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_melee_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_melee_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_melee_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\death_melee_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropUp" exitAction="Loop" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HotDropDown" exitAction="Freeze" tweenTime="15">
+            <asset type="Anim">
+                <file>effects\fx_dummy_onesecond</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Fatality_MarkIGrunt_01" exitAction="Loop" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIGrunt_01B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIGrunt_03B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIGrunt_04B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIGrunt_05B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIGrunt_09B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIGrunt_10B</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\mark1Suit_01\Fatality_MarkIGrunt_11B</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FloodDeathJog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\flood_death_jog</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 Head" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles2" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 L Forearm" frombone="GrannyRootBone" syncanims="true"/>
+        </anim>
+        <anim type="FloodDeath" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>covenant\infantry\grunt_01\flood_death</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 Head" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles2" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 L Forearm" frombone="GrannyRootBone" syncanims="true"/>
+        </anim>
+        <anim type="TeleportOut" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train2" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train3" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train4" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train5" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train6" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train7" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Train8" exitAction="Transition" tweenTime="16" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Tenticles1">
+        <component>
+            <asset type="Model">
+                <file>flood\Infantry\Attachments_01\tenticles_01\tenticles_01</file>
+            </asset>
+        </component>
+        <anim type="FloodDeathJog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>flood\Infantry\Attachments_01\tenticles_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FloodDeath" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>flood\Infantry\Attachments_01\tenticles_01\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+    <model name="Tenticles2">
+        <component>
+            <asset type="Model">
+                <file>flood\Infantry\Attachments_01\tenticles_02\tenticles_02</file>
+            </asset>
+        </component>
+        <anim type="FloodDeathJog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>flood\Infantry\Attachments_01\tenticles_02\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FloodDeath" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>flood\Infantry\Attachments_01\tenticles_02\idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>

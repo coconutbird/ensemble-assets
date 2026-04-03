@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\scn01\warthogd_01\warthogd_01</file>
+            </asset>
+            <attach type="ParticleFile" name="effects\fire\smallgenFire_01" tobone="bone fire 01" syncanims="false"/>
+            <attach type="ParticleFile" name="effects\fire\flaming_debris_01" tobone="bone fire 02" syncanims="false"/>
+        </component>
+    </model>
+</visual>

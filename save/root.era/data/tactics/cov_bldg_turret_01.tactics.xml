@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticData>
+    <Weapon>
+        <Name>ShadePlasma1</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>187</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_shadeplasma_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>5</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>4.5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Infantry">8</TargetPriority>
+        <TargetPriority type="Aircraft">8</TargetPriority>
+        <TargetPriority type="GroundVehicle">8</TargetPriority>
+        <TargetPriority type="TurretBuilding">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>ShadePlasma2</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>187</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_shadeplasma_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>5</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>4.5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Infantry">8</TargetPriority>
+        <TargetPriority type="Aircraft">8</TargetPriority>
+        <TargetPriority type="GroundVehicle">8</TargetPriority>
+        <TargetPriority type="TurretBuilding">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Weapon>
+        <Name>ShadePlasma3</Name>
+        <AttackRate>0.5</AttackRate>
+        <DamagePerSecond>187</DamagePerSecond>
+        <WeaponType>Basic</WeaponType>
+        <Projectile>fx_proj_shadeplasma_01</Projectile>
+        <MaxRange>75</MaxRange>
+        <Accuracy>0.5</Accuracy>
+        <MaxDeviation>5</MaxDeviation>
+        <MovingAccuracy>0</MovingAccuracy>
+        <MovingMaxDeviation>4.5</MovingMaxDeviation>
+        <Hardpoint>Turret</Hardpoint>
+        <TargetPriority type="Infantry">8</TargetPriority>
+        <TargetPriority type="Aircraft">8</TargetPriority>
+        <TargetPriority type="GroundVehicle">8</TargetPriority>
+        <TargetPriority type="TurretBuilding">3</TargetPriority>
+        <TargetPriority type="Building">1</TargetPriority>
+    </Weapon>
+    <Action>
+        <Name>ShadePlasma1AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>ShadePlasma1</Weapon>
+    </Action>
+    <Action>
+        <Name>ShadePlasma2AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>ShadePlasma2</Weapon>
+    </Action>
+    <Action>
+        <Name>ShadePlasma3AttackAction</Name>
+        <ActionType>RangedAttack</ActionType>
+        <Weapon>ShadePlasma3</Weapon>
+    </Action>
+</TacticData>

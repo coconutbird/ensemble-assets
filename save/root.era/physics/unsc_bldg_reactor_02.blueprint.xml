@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blueprint>
+    <mass>200</mass>
+    <friction>2</friction>
+    <restitution>0.2</restitution>
+    <angularDamping>0.01</angularDamping>
+    <shape>unsc_bldg_reactor_02</shape>
+</blueprint>

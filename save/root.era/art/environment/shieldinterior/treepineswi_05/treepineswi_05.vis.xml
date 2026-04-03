@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>environment\shieldinterior\TreePineSWI_05\TreePineSWI_05</file>
+                <damagefile>environment\shieldinterior\TreePineSWI_05\TreePineSWI_05</damagefile>
+            </asset>
+            <point pointType="Impact" bone="bone_impact_01" pointData="Metal"/>
+        </component>
+    </model>
+</visual>

@@ -1,0 +1,708 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visual defaultmodel="Default">
+    <model name="Default">
+        <component>
+            <asset type="Model">
+                <file>campaign\npc\snowforge_01\snowforge_01</file>
+            </asset>
+            <point pointType="Launch" bone="bone_launchpoint" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 Spine1" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 Head" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Forearm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Forearm" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Thigh" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 L Calf" pointData="Metal"/>
+            <point pointType="Impact" bone="Bip01 R Calf" pointData="Metal"/>
+        </component>
+        <anim type="Idle" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_01</file>
+                <weight>90</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_02</file>
+                <weight>50</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_fid01_02</file>
+                <weight>70</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_fid02_02</file>
+                <weight>40</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_fid03_02</file>
+                <weight>70</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_fid04_02</file>
+                <weight>40</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_03</file>
+                <weight>90</weight>
+            </asset>
+        </anim>
+        <anim type="Walk" exitAction="Loop" tweenTime="30">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\walk_01</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\walk_02</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\patrol_walk_01</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_walk_forward_01</file>
+                <weight>60</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchwalk_forward_01</file>
+                <weight>60</weight>
+            </asset>
+        </anim>
+        <anim type="Jog" exitAction="Loop" tweenTime="30" tweenToAnimation="Jog">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_jog_01</file>
+                <weight>30</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_jog_02</file>
+                <weight>30</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchjog_forward_01</file>
+                <weight>50</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_jog_forward_01</file>
+                <weight>50</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_jog_forward_02</file>
+                <weight>40</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchjog_forward_02</file>
+                <weight>40</weight>
+            </asset>
+        </anim>
+        <anim type="Run" exitAction="Loop" tweenTime="30">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_run_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_run_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="IdleWalk" exitAction="Freeze" tweenTime="30" tweenToAnimation="Walk">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\idle_2_combatwalk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="IdleJog" exitAction="Freeze" tweenTime="30" tweenToAnimation="Jog">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\idle_2_combatjog_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="IdleRun" exitAction="Freeze" tweenTime="30" tweenToAnimation="Run">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\idle_2_combatrun_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="WalkIdle" exitAction="Freeze" tweenTime="0" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combatwalk_2_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="JogIdle" exitAction="Freeze" tweenTime="0" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\patrolwalk_2_combatcrouchidle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combatjog_2_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combatjog_2_idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="RunIdle" exitAction="Freeze" tweenTime="0" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combatrun_2_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnAround" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_around_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_around_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnLeft45Forward" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_left_45_forward_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnLeft" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_left_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_left_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnLeft45Back" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_left_45_back_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnRight45Forward" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_right_45_forward_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnRight" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_right_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_right_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnRight45Back" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_right_45_back_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnWalk" exitAction="Freeze" tweenTime="5" tweenToAnimation="Walk">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_2_walk_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnJog" exitAction="Freeze" tweenTime="5" tweenToAnimation="Jog">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_2_jog_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TurnRun" exitAction="Freeze" tweenTime="5" tweenToAnimation="Run">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\turn_2_run_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\roll_left_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="EvadeRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\roll_right_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Dive" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\dive_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="GetUp" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\getup_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="WallIdle" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_wallidle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="WallClimb" exitAction="Transition" tweenTime="10" tweenToAnimation="Idle">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_wallclimb_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_wallclimb_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HandSignalGo" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_handsignals_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="HandSignalStop" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_handsignals_02</file>
+                <weight>60</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_fid05_02</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchidle_fid06_02</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="Gather" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Build" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\special\unit_hourglass_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Repair" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_idle_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_idle_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ParticleFile" name="effects\Unit_FX\unsc\repair_01" tobone="GrannyRootBone" syncanims="false"/>
+        </anim>
+        <anim type="Death" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_headshot_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_headshot_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_03</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathCrouch" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_crouch_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_crouch_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_crouch_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="DeathProne" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_prone_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\death_prone_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="ClamShell" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\clamshell_01_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\clamshell_01_2</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\clamshell_02_1</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\clamshell_02_2</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Flail" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\flail_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="Spin" exitAction="Freeze" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\spin_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FragGrenadeAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\grenade_attack_01</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\grenade_attack_02</file>
+                <weight>1</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\grenade_attack_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AssaultRifleAttack" exitAction="Transition" tweenTime="5" tweenToAnimation="AssaultRifleAttack">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_attack_04</file>
+                <weight>30</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_attack_01</file>
+                <weight>80</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_attack_02</file>
+                <weight>70</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_attack_03</file>
+                <weight>40</weight>
+            </asset>
+        </anim>
+        <anim type="AssaultRifleAttackLarge" exitAction="Transition" tweenTime="5" tweenToAnimation="AssaultRifleAttackLarge">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_attack_04</file>
+                <weight>5</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_attack_01</file>
+                <weight>5</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_attack_02</file>
+                <weight>5</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_attack_03</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_action_04</file>
+                <weight>96</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_action_03</file>
+                <weight>50</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_action_05</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_action_01</file>
+                <weight>20</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_action_02</file>
+                <weight>20</weight>
+            </asset>
+        </anim>
+        <anim type="AssaultRifleReload" exitAction="Loop" tweenTime="5" tweenToAnimation="AssaultRifleAttack">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_reload_01</file>
+                <weight>40</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_action_03</file>
+                <weight>40</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_action_04</file>
+                <weight>15</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_action_05</file>
+                <weight>10</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_reload_02</file>
+                <weight>30</weight>
+            </asset>
+        </anim>
+        <anim type="AssaultRifleCrouchAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_crouchattack_01</file>
+                <weight>15</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_crouchattack_02</file>
+                <weight>15</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_crouchattack_04</file>
+                <weight>15</weight>
+            </asset>
+        </anim>
+        <anim type="AssaultRifleCrouchReload" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_crouchreload_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="AssaultRifleProneAttack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_proneattack_01</file>
+                <weight>50</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_proneattack_02</file>
+                <weight>50</weight>
+            </asset>
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_proneattack_03</file>
+                <weight>50</weight>
+            </asset>
+        </anim>
+        <anim type="AssaultRifleProneReload" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\assaultrifle_pronereload_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatIdle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_idle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatWalkForward" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_walk_forward_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatWalkBack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_walk_back_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatWalkLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_walk_left_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatWalkRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_walk_right_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatCrouchIdle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_idle_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatCrouchWalkForward" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchwalk_forward_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatCrouchWalkBack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchwalk_back_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatCrouchWalkLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchwalk_left_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatCrouchWalkRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchwalk_right_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatCrouchJogForward" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_crouchjog_forward_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatProneIdle" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_proneidle_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatProneCrawlForward" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_pronecrawl_forward_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatProneCrawlBack" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_pronecrawl_back_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatProneCrawlLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_pronecrawl_left_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatProneCrawlRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_pronecrawl_right_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatProneShuffleLeft" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_proneshuffle_left_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="CombatProneShuffleRight" exitAction="Loop" tweenTime="5">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\combat_proneshuffle_right_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\pelicanDeploy_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison2" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\pelicanDeploy_02</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison3" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\pelicanDeploy_03</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison4" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\pelicanDeploy_04</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison5" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\pelicanDeploy_05</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="PelicanUngarrison6" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\pelicanDeploy_06</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="FloodDeathJog" exitAction="Loop" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\flood_death_jog_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 Head" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles2" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 L Forearm" frombone="GrannyRootBone" syncanims="true"/>
+        </anim>
+        <anim type="FloodDeath" exitAction="Freeze" tweenTime="10">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\flood_death_01</file>
+                <weight>1</weight>
+            </asset>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 Head" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles2" tobone="Bip01 L Hand" frombone="GrannyRootBone" syncanims="true"/>
+            <attach type="ModelRef" name="Tenticles1" tobone="Bip01 L Forearm" frombone="GrannyRootBone" syncanims="true"/>
+        </anim>
+        <anim type="Cinematic" exitAction="Freeze" tweenTime="30">
+            <asset type="Anim">
+                <file>unsc\infantry\marine_01\marine_01</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportOut" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchOut</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+        <anim type="TeleportIn" exitAction="Freeze" tweenTime="0">
+            <asset type="Anim">
+                <file>effects\fx_dummy_teleportstretchIn</file>
+                <weight>1</weight>
+            </asset>
+        </anim>
+    </model>
+</visual>
