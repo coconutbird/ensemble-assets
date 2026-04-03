@@ -35,6 +35,12 @@ pub struct World {
     pub terrain_data: Option<xtd::XtdFile>,
     /// Cached terrain textures/foliage/roads (lazy-loaded on first access).
     pub terrain_textures: Option<xtt::XttFile>,
+    /// Cached models (UGX), keyed by game path.
+    pub models: HashMap<String, ugx::UgxGeom>,
+    /// Cached textures (DDX), keyed by game path.
+    pub textures: HashMap<String, ddx::DdxTexture>,
+    /// Cached animations (UAX), keyed by game path.
+    pub animations: HashMap<String, uax::UaxFile>,
     dirty: DirtySet,
 }
 
@@ -209,6 +215,9 @@ impl World {
             strings,
             terrain_data,
             terrain_textures,
+            models: HashMap::new(),
+            textures: HashMap::new(),
+            animations: HashMap::new(),
             dirty: DirtySet::default(),
         })
     }
@@ -656,6 +665,10 @@ impl World {
         )
     }
 
+    pub fn strings_mut(&mut self) -> DirtyGuard<'_, Option<super::stringtable::StringTable>> {
+        DirtyGuard::new(&mut self.strings, self.dirty.flag(TableId::Strings))
+    }
+
     // ---- Per-key mutable accessors ----
 
     /// Get a mutable reference to a single visual, marking only that key dirty.
@@ -698,6 +711,95 @@ impl World {
             TableId::Physics,
             name.to_string(),
         ))
+    }
+
+    /// Get a mutable reference to a cached model by game path.
+    ///
+    /// The model must have been loaded via `load_model()` first.
+    pub fn model_mut(&mut self, path: &str) -> Option<KeyDirtyGuard<'_, ugx::UgxGeom>> {
+        let geom = self.models.get_mut(path)?;
+        Some(KeyDirtyGuard::new(
+            geom,
+            &self.dirty,
+            TableId::Models,
+            path.to_string(),
+        ))
+    }
+
+    /// Get a mutable reference to a cached texture by game path.
+    ///
+    /// The texture must have been loaded via `load_texture()` first.
+    pub fn texture_mut(&mut self, path: &str) -> Option<KeyDirtyGuard<'_, ddx::DdxTexture>> {
+        let tex = self.textures.get_mut(path)?;
+        Some(KeyDirtyGuard::new(
+            tex,
+            &self.dirty,
+            TableId::Textures,
+            path.to_string(),
+        ))
+    }
+
+    /// Get a mutable reference to a cached animation by game path.
+    ///
+    /// The animation must have been loaded via `load_animation()` first.
+    pub fn animation_mut(&mut self, path: &str) -> Option<KeyDirtyGuard<'_, uax::UaxFile>> {
+        let anim = self.animations.get_mut(path)?;
+        Some(KeyDirtyGuard::new(
+            anim,
+            &self.dirty,
+            TableId::Animations,
+            path.to_string(),
+        ))
+    }
+
+    // ---- Lazy load into cache ----
+
+    /// Load a model into the cache and return a reference.
+    ///
+    /// If already cached, returns the cached version.
+    pub fn load_model(
+        &mut self,
+        path: &str,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Option<&ugx::UgxGeom> {
+        if !self.models.contains_key(path) {
+            let data = src.resolve_exact(path)?;
+            let geom = ugx::UgxGeom::from_bytes(&data).ok()?;
+            self.models.insert(path.to_string(), geom);
+        }
+        self.models.get(path)
+    }
+
+    /// Load a texture into the cache and return a reference.
+    ///
+    /// If already cached, returns the cached version.
+    pub fn load_texture(
+        &mut self,
+        path: &str,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Option<&ddx::DdxTexture> {
+        if !self.textures.contains_key(path) {
+            let data = src.resolve_exact(path)?;
+            let tex = ddx::DdxTexture::from_bytes(&data).ok()?;
+            self.textures.insert(path.to_string(), tex);
+        }
+        self.textures.get(path)
+    }
+
+    /// Load an animation into the cache and return a reference.
+    ///
+    /// If already cached, returns the cached version.
+    pub fn load_animation(
+        &mut self,
+        path: &str,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Option<&uax::UaxFile> {
+        if !self.animations.contains_key(path) {
+            let data = src.resolve_exact(path)?;
+            let anim = uax::UaxFile::from_bytes(&data).ok()?;
+            self.animations.insert(path.to_string(), anim);
+        }
+        self.animations.get(path)
     }
 
     // ---- Per-file save ----
@@ -821,6 +923,77 @@ impl World {
             xtt::Writer::write(xtt).map_err(|e| format!("serialize terrain textures: {e}"))?;
         let path = src.write_file(&game_path, &bytes)?;
         self.dirty.flag(TableId::TerrainTextures).set(false);
+        Ok(path)
+    }
+
+    /// Save the string table to the override directory.
+    ///
+    /// Writes the XMB string table and clears the dirty flag.
+    pub fn save_strings(
+        &mut self,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<PathBuf, String> {
+        let st = self.strings.as_ref().ok_or("no string table loaded")?;
+        let doc = st.to_document();
+        let game_path = st.game_path();
+        let path = src.write_xmb(&game_path, &doc)?;
+        self.dirty.flag(TableId::Strings).set(false);
+        Ok(path)
+    }
+
+    /// Save a single cached model (UGX) to the override directory.
+    ///
+    /// Writes the binary UGX file and clears the dirty key.
+    pub fn save_model(
+        &mut self,
+        game_path: &str,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<PathBuf, String> {
+        let geom = self
+            .models
+            .get(game_path)
+            .ok_or_else(|| format!("model not cached: {game_path}"))?;
+        let bytes = ugx::Writer::write(geom, ugx::UgxVersion::Hw1)
+            .map_err(|e| format!("serialize model {game_path}: {e}"))?;
+        let path = src.write_file(game_path, &bytes)?;
+        self.dirty.clear_key(TableId::Models, game_path);
+        Ok(path)
+    }
+
+    /// Save a single cached texture (DDX) to the override directory.
+    ///
+    /// Writes the DDS file and clears the dirty key.
+    pub fn save_texture(
+        &mut self,
+        game_path: &str,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<PathBuf, String> {
+        let tex = self
+            .textures
+            .get(game_path)
+            .ok_or_else(|| format!("texture not cached: {game_path}"))?;
+        let bytes =
+            ddx::Writer::write(tex).map_err(|e| format!("serialize texture {game_path}: {e}"))?;
+        let path = src.write_file(game_path, &bytes)?;
+        self.dirty.clear_key(TableId::Textures, game_path);
+        Ok(path)
+    }
+
+    /// Save a single cached animation (UAX) to the override directory.
+    ///
+    /// Writes the binary UAX file and clears the dirty key.
+    pub fn save_animation(
+        &mut self,
+        game_path: &str,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<PathBuf, String> {
+        let anim = self
+            .animations
+            .get(game_path)
+            .ok_or_else(|| format!("animation not cached: {game_path}"))?;
+        let bytes = anim.to_bytes();
+        let path = src.write_file(game_path, &bytes)?;
+        self.dirty.clear_key(TableId::Animations, game_path);
         Ok(path)
     }
 
@@ -1028,6 +1201,66 @@ impl World {
                         written.push(src.write_file(&game_path, &bytes)?);
                     }
                 }
+                TableId::Strings => {
+                    if let Some(ref st) = self.strings {
+                        let doc = st.to_document();
+                        let game_path = st.game_path();
+                        written.push(src.write_xmb(&game_path, &doc)?);
+                    }
+                }
+                TableId::Models => {
+                    let keys = self.dirty.dirty_keys(TableId::Models);
+                    let iter: Box<dyn Iterator<Item = (&String, &ugx::UgxGeom)>> =
+                        if keys.is_empty() {
+                            Box::new(self.models.iter())
+                        } else {
+                            Box::new(
+                                self.models
+                                    .iter()
+                                    .filter(|(k, _)| keys.contains(k.as_str())),
+                            )
+                        };
+                    for (game_path, geom) in iter {
+                        let bytes = ugx::Writer::write(geom, ugx::UgxVersion::Hw1)
+                            .map_err(|e| format!("serialize model {game_path}: {e}"))?;
+                        written.push(src.write_file(game_path, &bytes)?);
+                    }
+                }
+                TableId::Textures => {
+                    let keys = self.dirty.dirty_keys(TableId::Textures);
+                    let iter: Box<dyn Iterator<Item = (&String, &ddx::DdxTexture)>> =
+                        if keys.is_empty() {
+                            Box::new(self.textures.iter())
+                        } else {
+                            Box::new(
+                                self.textures
+                                    .iter()
+                                    .filter(|(k, _)| keys.contains(k.as_str())),
+                            )
+                        };
+                    for (game_path, tex) in iter {
+                        let bytes = ddx::Writer::write(tex)
+                            .map_err(|e| format!("serialize texture {game_path}: {e}"))?;
+                        written.push(src.write_file(game_path, &bytes)?);
+                    }
+                }
+                TableId::Animations => {
+                    let keys = self.dirty.dirty_keys(TableId::Animations);
+                    let iter: Box<dyn Iterator<Item = (&String, &uax::UaxFile)>> =
+                        if keys.is_empty() {
+                            Box::new(self.animations.iter())
+                        } else {
+                            Box::new(
+                                self.animations
+                                    .iter()
+                                    .filter(|(k, _)| keys.contains(k.as_str())),
+                            )
+                        };
+                    for (game_path, anim) in iter {
+                        let bytes = anim.to_bytes();
+                        written.push(src.write_file(game_path, &bytes)?);
+                    }
+                }
             }
         }
 
@@ -1140,8 +1373,21 @@ impl World {
                 }
                 Ok(false)
             }
-            TableId::Visuals | TableId::Tactics | TableId::Physics => {
+            TableId::Visuals
+            | TableId::Tactics
+            | TableId::Physics
+            | TableId::Models
+            | TableId::Animations
+            | TableId::Textures => {
                 // These are per-file — use reload_asset() instead.
+                Ok(false)
+            }
+            TableId::Strings => {
+                if let Some(ref st) = self.strings {
+                    let lang = st.language_code.clone();
+                    self.strings = super::stringtable::StringTable::load(&lang, src);
+                    return Ok(self.strings.is_some());
+                }
                 Ok(false)
             }
             TableId::TerrainData => {
@@ -1320,9 +1566,34 @@ impl World {
                 Ok(true)
             }
 
-            // Binary assets not cached in World. Returning Ok(true)
-            // signals consumers that the file changed.
-            AssetKind::Model(_) | AssetKind::Animation(_) | AssetKind::Texture(_) => Ok(true),
+            // Re-read cached binary assets if they're in the cache.
+            AssetKind::Model(path) => {
+                if self.models.contains_key(path)
+                    && let Some(data) = src.resolve_exact(path)
+                    && let Ok(geom) = ugx::UgxGeom::from_bytes(&data)
+                {
+                    self.models.insert(path.clone(), geom);
+                }
+                Ok(true)
+            }
+            AssetKind::Animation(path) => {
+                if self.animations.contains_key(path)
+                    && let Some(data) = src.resolve_exact(path)
+                    && let Ok(anim) = uax::UaxFile::from_bytes(&data)
+                {
+                    self.animations.insert(path.clone(), anim);
+                }
+                Ok(true)
+            }
+            AssetKind::Texture(path) => {
+                if self.textures.contains_key(path)
+                    && let Some(data) = src.resolve_exact(path)
+                    && let Ok(tex) = ddx::DdxTexture::from_bytes(&data)
+                {
+                    self.textures.insert(path.clone(), tex);
+                }
+                Ok(true)
+            }
         }
     }
 }

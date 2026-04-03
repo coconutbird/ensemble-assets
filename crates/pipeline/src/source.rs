@@ -97,13 +97,27 @@ impl<F: FileProvider> AssetSource<F> {
     }
 
     /// Resolve a file, trying `suffixes` as fallback extensions.
+    ///
+    /// Override files are checked for **all** variants first, ensuring
+    /// that a saved `.xmb` override wins over an ERA's `.xml` original.
     pub fn resolve_with_fallback(&mut self, path: &str, suffixes: &[&str]) -> Option<Vec<u8>> {
-        if let Some(data) = self.resolve_exact(path) {
+        // 1. Try all variants in the override directory first.
+        if let Some(data) = self.resolve_override(path) {
             return Some(data);
         }
         for suffix in suffixes {
             let fallback = format!("{path}{suffix}");
-            if let Some(data) = self.resolve_exact(&fallback) {
+            if let Some(data) = self.resolve_override(&fallback) {
+                return Some(data);
+            }
+        }
+        // 2. Fall back to ERA archives.
+        if let Some(data) = self.resolve_era(path) {
+            return Some(data);
+        }
+        for suffix in suffixes {
+            let fallback = format!("{path}{suffix}");
+            if let Some(data) = self.resolve_era(&fallback) {
                 return Some(data);
             }
         }
@@ -300,15 +314,23 @@ impl<F: FileProvider> AssetResolver for AssetSource<F> {
 impl<F: FileProvider> AssetSource<F> {
     /// Resolve an exact path with no extension fallback.
     pub fn resolve_exact(&mut self, path: &str) -> Option<Vec<u8>> {
-        let key = normalise_path(path);
-        // Check override dir first.
-        if let Some(ref dir) = self.override_dir {
-            let fs_path = override_fs_path_scan(dir, &key);
-            if let Ok(data) = std::fs::read(&fs_path) {
-                return Some(data);
-            }
+        if let Some(data) = self.resolve_override(path) {
+            return Some(data);
         }
-        // Last loaded archive wins — iterate in reverse.
+        self.resolve_era(path)
+    }
+
+    /// Resolve an exact path from the override directory only.
+    fn resolve_override(&self, path: &str) -> Option<Vec<u8>> {
+        let key = normalise_path(path);
+        let dir = self.override_dir.as_ref()?;
+        let fs_path = override_fs_path_scan(dir, &key);
+        std::fs::read(&fs_path).ok()
+    }
+
+    /// Resolve an exact path from ERA archives only (last-loaded wins).
+    fn resolve_era(&mut self, path: &str) -> Option<Vec<u8>> {
+        let key = normalise_path(path);
         for archive in self.archives.iter_mut().rev() {
             if let Some(&entry_idx) = archive.index.get(&key) {
                 return archive.reader.read_entry(entry_idx).ok();

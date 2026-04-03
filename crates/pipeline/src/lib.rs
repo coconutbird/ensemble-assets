@@ -1,6 +1,9 @@
 //! Ensemble asset pipeline — ERA loading, scenario loading, full world resolution.
 
 pub use database;
+pub use ddx;
+pub use uax;
+pub use ugx;
 pub use xmb;
 pub mod hw1;
 pub mod source;

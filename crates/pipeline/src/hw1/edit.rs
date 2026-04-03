@@ -24,10 +24,14 @@ pub enum TableId {
     Physics,
     TerrainData,
     TerrainTextures,
+    Strings,
+    Models,
+    Animations,
+    Textures,
 }
 
 impl TableId {
-    pub const COUNT: usize = 16;
+    pub const COUNT: usize = 20;
 
     pub const ALL: [TableId; Self::COUNT] = [
         Self::Objects,
@@ -46,6 +50,10 @@ impl TableId {
         Self::Physics,
         Self::TerrainData,
         Self::TerrainTextures,
+        Self::Strings,
+        Self::Models,
+        Self::Animations,
+        Self::Textures,
     ];
 
     fn index(self) -> usize {
@@ -93,7 +101,11 @@ impl TableId {
             | Self::Tactics
             | Self::Physics
             | Self::TerrainData
-            | Self::TerrainTextures => None,
+            | Self::TerrainTextures
+            | Self::Strings
+            | Self::Models
+            | Self::Animations
+            | Self::Textures => None,
         }
     }
 }
@@ -247,10 +259,13 @@ impl AssetKind {
 /// write only the changed files instead of the entire table.
 pub struct DirtySet {
     flags: [Cell<bool>; TableId::COUNT],
-    /// Dirty keys for per-file tables: Visuals, Tactics, Physics.
+    /// Dirty keys for per-file tables.
     dirty_visuals: RefCell<HashSet<String>>,
     dirty_tactics: RefCell<HashSet<String>>,
     dirty_physics: RefCell<HashSet<String>>,
+    dirty_models: RefCell<HashSet<String>>,
+    dirty_animations: RefCell<HashSet<String>>,
+    dirty_textures: RefCell<HashSet<String>>,
 }
 
 impl Default for DirtySet {
@@ -260,6 +275,9 @@ impl Default for DirtySet {
             dirty_visuals: RefCell::new(HashSet::new()),
             dirty_tactics: RefCell::new(HashSet::new()),
             dirty_physics: RefCell::new(HashSet::new()),
+            dirty_models: RefCell::new(HashSet::new()),
+            dirty_animations: RefCell::new(HashSet::new()),
+            dirty_textures: RefCell::new(HashSet::new()),
         }
     }
 }
@@ -291,6 +309,9 @@ impl DirtySet {
             TableId::Visuals => self.dirty_visuals.borrow().clone(),
             TableId::Tactics => self.dirty_tactics.borrow().clone(),
             TableId::Physics => self.dirty_physics.borrow().clone(),
+            TableId::Models => self.dirty_models.borrow().clone(),
+            TableId::Animations => self.dirty_animations.borrow().clone(),
+            TableId::Textures => self.dirty_textures.borrow().clone(),
             _ => HashSet::new(),
         }
     }
@@ -310,6 +331,15 @@ impl DirtySet {
             TableId::Physics => {
                 self.dirty_physics.borrow_mut().insert(key);
             }
+            TableId::Models => {
+                self.dirty_models.borrow_mut().insert(key);
+            }
+            TableId::Animations => {
+                self.dirty_animations.borrow_mut().insert(key);
+            }
+            TableId::Textures => {
+                self.dirty_textures.borrow_mut().insert(key);
+            }
             _ => {}
         }
     }
@@ -321,6 +351,9 @@ impl DirtySet {
         self.dirty_visuals.borrow_mut().clear();
         self.dirty_tactics.borrow_mut().clear();
         self.dirty_physics.borrow_mut().clear();
+        self.dirty_models.borrow_mut().clear();
+        self.dirty_animations.borrow_mut().clear();
+        self.dirty_textures.borrow_mut().clear();
     }
 
     /// Clear dirty state for a single per-file key.
@@ -329,6 +362,9 @@ impl DirtySet {
             TableId::Visuals => &self.dirty_visuals,
             TableId::Tactics => &self.dirty_tactics,
             TableId::Physics => &self.dirty_physics,
+            TableId::Models => &self.dirty_models,
+            TableId::Animations => &self.dirty_animations,
+            TableId::Textures => &self.dirty_textures,
             _ => return,
         };
         let mut s = set.borrow_mut();

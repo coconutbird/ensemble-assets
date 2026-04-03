@@ -134,6 +134,47 @@ impl StringTable {
     pub fn is_empty(&self) -> bool {
         self.strings.is_empty()
     }
+
+    /// The game path for this string table (e.g. `"data\\stringtable-en.xml"`).
+    pub fn game_path(&self) -> String {
+        format!("data\\stringtable-{}.xml", self.language_code)
+    }
+
+    /// Serialize this string table back to an XMB document.
+    pub fn to_document(&self) -> xmb::Document {
+        use bdt::Variant;
+        use xmb::Attribute;
+
+        let mut lang_node = xmb::Node::new("Language");
+        lang_node.add_attribute(Attribute::with_string("name", &self.language_name));
+
+        // Sort by _locID for deterministic output.
+        let mut ids: Vec<i32> = self.strings.keys().copied().collect();
+        ids.sort_unstable();
+
+        for loc_id in ids {
+            let entry = &self.strings[&loc_id];
+            let mut node = xmb::Node::new("String");
+            node.add_attribute(Attribute::with_string("_locID", loc_id.to_string()));
+            if !entry.category.is_empty() {
+                node.add_attribute(Attribute::with_string("category", &entry.category));
+            }
+            if entry.subtitle {
+                node.add_attribute(Attribute::with_string("subtitle", "true"));
+            } else {
+                node.add_attribute(Attribute::with_string("subtitle", "false"));
+            }
+            if let Some(ref mk) = entry.mouse_keyboard {
+                node.add_attribute(Attribute::with_string("_mouseKeyboard", mk));
+            }
+            node.text = Variant::String(entry.text.clone());
+            lang_node.add_child(node);
+        }
+
+        let mut root = xmb::Node::new("StringTable");
+        root.add_child(lang_node);
+        xmb::Document::with_root(root)
+    }
 }
 
 /// Load the default (English) string table.
