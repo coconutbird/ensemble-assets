@@ -221,10 +221,10 @@ impl<F: FileProvider> AssetSource<F> {
             return Some(p);
         }
         // Try replacing .xml with .xmb (handles "art\foo.vis.xml" → "art\foo.vis.xmb")
-        if let Some(base) = path.strip_suffix(".xml") {
-            if let Some(p) = self.provenance(&format!("{base}.xmb")) {
-                return Some(p);
-            }
+        if let Some(base) = path.strip_suffix(".xml")
+            && let Some(p) = self.provenance(&format!("{base}.xmb"))
+        {
+            return Some(p);
         }
         None
     }
@@ -256,10 +256,10 @@ impl<F: FileProvider> AssetSource<F> {
         if let Some(p) = self.provenance_era_only(&format!("{path}.xmb")) {
             return Some(p);
         }
-        if let Some(base) = path.strip_suffix(".xml") {
-            if let Some(p) = self.provenance_era_only(&format!("{base}.xmb")) {
-                return Some(p);
-            }
+        if let Some(base) = path.strip_suffix(".xml")
+            && let Some(p) = self.provenance_era_only(&format!("{base}.xmb"))
+        {
+            return Some(p);
         }
         None
     }
@@ -348,10 +348,10 @@ impl<F: FileProvider> AssetResolver for AssetSource<F> {
     fn exists(&self, path: &str) -> bool {
         let key = normalise_path(path);
         // Check override dir first.
-        if let Some(ref dir) = self.override_dir {
-            if override_fs_path_scan(dir, &key).exists() {
-                return true;
-            }
+        if let Some(ref dir) = self.override_dir
+            && override_fs_path_scan(dir, &key).exists()
+        {
+            return true;
         }
         self.archives.iter().any(|a| a.index.contains_key(&key))
     }

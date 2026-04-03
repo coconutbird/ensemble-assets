@@ -109,23 +109,23 @@ pub(crate) fn resolve_physics_chain(
 ) {
     if let Some(bp_ref) = &chain.physics.blueprint {
         let bp_base = format!("physics\\{}.blueprint", bp_ref);
-        if let Some(bp_doc) = src.read_xmb(&bp_base) {
-            if let Ok(bp) = database::hw1::physics::parse_blueprint(&bp_doc) {
-                stats.blueprints_resolved += 1;
+        if let Some(bp_doc) = src.read_xmb(&bp_base)
+            && let Ok(bp) = database::hw1::physics::parse_blueprint(&bp_doc)
+        {
+            stats.blueprints_resolved += 1;
 
-                // Shape chain
-                if let Some(shp_ref) = &bp.shape {
-                    let shp_base = format!("physics\\{}.shp", shp_ref);
-                    if let Some(shp_doc) = src.read_xmb(&shp_base) {
-                        if let Ok(shp) = database::hw1::physics::parse_shape(&shp_doc) {
-                            stats.shapes_resolved += 1;
-                            chain.shape = Some(shp);
-                        }
-                    }
+            // Shape chain
+            if let Some(shp_ref) = &bp.shape {
+                let shp_base = format!("physics\\{}.shp", shp_ref);
+                if let Some(shp_doc) = src.read_xmb(&shp_base)
+                    && let Ok(shp) = database::hw1::physics::parse_shape(&shp_doc)
+                {
+                    stats.shapes_resolved += 1;
+                    chain.shape = Some(shp);
                 }
-
-                chain.blueprint = Some(bp);
             }
+
+            chain.blueprint = Some(bp);
         }
     }
 }

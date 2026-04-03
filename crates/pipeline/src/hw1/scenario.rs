@@ -350,7 +350,7 @@ impl ScenarioData {
     }
     /// Whether to load the terrain visual representation.
     pub fn terrain_load_vis_rep(&self) -> bool {
-        self.terrain_info.as_ref().map_or(false, |t| t.load_vis_rep)
+        self.terrain_info.as_ref().is_some_and(|t| t.load_vis_rep)
     }
     /// Sky dome reference.
     pub fn sky(&self) -> &str {
