@@ -1,4 +1,16 @@
 //! HW1 scenario descriptors and `.scn` scene data parsing.
+//!
+//! A "scenario" is a single playable map. Each scenario has:
+//!
+//! - A **descriptor** ([`ScenarioDescriptor`]) from `scenarioDescriptions.xml`
+//!   that declares metadata (map name, player count, image, terrain file paths).
+//! - Optionally, a **scenario ERA** (`{scenario}.era`) loaded on top of the
+//!   base ERA stack for map-specific overrides.
+//! - Scene data ([`ScenarioData`]) parsed from the `.scn` XML file, containing
+//!   placed objects, players, cinematics, objectives, and trigger variables.
+//!
+//! [`find_scenario`] handles fuzzy matching so callers can pass a map name
+//! (e.g. `"blood_gulch"`), an ERA filename, or a full SCN path.
 
 use std::collections::HashMap;
 
@@ -561,8 +573,20 @@ impl ScenarioList {
 }
 
 /// Parse a `<Scenario>` XMB root node into [`ScenarioData`] via `bdt-serde`.
-pub(crate) fn parse_scenario_data(root: &bdt::Node) -> ScenarioData {
+pub fn parse_scenario_data(root: &bdt::Node) -> ScenarioData {
     bdt_serde::from_node(root).unwrap_or_default()
+}
+
+impl ScenarioData {
+    /// Parse scenario data from an XML string.
+    ///
+    /// Convenience for tests and tools. Parses the XML into an XMB
+    /// document, then deserialises the root `<Scenario>` node.
+    pub fn from_xml_str(xml: &str) -> Option<Self> {
+        let doc = xmb::Document::from_xml(xml).ok()?;
+        let root = doc.root()?;
+        Some(parse_scenario_data(root))
+    }
 }
 
 /// Parse a comma-separated `"x,y,z"` string into `[f32; 3]`.

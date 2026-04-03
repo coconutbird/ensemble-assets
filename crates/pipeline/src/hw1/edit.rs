@@ -1,4 +1,51 @@
 //! Dirty tracking for the edit/save workflow.
+//!
+//! The edit system uses RAII guards ([`DirtyGuard`], [`KeyDirtyGuard`])
+//! that automatically mark data as modified when dropped. This lets
+//! [`World::save`](super::World::save) write only the tables that
+//! actually changed, rather than re-serializing everything.
+//!
+//! # How it works
+//!
+//! 1. Call a `*_mut()` accessor on [`World`](super::World) to get a guard.
+//! 2. Mutate the data through the guard's `DerefMut` impl.
+//! 3. When the guard drops, the corresponding dirty flag is set.
+//! 4. [`World::save`](super::World::save) inspects the dirty flags and
+//!    only serializes the changed tables/files.
+//!
+//! # Table-level vs key-level tracking
+//!
+//! - **Table-level** ([`DirtyGuard`]): Used for database tables like
+//!   `objects`, `squads`, `techs`. The entire table is re-serialized.
+//!   Obtained via `world.objects_mut()`, `world.squads_mut()`, etc.
+//!
+//! - **Key-level** ([`KeyDirtyGuard`]): Used for per-file assets like
+//!   visuals, tactics, physics, models, textures. Only the specific
+//!   file for that key is re-serialized.
+//!   Obtained via `world.visual_mut("name")`, `world.model_mut("path")`, etc.
+//!
+//! # Example
+//!
+//! ```no_run
+//! # use pipeline::hw1::World;
+//! # let mut world: World = todo!();
+//! // Table-level: modify the objects table.
+//! {
+//!     let mut objects = world.objects_mut();
+//!     for obj in objects.iter_mut() {
+//!         if obj.hitpoints.unwrap_or(0.0) < 100.0 {
+//!             obj.hitpoints = Some(100.0);
+//!         }
+//!     }
+//! } // ← DirtyGuard drops, Objects table marked dirty.
+//!
+//! // Key-level: modify a single visual file.
+//! if let Some(mut vis) = world.visual_mut("unsc_inf_marine_01") {
+//!     vis.default_model_index = Some(0);
+//! } // ← KeyDirtyGuard drops, only "unsc_inf_marine_01" visual marked dirty.
+//!
+//! assert!(world.is_dirty());
+//! ```
 
 use std::cell::{Cell, RefCell};
 use std::collections::HashSet;
@@ -380,12 +427,20 @@ impl DirtySet {
     }
 }
 
-/// RAII guard that marks a table dirty when dropped.
+/// RAII guard that marks a whole table dirty when dropped.
 ///
-/// Returned by `World::*_mut()` accessors. Dereferences to `&mut T`
-/// so callers can mutate the data naturally. The dirty flag is set on
-/// drop, not on each write — this avoids overhead and keeps the guard
-/// cheap.
+/// Returned by `World::objects_mut()`, `World::squads_mut()`, etc.
+/// Dereferences to `&mut T` so you can mutate the inner data naturally
+/// using standard `Vec`/`HashMap` methods. The dirty flag is set
+/// unconditionally on drop — even if you didn't change anything.
+///
+/// ```no_run
+/// # use pipeline::hw1::World;
+/// # let mut world: World = todo!();
+/// let mut techs = world.techs_mut();
+/// techs.retain(|t| !t.name.is_empty()); // standard Vec method
+/// // dirty flag set when `techs` goes out of scope
+/// ```
 pub struct DirtyGuard<'a, T> {
     data: &'a mut T,
     flag: &'a Cell<bool>,
@@ -418,9 +473,20 @@ impl<T> Drop for DirtyGuard<'_, T> {
 
 /// RAII guard that marks a specific key dirty within a per-file table.
 ///
-/// Returned by `World::visual_mut("name")` etc. Dereferences to `&mut T`
-/// so callers can mutate the data naturally. On drop, marks both the
-/// table-level flag and the specific key in the [`DirtySet`].
+/// Returned by `World::visual_mut("name")`, `World::tactic_mut("name")`,
+/// `World::model_mut("path")`, etc. Dereferences to `&mut T` so you
+/// can mutate the data naturally. On drop, marks both the table-level
+/// flag **and** records the specific key so that
+/// [`World::save`](super::World::save) only re-serializes that one file.
+///
+/// ```no_run
+/// # use pipeline::hw1::World;
+/// # let mut world: World = todo!();
+/// // Only the "unsc_inf_marine_01" tactics file will be saved.
+/// if let Some(mut tac) = world.tactic_mut("unsc_inf_marine_01") {
+///     tac.weapons.clear();
+/// }
+/// ```
 pub struct KeyDirtyGuard<'a, T> {
     data: &'a mut T,
     dirty: &'a DirtySet,

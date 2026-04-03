@@ -1,4 +1,38 @@
-//! HW1 world — database, resolved assets, scenario, and asset manifest.
+//! HW1 world — the central data structure for the entire pipeline.
+//!
+//! [`World`] holds the loaded database, resolved per-object asset chains,
+//! scenario data, the asset manifest, cached binary assets, and the dirty
+//! tracking state for the edit/save workflow.
+//!
+//! # Lifecycle
+//!
+//! ```text
+//! ┌─────────┐      ┌──────────┐      ┌──────────┐
+//! │  Load   │ ───▶ │  Inspect │ ───▶ │  Edit    │
+//! │ (ERAs)  │      │  /Query  │      │ (guards) │
+//! └─────────┘      └──────────┘      └────┬─────┘
+//!                                         │
+//!                                    ┌────▼─────┐
+//!                                    │  Save    │
+//!                                    │ (dirty)  │
+//!                                    └──────────┘
+//! ```
+//!
+//! 1. **Load** — [`World::load`] or [`World::load_from_source`] reads all
+//!    ERAs, parses the database, resolves asset chains, and optionally
+//!    loads a scenario.
+//!
+//! 2. **Inspect** — Read fields directly (`world.database.objects`,
+//!    `world.visuals`, `world.manifest`, etc.) or use query helpers
+//!    like [`search_assets`](World::search_assets).
+//!
+//! 3. **Edit** — Use `*_mut()` accessors to get [`DirtyGuard`] or
+//!    [`KeyDirtyGuard`](super::edit::KeyDirtyGuard) handles. Mutations
+//!    through these guards automatically track what changed.
+//!
+//! 4. **Save** — [`World::save`] serializes only the dirty tables/files
+//!    to the override directory. Per-file saves (e.g. [`save_visual`](World::save_visual))
+//!    are also available for fine-grained control.
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -16,6 +50,14 @@ use super::resolve::{LoadStats, ObjectAssets, PhysicsChain, resolve_physics_chai
 use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList};
 
 /// A fully loaded HW1 game world: database, resolved assets, scenario, and manifest.
+///
+/// See the [module-level documentation](self) for the load → edit → save lifecycle.
+///
+/// # Public fields
+///
+/// Most fields are `pub` for direct read access. For **mutation**, use
+/// the `*_mut()` accessors (e.g. [`objects_mut`](Self::objects_mut),
+/// [`visual_mut`](Self::visual_mut)) which return dirty-tracking guards.
 pub struct World {
     pub database: database::hw1::Database,
     /// Per-object resolved file paths, keyed by object name.
@@ -566,6 +608,12 @@ impl World {
     }
 
     // ---- Edit API ----
+    //
+    // Each `*_mut()` method returns a [`DirtyGuard`] (table-level) or
+    // [`KeyDirtyGuard`] (per-file) that dereferences to `&mut T`.
+    // Modifying the data through the guard automatically marks the
+    // corresponding table dirty so that [`save`](Self::save) knows
+    // what to write.
 
     /// Whether any table has been modified since load (or last save).
     pub fn is_dirty(&self) -> bool {
@@ -577,6 +625,7 @@ impl World {
         self.dirty.dirty_tables()
     }
 
+    /// Get a mutable reference to the objects table (marks dirty on drop).
     pub fn objects_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::ProtoObject>> {
         DirtyGuard::new(
             &mut self.database.objects,
@@ -584,14 +633,17 @@ impl World {
         )
     }
 
+    /// Get a mutable reference to the squads table.
     pub fn squads_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Squad>> {
         DirtyGuard::new(&mut self.database.squads, self.dirty.flag(TableId::Squads))
     }
 
+    /// Get a mutable reference to the techs table.
     pub fn techs_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Tech>> {
         DirtyGuard::new(&mut self.database.techs, self.dirty.flag(TableId::Techs))
     }
 
+    /// Get a mutable reference to the abilities table.
     pub fn abilities_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Ability>> {
         DirtyGuard::new(
             &mut self.database.abilities,
@@ -599,14 +651,17 @@ impl World {
         )
     }
 
+    /// Get a mutable reference to the powers table.
     pub fn powers_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Power>> {
         DirtyGuard::new(&mut self.database.powers, self.dirty.flag(TableId::Powers))
     }
 
+    /// Get a mutable reference to the civs table.
     pub fn civs_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Civ>> {
         DirtyGuard::new(&mut self.database.civs, self.dirty.flag(TableId::Civs))
     }
 
+    /// Get a mutable reference to the leaders table.
     pub fn leaders_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Leader>> {
         DirtyGuard::new(
             &mut self.database.leaders,
@@ -614,6 +669,7 @@ impl World {
         )
     }
 
+    /// Get a mutable reference to the weapon types table.
     pub fn weapon_types_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::WeaponType>> {
         DirtyGuard::new(
             &mut self.database.weapon_types,
@@ -621,6 +677,7 @@ impl World {
         )
     }
 
+    /// Get a mutable reference to the damage types table.
     pub fn damage_types_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::DamageType>> {
         DirtyGuard::new(
             &mut self.database.damage_types,
@@ -628,6 +685,7 @@ impl World {
         )
     }
 
+    /// Get a mutable reference to the game data singleton.
     pub fn game_data_mut(&mut self) -> DirtyGuard<'_, Option<database::hw1::GameData>> {
         DirtyGuard::new(
             &mut self.database.game_data,
@@ -635,22 +693,27 @@ impl World {
         )
     }
 
+    /// Get a mutable reference to the scenario data (map-specific settings).
     pub fn scenario_data_mut(&mut self) -> DirtyGuard<'_, Option<ScenarioData>> {
         DirtyGuard::new(&mut self.scenario_data, self.dirty.flag(TableId::Scenario))
     }
 
+    /// Get a mutable reference to all resolved visuals (marks entire table dirty).
     pub fn visuals_mut(&mut self) -> DirtyGuard<'_, HashMap<String, database::hw1::Visual>> {
         DirtyGuard::new(&mut self.visuals, self.dirty.flag(TableId::Visuals))
     }
 
+    /// Get a mutable reference to all resolved tactics (marks entire table dirty).
     pub fn tactics_mut(&mut self) -> DirtyGuard<'_, HashMap<String, database::hw1::TacticData>> {
         DirtyGuard::new(&mut self.tactics, self.dirty.flag(TableId::Tactics))
     }
 
+    /// Get a mutable reference to all resolved physics chains.
     pub fn physics_mut(&mut self) -> DirtyGuard<'_, HashMap<String, PhysicsChain>> {
         DirtyGuard::new(&mut self.physics, self.dirty.flag(TableId::Physics))
     }
 
+    /// Get a mutable reference to terrain visual data (XTD).
     pub fn terrain_data_mut(&mut self) -> DirtyGuard<'_, Option<xtd::XtdFile>> {
         DirtyGuard::new(
             &mut self.terrain_data,
@@ -658,6 +721,7 @@ impl World {
         )
     }
 
+    /// Get a mutable reference to terrain textures (XTT).
     pub fn terrain_textures_mut(&mut self) -> DirtyGuard<'_, Option<xtt::XttFile>> {
         DirtyGuard::new(
             &mut self.terrain_textures,
@@ -665,6 +729,7 @@ impl World {
         )
     }
 
+    /// Get a mutable reference to the string table (localized text).
     pub fn strings_mut(&mut self) -> DirtyGuard<'_, Option<super::stringtable::StringTable>> {
         DirtyGuard::new(&mut self.strings, self.dirty.flag(TableId::Strings))
     }
@@ -999,7 +1064,17 @@ impl World {
 
     /// Save all dirty tables to the override directory.
     ///
+    /// Iterates over every table flagged as dirty and serializes it to
+    /// `{override_dir}/{era_label}/{game_path}`. For per-file tables
+    /// (visuals, tactics, physics, models, textures, animations), only
+    /// the specific keys that were modified are written.
+    ///
     /// Returns the list of files written. Clears dirty flags on success.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the `AssetSource` has no override directory
+    /// set, or if serialization/IO fails for any table.
     pub fn save(
         &mut self,
         src: &AssetSource<impl assets::FileProvider>,

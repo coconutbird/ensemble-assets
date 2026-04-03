@@ -1,4 +1,13 @@
 //! Asset manifest — tracks all binary asset references discovered during world loading.
+//!
+//! The [`AssetManifest`] is a passive inventory built during
+//! [`World::load`](super::World::load). It collects every file path
+//! referenced by visuals, tactics, physics chains, scenario data, and
+//! preload lists (`.ugx`, `.uax`, `.ddx`, `.gls`, `.cin`, …).
+//!
+//! Use [`AssetManifest::verify`] to check which references actually
+//! resolve in the loaded ERAs. This is the basis for the "missing assets"
+//! diagnostics.
 
 use std::collections::BTreeSet;
 

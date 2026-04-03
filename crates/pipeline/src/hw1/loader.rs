@@ -1,4 +1,12 @@
 //! HW1 ERA loading — mirrors the engine's `BArchiveManager` load order.
+//!
+//! This module provides [`load_base_eras`] and [`load_scenario_era`] which
+//! populate an [`AssetSource`](crate::source::AssetSource) with the same
+//! archives in the same order as the real game binary. The load order
+//! determines resolution priority (last loaded wins).
+//!
+//! Called internally by [`World::load`](super::World::load); rarely needed
+//! directly unless you want custom ERA ordering.
 
 use crate::source::{AssetSource, StdFileProvider};
 

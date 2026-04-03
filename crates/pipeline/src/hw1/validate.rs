@@ -1,7 +1,14 @@
 //! Database validation — parse all HW1 database XMBs and report success/failure.
 //!
-//! Uses `bdt_serde::from_node_warned` to collect diagnostic warnings about
-//! extra fields and type mismatches without aborting the parse.
+//! [`validate`] reads every database file from the [`AssetSource`] and
+//! attempts to deserialize it using `bdt_serde::from_node_warned`. This
+//! collects warnings about unknown fields and type mismatches without
+//! aborting the parse, producing a [`ValidateReport`] with per-file
+//! success/failure outcomes.
+//!
+//! This is a lower-level check than [`diagnostics::validate_world`](super::diagnostics::validate_world),
+//! which operates on an already-loaded [`World`](super::World) and checks
+//! cross-references (e.g. objects → visuals → tactics).
 
 use std::time::Instant;
 

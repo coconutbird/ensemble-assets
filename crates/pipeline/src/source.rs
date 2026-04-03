@@ -1,7 +1,54 @@
 //! ERA-backed asset resolution with optional filesystem override layer.
 //!
-//! Last-loaded ERA wins (matches engine `BFileManager::resolveFile`).
-//! Override directory layout: `{override_dir}/{era_label}/{game_path}`.
+//! [`AssetSource`] is the single entry point for reading (and writing)
+//! game assets. It layers multiple ERA archives on top of each other
+//! following the engine's priority rule: **last loaded ERA wins**
+//! (matching `BFileManager::resolveFile` in the engine binary).
+//!
+//! An optional **override directory** sits above the entire ERA stack.
+//! When set, any file written via [`AssetSource::write_file`] or
+//! [`AssetSource::write_xmb`] lands in
+//! `{override_dir}/{era_label}/{game_path}`, and subsequent reads will
+//! find that override before consulting the ERAs.
+//!
+//! # ERA load order
+//!
+//! The engine loads archives in a fixed sequence (see [`hw1::loader`]):
+//!
+//! ```text
+//! locale.era          ← lowest priority
+//! root.era / root_update.era
+//! shader.era
+//! miniloader.era / pregameUI.era
+//! ingameUI.era
+//! scenarioshared.era
+//! dlc01..10.era
+//! {scenario}.era      ← highest priority (loaded on map start)
+//! ```
+//!
+//! When two ERAs contain the same file (e.g. `data\objects.xml.xmb`),
+//! the one loaded **later** wins — exactly like the real engine.
+//!
+//! # Example
+//!
+//! ```no_run
+//! use pipeline::source::{AssetSource, StdFileProvider};
+//!
+//! let mut src = AssetSource::with_provider(StdFileProvider);
+//! src.add_era("/path/to/game/root.era").expect("open ERA");
+//!
+//! // Read a file — tries exact match, then appends .xmb as fallback.
+//! if let Some(data) = src.resolve_data("data\\objects.xml") {
+//!     println!("objects.xml is {} bytes", data.len());
+//! }
+//!
+//! // Find which ERA a file comes from.
+//! if let Some(prov) = src.provenance_data("data\\objects.xml") {
+//!     println!("resolved from {}", prov.era_label);
+//! }
+//! ```
+//!
+//! [`hw1::loader`]: crate::hw1::loader
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -29,8 +76,13 @@ pub struct Provenance {
 /// Unified asset source backed by one or more ERA archives, with an
 /// optional filesystem override layer for read/write support.
 ///
-/// Resolution follows the engine rule: last loaded ERA wins.
-/// The override directory is checked before any ERA.
+/// Resolution order (first match wins):
+///
+/// 1. **Override directory** — files previously saved via [`write_file`](Self::write_file)
+/// 2. **ERA stack** — last loaded archive wins (reverse load order)
+///
+/// The generic parameter `F` is the [`FileProvider`] used to open ERA
+/// files from disk. Use [`StdFileProvider`] for normal filesystem access.
 pub struct AssetSource<F: FileProvider> {
     provider: F,
     archives: Vec<LoadedArchive<F::Data>>,

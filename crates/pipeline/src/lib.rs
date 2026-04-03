@@ -1,23 +1,72 @@
-//! Ensemble asset pipeline — ERA loading, scenario loading, full world resolution.
+//! Ensemble asset pipeline — ERA loading, database parsing, asset resolution,
+//! scenario management, and edit/save workflows for Halo Wars titles.
+//!
+//! This crate ties together the lower-level format crates ([`ugx`], [`ddx`],
+//! [`uax`], [`xmb`], [`database`]) into a single, high-level API for loading
+//! a complete game world and optionally modifying it.
+//!
+//! # Quick start
+//!
+//! ```no_run
+//! use pipeline::hw1::World;
+//!
+//! // Load the full game world (database + scenario + assets).
+//! let mut world = World::load(
+//!     "/path/to/HaloWarsDE",
+//!     Some("blood_gulch"),
+//! ).expect("failed to load world");
+//!
+//! // Inspect loaded data.
+//! println!("{} objects", world.database.objects.len());
+//! println!("{} visuals resolved", world.visuals.len());
+//! world.print_summary();
+//!
+//! // Edit a unit's hit points via the dirty-tracking API.
+//! {
+//!     let mut objects = world.objects_mut(); // returns DirtyGuard
+//!     if let Some(obj) = objects.iter_mut().find(|o| o.name == "unsc_inf_marine_01") {
+//!         obj.hitpoints = Some(200.0);
+//!     }
+//! } // DirtyGuard drops here → Objects table marked dirty
+//!
+//! // Save only the tables that changed.
+//! // world.save(&src).expect("save failed");
+//! ```
+//!
+//! # Modules
+//!
+//! - [`source`] — ERA-backed asset resolution with filesystem override layer.
+//! - [`hw1`] — Halo Wars 1 world loading, editing, validation, and serialization.
+//!
+//! # Re-exports
+//!
+//! The lower-level format crates are re-exported so downstream consumers
+//! only need to depend on `pipeline`:
 
 pub use database;
 pub use ddx;
 pub use uax;
 pub use ugx;
 pub use xmb;
+pub use xtd;
+pub use xtt;
 pub mod hw1;
 pub mod source;
 
 /// Errors that can occur during pipeline operations.
+///
+/// Most methods on [`hw1::World`] return [`Result<T>`](crate::Result) using
+/// this error type. For finer-grained error handling (e.g. distinguishing
+/// a missing file from a parse error), match on the variants.
 #[derive(Debug)]
 pub enum Error {
-    /// ERA archive loading error.
+    /// An ERA archive could not be opened or parsed.
     Era(String),
-    /// Database parsing error.
+    /// A database XML/XMB file failed to parse or deserialize.
     Database(database::Error),
-    /// XMB parsing error.
+    /// An XMB binary file was malformed.
     Xmb(xmb::Error),
-    /// Asset not found.
+    /// A required asset was not found in any loaded ERA or override directory.
     NotFound(String),
 }
 

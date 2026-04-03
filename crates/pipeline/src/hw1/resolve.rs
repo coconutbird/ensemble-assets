@@ -1,8 +1,22 @@
 //! Per-object asset resolution — visual, tactics, and physics chains.
 //!
-//! Each proto-object in the database can reference a visual (→ models,
-//! animations, damage models), tactics, and physics (→ blueprint → shape).
-//! This module contains the types and helpers for walking those chains.
+//! Each proto-object in the database can reference up to three asset
+//! "chains" that link the game-logic definition to renderable content:
+//!
+//! ```text
+//! ProtoObject
+//!   ├── visual ──► .vis ──► models (.ugx), anims (.uax), damage models
+//!   ├── tactics ─► .tactics
+//!   └── physics ─► .physics ──► .blueprint ──► .shp
+//! ```
+//!
+//! During [`World::load`](super::World::load), every object is walked and
+//! the resulting file paths are recorded in [`ObjectAssets`]. The parsed
+//! physics data (including nested blueprint/shape) is stored in
+//! [`PhysicsChain`].
+//!
+//! [`LoadStats`] tracks success/failure counts so callers can report
+//! which assets failed to resolve.
 
 use crate::source::AssetSource;
 
