@@ -1,9 +1,11 @@
 //! HW1 world — database, resolved assets, scenario, and asset manifest.
 
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 use crate::source::AssetSource;
 
+use super::edit::{DirtyGuard, DirtySet, TableId};
 use super::loader;
 use super::manifest::{
     AssetManifest, BinaryValidation, collect_object_visual_assets, collect_scenario_assets_into,
@@ -27,6 +29,7 @@ pub struct World {
     pub scenario_list: ScenarioList,
     pub manifest: AssetManifest,
     pub stats: LoadStats,
+    dirty: DirtySet,
 }
 
 impl World {
@@ -182,6 +185,7 @@ impl World {
             scenario_list,
             manifest,
             stats,
+            dirty: DirtySet::default(),
         })
     }
 
@@ -502,5 +506,204 @@ impl World {
     ) -> Option<ddx::DdxTexture> {
         let data = src.resolve_exact(path)?;
         ddx::DdxTexture::from_bytes(&data).ok()
+    }
+
+    // ---- Edit API ----
+
+    /// Whether any table has been modified since load (or last save).
+    pub fn is_dirty(&self) -> bool {
+        self.dirty.is_any_dirty()
+    }
+
+    /// Which tables have been modified.
+    pub fn dirty_tables(&self) -> Vec<TableId> {
+        self.dirty.dirty_tables()
+    }
+
+    pub fn objects_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::ProtoObject>> {
+        DirtyGuard::new(
+            &mut self.database.objects,
+            self.dirty.flag(TableId::Objects),
+        )
+    }
+
+    pub fn squads_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Squad>> {
+        DirtyGuard::new(&mut self.database.squads, self.dirty.flag(TableId::Squads))
+    }
+
+    pub fn techs_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Tech>> {
+        DirtyGuard::new(&mut self.database.techs, self.dirty.flag(TableId::Techs))
+    }
+
+    pub fn abilities_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Ability>> {
+        DirtyGuard::new(
+            &mut self.database.abilities,
+            self.dirty.flag(TableId::Abilities),
+        )
+    }
+
+    pub fn powers_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Power>> {
+        DirtyGuard::new(&mut self.database.powers, self.dirty.flag(TableId::Powers))
+    }
+
+    pub fn civs_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Civ>> {
+        DirtyGuard::new(&mut self.database.civs, self.dirty.flag(TableId::Civs))
+    }
+
+    pub fn leaders_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::Leader>> {
+        DirtyGuard::new(
+            &mut self.database.leaders,
+            self.dirty.flag(TableId::Leaders),
+        )
+    }
+
+    pub fn weapon_types_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::WeaponType>> {
+        DirtyGuard::new(
+            &mut self.database.weapon_types,
+            self.dirty.flag(TableId::WeaponTypes),
+        )
+    }
+
+    pub fn damage_types_mut(&mut self) -> DirtyGuard<'_, Vec<database::hw1::DamageType>> {
+        DirtyGuard::new(
+            &mut self.database.damage_types,
+            self.dirty.flag(TableId::DamageTypes),
+        )
+    }
+
+    pub fn game_data_mut(&mut self) -> DirtyGuard<'_, Option<database::hw1::GameData>> {
+        DirtyGuard::new(
+            &mut self.database.game_data,
+            self.dirty.flag(TableId::GameData),
+        )
+    }
+
+    pub fn scenario_data_mut(&mut self) -> DirtyGuard<'_, Option<ScenarioData>> {
+        DirtyGuard::new(&mut self.scenario_data, self.dirty.flag(TableId::Scenario))
+    }
+
+    pub fn visuals_mut(&mut self) -> DirtyGuard<'_, HashMap<String, database::hw1::Visual>> {
+        DirtyGuard::new(&mut self.visuals, self.dirty.flag(TableId::Visuals))
+    }
+
+    pub fn tactics_mut(&mut self) -> DirtyGuard<'_, HashMap<String, database::hw1::TacticData>> {
+        DirtyGuard::new(&mut self.tactics, self.dirty.flag(TableId::Tactics))
+    }
+
+    pub fn physics_mut(&mut self) -> DirtyGuard<'_, HashMap<String, PhysicsChain>> {
+        DirtyGuard::new(&mut self.physics, self.dirty.flag(TableId::Physics))
+    }
+
+    /// Save all dirty tables to the override directory.
+    ///
+    /// Returns the list of files written. Clears dirty flags on success.
+    pub fn save(
+        &mut self,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<Vec<PathBuf>, String> {
+        let dirty = self.dirty.dirty_tables();
+        if dirty.is_empty() {
+            return Ok(Vec::new());
+        }
+
+        let mut written = Vec::new();
+
+        for table in &dirty {
+            match table {
+                TableId::Objects => {
+                    let doc = self
+                        .database
+                        .to_document_single("Objects", "Object", &self.database.objects)
+                        .map_err(|e| format!("serialize objects: {e}"))?;
+                    written.push(src.write_xmb("data\\objects.xml", &doc)?);
+                }
+                TableId::Squads => {
+                    let doc = self
+                        .database
+                        .to_document_single("Squads", "Squad", &self.database.squads)
+                        .map_err(|e| format!("serialize squads: {e}"))?;
+                    written.push(src.write_xmb("data\\squads.xml", &doc)?);
+                }
+                TableId::Techs => {
+                    let doc = self
+                        .database
+                        .to_document_single("TechTree", "Tech", &self.database.techs)
+                        .map_err(|e| format!("serialize techs: {e}"))?;
+                    written.push(src.write_xmb("data\\techs.xml", &doc)?);
+                }
+                TableId::Abilities => {
+                    let doc = self
+                        .database
+                        .to_document_single("Abilities", "Ability", &self.database.abilities)
+                        .map_err(|e| format!("serialize abilities: {e}"))?;
+                    written.push(src.write_xmb("data\\abilities.xml", &doc)?);
+                }
+                TableId::Powers => {
+                    let doc = self
+                        .database
+                        .to_document_single("Powers", "Power", &self.database.powers)
+                        .map_err(|e| format!("serialize powers: {e}"))?;
+                    written.push(src.write_xmb("data\\powers.xml", &doc)?);
+                }
+                TableId::Civs => {
+                    let doc = self
+                        .database
+                        .to_document_single("Civs", "Civ", &self.database.civs)
+                        .map_err(|e| format!("serialize civs: {e}"))?;
+                    written.push(src.write_xmb("data\\civs.xml", &doc)?);
+                }
+                TableId::Leaders => {
+                    let doc = self
+                        .database
+                        .to_document_single("Leaders", "Leader", &self.database.leaders)
+                        .map_err(|e| format!("serialize leaders: {e}"))?;
+                    written.push(src.write_xmb("data\\leaders.xml", &doc)?);
+                }
+                TableId::WeaponTypes => {
+                    let doc = self
+                        .database
+                        .to_document_single(
+                            "WeaponTypes",
+                            "WeaponType",
+                            &self.database.weapon_types,
+                        )
+                        .map_err(|e| format!("serialize weapon_types: {e}"))?;
+                    written.push(src.write_xmb("data\\weapontypes.xml", &doc)?);
+                }
+                TableId::DamageTypes => {
+                    let doc = self
+                        .database
+                        .to_document_single(
+                            "DamageTypes",
+                            "DamageType",
+                            &self.database.damage_types,
+                        )
+                        .map_err(|e| format!("serialize damage_types: {e}"))?;
+                    written.push(src.write_xmb("data\\damagetypes.xml", &doc)?);
+                }
+                TableId::GameData => {
+                    if let Some(ref gd) = self.database.game_data {
+                        let node = bdt_serde::to_node("GameData", gd)
+                            .map_err(|e| format!("serialize gamedata: {e}"))?;
+                        let doc = xmb::Document::with_root(node);
+                        written.push(src.write_xmb("data\\gamedata.xml", &doc)?);
+                    }
+                }
+                TableId::Scenario => {
+                    if let (Some(desc), Some(scn)) = (&self.scenario, &self.scenario_data) {
+                        let doc = scn
+                            .to_document()
+                            .map_err(|e| format!("serialize scenario: {e}"))?;
+                        written.push(src.write_xmb(&desc.scn_path(), &doc)?);
+                    }
+                }
+                TableId::Visuals | TableId::Tactics | TableId::Physics => {
+                    // TODO: per-file serialization for visuals/tactics/physics
+                }
+            }
+        }
+
+        self.dirty.clear();
+        Ok(written)
     }
 }

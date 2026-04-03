@@ -23,6 +23,7 @@ xtt.workspace = true
 
 [dev-dependencies]
 dotenvy.workspace = true
+tempfile = "3.27.0"
 
 
 [[test]]

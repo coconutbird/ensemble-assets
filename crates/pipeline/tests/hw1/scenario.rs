@@ -77,7 +77,7 @@ fn dump_scn_structure() {
     let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "PHXscn01.era");
     let list = pipeline::hw1::scenario::ScenarioList::load(&mut src);
 
-    for (_name, desc) in &list.scenarios {
+    for desc in list.scenarios.values() {
         let candidates = [format!("scenario\\{}", desc.file), desc.file.clone()];
         for scn_path in &candidates {
             if let Some(data) = src.resolve_data(scn_path) {
@@ -404,4 +404,108 @@ fn terrain_textures_from_xtt() {
     );
 
     println!("\n✅ Terrain texture discovery passed!");
+}
+
+#[test]
+fn edit_save_round_trip() {
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("SKIP: HW1_GAME_DIR not set");
+        return;
+    };
+
+    let scenario_path = format!("{dir}/PHXscn01.era");
+    if !std::path::Path::new(&scenario_path).exists() {
+        eprintln!("SKIP: PHXscn01.era not found");
+        return;
+    }
+
+    // 1. Load world
+    let mut world =
+        pipeline::hw1::World::load(&dir, Some("PHXscn01")).expect("failed to load world");
+    let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "PHXscn01.era");
+
+    // Set up a temp override directory
+    let tmp = tempfile::tempdir().expect("failed to create tempdir");
+    src.set_override_dir(tmp.path());
+
+    // Should start clean
+    assert!(!world.is_dirty(), "world should not be dirty after load");
+
+    // 2. Mutate database — change an object's hitpoints
+    let original_hp = world.database.objects[0].hitpoints;
+    let original_name = world.database.objects[0].name.clone();
+    {
+        let mut objects = world.objects_mut();
+        objects[0].hitpoints = Some(99999.0);
+    }
+    assert!(world.is_dirty(), "world should be dirty after mutation");
+    assert_eq!(
+        world.dirty_tables(),
+        vec![pipeline::hw1::TableId::Objects],
+        "only Objects should be dirty"
+    );
+
+    // 3. Mutate scenario — change a placed object position
+    let original_scn_obj_count = world.scenario_data.as_ref().unwrap().objects().len();
+    {
+        let mut scn = world.scenario_data_mut();
+        if let Some(ref mut scn_data) = *scn
+            && let Some(ref mut objects_wrapper) = scn_data.objects
+        {
+            objects_wrapper.entries[0].position = "100.0,200.0,300.0".to_string();
+        }
+    }
+    let dirty = world.dirty_tables();
+    assert!(dirty.contains(&pipeline::hw1::TableId::Objects));
+    assert!(dirty.contains(&pipeline::hw1::TableId::Scenario));
+
+    // 4. Save — should write only Objects + Scenario
+    let written = world.save(&src).expect("save failed");
+    assert!(!written.is_empty(), "should have written files");
+    println!("Written {} files:", written.len());
+    for p in &written {
+        println!("  {}", p.display());
+    }
+
+    // Should be clean after save
+    assert!(!world.is_dirty(), "world should be clean after save");
+
+    // 5. Verify the override files exist on disk
+    for p in &written {
+        assert!(p.exists(), "written file should exist: {}", p.display());
+    }
+
+    // 6. Reload from the same source (override dir has priority)
+    let world2 = pipeline::hw1::World::load_from_source(&mut src).expect("failed to reload world");
+
+    // Verify the mutated hitpoints persisted
+    let reloaded_obj = world2
+        .database
+        .objects
+        .iter()
+        .find(|o| o.name == original_name)
+        .expect("original object should exist in reloaded world");
+    assert_eq!(
+        reloaded_obj.hitpoints,
+        Some(99999.0),
+        "hitpoints should be 99999 after reload (was {original_hp:?})"
+    );
+
+    // Verify the scenario mutation persisted
+    let reloaded_scn = world2
+        .scenario_data
+        .as_ref()
+        .expect("reloaded scenario_data");
+    assert_eq!(
+        reloaded_scn.objects().len(),
+        original_scn_obj_count,
+        "SCN object count should be preserved"
+    );
+    assert_eq!(
+        reloaded_scn.objects()[0].position,
+        "100.0,200.0,300.0",
+        "SCN object position should be updated"
+    );
+
+    println!("\n✅ Edit-save round-trip passed!");
 }

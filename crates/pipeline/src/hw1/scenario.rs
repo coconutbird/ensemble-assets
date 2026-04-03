@@ -404,6 +404,12 @@ impl ScenarioData {
     pub fn sim_bounds(&self) -> Option<[f32; 4]> {
         self.sim_bounds_info.as_ref().and_then(|s| s.to_array())
     }
+
+    /// Serialize this scenario data back to an XMB document.
+    pub fn to_document(&self) -> Result<xmb::Document, bdt_serde::Error> {
+        let node = bdt_serde::to_node("Scenario", self)?;
+        Ok(xmb::Document::with_root(node))
+    }
 }
 
 /// A single scenario descriptor from `scenariodescriptions.xml`.

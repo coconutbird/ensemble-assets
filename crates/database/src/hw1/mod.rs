@@ -226,55 +226,55 @@ impl Database {
         if !self.objects.is_empty() {
             docs.push((
                 String::from("data\\objects.xml"),
-                Self::collection_to_doc("Objects", "Object", &self.objects)?,
+                self.to_document_single("Objects", "Object", &self.objects)?,
             ));
         }
         if !self.squads.is_empty() {
             docs.push((
                 String::from("data\\squads.xml"),
-                Self::collection_to_doc("Squads", "Squad", &self.squads)?,
+                self.to_document_single("Squads", "Squad", &self.squads)?,
             ));
         }
         if !self.techs.is_empty() {
             docs.push((
                 String::from("data\\techs.xml"),
-                Self::collection_to_doc("TechTree", "Tech", &self.techs)?,
+                self.to_document_single("TechTree", "Tech", &self.techs)?,
             ));
         }
         if !self.abilities.is_empty() {
             docs.push((
                 String::from("data\\abilities.xml"),
-                Self::collection_to_doc("Abilities", "Ability", &self.abilities)?,
+                self.to_document_single("Abilities", "Ability", &self.abilities)?,
             ));
         }
         if !self.powers.is_empty() {
             docs.push((
                 String::from("data\\powers.xml"),
-                Self::collection_to_doc("Powers", "Power", &self.powers)?,
+                self.to_document_single("Powers", "Power", &self.powers)?,
             ));
         }
         if !self.civs.is_empty() {
             docs.push((
                 String::from("data\\civs.xml"),
-                Self::collection_to_doc("Civs", "Civ", &self.civs)?,
+                self.to_document_single("Civs", "Civ", &self.civs)?,
             ));
         }
         if !self.leaders.is_empty() {
             docs.push((
                 String::from("data\\leaders.xml"),
-                Self::collection_to_doc("Leaders", "Leader", &self.leaders)?,
+                self.to_document_single("Leaders", "Leader", &self.leaders)?,
             ));
         }
         if !self.weapon_types.is_empty() {
             docs.push((
                 String::from("data\\weapontypes.xml"),
-                Self::collection_to_doc("WeaponTypes", "WeaponType", &self.weapon_types)?,
+                self.to_document_single("WeaponTypes", "WeaponType", &self.weapon_types)?,
             ));
         }
         if !self.damage_types.is_empty() {
             docs.push((
                 String::from("data\\damagetypes.xml"),
-                Self::collection_to_doc("DamageTypes", "DamageType", &self.damage_types)?,
+                self.to_document_single("DamageTypes", "DamageType", &self.damage_types)?,
             ));
         }
         if let Some(ref gd) = self.game_data {
@@ -291,7 +291,8 @@ impl Database {
     /// Serialize a single collection into an XMB document.
     ///
     /// Builds `<root_name><child_name>...</child_name>...</root_name>`.
-    fn collection_to_doc<T: serde::Serialize>(
+    pub fn to_document_single<T: serde::Serialize>(
+        &self,
         root_name: &str,
         child_name: &str,
         items: &[T],
