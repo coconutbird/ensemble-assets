@@ -10,11 +10,10 @@
 //! ```no_run
 //! use pipeline::hw1::World;
 //!
-//! // Load the full game world (database + scenario + assets).
-//! let mut world = World::load(
-//!     "/path/to/HaloWarsDE",
-//!     Some("blood_gulch"),
-//! ).expect("failed to load world");
+//! // Load the base world, then load a scenario.
+//! let (mut world, mut src) = World::load("/path/to/HaloWarsDE")
+//!     .expect("failed to load world");
+//! world.swap_scenario(&mut src, "blood_gulch");
 //!
 //! // Inspect loaded data.
 //! println!("{} objects", world.database.objects.len());

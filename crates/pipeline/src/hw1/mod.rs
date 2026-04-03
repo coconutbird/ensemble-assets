@@ -16,9 +16,10 @@
 //! ```no_run
 //! use pipeline::hw1::World;
 //!
-//! // Load world — accepts a map name, ERA filename, or full SCN path.
-//! let world = World::load("/path/to/HaloWarsDE", Some("blood_gulch"))
+//! // Load the base world, then load a scenario.
+//! let (mut world, mut src) = World::load("/path/to/HaloWarsDE")
 //!     .expect("failed to load world");
+//! world.swap_scenario(&mut src, "blood_gulch");
 //!
 //! println!("Loaded {} objects", world.database.objects.len());
 //! println!("Resolved {} visuals", world.visuals.len());

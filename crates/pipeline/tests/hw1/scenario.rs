@@ -43,8 +43,8 @@ fn load_world_with_scenario() {
     }
 
     // The refactored pipeline auto-wires scenario loading.
-    let world = pipeline::hw1::World::load(&dir, Some("PHXscn01"))
-        .expect("failed to load world with scenario");
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
+    world.swap_scenario(&mut src, "PHXscn01");
 
     world.print_summary();
 
@@ -213,8 +213,8 @@ fn scenario_manifest_collection() {
         return;
     }
 
-    let world = pipeline::hw1::World::load(&dir, Some("PHXscn01.era"))
-        .expect("failed to load world with scenario");
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
+    world.swap_scenario(&mut src, "PHXscn01.era");
 
     let scn = world
         .scenario_data
@@ -275,8 +275,8 @@ fn full_scenario_validation() {
         return;
     }
 
-    let world = pipeline::hw1::World::load(&dir, Some("PHXscn01"))
-        .expect("failed to load world with scenario");
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
+    world.swap_scenario(&mut src, "PHXscn01");
 
     world.print_summary();
 
@@ -326,7 +326,8 @@ fn full_scenario_validation() {
         world.manifest.texture_refs.len()
     );
 
-    let base_world = pipeline::hw1::World::load(&dir, None).expect("failed to load base world");
+    let (base_world, _base_src) =
+        pipeline::hw1::World::load(&dir).expect("failed to load base world");
 
     let scenario_models = world.manifest.model_refs.len();
     let base_models = base_world.manifest.model_refs.len();
@@ -360,8 +361,8 @@ fn terrain_textures_from_xtt() {
         return;
     };
 
-    let world = pipeline::hw1::World::load(&dir, Some("PHXscn01.era"))
-        .expect("failed to load world with scenario");
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
+    world.swap_scenario(&mut src, "PHXscn01.era");
 
     // Terrain refs should include at least one .xtt file
     let xtt_refs: Vec<_> = world
@@ -420,9 +421,8 @@ fn edit_save_round_trip() {
     }
 
     // 1. Load world
-    let mut world =
-        pipeline::hw1::World::load(&dir, Some("PHXscn01")).expect("failed to load world");
-    let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "PHXscn01.era");
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
+    world.swap_scenario(&mut src, "PHXscn01");
 
     // Set up a temp override directory
     let tmp = tempfile::tempdir().expect("failed to create tempdir");
@@ -524,9 +524,8 @@ fn terrain_edit_save_round_trip() {
     }
 
     // 1. Load world with scenario — terrain should be eagerly loaded
-    let mut world =
-        pipeline::hw1::World::load(&dir, Some("PHXscn01")).expect("failed to load world");
-    let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "PHXscn01.era");
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
+    world.swap_scenario(&mut src, "PHXscn01");
 
     let tmp = tempfile::tempdir().expect("failed to create tempdir");
     src.set_override_dir(tmp.path());
@@ -655,4 +654,173 @@ fn terrain_edit_save_round_trip() {
     );
 
     println!("\n✅ Terrain edit-save round-trip passed!");
+}
+
+#[test]
+fn clear_scenario_unloads_state() {
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("SKIP: HW1_GAME_DIR not set");
+        return;
+    };
+
+    let scenario_path = format!("{dir}/PHXscn01.era");
+    if !std::path::Path::new(&scenario_path).exists() {
+        eprintln!("SKIP: PHXscn01.era not found");
+        return;
+    }
+
+    // 1. Load world with scenario
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
+    world.swap_scenario(&mut src, "PHXscn01");
+
+    // Verify scenario is loaded
+    assert!(world.scenario.is_some(), "scenario should be loaded");
+    assert!(
+        world.scenario_data.is_some(),
+        "scenario data should be loaded"
+    );
+    assert!(
+        world.terrain_data.is_some(),
+        "terrain data should be loaded"
+    );
+    assert!(
+        !world.manifest.terrain_refs.is_empty(),
+        "terrain refs should be populated"
+    );
+
+    let era_count_before = src.era_count();
+    let db_objects = world.database.objects.len();
+    let visuals_count = world.visuals.len();
+    let tactics_count = world.tactics.len();
+
+    // 2. Clear the scenario (pop ERA)
+    world.clear_scenario(&mut src);
+
+    // 3. Scenario state should be gone
+    assert!(world.scenario.is_none(), "scenario should be cleared");
+    assert!(
+        world.scenario_data.is_none(),
+        "scenario data should be cleared"
+    );
+    assert!(
+        world.terrain_data.is_none(),
+        "terrain data should be cleared"
+    );
+    assert!(
+        world.terrain_textures.is_none(),
+        "terrain textures should be cleared"
+    );
+    assert!(
+        world.manifest.terrain_refs.is_empty(),
+        "terrain refs should be cleared"
+    );
+    assert!(
+        world.manifest.lightset_refs.is_empty(),
+        "lightset refs should be cleared"
+    );
+
+    // 4. Base-game state should be preserved
+    assert_eq!(
+        world.database.objects.len(),
+        db_objects,
+        "database should be unchanged"
+    );
+    assert_eq!(
+        world.visuals.len(),
+        visuals_count,
+        "visuals should be unchanged"
+    );
+    assert_eq!(
+        world.tactics.len(),
+        tactics_count,
+        "tactics should be unchanged"
+    );
+
+    // 5. ERA count should have decreased by 1
+    assert_eq!(
+        src.era_count(),
+        era_count_before - 1,
+        "should have popped one ERA"
+    );
+
+    println!("\n✅ clear_scenario passed!");
+}
+
+#[test]
+fn swap_scenario_reloads_state() {
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("SKIP: HW1_GAME_DIR not set");
+        return;
+    };
+
+    let scenario_path = format!("{dir}/PHXscn01.era");
+    if !std::path::Path::new(&scenario_path).exists() {
+        eprintln!("SKIP: PHXscn01.era not found");
+        return;
+    }
+
+    // 1. Load world with scenario
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
+    world.swap_scenario(&mut src, "PHXscn01");
+
+    let era_count_before = src.era_count();
+    let db_objects = world.database.objects.len();
+    let visuals_count = world.visuals.len();
+
+    // Record original scenario name
+    let orig_scenario_name = world
+        .scenario
+        .as_ref()
+        .expect("scenario should exist")
+        .name()
+        .to_string();
+
+    // 2. Swap to the same scenario (only one guaranteed to exist)
+    world.swap_scenario(&mut src, "PHXscn01");
+
+    // 3. Scenario should be re-loaded
+    assert!(
+        world.scenario.is_some(),
+        "scenario should be re-loaded after swap"
+    );
+    assert!(
+        world.scenario_data.is_some(),
+        "scenario data should be re-loaded after swap"
+    );
+    assert!(
+        world.terrain_data.is_some(),
+        "terrain data should be re-loaded after swap"
+    );
+    assert_eq!(
+        world.scenario.as_ref().unwrap().name(),
+        orig_scenario_name,
+        "scenario name should match after swap"
+    );
+
+    // 4. Manifest should be re-populated
+    assert!(
+        !world.manifest.terrain_refs.is_empty(),
+        "terrain refs should be re-populated after swap"
+    );
+
+    // 5. Base-game state should still be preserved
+    assert_eq!(
+        world.database.objects.len(),
+        db_objects,
+        "database should be unchanged after swap"
+    );
+    assert_eq!(
+        world.visuals.len(),
+        visuals_count,
+        "visuals should be unchanged after swap"
+    );
+
+    // 6. ERA count should be the same (popped old, pushed new)
+    assert_eq!(
+        src.era_count(),
+        era_count_before,
+        "ERA count should be unchanged after swap"
+    );
+
+    println!("\n✅ swap_scenario passed!");
 }

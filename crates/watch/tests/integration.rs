@@ -34,11 +34,9 @@ fn manual_reload_updates_world() {
     };
 
     // Load world + source
-    let mut src = pipeline::hw1::loader::load_game_dir(&dir);
     let tmp = tempfile::tempdir().expect("tempdir");
+    let (world, mut src) = pipeline::hw1::World::load(&dir).expect("load");
     src.set_override_dir(tmp.path());
-
-    let world = pipeline::hw1::World::load(&dir, None).expect("load");
     let original_count = world.database.objects.len();
     println!("Original object count: {original_count}");
 
@@ -111,11 +109,9 @@ fn filesystem_watcher_detects_change() {
         return;
     };
 
-    let mut src = pipeline::hw1::loader::load_game_dir(&dir);
     let tmp = tempfile::tempdir().expect("tempdir");
+    let (world, mut src) = pipeline::hw1::World::load(&dir).expect("load");
     src.set_override_dir(tmp.path());
-
-    let world = pipeline::hw1::World::load(&dir, None).expect("load");
     let mut watcher = watch::WorldWatcher::new(world, src, tmp.path());
 
     // Start the file watcher

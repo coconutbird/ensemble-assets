@@ -88,6 +88,8 @@ pub struct AssetSource<F: FileProvider> {
     archives: Vec<LoadedArchive<F::Data>>,
     /// Optional override directory for read/write support.
     override_dir: Option<PathBuf>,
+    /// The source directory this asset source was built from (if any).
+    source_dir: Option<String>,
 }
 
 impl<F: FileProvider> AssetSource<F> {
@@ -97,6 +99,7 @@ impl<F: FileProvider> AssetSource<F> {
             provider,
             archives: Vec::new(),
             override_dir: None,
+            source_dir: None,
         }
     }
 
@@ -146,6 +149,59 @@ impl<F: FileProvider> AssetSource<F> {
         });
 
         Ok(entry_count)
+    }
+
+    /// Remove the last ERA archive from the stack.
+    ///
+    /// Returns the label of the removed archive, or `None` if the stack
+    /// was empty. This is used by [`World::swap_scenario`](crate::hw1::World::swap_scenario)
+    /// to pop a scenario ERA before pushing a different one.
+    pub fn pop_era(&mut self) -> Option<String> {
+        self.archives.pop().map(|a| a.label)
+    }
+
+    /// Number of ERA archives currently loaded.
+    pub fn era_count(&self) -> usize {
+        self.archives.len()
+    }
+
+    /// Set the source directory this asset source was built from.
+    pub fn set_source_dir(&mut self, dir: impl Into<String>) {
+        self.source_dir = Some(dir.into());
+    }
+
+    /// Return the source directory, if set.
+    pub fn source_dir(&self) -> Option<&str> {
+        self.source_dir.as_deref()
+    }
+
+    /// Add an ERA from the source directory by filename.
+    ///
+    /// Requires [`set_source_dir`](Self::set_source_dir) to have been called.
+    /// Returns `Ok(entry_count)` on success, or `Err` if source_dir is unset
+    /// or the ERA cannot be loaded.
+    pub fn add_era_by_name(&mut self, era_name: &str) -> Result<usize, String> {
+        let dir = self
+            .source_dir
+            .as_deref()
+            .ok_or_else(|| "source_dir not set on AssetSource".to_string())?;
+        let path = format!("{dir}/{era_name}");
+        if !std::path::Path::new(&path).exists() {
+            return Err(format!("ERA not found: {path}"));
+        }
+        self.add_era(&path)
+    }
+
+    /// Find the ERA filename for a scenario by name.
+    ///
+    /// Accepts an exact ERA filename (`"PHXscn01.era"`), a map name
+    /// (`"blood_gulch"`), or a full SCN path. Scans the source directory
+    /// for a matching `.era` file.
+    ///
+    /// Requires [`set_source_dir`](Self::set_source_dir) to have been called.
+    pub fn find_scenario_era(&self, scenario: &str) -> Option<String> {
+        let dir = self.source_dir.as_deref()?;
+        crate::hw1::loader::find_scenario_era(dir, scenario)
     }
 
     /// Resolve a file, trying `suffixes` as fallback extensions.
@@ -429,6 +485,28 @@ fn override_fs_path_scan(override_dir: &Path, game_path: &str) -> PathBuf {
 // Concrete FileProvider for std environments
 
 /// [`FileProvider`] backed by `std::fs::read` — reads entire files into heap.
+
+impl AssetSource<StdFileProvider> {
+    /// Load a scenario ERA by name (map name, ERA filename, or SCN path).
+    ///
+    /// Finds the matching ERA in the source directory and pushes it onto the
+    /// archive stack. Returns `true` if the ERA was found and loaded.
+    ///
+    /// Requires [`set_source_dir`](Self::set_source_dir) to have been called.
+    pub fn load_scenario(&mut self, scenario: &str) -> bool {
+        let dir = match self.source_dir.as_deref() {
+            Some(d) => d.to_string(),
+            None => return false,
+        };
+        if let Some(era_name) = crate::hw1::loader::find_scenario_era(&dir, scenario) {
+            crate::hw1::loader::load_scenario_era(self, &dir, &era_name)
+        } else {
+            eprintln!("  WARN  could not find scenario ERA for '{scenario}'");
+            false
+        }
+    }
+}
+
 pub struct StdFileProvider;
 
 impl FileProvider for StdFileProvider {

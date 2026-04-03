@@ -84,26 +84,31 @@ pub struct World {
     /// Cached animations (UAX), keyed by game path.
     pub animations: HashMap<String, uax::UaxFile>,
     dirty: DirtySet,
+    /// Number of ERA archives in the base-game stack (before any scenario ERA).
+    /// Used by [`swap_scenario`] / [`clear_scenario`] to pop scenario ERAs.
+    base_era_count: usize,
 }
 
 impl World {
-    /// Load a complete HW1 world from a game directory.
+    /// Load the base HW1 world from a game directory.
     ///
-    /// `scenario` accepts an ERA filename (`"PHXscn01.era"`), a map name
-    /// (`"PHXscn01"`), or an SCN path.
-    pub fn load(game_dir: &str, scenario: Option<&str>) -> crate::Result<Self> {
+    /// Returns the loaded world **and** the [`AssetSource`] so callers can
+    /// continue resolving assets (textures, models, etc.) after loading.
+    ///
+    /// To load a scenario, call [`swap_scenario`](Self::swap_scenario) on
+    /// the returned world:
+    ///
+    /// ```rust,no_run
+    /// let (mut world, mut src) = pipeline::hw1::World::load("/path/to/hw1").unwrap();
+    /// world.swap_scenario(&mut src, "blood_gulch");
+    /// ```
+    pub fn load(
+        game_dir: &str,
+    ) -> crate::Result<(Self, AssetSource<crate::source::StdFileProvider>)> {
         let mut src = loader::load_game_dir(game_dir);
-
-        // Resolve and load the scenario ERA if requested.
-        if let Some(scen) = scenario {
-            if let Some(era_name) = loader::find_scenario_era(game_dir, scen) {
-                loader::load_scenario_era(&mut src, game_dir, &era_name);
-            } else {
-                eprintln!("  WARN  could not find scenario ERA for '{scen}'");
-            }
-        }
-
-        Self::load_from_source(&mut src)
+        let mut world = Self::load_from_source(&mut src)?;
+        world.base_era_count = src.era_count();
+        Ok((world, src))
     }
 
     /// Load from a pre-configured [`AssetSource`].
@@ -261,7 +266,114 @@ impl World {
             textures: HashMap::new(),
             animations: HashMap::new(),
             dirty: DirtySet::default(),
+            base_era_count: 0,
         })
+    }
+
+    /// Unload the current scenario without loading a new one.
+    ///
+    /// This clears all scenario-specific state (descriptor, SCN data,
+    /// terrain, scenario manifest entries) while preserving the base-game
+    /// database, resolved asset chains, and string table.
+    ///
+    /// Any scenario ERAs pushed on top of the base-game stack are
+    /// automatically popped so that file resolution reverts to the
+    /// base-game ERAs.
+    ///
+    /// # Example
+    /// ```rust,no_run
+    /// # let dir = "path/to/hw1";
+    /// let (mut world, mut src) = pipeline::hw1::World::load(&dir).unwrap();
+    /// world.swap_scenario(&mut src, "PHXscn01");
+    /// // Unload the scenario, popping its ERA from the stack.
+    /// world.clear_scenario(&mut src);
+    /// assert!(world.scenario.is_none());
+    /// ```
+    pub fn clear_scenario(&mut self, src: &mut AssetSource<impl assets::FileProvider>) {
+        // Pop any ERAs that were pushed on top of the base-game stack.
+        while src.era_count() > self.base_era_count {
+            if let Some(label) = src.pop_era() {
+                println!("  Popped ERA: {label}");
+            }
+        }
+
+        self.scenario = None;
+        self.scenario_data = None;
+        self.terrain_data = None;
+        self.terrain_textures = None;
+
+        // Clear scenario-specific manifest entries.
+        self.manifest.clear_scenario_refs();
+
+        // Reset dirty flags for scenario-related tables.
+        self.dirty.clear_table(TableId::Scenario);
+        self.dirty.clear_table(TableId::TerrainData);
+        self.dirty.clear_table(TableId::TerrainTextures);
+    }
+
+    /// Swap the active scenario: unload the current one and load a new one.
+    ///
+    /// This is much cheaper than rebuilding the entire `World` because it
+    /// preserves the database, all resolved asset chains (visuals, tactics,
+    /// physics), and the string table. Only scenario-specific data is
+    /// re-resolved from the new ERA.
+    ///
+    /// `scenario` accepts an ERA filename (`"blood_gulch.era"`), a map name
+    /// (`"blood_gulch"`), or an SCN path — the same formats as [`World::load`].
+    ///
+    /// Any previously loaded scenario ERA is automatically popped from the
+    /// asset source stack before pushing the new one.
+    ///
+    /// # Example
+    /// ```rust,no_run
+    /// let (mut world, mut src) = pipeline::hw1::World::load("path/to/hw1").unwrap();
+    /// world.swap_scenario(&mut src, "PHXscn01");
+    /// // Switch to a different map — no need to track state.
+    /// world.swap_scenario(&mut src, "blood_gulch");
+    /// ```
+    pub fn swap_scenario(
+        &mut self,
+        src: &mut AssetSource<crate::source::StdFileProvider>,
+        scenario: &str,
+    ) {
+        // 1. Unload current scenario (pop any scenario ERAs).
+        self.clear_scenario(src);
+
+        // 2. Find and load the new scenario ERA.
+        if !src.load_scenario(scenario) {
+            return;
+        }
+
+        // 3. Re-parse preload lists from the new scenario ERA.
+        parse_preload_list(src, "visFileList.txt", &mut self.manifest.preload_vis_refs);
+        parse_preload_list(src, "pfxFileList.txt", &mut self.manifest.preload_pfx_refs);
+        parse_preload_list(src, "tfxFileList.txt", &mut self.manifest.preload_tfx_refs);
+
+        // 4. Resolve the scenario from the new ERA.
+        let (scenario_desc, scenario_data) =
+            resolve_scenario(src, &self.scenario_list, &mut self.manifest);
+
+        // 5. Discover terrain textures from the new scenario.
+        discover_terrain_textures(
+            src,
+            &self.manifest.terrain_refs,
+            &mut self.manifest.texture_refs,
+        );
+
+        // 6. Eagerly load terrain data if the new scenario has it.
+        self.terrain_data = scenario_desc.as_ref().and_then(|s| {
+            let path = s.xtd_path()?;
+            let data = src.resolve_exact(&path)?;
+            xtd::Reader::read(&data).ok()
+        });
+        self.terrain_textures = scenario_desc.as_ref().and_then(|s| {
+            let path = s.xtt_path()?;
+            let data = src.resolve_exact(&path)?;
+            xtt::Reader::read(&data).ok()
+        });
+
+        self.scenario = scenario_desc;
+        self.scenario_data = scenario_data;
     }
 
     /// Resolve a localized string by its `_locID`.

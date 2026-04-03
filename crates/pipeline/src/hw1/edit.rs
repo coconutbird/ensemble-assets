@@ -391,6 +391,20 @@ impl DirtySet {
         }
     }
 
+    /// Clear dirty state for a single table (flag + any per-file keys).
+    pub fn clear_table(&self, table: TableId) {
+        self.flags[table.index()].set(false);
+        match table {
+            TableId::Visuals => self.dirty_visuals.borrow_mut().clear(),
+            TableId::Tactics => self.dirty_tactics.borrow_mut().clear(),
+            TableId::Physics => self.dirty_physics.borrow_mut().clear(),
+            TableId::Models => self.dirty_models.borrow_mut().clear(),
+            TableId::Animations => self.dirty_animations.borrow_mut().clear(),
+            TableId::Textures => self.dirty_textures.borrow_mut().clear(),
+            _ => {}
+        }
+    }
+
     pub fn clear(&self) {
         for flag in &self.flags {
             flag.set(false);

@@ -58,6 +58,7 @@ fn try_load_era(src: &mut AssetSource<StdFileProvider>, dir: &str, name: &str) {
 /// engine's confirmed load order (from IDA `BArchiveManager`).
 pub fn load_game_dir(dir: &str) -> AssetSource<StdFileProvider> {
     let mut src = AssetSource::with_provider(StdFileProvider);
+    src.set_source_dir(dir);
 
     for name in BASE_ERAS {
         try_load_era(&mut src, dir, name);

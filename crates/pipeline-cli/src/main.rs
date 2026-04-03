@@ -123,11 +123,13 @@ fn main() {
         }
         Commands::Load { game_dir, scenario } => {
             println!("Loading HW1 world from {game_dir}...\n");
-            let world =
-                pipeline::hw1::World::load(&game_dir, scenario.as_deref()).unwrap_or_else(|e| {
-                    eprintln!("Failed to load world: {e}");
-                    std::process::exit(1);
-                });
+            let (mut world, mut src) = pipeline::hw1::World::load(&game_dir).unwrap_or_else(|e| {
+                eprintln!("Failed to load world: {e}");
+                std::process::exit(1);
+            });
+            if let Some(scen) = &scenario {
+                world.swap_scenario(&mut src, scen);
+            }
             println!();
             world.print_summary();
         }

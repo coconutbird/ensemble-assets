@@ -126,6 +126,26 @@ impl AssetManifest {
         }
         result
     }
+
+    /// Clear all scenario-specific asset references.
+    ///
+    /// This resets lightsets, cinematics, terrain refs, sky, terrain env,
+    /// minimap, sound banks, and preload lists — everything populated by
+    /// [`collect_scenario_assets_into`] and [`parse_preload_list`].
+    /// Model/anim/texture refs from the base-game visual chains are preserved.
+    pub fn clear_scenario_refs(&mut self) {
+        self.lightset_refs.clear();
+        self.cinematic_refs.clear();
+        self.talking_head_refs.clear();
+        self.terrain_refs.clear();
+        self.sky_ref = None;
+        self.terrain_env_ref = None;
+        self.minimap_ref = None;
+        self.sound_bank_refs.clear();
+        self.preload_vis_refs.clear();
+        self.preload_tfx_refs.clear();
+        self.preload_pfx_refs.clear();
+    }
 }
 
 /// Collect all model/anim asset references from a parsed visual.

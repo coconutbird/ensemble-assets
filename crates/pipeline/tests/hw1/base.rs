@@ -31,7 +31,7 @@ fn load_world_base_game() {
         return;
     };
 
-    let world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
+    let (world, _src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     world.print_summary();
 
@@ -237,8 +237,7 @@ fn read_model_ugx() {
         return;
     };
 
-    let world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let mut src = load_hw1(&dir);
+    let (world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     let obj = world
         .assets
@@ -277,8 +276,7 @@ fn read_animation_uax() {
         return;
     };
 
-    let world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let mut src = load_hw1(&dir);
+    let (world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     let with_anims = world
         .assets
@@ -318,8 +316,7 @@ fn read_texture_ddx() {
         return;
     };
 
-    let world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let mut src = load_hw1(&dir);
+    let (world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     let mut tex_paths = Vec::new();
     let mut obj_name = String::new();
@@ -372,8 +369,7 @@ fn validate_binary_assets_sample() {
         return;
     };
 
-    let world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let mut src = load_hw1(&dir);
+    let (world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     println!("Manifest:");
     println!("  Model refs:   {}", world.manifest.model_refs.len());
@@ -448,7 +444,7 @@ fn texture_refs_populated_eagerly() {
         return;
     };
 
-    let world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
+    let (world, _src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     println!(
         "Texture refs: {} unique .ddx (eagerly discovered from UGX material chunks)",
@@ -476,7 +472,7 @@ fn cross_reference_diagnostics() {
         return;
     };
 
-    let world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
+    let (world, _src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     // In-memory cross-reference checks
     let report = pipeline::hw1::validate_world(&world);
@@ -530,7 +526,7 @@ fn inject_bad_reference_produces_diagnostic() {
         return;
     };
 
-    let mut world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
+    let (mut world, _src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     // Inject a bad visual reference
     {
@@ -613,8 +609,7 @@ fn per_file_save_visual_tactics_physics() {
     };
 
     // 1. Load world
-    let mut world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let src = load_hw1(&dir);
+    let (mut world, src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     // Set up a temp override directory
     let tmp = tempfile::tempdir().expect("failed to create tempdir");
@@ -783,8 +778,7 @@ fn string_table_edit_save_round_trip() {
         return;
     };
 
-    let mut world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let mut src = load_hw1(&dir);
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     // Load strings if not already present
     if world.strings.is_none() {
@@ -898,8 +892,7 @@ fn model_edit_save_round_trip() {
         return;
     };
 
-    let mut world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let mut src = load_hw1(&dir);
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     // Find an object with a resolvable model
     let model_path = world
@@ -983,8 +976,7 @@ fn texture_edit_save_round_trip() {
         return;
     };
 
-    let mut world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let mut src = load_hw1(&dir);
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     // Find a resolvable texture by iterating objects
     let mut tex_path = None;
@@ -1061,8 +1053,7 @@ fn animation_edit_save_round_trip() {
         return;
     };
 
-    let mut world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
-    let mut src = load_hw1(&dir);
+    let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
     // Find an object with a resolvable animation
     let anim_path = world
