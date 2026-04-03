@@ -94,13 +94,13 @@ impl World {
 
 ### 1.4 Deliverables
 
-- [ ] `DirtyGuard<T>` type (pipeline crate)
-- [ ] `DirtySet` + `TableId` types
-- [ ] `_mut()` accessors on `World` for all editable data
-- [ ] `Database::to_document(TableId)` — single-table serialization
-- [ ] `ScenarioData::to_document()` — SCN serialization
-- [ ] `World::save()` — selective write to override dir
-- [ ] Test: mutate objects + scenario, save, reload from override, verify round-trip
+- [x] `DirtyGuard<T>` type (pipeline crate)
+- [x] `DirtySet` + `TableId` types
+- [x] `_mut()` accessors on `World` for all editable data
+- [x] `Database::to_document(TableId)` — single-table serialization
+- [x] `ScenarioData::to_document()` — SCN serialization
+- [x] `World::save()` — selective write to override dir
+- [x] Test: mutate objects + scenario, save, reload from override, verify round-trip
 
 ## Phase 2 — Structured Diagnostics
 
@@ -144,10 +144,10 @@ pub enum DiagnosticCode {
 
 ### 2.3 Deliverables
 
-- [ ] `Diagnostic`, `Location`, `Severity`, `DiagnosticCode` types
-- [ ] Refactor `ValidateReport` to produce `Vec<Diagnostic>`
-- [ ] Cross-reference validation pass
-- [ ] Test: inject a bad reference, verify diagnostic produced
+- [x] `Diagnostic`, `Location`, `Severity`, `DiagnosticCode` types
+- [x] `validate_world()` cross-reference validation pass
+- [x] Object → visual/tactics/physics checks, squad → object checks, duplicate name detection
+- [x] Test: inject a bad reference, verify diagnostic produced
 
 ## Phase 3 — Incremental Watch
 
