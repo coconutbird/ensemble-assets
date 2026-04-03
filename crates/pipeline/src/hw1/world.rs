@@ -5,7 +5,7 @@ use std::path::PathBuf;
 
 use crate::source::AssetSource;
 
-use super::edit::{AssetKind, DirtyGuard, DirtySet, TableId};
+use super::edit::{AssetKind, DirtyGuard, DirtySet, KeyDirtyGuard, TableId};
 use super::loader;
 use super::manifest::{
     AssetManifest, BinaryValidation, collect_object_visual_assets, collect_scenario_assets_into,
@@ -29,6 +29,8 @@ pub struct World {
     pub scenario_list: ScenarioList,
     pub manifest: AssetManifest,
     pub stats: LoadStats,
+    /// Localized string table (default: English).
+    pub strings: Option<super::stringtable::StringTable>,
     dirty: DirtySet,
 }
 
@@ -174,6 +176,9 @@ impl World {
         // 7. Discover terrain texture references from XTT files
         discover_terrain_textures(src, &manifest.terrain_refs, &mut manifest.texture_refs);
 
+        // 8. Load the default (English) string table from locale.era
+        let strings = super::stringtable::load_default(src);
+
         Ok(World {
             database,
             assets: assets_map,
@@ -185,8 +190,19 @@ impl World {
             scenario_list,
             manifest,
             stats,
+            strings,
             dirty: DirtySet::default(),
         })
+    }
+
+    /// Resolve a localized string by its `_locID`.
+    ///
+    /// Prefers the `_mouseKeyboard` override when present (the PC path),
+    /// falling back to the default (gamepad) text.
+    ///
+    /// Returns `None` if no string table is loaded or the ID is not found.
+    pub fn resolve_string(&self, loc_id: i32) -> Option<&str> {
+        self.strings.as_ref()?.get_pc(loc_id)
     }
 
     /// Print a summary of the loaded world to stdout.
@@ -300,6 +316,13 @@ impl World {
                 scn.objects().len(),
                 scn.players().len(),
                 scn.positions().len()
+            );
+        }
+        if let Some(st) = &self.strings {
+            println!(
+                "\nString Table:  {} strings ({})",
+                st.len(),
+                st.language_name,
             );
         }
     }
@@ -594,6 +617,138 @@ impl World {
         DirtyGuard::new(&mut self.physics, self.dirty.flag(TableId::Physics))
     }
 
+    // ---- Per-key mutable accessors ----
+
+    /// Get a mutable reference to a single visual, marking only that key dirty.
+    ///
+    /// Returns `None` if the object name isn't in the visuals map.
+    pub fn visual_mut(&mut self, name: &str) -> Option<KeyDirtyGuard<'_, database::hw1::Visual>> {
+        let vis = self.visuals.get_mut(name)?;
+        Some(KeyDirtyGuard::new(
+            vis,
+            &self.dirty,
+            TableId::Visuals,
+            name.to_string(),
+        ))
+    }
+
+    /// Get a mutable reference to a single tactics entry, marking only that key dirty.
+    ///
+    /// Returns `None` if the object name isn't in the tactics map.
+    pub fn tactic_mut(
+        &mut self,
+        name: &str,
+    ) -> Option<KeyDirtyGuard<'_, database::hw1::TacticData>> {
+        let tac = self.tactics.get_mut(name)?;
+        Some(KeyDirtyGuard::new(
+            tac,
+            &self.dirty,
+            TableId::Tactics,
+            name.to_string(),
+        ))
+    }
+
+    /// Get a mutable reference to a single physics chain, marking only that key dirty.
+    ///
+    /// Returns `None` if the object name isn't in the physics map.
+    pub fn physics_entry_mut(&mut self, name: &str) -> Option<KeyDirtyGuard<'_, PhysicsChain>> {
+        let chain = self.physics.get_mut(name)?;
+        Some(KeyDirtyGuard::new(
+            chain,
+            &self.dirty,
+            TableId::Physics,
+            name.to_string(),
+        ))
+    }
+
+    // ---- Per-file save ----
+
+    /// Save a single visual file to the override directory.
+    ///
+    /// Writes the `.vis` for the named object and clears its dirty key.
+    /// Returns the path written, or an error if the object/path is unknown.
+    pub fn save_visual(
+        &mut self,
+        name: &str,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<PathBuf, String> {
+        let vis = self
+            .visuals
+            .get(name)
+            .ok_or_else(|| format!("unknown visual: {name}"))?;
+        let game_path = self
+            .assets
+            .get(name)
+            .and_then(|oa| oa.visual.as_ref())
+            .ok_or_else(|| format!("no visual path for object: {name}"))?;
+        let doc = database::hw1::visual::to_document(vis)
+            .map_err(|e| format!("serialize visual {name}: {e}"))?;
+        let path = src.write_xmb(game_path, &doc)?;
+        self.dirty.clear_key(TableId::Visuals, name);
+        Ok(path)
+    }
+
+    /// Save a single tactics file to the override directory.
+    ///
+    /// Writes the tactics XML for the named object and clears its dirty key.
+    pub fn save_tactic(
+        &mut self,
+        name: &str,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<PathBuf, String> {
+        let tac = self
+            .tactics
+            .get(name)
+            .ok_or_else(|| format!("unknown tactics: {name}"))?;
+        let game_path = self
+            .assets
+            .get(name)
+            .and_then(|oa| oa.tactics.as_ref())
+            .ok_or_else(|| format!("no tactics path for object: {name}"))?;
+        let doc = database::hw1::tactics::to_document(tac)
+            .map_err(|e| format!("serialize tactics {name}: {e}"))?;
+        let path = src.write_xmb(game_path, &doc)?;
+        self.dirty.clear_key(TableId::Tactics, name);
+        Ok(path)
+    }
+
+    /// Save a single physics chain (`.physics`, `.blueprint`, `.shp`) to
+    /// the override directory.
+    ///
+    /// Writes all files in the chain and clears its dirty key.
+    pub fn save_physics(
+        &mut self,
+        name: &str,
+        src: &AssetSource<impl assets::FileProvider>,
+    ) -> Result<Vec<PathBuf>, String> {
+        let chain = self
+            .physics
+            .get(name)
+            .ok_or_else(|| format!("unknown physics: {name}"))?;
+        let oa = self
+            .assets
+            .get(name)
+            .ok_or_else(|| format!("no asset paths for object: {name}"))?;
+        let mut written = Vec::new();
+        if let Some(ref game_path) = oa.physics {
+            let doc = database::hw1::physics::physics_to_document(&chain.physics)
+                .map_err(|e| format!("serialize physics {name}: {e}"))?;
+            written.push(src.write_xmb(game_path, &doc)?);
+        }
+        if let (Some(bp), Some(game_path)) = (&chain.blueprint, &oa.blueprint) {
+            let doc = database::hw1::physics::blueprint_to_document(bp)
+                .map_err(|e| format!("serialize blueprint {name}: {e}"))?;
+            written.push(src.write_xmb(game_path, &doc)?);
+        }
+        if let (Some(shp), Some(game_path)) = (&chain.shape, &oa.shape) {
+            let doc = database::hw1::physics::shape_to_document(shp)
+                .map_err(|e| format!("serialize shape {name}: {e}"))?;
+            written.push(src.write_xmb(game_path, &doc)?);
+        }
+        self.dirty.clear_key(TableId::Physics, name);
+        Ok(written)
+    }
+
     /// Save all dirty tables to the override directory.
     ///
     /// Returns the list of files written. Clears dirty flags on success.
@@ -697,8 +852,86 @@ impl World {
                         written.push(src.write_xmb(&desc.scn_path(), &doc)?);
                     }
                 }
-                TableId::Visuals | TableId::Tactics | TableId::Physics => {
-                    // TODO: per-file serialization for visuals/tactics/physics
+                TableId::Visuals => {
+                    let keys = self.dirty.dirty_keys(TableId::Visuals);
+                    let iter: Box<dyn Iterator<Item = (&String, &database::hw1::Visual)>> =
+                        if keys.is_empty() {
+                            // Whole-table dirty (via visuals_mut()) — save all.
+                            Box::new(self.visuals.iter())
+                        } else {
+                            Box::new(
+                                self.visuals
+                                    .iter()
+                                    .filter(|(k, _)| keys.contains(k.as_str())),
+                            )
+                        };
+                    for (obj_name, vis) in iter {
+                        if let Some(game_path) =
+                            self.assets.get(obj_name).and_then(|oa| oa.visual.as_ref())
+                        {
+                            let doc = database::hw1::visual::to_document(vis)
+                                .map_err(|e| format!("serialize visual {obj_name}: {e}"))?;
+                            written.push(src.write_xmb(game_path, &doc)?);
+                        }
+                    }
+                }
+                TableId::Tactics => {
+                    let keys = self.dirty.dirty_keys(TableId::Tactics);
+                    let iter: Box<dyn Iterator<Item = (&String, &database::hw1::TacticData)>> =
+                        if keys.is_empty() {
+                            Box::new(self.tactics.iter())
+                        } else {
+                            Box::new(
+                                self.tactics
+                                    .iter()
+                                    .filter(|(k, _)| keys.contains(k.as_str())),
+                            )
+                        };
+                    for (obj_name, tac) in iter {
+                        if let Some(game_path) =
+                            self.assets.get(obj_name).and_then(|oa| oa.tactics.as_ref())
+                        {
+                            let doc = database::hw1::tactics::to_document(tac)
+                                .map_err(|e| format!("serialize tactics {obj_name}: {e}"))?;
+                            written.push(src.write_xmb(game_path, &doc)?);
+                        }
+                    }
+                }
+                TableId::Physics => {
+                    let keys = self.dirty.dirty_keys(TableId::Physics);
+                    let iter: Box<dyn Iterator<Item = (&String, &PhysicsChain)>> =
+                        if keys.is_empty() {
+                            Box::new(self.physics.iter())
+                        } else {
+                            Box::new(
+                                self.physics
+                                    .iter()
+                                    .filter(|(k, _)| keys.contains(k.as_str())),
+                            )
+                        };
+                    for (obj_name, chain) in iter {
+                        let Some(oa) = self.assets.get(obj_name) else {
+                            continue;
+                        };
+                        // Write .physics
+                        if let Some(ref game_path) = oa.physics {
+                            let doc = database::hw1::physics::physics_to_document(&chain.physics)
+                                .map_err(|e| format!("serialize physics {obj_name}: {e}"))?;
+                            written.push(src.write_xmb(game_path, &doc)?);
+                        }
+                        // Write .blueprint
+                        if let (Some(bp), Some(game_path)) = (&chain.blueprint, &oa.blueprint) {
+                            let doc = database::hw1::physics::blueprint_to_document(bp)
+                                .map_err(|e| format!("serialize blueprint {obj_name}: {e}"))?;
+                            written.push(src.write_xmb(game_path, &doc)?);
+                        }
+                        // Write .shp
+                        if let (Some(shp), Some(game_path)) = (&chain.shape, &oa.shape) {
+                            let doc = database::hw1::physics::shape_to_document(shp)
+                                .map_err(|e| format!("serialize shape {obj_name}: {e}"))?;
+                            written.push(src.write_xmb(game_path, &doc)?);
+                        }
+                    }
                 }
             }
         }

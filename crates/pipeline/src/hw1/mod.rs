@@ -25,6 +25,7 @@ pub mod loader;
 pub mod manifest;
 pub mod resolve;
 pub mod scenario;
+pub mod stringtable;
 pub mod validate;
 pub mod world;
 

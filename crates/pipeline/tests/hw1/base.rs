@@ -604,3 +604,174 @@ fn inject_bad_reference_produces_diagnostic() {
 
     println!("\n✅ All injected bad reference diagnostics detected!");
 }
+
+#[test]
+fn per_file_save_visual_tactics_physics() {
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("SKIP: HW1_GAME_DIR not set");
+        return;
+    };
+
+    // 1. Load world
+    let mut world = pipeline::hw1::World::load(&dir, None).expect("failed to load world");
+    let src = load_hw1(&dir);
+
+    // Set up a temp override directory
+    let tmp = tempfile::tempdir().expect("failed to create tempdir");
+    let src = {
+        let mut s = src;
+        s.set_override_dir(tmp.path());
+        s
+    };
+
+    assert!(!world.is_dirty(), "world should start clean");
+
+    // 2. Find an object that has a visual, tactics, and physics.
+    let test_obj = world
+        .assets
+        .iter()
+        .find(|(name, oa)| {
+            oa.visual.is_some()
+                && oa.tactics.is_some()
+                && oa.physics.is_some()
+                && world.visuals.contains_key(name.as_str())
+                && world.tactics.contains_key(name.as_str())
+                && world.physics.contains_key(name.as_str())
+        })
+        .map(|(name, _)| name.clone());
+
+    let obj_name = match test_obj {
+        Some(n) => n,
+        None => {
+            eprintln!("SKIP: no object with visual+tactics+physics found");
+            return;
+        }
+    };
+    println!("Test object: {obj_name}");
+
+    // Record original values for round-trip verification
+    let vis_path = world.assets[&obj_name].visual.clone().unwrap();
+    let tac_path = world.assets[&obj_name].tactics.clone().unwrap();
+    let phys_path = world.assets[&obj_name].physics.clone().unwrap();
+    println!("  visual:  {vis_path}");
+    println!("  tactics: {tac_path}");
+    println!("  physics: {phys_path}");
+
+    // --- Test per-key dirty tracking ---
+
+    // 3a. Mutate a single visual via visual_mut()
+    {
+        let mut vis = world
+            .visual_mut(&obj_name)
+            .expect("visual_mut should succeed");
+        // Just touch it — the KeyDirtyGuard marks the key on drop.
+        vis.default_model = vis.default_model.clone();
+    }
+    assert!(world.is_dirty(), "should be dirty after visual_mut");
+    let dirty = world.dirty_tables();
+    assert_eq!(
+        dirty,
+        vec![pipeline::hw1::TableId::Visuals],
+        "only Visuals should be dirty"
+    );
+
+    // 3b. save_visual should write just that one file
+    let written_path = world
+        .save_visual(&obj_name, &src)
+        .expect("save_visual failed");
+    assert!(
+        written_path.exists(),
+        "saved visual should exist: {}",
+        written_path.display()
+    );
+    println!("  wrote visual: {}", written_path.display());
+
+    // After save_visual, should be clean (no other dirty keys)
+    assert!(
+        !world.is_dirty(),
+        "should be clean after save_visual (single key)"
+    );
+
+    // 4. Mutate tactics via tactic_mut()
+    {
+        let mut tac = world
+            .tactic_mut(&obj_name)
+            .expect("tactic_mut should succeed");
+        tac.weapons = tac.weapons.clone();
+    }
+    assert!(world.is_dirty(), "should be dirty after tactic_mut");
+
+    let written_path = world
+        .save_tactic(&obj_name, &src)
+        .expect("save_tactic failed");
+    assert!(
+        written_path.exists(),
+        "saved tactics should exist: {}",
+        written_path.display()
+    );
+    println!("  wrote tactics: {}", written_path.display());
+    assert!(!world.is_dirty(), "should be clean after save_tactic");
+
+    // 5. Mutate physics via physics_entry_mut()
+    {
+        let mut phys = world
+            .physics_entry_mut(&obj_name)
+            .expect("physics_entry_mut should succeed");
+        phys.physics.vehicle = phys.physics.vehicle.clone();
+    }
+    assert!(world.is_dirty(), "should be dirty after physics_entry_mut");
+
+    let written_paths = world
+        .save_physics(&obj_name, &src)
+        .expect("save_physics failed");
+    assert!(
+        !written_paths.is_empty(),
+        "save_physics should write at least one file"
+    );
+    for p in &written_paths {
+        assert!(
+            p.exists(),
+            "saved physics file should exist: {}",
+            p.display()
+        );
+        println!("  wrote physics: {}", p.display());
+    }
+    assert!(!world.is_dirty(), "should be clean after save_physics");
+
+    // --- Test selective save() with per-key tracking ---
+
+    // 6. Dirty two specific visuals (if a second one exists)
+    let second_obj = world
+        .assets
+        .iter()
+        .find(|(name, oa)| {
+            *name != &obj_name && oa.visual.is_some() && world.visuals.contains_key(name.as_str())
+        })
+        .map(|(name, _)| name.clone());
+
+    {
+        let mut vis = world.visual_mut(&obj_name).unwrap();
+        vis.default_model = vis.default_model.clone();
+    }
+    if let Some(ref second) = second_obj {
+        let mut vis = world.visual_mut(second).unwrap();
+        vis.default_model = vis.default_model.clone();
+    }
+
+    // save() should only write dirty keys, not all visuals
+    let written = world.save(&src).expect("save failed");
+    let expected_count = if second_obj.is_some() { 2 } else { 1 };
+    assert_eq!(
+        written.len(),
+        expected_count,
+        "save() should write only {} dirty visual(s), not all {}",
+        expected_count,
+        world.visuals.len()
+    );
+    for p in &written {
+        assert!(p.exists(), "written file should exist: {}", p.display());
+    }
+    assert!(!world.is_dirty(), "should be clean after save()");
+
+    println!("\n✅ Per-file asset save passed!");
+}

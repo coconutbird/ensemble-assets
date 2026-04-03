@@ -1,6 +1,7 @@
 //! Dirty tracking for the edit/save workflow.
 
-use std::cell::Cell;
+use std::cell::{Cell, RefCell};
+use std::collections::HashSet;
 use std::ops::{Deref, DerefMut};
 
 /// Identifies a data table in a [`World`](super::World).
@@ -231,14 +232,25 @@ impl AssetKind {
 }
 
 /// Tracks which tables have been modified.
+///
+/// For per-file tables (Visuals, Tactics, Physics), also tracks which
+/// specific keys (object names) are dirty so that [`World::save`] can
+/// write only the changed files instead of the entire table.
 pub struct DirtySet {
     flags: [Cell<bool>; TableId::COUNT],
+    /// Dirty keys for per-file tables: Visuals, Tactics, Physics.
+    dirty_visuals: RefCell<HashSet<String>>,
+    dirty_tactics: RefCell<HashSet<String>>,
+    dirty_physics: RefCell<HashSet<String>>,
 }
 
 impl Default for DirtySet {
     fn default() -> Self {
         Self {
             flags: std::array::from_fn(|_| Cell::new(false)),
+            dirty_visuals: RefCell::new(HashSet::new()),
+            dirty_tactics: RefCell::new(HashSet::new()),
+            dirty_physics: RefCell::new(HashSet::new()),
         }
     }
 }
@@ -260,9 +272,61 @@ impl DirtySet {
             .collect()
     }
 
+    /// Return the set of dirty keys for a per-file table.
+    ///
+    /// Returns an empty set for non-per-file tables. When the table-level
+    /// flag is set but the key set is empty, it means the whole table was
+    /// dirtied (via `visuals_mut()` etc.) and all entries should be saved.
+    pub fn dirty_keys(&self, table: TableId) -> HashSet<String> {
+        match table {
+            TableId::Visuals => self.dirty_visuals.borrow().clone(),
+            TableId::Tactics => self.dirty_tactics.borrow().clone(),
+            TableId::Physics => self.dirty_physics.borrow().clone(),
+            _ => HashSet::new(),
+        }
+    }
+
+    /// Mark a specific key dirty within a per-file table.
+    ///
+    /// Also sets the table-level dirty flag.
+    pub fn mark_key(&self, table: TableId, key: String) {
+        self.flags[table.index()].set(true);
+        match table {
+            TableId::Visuals => {
+                self.dirty_visuals.borrow_mut().insert(key);
+            }
+            TableId::Tactics => {
+                self.dirty_tactics.borrow_mut().insert(key);
+            }
+            TableId::Physics => {
+                self.dirty_physics.borrow_mut().insert(key);
+            }
+            _ => {}
+        }
+    }
+
     pub fn clear(&self) {
         for flag in &self.flags {
             flag.set(false);
+        }
+        self.dirty_visuals.borrow_mut().clear();
+        self.dirty_tactics.borrow_mut().clear();
+        self.dirty_physics.borrow_mut().clear();
+    }
+
+    /// Clear dirty state for a single per-file key.
+    pub fn clear_key(&self, table: TableId, key: &str) {
+        let set = match table {
+            TableId::Visuals => &self.dirty_visuals,
+            TableId::Tactics => &self.dirty_tactics,
+            TableId::Physics => &self.dirty_physics,
+            _ => return,
+        };
+        let mut s = set.borrow_mut();
+        s.remove(key);
+        // If no more dirty keys, clear the table-level flag too.
+        if s.is_empty() {
+            self.flags[table.index()].set(false);
         }
     }
 
@@ -304,5 +368,47 @@ impl<T> DerefMut for DirtyGuard<'_, T> {
 impl<T> Drop for DirtyGuard<'_, T> {
     fn drop(&mut self) {
         self.flag.set(true);
+    }
+}
+
+/// RAII guard that marks a specific key dirty within a per-file table.
+///
+/// Returned by `World::visual_mut("name")` etc. Dereferences to `&mut T`
+/// so callers can mutate the data naturally. On drop, marks both the
+/// table-level flag and the specific key in the [`DirtySet`].
+pub struct KeyDirtyGuard<'a, T> {
+    data: &'a mut T,
+    dirty: &'a DirtySet,
+    table: TableId,
+    key: String,
+}
+
+impl<'a, T> KeyDirtyGuard<'a, T> {
+    pub(crate) fn new(data: &'a mut T, dirty: &'a DirtySet, table: TableId, key: String) -> Self {
+        Self {
+            data,
+            dirty,
+            table,
+            key,
+        }
+    }
+}
+
+impl<T> Deref for KeyDirtyGuard<'_, T> {
+    type Target = T;
+    fn deref(&self) -> &T {
+        self.data
+    }
+}
+
+impl<T> DerefMut for KeyDirtyGuard<'_, T> {
+    fn deref_mut(&mut self) -> &mut T {
+        self.data
+    }
+}
+
+impl<T> Drop for KeyDirtyGuard<'_, T> {
+    fn drop(&mut self) {
+        self.dirty.mark_key(self.table, self.key.clone());
     }
 }
