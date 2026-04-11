@@ -496,7 +496,7 @@ impl ScenarioDescriptor {
     ///
     /// For example, `skirmish\design\blood_gulch\blood_gulch.scn` becomes
     /// `scenario\skirmish\design\blood_gulch\blood_gulch`.
-    fn terrain_base(&self) -> Option<String> {
+    pub(crate) fn terrain_base(&self) -> Option<String> {
         let base = self.file.strip_suffix(".scn")?;
         let base = base.replace('/', "\\");
         Some(format!("scenario\\{base}"))
@@ -516,6 +516,20 @@ impl ScenarioDescriptor {
     /// `scenario\{scn_path_without_ext}.xtt`
     pub fn xtt_path(&self) -> Option<String> {
         self.terrain_base().map(|b| format!("{b}.xtt"))
+    }
+
+    /// Path to this scenario's GLS (lightset) file.
+    ///
+    /// `scenario\{scn_path_without_ext}.gls`
+    pub fn gls_path(&self) -> Option<String> {
+        self.terrain_base().map(|b| format!("{b}.gls"))
+    }
+
+    /// Path to this scenario's FLS (SH fill light) file.
+    ///
+    /// `scenario\{scn_path_without_ext}.fls`
+    pub fn fls_path(&self) -> Option<String> {
+        self.terrain_base().map(|b| format!("{b}.fls"))
     }
 }
 

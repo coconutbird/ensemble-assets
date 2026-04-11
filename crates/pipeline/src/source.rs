@@ -485,7 +485,6 @@ fn override_fs_path_scan(override_dir: &Path, game_path: &str) -> PathBuf {
 // Concrete FileProvider for std environments
 
 /// [`FileProvider`] backed by `std::fs::read` — reads entire files into heap.
-
 impl AssetSource<StdFileProvider> {
     /// Load a scenario ERA by name (map name, ERA filename, or SCN path).
     ///

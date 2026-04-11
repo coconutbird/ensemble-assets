@@ -31,6 +31,7 @@
 
 pub mod diagnostics;
 pub mod edit;
+pub mod lightset;
 pub mod loader;
 pub mod manifest;
 pub mod resolve;
@@ -44,6 +45,7 @@ pub use diagnostics::{
     validate_world_assets,
 };
 pub use edit::{AssetKind, DirtyGuard, DirtySet, TableId};
+pub use lightset::LightSetData;
 pub use manifest::{AssetManifest, BinaryValidation, VerifyResult};
 pub use resolve::{LoadStats, ObjectAssets, PhysicsChain};
 pub use scenario::{

@@ -71,7 +71,7 @@ version = "0.1.0"
 [[package]]
 name = "bdt"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "hashbrown 0.16.1",
  "thiserror",
@@ -81,7 +81,7 @@ dependencies = [
 [[package]]
 name = "bdt-serde"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "bdt",
  "serde",
@@ -250,7 +250,7 @@ dependencies = [
 [[package]]
 name = "ddx"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "ecf",
  "miniz_oxide",
@@ -289,7 +289,7 @@ dependencies = [
 [[package]]
 name = "ecf"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "miniz_oxide",
  "nostdio",
@@ -312,7 +312,7 @@ checksum = "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
 [[package]]
 name = "era"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "ecf",
  "miniz_oxide",
@@ -904,7 +904,7 @@ checksum = "562d481066bde0658276a35467c4af00bdc6ee726305698a55b86e61d7ad82bb"
 [[package]]
 name = "uax"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "ecf",
  "nostdio",
@@ -915,7 +915,7 @@ dependencies = [
 [[package]]
 name = "ufx"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "cfglib",
  "cfglib-dxbc",
@@ -926,7 +926,7 @@ dependencies = [
 [[package]]
 name = "ugx"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "bdt",
  "ecf",
@@ -1231,7 +1231,7 @@ dependencies = [
 [[package]]
 name = "xmb"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "bdt",
  "ecf",
@@ -1243,7 +1243,7 @@ dependencies = [
 [[package]]
 name = "xml"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "xmlparser",
 ]
@@ -1257,7 +1257,7 @@ checksum = "66fee0b777b0f5ac1c69bb06d361268faafa61cd4682ae064a171c16c433e9e4"
 [[package]]
 name = "xtd"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "ecf",
  "thiserror",
@@ -1267,7 +1267,7 @@ dependencies = [
 [[package]]
 name = "xtt"
 version = "0.1.0"
-source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#cedb2e270a8c1c32f956ee21dab4154be9420b28"
+source = "git+https://github.com/coconutbird/ensemble-formats.git?branch=dev%2Fprim#351197b4283208c743340bee3340d72c321b7dcc"
 dependencies = [
  "ecf",
  "half",

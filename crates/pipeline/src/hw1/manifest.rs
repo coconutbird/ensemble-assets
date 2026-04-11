@@ -448,14 +448,6 @@ pub fn parse_fxb(_data: &[u8]) -> ! {
     unimplemented!("FXB effect bundle parsing is not yet implemented for HW1")
 }
 
-/// Parse a GLS/FLS lightset file.
-///
-/// HW1 lightset files are referenced by scenario SCN data. We track paths
-/// in the manifest but cannot parse the binary content yet.
-pub fn parse_lightset(_data: &[u8]) -> ! {
-    unimplemented!("GLS/FLS lightset parsing is not yet implemented for HW1")
-}
-
 /// Parse a cinematic file.
 ///
 /// HW1 cinematic files (`.cin`) are referenced by scenario SCN data. We

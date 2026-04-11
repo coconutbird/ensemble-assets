@@ -73,6 +73,8 @@ pub struct World {
     pub stats: LoadStats,
     /// Localized string table (default: English).
     pub strings: Option<super::stringtable::StringTable>,
+    /// Parsed lightset data (GLS + FLS) for the active scenario.
+    pub lightset: Option<super::lightset::LightSetData>,
     /// Cached terrain heightmap/lighting (lazy-loaded on first access).
     pub terrain_data: Option<xtd::XtdFile>,
     /// Cached terrain textures/foliage/roads (lazy-loaded on first access).
@@ -248,6 +250,9 @@ impl World {
             xtt::Reader::read(&data).ok()
         });
 
+        // 10. Load lightset data (GLS + FLS) if a scenario is present
+        let lightset = load_lightset(&scenario, &scenario_data, src);
+
         Ok(World {
             database,
             assets: assets_map,
@@ -260,6 +265,7 @@ impl World {
             manifest,
             stats,
             strings,
+            lightset,
             terrain_data,
             terrain_textures,
             models: HashMap::new(),
@@ -299,6 +305,7 @@ impl World {
 
         self.scenario = None;
         self.scenario_data = None;
+        self.lightset = None;
         self.terrain_data = None;
         self.terrain_textures = None;
 
@@ -371,6 +378,9 @@ impl World {
             let data = src.resolve_exact(&path)?;
             xtt::Reader::read(&data).ok()
         });
+
+        // 7. Load lightset data (GLS + FLS) if the new scenario has one.
+        self.lightset = load_lightset(&scenario_desc, &scenario_data, src);
 
         self.scenario = scenario_desc;
         self.scenario_data = scenario_data;
@@ -505,6 +515,9 @@ impl World {
                 self.terrain_data.is_some(),
                 self.terrain_textures.is_some()
             );
+        }
+        if self.lightset.is_some() {
+            println!("  Lightset:     loaded");
         }
         if let Some(st) = &self.strings {
             println!(
@@ -1783,4 +1796,21 @@ impl World {
             }
         }
     }
+}
+
+/// Load lightset data from a scenario descriptor + scene data.
+///
+/// Extracts the lightset reference from the SCN data, then delegates to
+/// [`super::lightset::load`].
+fn load_lightset(
+    descriptor: &Option<ScenarioDescriptor>,
+    scn: &Option<ScenarioData>,
+    src: &mut AssetSource<impl assets::FileProvider>,
+) -> Option<super::lightset::LightSetData> {
+    let desc = descriptor.as_ref()?;
+    let ls_ref = scn.as_ref()?.lightset();
+    if ls_ref.is_empty() {
+        return None;
+    }
+    super::lightset::load(desc, ls_ref, src)
 }
