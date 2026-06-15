@@ -15,6 +15,7 @@ database.workspace = true
 ddx.workspace = true
 era.workspace = true
 serde.workspace = true
+serde_json.workspace = true
 uax.workspace = true
 ugx.workspace = true
 xmb.workspace = true
@@ -24,7 +25,6 @@ xtt.workspace = true
 [dev-dependencies]
 dotenvy.workspace = true
 tempfile = "3.27.0"
-
 
 [[test]]
 name = "hw1"

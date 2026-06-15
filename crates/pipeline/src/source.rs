@@ -73,19 +73,75 @@ pub struct Provenance {
     pub game_path: String,
 }
 
+/// How a folder layer combines with the layers below it when the stack is
+/// flattened.
+///
+/// An ERA and a loose `ModData` folder are the same thing — a set of
+/// game-path → bytes entries — so a mod is just an unpacked archive layered on
+/// top of the base game. The rule decides what a layer contributes:
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum LoadRule {
+    /// Last-writer-wins: this layer's version of a path overrides lower layers'
+    /// (the engine's ERA behaviour). The default.
+    #[default]
+    Replace,
+    /// Only contribute paths that no lower layer already provides; never
+    /// override an existing file.
+    Additive,
+}
+
+/// A loose directory layered onto the source — an unpacked archive.
+///
+/// Indexed exactly like an ERA: normalised game-path → the file on disk.
+struct FolderLayer {
+    /// Layer label for diagnostics (the folder's name).
+    label: String,
+    /// Normalised game path → absolute file path on disk.
+    index: HashMap<String, PathBuf>,
+    /// How this layer composes during a flatten.
+    rule: LoadRule,
+}
+
+/// One path written by more than one folder layer during a flatten — the
+/// later layer's version won.
+#[derive(Debug, Clone)]
+pub struct Overwrite {
+    /// Normalised game path that was provided by multiple layers.
+    pub game_path: String,
+    /// Label of the layer whose version was overridden.
+    pub previous: String,
+    /// Label of the layer whose version was written.
+    pub winner: String,
+}
+
+/// Outcome of flattening the folder layers to a directory.
+#[derive(Debug, Default)]
+pub struct FlattenReport {
+    /// Files written to the output directory.
+    pub files_written: Vec<PathBuf>,
+    /// Paths that more than one layer provided (later wins).
+    pub overwrites: Vec<Overwrite>,
+    /// Files skipped because they were byte-identical to the base game.
+    pub skipped_vanilla: usize,
+}
+
 /// Unified asset source backed by one or more ERA archives, with an
 /// optional filesystem override layer for read/write support.
 ///
 /// Resolution order (first match wins):
 ///
 /// 1. **Override directory** — files previously saved via [`write_file`](Self::write_file)
-/// 2. **ERA stack** — last loaded archive wins (reverse load order)
+/// 2. **Folder layers** — loose directories ([`add_folder`](Self::add_folder)),
+///    later-added wins (reverse order)
+/// 3. **ERA stack** — last loaded archive wins (reverse load order)
 ///
 /// The generic parameter `F` is the [`FileProvider`] used to open ERA
 /// files from disk. Use [`StdFileProvider`] for normal filesystem access.
 pub struct AssetSource<F: FileProvider> {
     provider: F,
     archives: Vec<LoadedArchive<F::Data>>,
+    /// Loose-folder layers stacked above the ERAs (e.g. mod `ModData`).
+    folders: Vec<FolderLayer>,
     /// Optional override directory for read/write support.
     override_dir: Option<PathBuf>,
     /// The source directory this asset source was built from (if any).
@@ -98,6 +154,7 @@ impl<F: FileProvider> AssetSource<F> {
         Self {
             provider,
             archives: Vec::new(),
+            folders: Vec::new(),
             override_dir: None,
             source_dir: None,
         }
@@ -149,6 +206,172 @@ impl<F: FileProvider> AssetSource<F> {
         });
 
         Ok(entry_count)
+    }
+
+    /// Add a loose directory as a layer above the ERA stack.
+    ///
+    /// A mod's `ModData` folder is just an unpacked ERA — a set of
+    /// game-path → file entries — so indexing it as a layer lets the same
+    /// resolution and flatten logic treat packed archives and loose folders
+    /// uniformly. Folder layers sit above every ERA (a mod overrides the base
+    /// game), and a later `add_folder` wins over an earlier one.
+    ///
+    /// Files are indexed by their path relative to `dir`, normalised the same
+    /// way as ERA entries (lowercase, backslash separators). Returns the number
+    /// of files indexed.
+    pub fn add_folder(&mut self, dir: &str, rule: LoadRule) -> Result<usize, String> {
+        let root = PathBuf::from(dir);
+        if !root.is_dir() {
+            return Err(format!("not a directory: {dir}"));
+        }
+
+        let mut index = HashMap::new();
+        let mut stack = vec![root.clone()];
+        while let Some(d) = stack.pop() {
+            let entries =
+                std::fs::read_dir(&d).map_err(|e| format!("read_dir {}: {e}", d.display()))?;
+            for entry in entries.flatten() {
+                let path = entry.path();
+                if path.is_dir() {
+                    stack.push(path);
+                    continue;
+                }
+                if let Ok(rel) = path.strip_prefix(&root) {
+                    let key = normalise_path(&rel.to_string_lossy());
+                    index.insert(key, path);
+                }
+            }
+        }
+
+        let count = index.len();
+        let label = root
+            .file_name()
+            .map(|s| s.to_string_lossy().into_owned())
+            .unwrap_or_else(|| dir.to_string());
+        self.folders.push(FolderLayer {
+            label,
+            index,
+            rule,
+        });
+        Ok(count)
+    }
+
+    /// Number of folder layers currently loaded.
+    pub fn folder_count(&self) -> usize {
+        self.folders.len()
+    }
+
+    /// Read `path` from **every** folder layer that provides it, in load order
+    /// (lowest priority first). Each folder is probed for the unpacked form and
+    /// then the packed `.xmb` form, mirroring [`resolve_data`](Self::resolve_data).
+    ///
+    /// Unlike [`resolve_data`], which returns only the top layer's version, this
+    /// surfaces each layer's version — the input a schema-aware merge needs to
+    /// combine the same table across several mods.
+    pub fn read_each_folder_data(&self, path: &str) -> Vec<(String, Vec<u8>)> {
+        let key = normalise_path(path);
+        let key_xmb = format!("{key}.xmb");
+        let mut out = Vec::new();
+        for layer in &self.folders {
+            if let Some(fs_path) = layer.index.get(&key).or_else(|| layer.index.get(&key_xmb))
+                && let Ok(bytes) = std::fs::read(fs_path)
+            {
+                out.push((layer.label.clone(), bytes));
+            }
+        }
+        out
+    }
+
+    /// Flatten the folder layers into `out_dir`, writing each provided file at
+    /// its game path. This is the write-out half of "load layers, resolve,
+    /// write the result" — the merged mod is just the flattened stack.
+    ///
+    /// - `skip` holds normalised paths handled elsewhere (e.g. database tables
+    ///   resolved by a schema-aware merge); both the unpacked and packed forms
+    ///   of each skipped path are excluded.
+    /// - With `only_changed`, a file byte-identical to the base game (ERA) is
+    ///   not written, so the output contains only what actually differs from
+    ///   vanilla.
+    /// - [`LoadRule::Additive`] layers contribute a path only if no lower layer
+    ///   already provides it; [`LoadRule::Replace`] layers always win.
+    ///
+    /// Paths provided by more than one layer are reported as [`Overwrite`]s.
+    pub fn flatten_folders_to_dir(
+        &mut self,
+        out_dir: &Path,
+        skip: &std::collections::HashSet<String>,
+        only_changed: bool,
+    ) -> Result<FlattenReport, String> {
+        // Plan with an immutable borrow: for each path, the ordered layer
+        // indices that contribute it, honouring each layer's rule.
+        let mut providers: std::collections::BTreeMap<String, Vec<usize>> =
+            std::collections::BTreeMap::new();
+        for (i, layer) in self.folders.iter().enumerate() {
+            for key in layer.index.keys() {
+                if skip.contains(key) {
+                    continue;
+                }
+                let slot = providers.entry(key.clone()).or_default();
+                // Additive only contributes when nothing below it (or at the
+                // same level) has already claimed the path.
+                if layer.rule == LoadRule::Additive && !slot.is_empty() {
+                    continue;
+                }
+                slot.push(i);
+            }
+        }
+
+        struct PlanItem {
+            key: String,
+            src: PathBuf,
+            previous: Option<String>,
+            winner: String,
+        }
+        let plan: Vec<PlanItem> = providers
+            .into_iter()
+            .filter_map(|(key, idxs)| {
+                let &win = idxs.last()?;
+                let src = self.folders[win].index.get(&key)?.clone();
+                let previous = (idxs.len() > 1)
+                    .then(|| self.folders[idxs[idxs.len() - 2]].label.clone());
+                Some(PlanItem {
+                    key,
+                    src,
+                    previous,
+                    winner: self.folders[win].label.clone(),
+                })
+            })
+            .collect();
+
+        let mut report = FlattenReport::default();
+        for item in plan {
+            let bytes = std::fs::read(&item.src)
+                .map_err(|e| format!("read {}: {e}", item.src.display()))?;
+
+            if only_changed
+                && self.resolve_vanilla_data(&item.key).as_deref() == Some(bytes.as_slice())
+            {
+                report.skipped_vanilla += 1;
+                continue;
+            }
+
+            let dest = join_game_path(out_dir, &item.key);
+            if let Some(parent) = dest.parent() {
+                std::fs::create_dir_all(parent)
+                    .map_err(|e| format!("create dirs {}: {e}", parent.display()))?;
+            }
+            std::fs::write(&dest, &bytes).map_err(|e| format!("write {}: {e}", dest.display()))?;
+            report.files_written.push(dest);
+
+            if let Some(previous) = item.previous {
+                report.overwrites.push(Overwrite {
+                    game_path: item.key,
+                    previous,
+                    winner: item.winner,
+                });
+            }
+        }
+        Ok(report)
     }
 
     /// Remove the last ERA archive from the stack.
@@ -219,7 +442,17 @@ impl<F: FileProvider> AssetSource<F> {
                 return Some(data);
             }
         }
-        // 2. Fall back to ERA archives.
+        // 2. Then the folder layers (later-added wins).
+        if let Some(data) = self.resolve_folder(path) {
+            return Some(data);
+        }
+        for suffix in suffixes {
+            let fallback = format!("{path}{suffix}");
+            if let Some(data) = self.resolve_folder(&fallback) {
+                return Some(data);
+            }
+        }
+        // 3. Fall back to ERA archives.
         if let Some(data) = self.resolve_era(path) {
             return Some(data);
         }
@@ -230,6 +463,17 @@ impl<F: FileProvider> AssetSource<F> {
             }
         }
         None
+    }
+
+    /// Resolve a path's bytes from the **base game only** (ERA archives),
+    /// ignoring folder layers and overrides — the "vanilla" view used to decide
+    /// whether a flattened file actually differs from the base game. Tries the
+    /// packed `.xmb` variant as a fallback, like [`resolve_data`](Self::resolve_data).
+    pub fn resolve_vanilla_data(&mut self, path: &str) -> Option<Vec<u8>> {
+        if let Some(data) = self.resolve_era(path) {
+            return Some(data);
+        }
+        self.resolve_era(&format!("{path}.xmb"))
     }
 
     /// Resolve a data file by its real path (e.g. `data\objects.xml`,
@@ -415,6 +659,9 @@ impl<F: FileProvider> AssetResolver for AssetSource<F> {
         {
             return true;
         }
+        if self.folders.iter().any(|f| f.index.contains_key(&key)) {
+            return true;
+        }
         self.archives.iter().any(|a| a.index.contains_key(&key))
     }
 }
@@ -446,6 +693,17 @@ impl<F: FileProvider> AssetSource<F> {
         }
         None
     }
+
+    /// Resolve an exact path from the folder layers only (later-added wins).
+    fn resolve_folder(&self, path: &str) -> Option<Vec<u8>> {
+        let key = normalise_path(path);
+        for layer in self.folders.iter().rev() {
+            if let Some(fs_path) = layer.index.get(&key) {
+                return std::fs::read(fs_path).ok();
+            }
+        }
+        None
+    }
 }
 
 // Override directory helpers
@@ -457,6 +715,16 @@ impl<F: FileProvider> AssetSource<F> {
 fn override_fs_path(override_dir: &Path, era_label: &str, game_path: &str) -> PathBuf {
     let mut p = override_dir.join(era_label);
     // Convert game path backslashes to OS separators.
+    for component in game_path.split('\\') {
+        p.push(component);
+    }
+    p
+}
+
+/// Build an output filesystem path from a normalised game path, converting
+/// backslash separators to the OS separator.
+fn join_game_path(out_dir: &Path, game_path: &str) -> PathBuf {
+    let mut p = out_dir.to_path_buf();
     for component in game_path.split('\\') {
         p.push(component);
     }
@@ -523,4 +791,89 @@ impl FileProvider for StdFileProvider {
 /// Normalise a game path to lowercase with backslash separators.
 pub fn normalise_path(path: &str) -> String {
     path.to_lowercase().replace('/', "\\")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::HashSet;
+    use std::sync::atomic::{AtomicU32, Ordering};
+
+    fn tmp(label: &str) -> PathBuf {
+        static N: AtomicU32 = AtomicU32::new(0);
+        let p = std::env::temp_dir().join(format!(
+            "asset_src_{label}_{}_{}",
+            std::process::id(),
+            N.fetch_add(1, Ordering::Relaxed)
+        ));
+        let _ = std::fs::remove_dir_all(&p);
+        p
+    }
+
+    /// Folders index like archives, resolve top-wins, surface every layer's
+    /// version, and flatten out (skipping excluded paths, reporting overwrites).
+    #[test]
+    fn folder_layers_resolve_and_flatten() {
+        let root = tmp("folders");
+        let (a, b, out) = (root.join("a"), root.join("b"), root.join("out"));
+        std::fs::create_dir_all(a.join("data")).unwrap();
+        std::fs::create_dir_all(a.join("art")).unwrap();
+        std::fs::create_dir_all(b.join("art")).unwrap();
+        std::fs::write(a.join("art/icon.ddx"), b"a-icon").unwrap();
+        std::fs::write(a.join("data/objects.xml"), b"a-obj").unwrap();
+        std::fs::write(b.join("art/icon.ddx"), b"b-icon").unwrap(); // overrides A
+        std::fs::write(b.join("art/banner.ddx"), b"b-banner").unwrap();
+
+        let mut src = AssetSource::with_provider(StdFileProvider);
+        assert_eq!(src.add_folder(&a.to_string_lossy(), LoadRule::Replace).unwrap(), 2);
+        assert_eq!(src.add_folder(&b.to_string_lossy(), LoadRule::Replace).unwrap(), 2);
+        assert_eq!(src.folder_count(), 2);
+
+        // Later layer wins on resolve.
+        assert_eq!(src.resolve_data("art\\icon.ddx").as_deref(), Some(&b"b-icon"[..]));
+        // read_each surfaces both versions, in load order.
+        let each = src.read_each_folder_data("art\\icon.ddx");
+        assert_eq!(each.len(), 2);
+        assert_eq!(each[0].1, b"a-icon");
+        assert_eq!(each[1].1, b"b-icon");
+
+        // Flatten, skipping the table path. only_changed=false (no base ERAs).
+        let mut skip = HashSet::new();
+        skip.insert(normalise_path("data\\objects.xml"));
+        let report = src.flatten_folders_to_dir(&out, &skip, false).unwrap();
+
+        assert_eq!(std::fs::read(out.join("art/icon.ddx")).unwrap(), b"b-icon"); // B won
+        assert_eq!(std::fs::read(out.join("art/banner.ddx")).unwrap(), b"b-banner");
+        assert!(!out.join("data/objects.xml").exists()); // skipped table path
+        assert_eq!(report.overwrites.len(), 1);
+        assert_eq!(report.overwrites[0].game_path, "art\\icon.ddx");
+        assert_eq!(report.overwrites[0].winner, "b");
+
+        let _ = std::fs::remove_dir_all(&root);
+    }
+
+    /// An additive layer contributes only paths no lower layer already provides.
+    #[test]
+    fn additive_layer_does_not_override() {
+        let root = tmp("additive");
+        let (a, b, out) = (root.join("a"), root.join("b"), root.join("out"));
+        std::fs::create_dir_all(&a).unwrap();
+        std::fs::create_dir_all(&b).unwrap();
+        std::fs::write(a.join("shared.txt"), b"from-a").unwrap();
+        std::fs::write(b.join("shared.txt"), b"from-b").unwrap();
+        std::fs::write(b.join("extra.txt"), b"from-b").unwrap();
+
+        let mut src = AssetSource::with_provider(StdFileProvider);
+        src.add_folder(&a.to_string_lossy(), LoadRule::Replace).unwrap();
+        src.add_folder(&b.to_string_lossy(), LoadRule::Additive).unwrap();
+
+        let report = src.flatten_folders_to_dir(&out, &HashSet::new(), false).unwrap();
+
+        // B is additive: it adds `extra` but does not override A's `shared`.
+        assert_eq!(std::fs::read(out.join("shared.txt")).unwrap(), b"from-a");
+        assert_eq!(std::fs::read(out.join("extra.txt")).unwrap(), b"from-b");
+        assert!(report.overwrites.is_empty());
+
+        let _ = std::fs::remove_dir_all(&root);
+    }
 }

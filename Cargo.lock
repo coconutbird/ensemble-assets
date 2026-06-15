@@ -648,6 +648,7 @@ dependencies = [
  "dotenvy",
  "era",
  "serde",
+ "serde_json",
  "tempfile",
  "uax",
  "ugx",

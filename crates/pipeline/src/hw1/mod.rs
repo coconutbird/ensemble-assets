@@ -34,6 +34,7 @@ pub mod edit;
 pub mod lightset;
 pub mod loader;
 pub mod manifest;
+pub mod merge;
 pub mod resolve;
 pub mod scenario;
 pub mod stringtable;
@@ -47,6 +48,7 @@ pub use diagnostics::{
 pub use edit::{AssetKind, DirtyGuard, DirtySet, TableId};
 pub use lightset::LightSetData;
 pub use manifest::{AssetManifest, BinaryValidation, VerifyResult};
+pub use merge::{Conflict, MergeError, MergeOptions, MergeReport, ModOverlay, merge_mods};
 pub use resolve::{LoadStats, ObjectAssets, PhysicsChain};
 pub use scenario::{
     CinematicRef, ObjectiveRef, ScenarioData, ScenarioDescriptor, ScenarioObject, ScenarioPlayer,
