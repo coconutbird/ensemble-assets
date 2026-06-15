@@ -51,6 +51,42 @@ pub use techs::Tech;
 pub use visual::Visual;
 pub use weapontypes::WeaponType;
 
+/// A table entry with a stable identity key within its table.
+///
+/// HW1 spells the identity field differently across tables in XML — an `@name`
+/// attribute (objects, squads, techs, powers), a capitalised `@Name`
+/// (abilities, leaders), a `Name` child element (civs, weapon types), or the
+/// element's text (damage types) — but every typed entry stores it uniformly as
+/// `name`. This trait exposes that key so tooling (diffing, merging) can
+/// identify entries without reconstructing the serialized form and guessing
+/// which spelling a given table used.
+pub trait Keyed {
+    /// The entry's identity (its unique name) within its table.
+    fn key(&self) -> &str;
+}
+
+macro_rules! impl_keyed {
+    ($($ty:ty),+ $(,)?) => {
+        $(impl Keyed for $ty {
+            fn key(&self) -> &str {
+                &self.name
+            }
+        })+
+    };
+}
+
+impl_keyed!(
+    ProtoObject,
+    Squad,
+    Tech,
+    Ability,
+    Power,
+    Civ,
+    Leader,
+    WeaponType,
+    DamageType,
+);
+
 /// A complete HW1 game database, loaded from XMB documents.
 #[derive(Debug, Default)]
 pub struct Database {
