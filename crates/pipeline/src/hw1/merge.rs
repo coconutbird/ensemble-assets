@@ -27,22 +27,6 @@ use serde_json::Value;
 use super::loader::load_game_dir;
 use crate::source::{AssetSource, LoadRule, StdFileProvider, normalise_path};
 
-/// The database tables merged semantically, as canonical **unpacked** virtual
-/// paths. Each mod layer may ship the unpacked `.xml` or packed `.xml.xmb`
-/// form; the flatten skips both so a table file is never also copied verbatim.
-const TABLE_VPATHS: [&str; 10] = [
-    "data\\objects.xml",
-    "data\\squads.xml",
-    "data\\techs.xml",
-    "data\\abilities.xml",
-    "data\\powers.xml",
-    "data\\civs.xml",
-    "data\\leaders.xml",
-    "data\\weapontypes.xml",
-    "data\\damagetypes.xml",
-    "data\\gamedata.xml",
-];
-
 /// A mod to layer into the merge, in load order (later wins on conflict).
 pub struct ModOverlay {
     /// Display label (mod title or path) used in conflict reports.
@@ -137,9 +121,11 @@ pub fn merge_mods(
     // 3. Field-merge each typed table that at least one mod overrides.
     let mut merged = Database::new();
     let mut conflicts = Vec::new();
+    let mut handled: Vec<&str> = Vec::new();
 
     macro_rules! merge_vec {
         ($field:ident, $vpath:literal, $parse:path) => {{
+            handled.push($vpath);
             let layers = parse_table_layers(&src, $vpath, $parse)?;
             if !layers.is_empty() {
                 let (out, c) = merge_table(stringify!($field), &base.$field, &layers)?;
@@ -161,6 +147,7 @@ pub fn merge_mods(
 
     // gamedata is a singleton, not a keyed table.
     {
+        handled.push("data\\gamedata.xml");
         let layers = parse_singleton_layers(&src, "data\\gamedata.xml", database::hw1::gamedata::parse)?;
         if !layers.is_empty() {
             let (out, c) = merge_singleton("gamedata", base.game_data.as_ref(), layers)?;
@@ -188,8 +175,14 @@ pub fn merge_mods(
     }
 
     // 5. Flatten every non-table file from the mod folders into the output,
-    //    last layer winning, skipping the merged tables (both forms).
-    let skip = table_skip_set();
+    //    last layer winning, skipping the merged tables (both unpacked and
+    //    packed forms) so a table file is never also copied verbatim.
+    let mut skip = HashSet::new();
+    for vpath in &handled {
+        let norm = normalise_path(vpath);
+        skip.insert(format!("{norm}.xmb"));
+        skip.insert(norm);
+    }
     let flat = src
         .flatten_folders_to_dir(out_mod_data, &skip, options.only_changed)
         .map_err(MergeError::Io)?;
@@ -208,18 +201,6 @@ pub fn merge_mods(
         files_written,
         conflicts,
     })
-}
-
-/// The set of table paths (both unpacked and packed forms) handled by the
-/// semantic merge, so the flatten doesn't also copy them verbatim.
-fn table_skip_set() -> HashSet<String> {
-    let mut skip = HashSet::new();
-    for p in TABLE_VPATHS {
-        let norm = normalise_path(p);
-        skip.insert(format!("{norm}.xmb"));
-        skip.insert(norm);
-    }
-    skip
 }
 
 /// Parse one keyed table from each mod layer that overrides it, in load order.
