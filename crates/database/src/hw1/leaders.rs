@@ -136,6 +136,10 @@ pub struct PopEntry {
 }
 
 /// Parse all leaders from a `leaders.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or a leader cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Leader>> {
     let root = expect_root(doc, "Leaders")?;
     let leaders: Vec<Leader> = root

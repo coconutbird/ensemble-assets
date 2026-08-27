@@ -22,6 +22,7 @@ use std::path::Path;
 /// Override layout: `{override_dir}/{era_label}/{game_path}`.
 /// Strips the override prefix, skips the first path component (era label),
 /// and returns the backslash-joined remainder.
+#[must_use]
 pub fn game_path_from_override(override_dir: &Path, fs_path: &Path) -> Option<String> {
     // Canonicalize both paths to handle macOS /var → /private/var symlinks.
     let canon_dir = override_dir
@@ -53,6 +54,7 @@ pub fn game_path_from_override(override_dir: &Path, fs_path: &Path) -> Option<St
 ///
 /// Convenience wrapper around [`game_path_from_override`] +
 /// [`AssetKind::from_game_path`].
+#[must_use]
 pub fn asset_for_override_path(override_dir: &Path, fs_path: &Path) -> Option<AssetKind> {
     let gp = game_path_from_override(override_dir, fs_path)?;
     AssetKind::from_game_path(&gp)
@@ -61,6 +63,7 @@ pub fn asset_for_override_path(override_dir: &Path, fs_path: &Path) -> Option<As
 /// Legacy alias — maps to a [`TableId`] only (database XML tables).
 ///
 /// Prefer [`asset_for_override_path`] for full coverage.
+#[must_use]
 pub fn table_for_override_path(override_dir: &Path, fs_path: &Path) -> Option<TableId> {
     let gp = game_path_from_override(override_dir, fs_path)?;
     TableId::from_game_path(&gp)

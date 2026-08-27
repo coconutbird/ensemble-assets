@@ -7,7 +7,7 @@
 //! 3. **Asset resolution** ([`resolve`]) — visual → model/anim, tactics, physics → blueprint → shape
 //! 4. **Scenario loading** ([`scenario`]) — scenario-specific ERA layering and map descriptors
 //! 5. **Edit & save** ([`edit`], [`World`]) — RAII dirty tracking with selective serialization
-//! 6. **Validation** ([`validate`], [`diagnostics`]) — structured cross-reference checks
+//! 6. **Validation** ([`mod@validate`], [`diagnostics`]) — structured cross-reference checks
 //! 7. **Manifest** ([`manifest`]) — passive inventory of all binary asset references
 //! 8. **String table** ([`stringtable`]) — localized string lookup by `_locID`
 //!
@@ -34,6 +34,7 @@ pub mod edit;
 pub mod lightset;
 pub mod loader;
 pub mod manifest;
+pub mod merge;
 pub mod resolve;
 pub mod scenario;
 pub mod stringtable;
@@ -47,6 +48,7 @@ pub use diagnostics::{
 pub use edit::{AssetKind, DirtyGuard, DirtySet, TableId};
 pub use lightset::LightSetData;
 pub use manifest::{AssetManifest, BinaryValidation, VerifyResult};
+pub use merge::{Conflict, MergeError, MergeOptions, MergeReport, ModOverlay, merge_mods};
 pub use resolve::{LoadStats, ObjectAssets, PhysicsChain};
 pub use scenario::{
     CinematicRef, ObjectiveRef, ScenarioData, ScenarioDescriptor, ScenarioObject, ScenarioPlayer,

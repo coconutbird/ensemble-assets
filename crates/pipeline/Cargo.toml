@@ -7,6 +7,9 @@ license.workspace = true
 repository.workspace = true
 authors.workspace = true
 
+[lints]
+workspace = true
+
 [dependencies]
 assets.workspace = true
 bdt.workspace = true
@@ -15,6 +18,7 @@ database.workspace = true
 ddx.workspace = true
 era.workspace = true
 serde.workspace = true
+serde_json.workspace = true
 uax.workspace = true
 ugx.workspace = true
 xmb.workspace = true
@@ -23,8 +27,7 @@ xtt.workspace = true
 
 [dev-dependencies]
 dotenvy.workspace = true
-tempfile = "3.27.0"
-
+tempfile.workspace = true
 
 [[test]]
 name = "hw1"

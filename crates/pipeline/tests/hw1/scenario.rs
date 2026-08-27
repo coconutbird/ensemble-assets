@@ -67,12 +67,9 @@ fn load_world_with_scenario() {
 
 #[test]
 fn dump_scn_structure() {
-    let dir = match hw1_game_dir() {
-        Some(d) => d,
-        None => {
-            eprintln!("SKIP");
-            return;
-        }
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("SKIP");
+        return;
     };
     let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "PHXscn01.era");
     let list = pipeline::hw1::scenario::ScenarioList::load(&mut src);
@@ -298,7 +295,7 @@ fn full_scenario_validation() {
     let total_preload = world.manifest.preload_vis_refs.len()
         + world.manifest.preload_pfx_refs.len()
         + world.manifest.preload_tfx_refs.len();
-    println!("  Preload entries: {} total", total_preload);
+    println!("  Preload entries: {total_preload} total");
     assert!(
         !world.manifest.preload_vis_refs.is_empty(),
         "vis preload list should have entries for campaign scenario"
@@ -331,10 +328,7 @@ fn full_scenario_validation() {
 
     let scenario_models = world.manifest.model_refs.len();
     let base_models = base_world.manifest.model_refs.len();
-    println!(
-        "\n  Models: {} (scenario) vs {} (base)",
-        scenario_models, base_models
-    );
+    println!("\n  Models: {scenario_models} (scenario) vs {base_models} (base)");
     assert!(
         scenario_models >= base_models,
         "scenario should have at least as many models as base"
@@ -342,10 +336,7 @@ fn full_scenario_validation() {
 
     let scenario_textures = world.manifest.texture_refs.len();
     let base_textures = base_world.manifest.texture_refs.len();
-    println!(
-        "  Textures: {} (scenario) vs {} (base)",
-        scenario_textures, base_textures
-    );
+    println!("  Textures: {scenario_textures} (scenario) vs {base_textures} (base)");
     assert!(
         scenario_textures >= base_textures,
         "scenario should have at least as many textures as base"
@@ -369,13 +360,16 @@ fn terrain_textures_from_xtt() {
         .manifest
         .terrain_refs
         .iter()
-        .filter(|p| p.ends_with(".xtt"))
+        .filter(|p| {
+            p.rsplit_once('.')
+                .is_some_and(|(_, extension)| extension.eq_ignore_ascii_case("xtt"))
+        })
         .collect();
     assert!(
         !xtt_refs.is_empty(),
         "expected at least one .xtt terrain ref"
     );
-    println!("  XTT refs: {:?}", xtt_refs);
+    println!("  XTT refs: {xtt_refs:?}");
 
     // Terrain textures should be discovered — look for typical splat patterns
     let terrain_textures: Vec<_> = world
@@ -511,6 +505,7 @@ fn edit_save_round_trip() {
 }
 
 #[test]
+#[allow(clippy::float_cmp, clippy::too_many_lines)] // Exact values verify lossless binary round trips.
 fn terrain_edit_save_round_trip() {
     let Some(dir) = hw1_game_dir() else {
         eprintln!("SKIP: HW1_GAME_DIR not set");
@@ -597,32 +592,40 @@ fn terrain_edit_save_round_trip() {
     assert!(!world.is_dirty(), "world should be clean after save");
 
     // 6. Verify files exist on disk
-    let xtd_files: Vec<_> = written
+    let terrain_data_files: Vec<_> = written
         .iter()
         .filter(|p| p.to_string_lossy().contains(".xtd"))
         .collect();
-    let xtt_files: Vec<_> = written
+    let terrain_texture_files: Vec<_> = written
         .iter()
         .filter(|p| p.to_string_lossy().contains(".xtt"))
         .collect();
-    assert_eq!(xtd_files.len(), 1, "should have written exactly one .xtd");
+    assert_eq!(
+        terrain_data_files.len(),
+        1,
+        "should have written exactly one .xtd"
+    );
     assert!(
-        xtd_files[0].exists(),
+        terrain_data_files[0].exists(),
         "XTD file should exist: {}",
-        xtd_files[0].display()
+        terrain_data_files[0].display()
     );
 
     if original_tex_count > 0 {
-        assert_eq!(xtt_files.len(), 1, "should have written exactly one .xtt");
+        assert_eq!(
+            terrain_texture_files.len(),
+            1,
+            "should have written exactly one .xtt"
+        );
         assert!(
-            xtt_files[0].exists(),
+            terrain_texture_files[0].exists(),
             "XTT file should exist: {}",
-            xtt_files[0].display()
+            terrain_texture_files[0].display()
         );
     }
 
     // 7. Re-read the saved XTD and verify mutations persisted
-    let saved_xtd_bytes = std::fs::read(xtd_files[0]).expect("read saved XTD");
+    let saved_xtd_bytes = std::fs::read(terrain_data_files[0]).expect("read saved XTD");
     let saved_xtd = xtd::Reader::read(&saved_xtd_bytes).expect("parse saved XTD");
     assert_eq!(
         saved_xtd.header.tile_scale, 42.0,

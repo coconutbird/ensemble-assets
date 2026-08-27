@@ -87,6 +87,7 @@ pub struct BinaryValidation {
 
 impl BinaryValidation {
     /// Total number of errors (failed + missing).
+    #[must_use]
     pub fn total_errors(&self) -> usize {
         self.models_failed.len()
             + self.models_missing.len()
@@ -131,7 +132,7 @@ impl AssetManifest {
     ///
     /// This resets lightsets, cinematics, terrain refs, sky, terrain env,
     /// minimap, sound banks, and preload lists — everything populated by
-    /// [`collect_scenario_assets_into`] and [`parse_preload_list`].
+    /// `collect_scenario_assets_into` and `parse_preload_list`.
     /// Model/anim/texture refs from the base-game visual chains are preserved.
     pub fn clear_scenario_refs(&mut self) {
         self.lightset_refs.clear();
@@ -246,13 +247,11 @@ pub(crate) fn parse_preload_list(
     filename: &str,
     out: &mut Vec<String>,
 ) {
-    let data = match src.resolve_exact(filename) {
-        Some(d) => d,
-        None => return,
+    let Some(data) = src.resolve_exact(filename) else {
+        return;
     };
-    let text = match std::str::from_utf8(&data) {
-        Ok(t) => t,
-        Err(_) => return,
+    let Ok(text) = std::str::from_utf8(&data) else {
+        return;
     };
     for line in text.lines() {
         let trimmed = line.trim();
@@ -273,20 +272,17 @@ pub(crate) fn discover_textures(
     texture_refs: &mut BTreeSet<String>,
 ) {
     for ugx_path in model_refs {
-        let data = match src.resolve_exact(ugx_path) {
-            Some(d) => d,
-            None => continue,
+        let Some(data) = src.resolve_exact(ugx_path) else {
+            continue;
         };
 
-        let materials = match ugx::read_materials(&data) {
-            Ok(m) => m,
-            Err(_) => continue,
+        let Ok(materials) = ugx::read_materials(&data) else {
+            continue;
         };
 
         for mat in &materials {
-            let legacy = match mat.legacy() {
-                Some(l) => l,
-                None => continue,
+            let Some(legacy) = mat.legacy() else {
+                continue;
             };
 
             for maps in &legacy.maps {
@@ -317,22 +313,19 @@ pub(crate) fn resolve_textures_for(
         .models
         .iter()
         .chain(obj.damage_models.iter())
-        .map(|s| s.as_str())
+        .map(std::string::String::as_str)
         .collect();
 
     for ugx_path in ugx_paths {
-        let data = match src.resolve_exact(ugx_path) {
-            Some(d) => d,
-            None => continue,
+        let Some(data) = src.resolve_exact(ugx_path) else {
+            continue;
         };
-        let materials = match ugx::read_materials(&data) {
-            Ok(m) => m,
-            Err(_) => continue,
+        let Ok(materials) = ugx::read_materials(&data) else {
+            continue;
         };
         for mat in &materials {
-            let legacy = match mat.legacy() {
-                Some(l) => l,
-                None => continue,
+            let Some(legacy) = mat.legacy() else {
+                continue;
             };
             for maps in &legacy.maps {
                 for map in maps {
@@ -366,16 +359,14 @@ pub(crate) fn discover_terrain_textures(
     texture_refs: &mut BTreeSet<String>,
 ) {
     for path in terrain_refs {
-        if !path.ends_with(".xtt") {
+        if !crate::source::has_extension(path, "xtt") {
             continue;
         }
-        let data = match src.resolve_exact(path) {
-            Some(d) => d,
-            None => continue,
+        let Some(data) = src.resolve_exact(path) else {
+            continue;
         };
-        let xtt_file = match xtt::Reader::read(&data) {
-            Ok(f) => f,
-            Err(_) => continue,
+        let Ok(xtt_file) = xtt::Reader::read(&data) else {
+            continue;
         };
 
         // Active textures — terrain splat layers

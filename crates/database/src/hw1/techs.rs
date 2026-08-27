@@ -183,6 +183,10 @@ pub struct TechStatusEntry {
 }
 
 /// Parse all techs from a `techs.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or a tech cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Tech>> {
     let root = expect_root(doc, "TechTree")?;
     let techs: Vec<Tech> = root

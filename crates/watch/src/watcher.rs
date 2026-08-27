@@ -51,7 +51,7 @@ pub struct WorldWatcher {
     event_rx: mpsc::Receiver<WorldEvent>,
     event_tx: mpsc::Sender<WorldEvent>,
     /// Internal notify debouncer — `None` until [`start`](Self::start) is called.
-    _debouncer: Option<Debouncer<notify::RecommendedWatcher>>,
+    debouncer: Option<Debouncer<notify::RecommendedWatcher>>,
     /// Internal channel for raw notify events.
     notify_rx:
         Option<mpsc::Receiver<Result<Vec<notify_debouncer_mini::DebouncedEvent>, notify::Error>>>,
@@ -73,12 +73,16 @@ impl WorldWatcher {
             override_dir: override_dir.into(),
             event_rx,
             event_tx,
-            _debouncer: None,
+            debouncer: None,
             notify_rx: None,
         }
     }
 
     /// Start watching the override directory for changes.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the watcher cannot be created or the directory cannot be watched.
     pub fn start(&mut self) -> Result<(), notify::Error> {
         let (tx, rx) = mpsc::channel();
         let mut debouncer = new_debouncer(Duration::from_millis(200), tx)?;
@@ -88,7 +92,7 @@ impl WorldWatcher {
             .watcher()
             .watch(&self.override_dir, notify::RecursiveMode::Recursive)?;
 
-        self._debouncer = Some(debouncer);
+        self.debouncer = Some(debouncer);
         self.notify_rx = Some(rx);
         Ok(())
     }
@@ -111,6 +115,10 @@ impl WorldWatcher {
     /// Save dirty tables to the override directory (convenience wrapper).
     ///
     /// Equivalent to `self.world.save(&self.src)` but avoids borrow conflicts.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if any dirty asset cannot be serialized or written.
     pub fn save(&mut self) -> Result<Vec<std::path::PathBuf>, String> {
         self.world.save(&self.src)
     }
@@ -184,7 +192,7 @@ impl WorldWatcher {
 
     /// Stop watching (drops the debouncer).
     pub fn stop(&mut self) {
-        self._debouncer = None;
+        self.debouncer = None;
         self.notify_rx = None;
     }
 

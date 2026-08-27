@@ -154,6 +154,10 @@ pub struct Anim {
 }
 
 /// Parse a visual definition from a `.vis.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or the visual cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Visual> {
     let root = expect_root(doc, "visual")?;
     let vis: Visual = bdt_serde::from_node(root)?;
@@ -161,6 +165,10 @@ pub fn parse(doc: &xmb::Document) -> crate::Result<Visual> {
 }
 
 /// Serialize a [`Visual`] back into an XMB [`Document`](xmb::Document).
+///
+/// # Errors
+///
+/// Returns an error if the visual cannot be serialized into an XMB node.
 pub fn to_document(vis: &Visual) -> crate::Result<xmb::Document> {
     let node = bdt_serde::to_node("visual", vis)?;
     Ok(xmb::Document::with_root(node))

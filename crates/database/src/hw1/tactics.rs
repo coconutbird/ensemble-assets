@@ -101,6 +101,10 @@ pub struct Action {
 }
 
 /// Parse tactics from a `.tactics.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or the tactics data cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<TacticData> {
     let root = expect_root(doc, "TacticData")?;
     let data: TacticData = bdt_serde::from_node(root)?;
@@ -108,6 +112,10 @@ pub fn parse(doc: &xmb::Document) -> crate::Result<TacticData> {
 }
 
 /// Serialize a [`TacticData`] back into an XMB [`Document`](xmb::Document).
+///
+/// # Errors
+///
+/// Returns an error if the tactics data cannot be serialized into an XMB node.
 pub fn to_document(td: &TacticData) -> crate::Result<xmb::Document> {
     let node = bdt_serde::to_node("TacticData", td)?;
     Ok(xmb::Document::with_root(node))

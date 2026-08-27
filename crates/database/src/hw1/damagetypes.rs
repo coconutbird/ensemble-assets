@@ -26,6 +26,10 @@ pub struct DamageType {
 }
 
 /// Parse all damage types from a `damagetypes.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or a damage type cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<DamageType>> {
     let root = expect_root(doc, "DamageTypes")?;
     let types: Vec<DamageType> = root

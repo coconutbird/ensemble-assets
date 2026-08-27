@@ -94,6 +94,10 @@ pub struct HavokParam {
 }
 
 /// Parse a `.physics.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or the physics data cannot be deserialized.
 pub fn parse_physics(doc: &xmb::Document) -> crate::Result<Physics> {
     let root = expect_root(doc, "physics")?;
     let physics: Physics = bdt_serde::from_node(root)?;
@@ -101,6 +105,10 @@ pub fn parse_physics(doc: &xmb::Document) -> crate::Result<Physics> {
 }
 
 /// Parse a `.blueprint.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document has no root or the blueprint cannot be deserialized.
 pub fn parse_blueprint(doc: &xmb::Document) -> crate::Result<Blueprint> {
     let root = crate::node_ext::root_node(doc)?;
     let bp: Blueprint = bdt_serde::from_node(root)?;
@@ -108,6 +116,10 @@ pub fn parse_blueprint(doc: &xmb::Document) -> crate::Result<Blueprint> {
 }
 
 /// Parse a `.shp.xmb` document (Havok XML shapes).
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or the shape cannot be deserialized.
 pub fn parse_shape(doc: &xmb::Document) -> crate::Result<Shape> {
     let root = expect_root(doc, "hke")?;
     let shape: Shape = bdt_serde::from_node(root)?;
@@ -115,18 +127,30 @@ pub fn parse_shape(doc: &xmb::Document) -> crate::Result<Shape> {
 }
 
 /// Serialize a [`Physics`] back into an XMB [`Document`](xmb::Document).
+///
+/// # Errors
+///
+/// Returns an error if the physics data cannot be serialized into an XMB node.
 pub fn physics_to_document(phys: &Physics) -> crate::Result<xmb::Document> {
     let node = bdt_serde::to_node("physics", phys)?;
     Ok(xmb::Document::with_root(node))
 }
 
 /// Serialize a [`Blueprint`] back into an XMB [`Document`](xmb::Document).
+///
+/// # Errors
+///
+/// Returns an error if the blueprint cannot be serialized into an XMB node.
 pub fn blueprint_to_document(bp: &Blueprint) -> crate::Result<xmb::Document> {
     let node = bdt_serde::to_node("blueprint", bp)?;
     Ok(xmb::Document::with_root(node))
 }
 
 /// Serialize a [`Shape`] back into an XMB [`Document`](xmb::Document).
+///
+/// # Errors
+///
+/// Returns an error if the shape cannot be serialized into an XMB node.
 pub fn shape_to_document(shape: &Shape) -> crate::Result<xmb::Document> {
     let node = bdt_serde::to_node("hke", shape)?;
     Ok(xmb::Document::with_root(node))

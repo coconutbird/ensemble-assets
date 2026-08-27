@@ -148,7 +148,7 @@ pub struct PowerCost {
 /// A data level entry (level-specific power parameters).
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct DataLevel {
-    /// Level index (0-based). Absent for BaseDataLevel.
+    /// Level index (0-based). Absent for `BaseDataLevel`.
     #[serde(rename = "@level")]
     pub level: Option<i32>,
     /// Key-value data entries.
@@ -171,6 +171,10 @@ pub struct DataEntry {
 }
 
 /// Parse all powers from a `powers.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or a power cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Power>> {
     let root = expect_root(doc, "Powers")?;
     let powers: Vec<Power> = root

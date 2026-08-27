@@ -468,6 +468,10 @@ pub struct CodeObjectType {
 }
 
 /// Parse game data from a `gamedata.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or the game data cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<GameData> {
     let root = expect_root(doc, "GameData")?;
     let gd: GameData = bdt_serde::from_node(root)?;
