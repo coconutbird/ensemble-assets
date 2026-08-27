@@ -1224,7 +1224,9 @@ impl World {
             .animations
             .get(game_path)
             .ok_or_else(|| format!("animation not cached: {game_path}"))?;
-        let bytes = anim.to_bytes();
+        let bytes = anim
+            .to_bytes()
+            .map_err(|e| format!("serialize animation {game_path}: {e}"))?;
         let path = src.write_file(game_path, &bytes)?;
         self.dirty.clear_key(TableId::Animations, game_path);
         Ok(path)
@@ -1501,7 +1503,9 @@ impl World {
                             )
                         };
                     for (game_path, anim) in iter {
-                        let bytes = anim.to_bytes();
+                        let bytes = anim
+                            .to_bytes()
+                            .map_err(|e| format!("serialize animation {game_path}: {e}"))?;
                         written.push(src.write_file(game_path, &bytes)?);
                     }
                 }

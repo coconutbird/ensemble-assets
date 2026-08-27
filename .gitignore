@@ -1,4 +1,5 @@
 /target/
+Cargo.lock
 **/*.rs.bk
 .idea/
 .vscode/
@@ -9,4 +10,3 @@
 Thumbs.db
 *.pdb
 .env
-
