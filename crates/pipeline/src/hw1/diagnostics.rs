@@ -125,6 +125,7 @@ pub struct DiagnosticReport {
 }
 
 impl DiagnosticReport {
+    #[must_use]
     pub fn errors(&self) -> usize {
         self.diagnostics
             .iter()
@@ -132,6 +133,7 @@ impl DiagnosticReport {
             .count()
     }
 
+    #[must_use]
     pub fn warnings(&self) -> usize {
         self.diagnostics
             .iter()
@@ -139,6 +141,7 @@ impl DiagnosticReport {
             .count()
     }
 
+    #[must_use]
     pub fn infos(&self) -> usize {
         self.diagnostics
             .iter()
@@ -169,6 +172,7 @@ impl DiagnosticReport {
 /// - Each object's `physics_info` references a loaded physics entry
 /// - Each squad's unit entries reference valid proto-object names
 /// - No duplicate object or squad names
+#[allow(clippy::too_many_lines)] // Keeping the validation checklist linear makes each rule auditable.
 pub fn validate_world(world: &super::World) -> DiagnosticReport {
     let start = std::time::Instant::now();
     let mut diagnostics = Vec::new();
@@ -322,7 +326,7 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
     // ── Object cross-references ─────────────────────────────────────
     for obj in &world.database.objects {
         check_ref_loaded(
-            &obj.visual,
+            obj.visual.as_deref(),
             &world.visuals,
             "data\\objects.xml",
             TableId::Objects,
@@ -333,7 +337,7 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
             &mut diagnostics,
         );
         check_ref_loaded(
-            &obj.tactics,
+            obj.tactics.as_deref(),
             &world.tactics,
             "data\\objects.xml",
             TableId::Objects,
@@ -344,7 +348,7 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
             &mut diagnostics,
         );
         check_ref_loaded(
-            &obj.physics_info,
+            obj.physics_info.as_deref(),
             &world.physics,
             "data\\objects.xml",
             TableId::Objects,
@@ -543,7 +547,7 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
                 && !weapon_type_names.contains(wt)
             {
                 diagnostics.push(Diagnostic {
-                    path: format!("data\\tactics\\{}.xml", tac_name),
+                    path: format!("data\\tactics\\{tac_name}.xml"),
                     location: Location::Field {
                         table: TableId::Tactics,
                         name: tac_name.clone(),
@@ -563,7 +567,7 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
                 && !object_names.contains(proj)
             {
                 diagnostics.push(Diagnostic {
-                    path: format!("data\\tactics\\{}.xml", tac_name),
+                    path: format!("data\\tactics\\{tac_name}.xml"),
                     location: Location::Field {
                         table: TableId::Tactics,
                         name: tac_name.clone(),
@@ -635,7 +639,7 @@ pub fn validate_world_assets(
                 location: Location::Table(TableId::Visuals),
                 severity: Severity::Warning,
                 code: DiagnosticCode::MissingAsset,
-                message: format!("model '{}' referenced by visuals not found on disk", path),
+                message: format!("model '{path}' referenced by visuals not found on disk"),
             });
         }
     }
@@ -647,10 +651,7 @@ pub fn validate_world_assets(
                 location: Location::Table(TableId::Visuals),
                 severity: Severity::Info,
                 code: DiagnosticCode::MissingAsset,
-                message: format!(
-                    "damage model '{}' referenced by visuals not found on disk",
-                    path
-                ),
+                message: format!("damage model '{path}' referenced by visuals not found on disk"),
             });
         }
     }
@@ -662,10 +663,7 @@ pub fn validate_world_assets(
                 location: Location::Table(TableId::Visuals),
                 severity: Severity::Info,
                 code: DiagnosticCode::MissingAsset,
-                message: format!(
-                    "animation '{}' referenced by visuals not found on disk",
-                    path
-                ),
+                message: format!("animation '{path}' referenced by visuals not found on disk"),
             });
         }
     }
@@ -677,7 +675,7 @@ pub fn validate_world_assets(
                 location: Location::Table(TableId::Visuals),
                 severity: Severity::Info,
                 code: DiagnosticCode::MissingAsset,
-                message: format!("texture '{}' not found on disk", path),
+                message: format!("texture '{path}' not found on disk"),
             });
         }
     }
@@ -709,16 +707,16 @@ fn check_duplicates(
                 },
                 severity: Severity::Warning,
                 code: DiagnosticCode::DuplicateName,
-                message: format!("duplicate {} name '{}'", label, name),
+                message: format!("duplicate {label} name '{name}'"),
             });
         }
     }
 }
 
-/// Check that an `Option<String>` reference points to a loaded HashMap entry.
+/// Check that an optional reference points to a loaded `HashMap` entry.
 #[allow(clippy::too_many_arguments)]
 fn check_ref_loaded<V>(
-    reference: &Option<String>,
+    reference: Option<&str>,
     map: &std::collections::HashMap<String, V>,
     path: &str,
     table: TableId,
@@ -730,7 +728,7 @@ fn check_ref_loaded<V>(
 ) {
     if let Some(name) = reference
         && !name.is_empty()
-        && !map.contains_key(name.as_str())
+        && !map.contains_key(name)
     {
         diagnostics.push(Diagnostic {
             path: path.into(),
@@ -742,8 +740,7 @@ fn check_ref_loaded<V>(
             severity,
             code: DiagnosticCode::MissingReference,
             message: format!(
-                "'{}' references {} '{}' which was not loaded",
-                entry_name, asset_kind, name
+                "'{entry_name}' references {asset_kind} '{name}' which was not loaded"
             ),
         });
     }

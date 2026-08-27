@@ -7,6 +7,9 @@ repository.workspace = true
 authors.workspace = true
 description = "Ensemble game database — schemas, asset loading, validation"
 
+[lints]
+workspace = true
+
 [dependencies]
 assets.workspace = true
 bdt.workspace = true

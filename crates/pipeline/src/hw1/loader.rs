@@ -1,7 +1,7 @@
 //! HW1 ERA loading — mirrors the engine's `BArchiveManager` load order.
 //!
-//! This module provides [`load_base_eras`] and [`load_scenario_era`] which
-//! populate an [`AssetSource`](crate::source::AssetSource) with the same
+//! This module provides [`load_game_dir`] and [`load_scenario_era`], which
+//! populate an [`AssetSource`] with the same
 //! archives in the same order as the real game binary. The load order
 //! determines resolution priority (last loaded wins).
 //!
@@ -56,6 +56,7 @@ fn try_load_era(src: &mut AssetSource<StdFileProvider>, dir: &str, name: &str) {
 
 /// Build an [`AssetSource`] from a game directory, loading ERAs in the
 /// engine's confirmed load order (from IDA `BArchiveManager`).
+#[must_use]
 pub fn load_game_dir(dir: &str) -> AssetSource<StdFileProvider> {
     let mut src = AssetSource::with_provider(StdFileProvider);
     src.set_source_dir(dir);
@@ -77,6 +78,7 @@ pub fn load_game_dir(dir: &str) -> AssetSource<StdFileProvider> {
 ///
 /// `scenario_era` is the ERA filename (e.g. `"PHXscn01.era"` or
 /// `"blood_gulch.era"`).
+#[must_use]
 pub fn load_with_scenario(dir: &str, scenario_era: &str) -> AssetSource<StdFileProvider> {
     let mut src = load_game_dir(dir);
     load_scenario_era(&mut src, dir, scenario_era);
@@ -113,9 +115,10 @@ pub fn load_scenario_era(
 /// - An exact ERA filename: `"PHXscn01.era"` → returned as-is
 /// - A map name: `"blood_gulch"` → looks for `blood_gulch.era`
 /// - A full SCN path: `"skirmish\design\blood_gulch\blood_gulch.scn"` → extracts stem
+#[must_use]
 pub fn find_scenario_era(dir: &str, scenario: &str) -> Option<String> {
     // Already an ERA filename?
-    if scenario.ends_with(".era") {
+    if crate::source::has_extension(scenario, "era") {
         let path = format!("{dir}/{scenario}");
         if std::path::Path::new(&path).exists() {
             return Some(scenario.to_string());

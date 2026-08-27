@@ -54,13 +54,11 @@ fn load_world_base_game() {
 ///
 /// This catches serialization regressions that would silently drop data.
 #[test]
+#[allow(clippy::too_many_lines)] // The end-to-end round trip intentionally checks every table.
 fn roundtrip_database_serialize() {
-    let dir = match hw1_game_dir() {
-        Some(d) => d,
-        None => {
-            eprintln!("HW1_GAME_DIR not set — skipping roundtrip test");
-            return;
-        }
+    let Some(dir) = hw1_game_dir() else {
+        eprintln!("HW1_GAME_DIR not set — skipping roundtrip test");
+        return;
     };
 
     let mut src = load_game_dir(&dir);
@@ -207,21 +205,13 @@ fn roundtrip_database_serialize() {
                 let reparsed =
                     database::hw1::gamedata::parse(doc).expect("failed to re-parse gamedata");
                 let orig_gd = original.game_data.as_ref().unwrap();
-                let rt_res = reparsed
-                    .resources
-                    .as_ref()
-                    .map(|r| r.entries.len())
-                    .unwrap_or(0);
-                let orig_res = orig_gd
-                    .resources
-                    .as_ref()
-                    .map(|r| r.entries.len())
-                    .unwrap_or(0);
-                let rt_pops = reparsed.pops.as_ref().map(|p| p.entries.len()).unwrap_or(0);
-                let orig_pops = orig_gd.pops.as_ref().map(|p| p.entries.len()).unwrap_or(0);
+                let rt_res = reparsed.resources.as_ref().map_or(0, |r| r.entries.len());
+                let orig_res = orig_gd.resources.as_ref().map_or(0, |r| r.entries.len());
+                let rt_pops = reparsed.pops.as_ref().map_or(0, |p| p.entries.len());
+                let orig_pops = orig_gd.pops.as_ref().map_or(0, |p| p.entries.len());
                 assert_eq!(rt_res, orig_res, "resources count mismatch");
                 assert_eq!(rt_pops, orig_pops, "pops count mismatch");
-                println!("  gamedata: {} resources, {} pops ✓", rt_res, rt_pops);
+                println!("  gamedata: {rt_res} resources, {rt_pops} pops ✓");
             }
             other => panic!("unexpected document path: {other}"),
         }
@@ -343,18 +333,15 @@ fn read_texture_ddx() {
     let mut loaded = 0;
     let mut failed = 0;
     for path in &tex_paths {
-        match world.read_texture(path, &mut src) {
-            Some(tex) => {
-                println!(
-                    "  OK  {path}: {}x{} {:?}",
-                    tex.info.width, tex.info.height, tex.info.data_format
-                );
-                loaded += 1;
-            }
-            None => {
-                println!("  MISS {path}");
-                failed += 1;
-            }
+        if let Some(tex) = world.read_texture(path, &mut src) {
+            println!(
+                "  OK  {path}: {}x{} {:?}",
+                tex.info.width, tex.info.height, tex.info.data_format
+            );
+            loaded += 1;
+        } else {
+            println!("  MISS {path}");
+            failed += 1;
         }
     }
 
@@ -602,6 +589,7 @@ fn inject_bad_reference_produces_diagnostic() {
 }
 
 #[test]
+#[allow(clippy::too_many_lines)] // This integration test exercises all three per-file save paths.
 fn per_file_save_visual_tactics_physics() {
     let Some(dir) = hw1_game_dir() else {
         eprintln!("SKIP: HW1_GAME_DIR not set");
@@ -635,12 +623,9 @@ fn per_file_save_visual_tactics_physics() {
         })
         .map(|(name, _)| name.clone());
 
-    let obj_name = match test_obj {
-        Some(n) => n,
-        None => {
-            eprintln!("SKIP: no object with visual+tactics+physics found");
-            return;
-        }
+    let Some(obj_name) = test_obj else {
+        eprintln!("SKIP: no object with visual+tactics+physics found");
+        return;
     };
     println!("Test object: {obj_name}");
 
@@ -902,12 +887,9 @@ fn model_edit_save_round_trip() {
         .find(|m| src.resolve_exact(m).is_some())
         .cloned();
 
-    let model_path = match model_path {
-        Some(p) => p,
-        None => {
-            eprintln!("SKIP: no resolvable model found");
-            return;
-        }
+    let Some(model_path) = model_path else {
+        eprintln!("SKIP: no resolvable model found");
+        return;
     };
     println!("Testing model: {model_path}");
 
@@ -988,12 +970,9 @@ fn texture_edit_save_round_trip() {
         }
     }
 
-    let tex_path = match tex_path {
-        Some(p) => p,
-        None => {
-            eprintln!("SKIP: no resolvable texture found");
-            return;
-        }
+    let Some(tex_path) = tex_path else {
+        eprintln!("SKIP: no resolvable texture found");
+        return;
     };
     println!("Testing texture: {tex_path}");
 
@@ -1003,7 +982,7 @@ fn texture_edit_save_round_trip() {
         .expect("load_texture failed");
     let original_width = tex.info.width;
     let original_height = tex.info.height;
-    println!("  {}x{}", original_width, original_height);
+    println!("  {original_width}x{original_height}");
 
     let tmp = tempfile::tempdir().expect("failed to create tempdir");
     src.set_override_dir(tmp.path());
@@ -1063,12 +1042,9 @@ fn animation_edit_save_round_trip() {
         .find(|p| src.resolve_exact(p).is_some())
         .cloned();
 
-    let anim_path = match anim_path {
-        Some(p) => p,
-        None => {
-            eprintln!("SKIP: no resolvable animation found");
-            return;
-        }
+    let Some(anim_path) = anim_path else {
+        eprintln!("SKIP: no resolvable animation found");
+        return;
     };
     println!("Testing animation: {anim_path}");
 

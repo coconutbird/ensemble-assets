@@ -756,6 +756,10 @@ pub struct VeterancyLevel {
 }
 
 /// Parse all proto-objects from an `objects.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or an object cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<ProtoObject>> {
     let root = expect_root(doc, "Objects")?;
     let objects: Vec<ProtoObject> = root

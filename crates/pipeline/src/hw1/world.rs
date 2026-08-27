@@ -27,7 +27,7 @@
 //!    like [`search_assets`](World::search_assets).
 //!
 //! 3. **Edit** — Use `*_mut()` accessors to get [`DirtyGuard`] or
-//!    [`KeyDirtyGuard`](super::edit::KeyDirtyGuard) handles. Mutations
+//!    [`KeyDirtyGuard`] handles. Mutations
 //!    through these guards automatically track what changed.
 //!
 //! 4. **Save** — [`World::save`] serializes only the dirty tables/files
@@ -104,6 +104,10 @@ impl World {
     /// let (mut world, mut src) = pipeline::hw1::World::load("/path/to/hw1").unwrap();
     /// world.swap_scenario(&mut src, "blood_gulch");
     /// ```
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if any required database asset cannot be decoded or deserialized.
     pub fn load(
         game_dir: &str,
     ) -> crate::Result<(Self, AssetSource<crate::source::StdFileProvider>)> {
@@ -114,6 +118,11 @@ impl World {
     }
 
     /// Load from a pre-configured [`AssetSource`].
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if any required database asset cannot be decoded or deserialized.
+    #[allow(clippy::too_many_lines)] // The ordered load stages intentionally remain visible together.
     pub fn load_from_source(
         src: &mut AssetSource<impl assets::FileProvider>,
     ) -> crate::Result<Self> {
@@ -168,7 +177,7 @@ impl World {
             // Tactics chain: object → .tactics
             if let Some(tac_ref) = &obj.tactics {
                 stats.objects_with_tactics += 1;
-                let tac_base = format!("data\\tactics\\{}", tac_ref);
+                let tac_base = format!("data\\tactics\\{tac_ref}");
                 obj_assets.tactics = Some(tac_base.clone());
 
                 if let Some(tac_doc) = src.read_xmb(&tac_base) {
@@ -187,7 +196,7 @@ impl World {
             // Physics chain: .physics → .blueprint → .shp
             if let Some(phys_ref) = &obj.physics_info {
                 stats.objects_with_physics += 1;
-                let phys_base = format!("physics\\{}.physics", phys_ref);
+                let phys_base = format!("physics\\{phys_ref}.physics");
                 obj_assets.physics = Some(phys_base.clone());
 
                 if let Some(phys_doc) = src.read_xmb(&phys_base) {
@@ -251,7 +260,7 @@ impl World {
         });
 
         // 10. Load lightset data (GLS + FLS) if a scenario is present
-        let lightset = load_lightset(&scenario, &scenario_data, src);
+        let lightset = load_lightset(scenario.as_ref(), scenario_data.as_ref(), src);
 
         Ok(World {
             database,
@@ -380,7 +389,7 @@ impl World {
         });
 
         // 7. Load lightset data (GLS + FLS) if the new scenario has one.
-        self.lightset = load_lightset(&scenario_desc, &scenario_data, src);
+        self.lightset = load_lightset(scenario_desc.as_ref(), scenario_data.as_ref(), src);
 
         self.scenario = scenario_desc;
         self.scenario_data = scenario_data;
@@ -397,6 +406,7 @@ impl World {
     }
 
     /// Print a summary of the loaded world to stdout.
+    #[allow(clippy::too_many_lines)] // The report mirrors the complete world schema in display order.
     pub fn print_summary(&self) {
         println!("=== HW1 World Summary ===\n");
         println!("Database:");
@@ -586,9 +596,8 @@ impl World {
         name: &str,
         src: &mut AssetSource<impl assets::FileProvider>,
     ) -> Vec<String> {
-        let obj = match self.assets.get(name) {
-            Some(o) => o,
-            None => return Vec::new(),
+        let Some(obj) = self.assets.get(name) else {
+            return Vec::new();
         };
         resolve_textures_for(obj, src)
     }
@@ -678,9 +687,8 @@ impl World {
         name: &str,
         src: &mut AssetSource<impl assets::FileProvider>,
     ) -> Vec<(String, ugx::UgxGeom)> {
-        let obj = match self.assets.get(name) {
-            Some(o) => o,
-            None => return Vec::new(),
+        let Some(obj) = self.assets.get(name) else {
+            return Vec::new();
         };
         obj.models
             .iter()
@@ -708,9 +716,8 @@ impl World {
         name: &str,
         src: &mut AssetSource<impl assets::FileProvider>,
     ) -> Vec<(String, uax::UaxFile)> {
-        let obj = match self.assets.get(name) {
-            Some(o) => o,
-            None => return Vec::new(),
+        let Some(obj) = self.assets.get(name) else {
+            return Vec::new();
         };
         obj.anims
             .iter()
@@ -998,6 +1005,10 @@ impl World {
     ///
     /// Writes the `.vis` for the named object and clears its dirty key.
     /// Returns the path written, or an error if the object/path is unknown.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the visual or its path is unknown, serialization fails, or writing fails.
     pub fn save_visual(
         &mut self,
         name: &str,
@@ -1022,6 +1033,10 @@ impl World {
     /// Save a single tactics file to the override directory.
     ///
     /// Writes the tactics XML for the named object and clears its dirty key.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the tactics data or path is unknown, serialization fails, or writing fails.
     pub fn save_tactic(
         &mut self,
         name: &str,
@@ -1047,6 +1062,10 @@ impl World {
     /// the override directory.
     ///
     /// Writes all files in the chain and clears its dirty key.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the chain or paths are unknown, serialization fails, or writing fails.
     pub fn save_physics(
         &mut self,
         name: &str,
@@ -1083,6 +1102,10 @@ impl World {
     /// Save the terrain heightmap/lighting (XTD) to the override directory.
     ///
     /// Writes the binary XTD file and clears the dirty flag.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if terrain data or its path is unavailable, serialization fails, or writing fails.
     pub fn save_terrain_data(
         &mut self,
         src: &AssetSource<impl assets::FileProvider>,
@@ -1099,6 +1122,10 @@ impl World {
     /// Save the terrain textures/foliage/roads (XTT) to the override directory.
     ///
     /// Writes the binary XTT file and clears the dirty flag.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if terrain textures or their path are unavailable, serialization fails, or writing fails.
     pub fn save_terrain_textures(
         &mut self,
         src: &AssetSource<impl assets::FileProvider>,
@@ -1119,6 +1146,10 @@ impl World {
     /// Save the string table to the override directory.
     ///
     /// Writes the XMB string table and clears the dirty flag.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if no string table is loaded, serialization fails, or writing fails.
     pub fn save_strings(
         &mut self,
         src: &AssetSource<impl assets::FileProvider>,
@@ -1134,6 +1165,10 @@ impl World {
     /// Save a single cached model (UGX) to the override directory.
     ///
     /// Writes the binary UGX file and clears the dirty key.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the model is not cached, serialization fails, or writing fails.
     pub fn save_model(
         &mut self,
         game_path: &str,
@@ -1153,6 +1188,10 @@ impl World {
     /// Save a single cached texture (DDX) to the override directory.
     ///
     /// Writes the DDS file and clears the dirty key.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the texture is not cached, serialization fails, or writing fails.
     pub fn save_texture(
         &mut self,
         game_path: &str,
@@ -1172,6 +1211,10 @@ impl World {
     /// Save a single cached animation (UAX) to the override directory.
     ///
     /// Writes the binary UAX file and clears the dirty key.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the animation is not cached or writing fails.
     pub fn save_animation(
         &mut self,
         game_path: &str,
@@ -1200,6 +1243,7 @@ impl World {
     ///
     /// Returns an error if the `AssetSource` has no override directory
     /// set, or if serialization/IO fails for any table.
+    #[allow(clippy::too_many_lines)] // Each table's serialization branch is kept explicit.
     pub fn save(
         &mut self,
         src: &AssetSource<impl assets::FileProvider>,
@@ -1477,6 +1521,11 @@ impl World {
     /// Returns `Ok(true)` if the table was successfully reloaded,
     /// `Ok(false)` if the source file was not found (table left unchanged),
     /// or `Err` on parse failure.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the selected table cannot be parsed.
+    #[allow(clippy::too_many_lines)] // The exhaustive table dispatch is easier to audit as one match.
     pub fn reload_table(
         &mut self,
         table: TableId,
@@ -1649,6 +1698,11 @@ impl World {
     /// invalidates binary asset caches.
     ///
     /// Returns `Ok(true)` if something was updated.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if a changed XML asset cannot be parsed.
+    #[allow(clippy::too_many_lines)] // The exhaustive asset dispatch is intentionally centralized.
     pub fn reload_asset(
         &mut self,
         kind: &AssetKind,
@@ -1662,9 +1716,8 @@ impl World {
                 if owners.is_empty() {
                     return Ok(false);
                 }
-                let doc = match src.read_xmb(path) {
-                    Some(d) => d,
-                    None => return Ok(false),
+                let Some(doc) = src.read_xmb(path) else {
+                    return Ok(false);
                 };
                 let vis = database::hw1::visual::parse(&doc)?;
                 for owner in &owners {
@@ -1686,9 +1739,8 @@ impl World {
                 if owners.is_empty() {
                     return Ok(false);
                 }
-                let doc = match src.read_xmb(path) {
-                    Some(d) => d,
-                    None => return Ok(false),
+                let Some(doc) = src.read_xmb(path) else {
+                    return Ok(false);
                 };
                 let tac = database::hw1::tactics::parse(&doc)?;
                 for owner in owners {
@@ -1702,9 +1754,8 @@ impl World {
                 if owners.is_empty() {
                     return Ok(false);
                 }
-                let doc = match src.read_xmb(path) {
-                    Some(d) => d,
-                    None => return Ok(false),
+                let Some(doc) = src.read_xmb(path) else {
+                    return Ok(false);
                 };
                 let phys = database::hw1::physics::parse_physics(&doc)?;
                 let mut chain = PhysicsChain {
@@ -1803,12 +1854,12 @@ impl World {
 /// Extracts the lightset reference from the SCN data, then delegates to
 /// [`super::lightset::load`].
 fn load_lightset(
-    descriptor: &Option<ScenarioDescriptor>,
-    scn: &Option<ScenarioData>,
+    descriptor: Option<&ScenarioDescriptor>,
+    scn: Option<&ScenarioData>,
     src: &mut AssetSource<impl assets::FileProvider>,
 ) -> Option<super::lightset::LightSetData> {
-    let desc = descriptor.as_ref()?;
-    let ls_ref = scn.as_ref()?.lightset();
+    let desc = descriptor?;
+    let ls_ref = scn?.lightset();
     if ls_ref.is_empty() {
         return None;
     }

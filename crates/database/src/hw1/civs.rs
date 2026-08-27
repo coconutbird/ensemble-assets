@@ -62,6 +62,10 @@ pub struct Civ {
 }
 
 /// Parse all civilizations from a `civs.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or a civilization cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Civ>> {
     let root = expect_root(doc, "Civs")?;
     let civs: Vec<Civ> = root

@@ -1,5 +1,5 @@
 //! Semantic merge of several HW1 mods into one, expressed as a flatten of a
-//! layered [`AssetSource`](crate::source::AssetSource).
+//! layered [`AssetSource`].
 //!
 //! A mod's `ModData` folder is just an unpacked ERA, so merging is "stack the
 //! base game plus each mod as layers, resolve, and write the result back out":
@@ -97,6 +97,10 @@ impl From<serde_json::Error> for MergeError {
 
 /// Merge `overlays` (in load order) against the base game at `game_dir`, writing
 /// the merged `ModData` into `out_mod_data`.
+///
+/// # Errors
+///
+/// Returns an error if no overlays are supplied or game data cannot be loaded, merged, or written.
 pub fn merge_mods(
     game_dir: &str,
     overlays: &[ModOverlay],
@@ -138,19 +142,32 @@ pub fn merge_mods(
     merge_vec!(objects, "data\\objects.xml", database::hw1::objects::parse);
     merge_vec!(squads, "data\\squads.xml", database::hw1::squads::parse);
     merge_vec!(techs, "data\\techs.xml", database::hw1::techs::parse);
-    merge_vec!(abilities, "data\\abilities.xml", database::hw1::abilities::parse);
+    merge_vec!(
+        abilities,
+        "data\\abilities.xml",
+        database::hw1::abilities::parse
+    );
     merge_vec!(powers, "data\\powers.xml", database::hw1::powers::parse);
     merge_vec!(civs, "data\\civs.xml", database::hw1::civs::parse);
     merge_vec!(leaders, "data\\leaders.xml", database::hw1::leaders::parse);
-    merge_vec!(weapon_types, "data\\weapontypes.xml", database::hw1::weapontypes::parse);
-    merge_vec!(damage_types, "data\\damagetypes.xml", database::hw1::damagetypes::parse);
+    merge_vec!(
+        weapon_types,
+        "data\\weapontypes.xml",
+        database::hw1::weapontypes::parse
+    );
+    merge_vec!(
+        damage_types,
+        "data\\damagetypes.xml",
+        database::hw1::damagetypes::parse
+    );
 
     // gamedata is a singleton, not a keyed table.
     {
         handled.push("data\\gamedata.xml");
-        let layers = parse_singleton_layers(&src, "data\\gamedata.xml", database::hw1::gamedata::parse)?;
+        let layers =
+            parse_singleton_layers(&src, "data\\gamedata.xml", database::hw1::gamedata::parse)?;
         if !layers.is_empty() {
-            let (out, c) = merge_singleton("gamedata", base.game_data.as_ref(), layers)?;
+            let (out, c) = merge_singleton("gamedata", base.game_data.as_ref(), &layers)?;
             merged.game_data = out;
             conflicts.extend(c);
         }
@@ -170,7 +187,8 @@ pub fn merge_mods(
             std::fs::create_dir_all(parent)
                 .map_err(|e| MergeError::Io(format!("{}: {e}", parent.display())))?;
         }
-        std::fs::write(&fs_path, &bytes).map_err(|e| MergeError::Io(format!("{}: {e}", fs_path.display())))?;
+        std::fs::write(&fs_path, &bytes)
+            .map_err(|e| MergeError::Io(format!("{}: {e}", fs_path.display())))?;
         files_written.push(fs_path);
     }
 
@@ -329,14 +347,14 @@ fn merge_table<T: Serialize + DeserializeOwned + Keyed>(
 fn merge_singleton<T: Serialize + DeserializeOwned>(
     table: &str,
     base: Option<&T>,
-    mods: Vec<(String, T)>,
+    mods: &[(String, T)],
 ) -> Result<(Option<T>, Vec<Conflict>), MergeError> {
     let base_v = base.map(serde_json::to_value).transpose()?;
     let mut merged_v = base_v.clone();
     let mut field_owner: HashMap<String, String> = HashMap::new();
     let mut conflicts = Vec::new();
 
-    for (label, item) in &mods {
+    for (label, item) in mods {
         let mod_v = serde_json::to_value(item)?;
         match (&base_v, &mut merged_v) {
             (Some(Value::Object(base_obj)), Some(Value::Object(merged_obj))) => {
@@ -425,8 +443,12 @@ mod tests {
         let mod_a = vec![entry("marine", Some(200), Some(10))]; // changed hp
         let mod_b = vec![entry("marine", Some(100), Some(50))]; // changed dmg
 
-        let (out, conflicts) =
-            merge_table("objects", &base, &[("A".into(), mod_a), ("B".into(), mod_b)]).unwrap();
+        let (out, conflicts) = merge_table(
+            "objects",
+            &base,
+            &[("A".into(), mod_a), ("B".into(), mod_b)],
+        )
+        .unwrap();
 
         let m = find(&out, "marine");
         assert_eq!(m.hp, Some(200));
@@ -440,8 +462,12 @@ mod tests {
         let mod_a = vec![entry("marine", Some(200), None)];
         let mod_b = vec![entry("marine", Some(300), None)];
 
-        let (out, conflicts) =
-            merge_table("objects", &base, &[("A".into(), mod_a), ("B".into(), mod_b)]).unwrap();
+        let (out, conflicts) = merge_table(
+            "objects",
+            &base,
+            &[("A".into(), mod_a), ("B".into(), mod_b)],
+        )
+        .unwrap();
 
         assert_eq!(find(&out, "marine").hp, Some(300)); // later mod wins
         assert_eq!(conflicts.len(), 1);

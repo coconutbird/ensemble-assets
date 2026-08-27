@@ -46,6 +46,10 @@ pub struct DamageModifier {
 }
 
 /// Parse all weapon types from a `weapontypes.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or a weapon type cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<WeaponType>> {
     let root = expect_root(doc, "WeaponTypes")?;
     let types: Vec<WeaponType> = root

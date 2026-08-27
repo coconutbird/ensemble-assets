@@ -104,6 +104,7 @@ pub struct Database {
 
 impl Database {
     /// Create an empty database.
+    #[must_use]
     pub fn new() -> Self {
         Self::default()
     }
@@ -113,6 +114,11 @@ impl Database {
     /// Resolves each database XMB by its well-known virtual path, parses it,
     /// and populates the corresponding field.  Missing files are silently
     /// skipped (the field stays at its `Default` value).
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if a resolved asset is not valid XMB or its contents cannot be
+    /// deserialized into the corresponding database records.
     pub fn load(assets: &mut impl AssetResolver) -> crate::Result<Self> {
         let mut db = Self::new();
 
@@ -171,6 +177,10 @@ impl Database {
     }
 
     /// Load proto objects from an `objects.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or object contents are invalid.
     pub fn load_objects(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         let objs = objects::parse(doc)?;
         let count = objs.len();
@@ -179,6 +189,10 @@ impl Database {
     }
 
     /// Load squads from a `squads.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or squad contents are invalid.
     pub fn load_squads(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         let squads = squads::parse(doc)?;
         let count = squads.len();
@@ -187,6 +201,10 @@ impl Database {
     }
 
     /// Load techs from a `techs.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or tech contents are invalid.
     pub fn load_techs(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         let techs = techs::parse(doc)?;
         let count = techs.len();
@@ -195,6 +213,10 @@ impl Database {
     }
 
     /// Load abilities from an `abilities.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or ability contents are invalid.
     pub fn load_abilities(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         let abs = abilities::parse(doc)?;
         let count = abs.len();
@@ -203,6 +225,10 @@ impl Database {
     }
 
     /// Load powers from a `powers.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or power contents are invalid.
     pub fn load_powers(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         let pows = powers::parse(doc)?;
         let count = pows.len();
@@ -211,6 +237,10 @@ impl Database {
     }
 
     /// Load civilizations from a `civs.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or civilization contents are invalid.
     pub fn load_civs(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         let civs = civs::parse(doc)?;
         let count = civs.len();
@@ -219,6 +249,10 @@ impl Database {
     }
 
     /// Load leaders from a `leaders.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or leader contents are invalid.
     pub fn load_leaders(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         let leaders = leaders::parse(doc)?;
         let count = leaders.len();
@@ -227,6 +261,10 @@ impl Database {
     }
 
     /// Load weapon types from a `weapontypes.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or weapon-type contents are invalid.
     pub fn load_weapon_types(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         let wts = weapontypes::parse(doc)?;
         let count = wts.len();
@@ -235,6 +273,10 @@ impl Database {
     }
 
     /// Load damage types from a `damagetypes.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or damage-type contents are invalid.
     pub fn load_damage_types(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         let dts = damagetypes::parse(doc)?;
         let count = dts.len();
@@ -243,6 +285,10 @@ impl Database {
     }
 
     /// Load game data from a `gamedata.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or game-data contents are invalid.
     pub fn load_game_data(&mut self, doc: &xmb::Document) -> crate::Result<()> {
         self.game_data = Some(gamedata::parse(doc)?);
         Ok(())
@@ -256,6 +302,10 @@ impl Database {
     /// database file that has data.  The game paths use the same
     /// backslash-separated convention as the ERA entries
     /// (e.g. `"data\\objects.xml"`).
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if any populated database record cannot be serialized into an XMB node.
     pub fn to_documents(&self) -> crate::Result<Vec<(String, xmb::Document)>> {
         let mut docs = Vec::new();
 
@@ -327,6 +377,10 @@ impl Database {
     /// Serialize a single collection into an XMB document.
     ///
     /// Builds `<root_name><child_name>...</child_name>...</root_name>`.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if an item cannot be serialized into an XMB node.
     pub fn to_document_single<T: serde::Serialize>(
         &self,
         root_name: &str,

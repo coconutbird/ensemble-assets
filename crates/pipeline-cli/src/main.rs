@@ -60,6 +60,7 @@ enum Commands {
     },
 }
 
+#[allow(clippy::too_many_lines)] // Command dispatch stays together so CLI behavior is easy to scan.
 fn main() {
     let cli = Cli::parse();
     match cli.command {
@@ -278,9 +279,8 @@ fn main() {
                 world.physics.len()
             );
             for (obj_name, chain) in &world.physics {
-                let obj_assets = match world.assets.get(obj_name) {
-                    Some(a) => a,
-                    None => continue,
+                let Some(obj_assets) = world.assets.get(obj_name) else {
+                    continue;
                 };
 
                 // .physics

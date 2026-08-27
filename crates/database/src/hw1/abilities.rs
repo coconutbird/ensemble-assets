@@ -86,6 +86,10 @@ pub struct Ability {
 }
 
 /// Parse all abilities from an `abilities.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or an ability cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Ability>> {
     let root = expect_root(doc, "Abilities")?;
     let abilities: Vec<Ability> = root

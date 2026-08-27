@@ -66,7 +66,7 @@ impl NodeExt for Node {
     }
 
     fn child_u32(&self, name: &str) -> Option<u32> {
-        self.child_i32(name).map(|v| v as u32)
+        self.child_i32(name).map(i32::cast_unsigned)
     }
 
     fn child_bool(&self, name: &str) -> Option<bool> {
@@ -94,11 +94,19 @@ impl NodeExt for Node {
 }
 
 /// Helper: get root node from document, or return error.
+///
+/// # Errors
+///
+/// Returns [`crate::Error::MissingRoot`] if the document has no root element.
 pub fn root_node(doc: &xmb::Document) -> crate::Result<&Node> {
     doc.root().ok_or(crate::Error::MissingRoot)
 }
 
 /// Helper: validate root element name.
+///
+/// # Errors
+///
+/// Returns an error if the document has no root element or its name does not match `expected`.
 pub fn expect_root<'a>(doc: &'a xmb::Document, expected: &str) -> crate::Result<&'a Node> {
     let root = root_node(doc)?;
     if root.name != expected {

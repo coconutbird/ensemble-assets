@@ -7,6 +7,9 @@ license.workspace = true
 repository.workspace = true
 authors.workspace = true
 
+[lints]
+workspace = true
+
 [dependencies]
 assets.workspace = true
 bdt.workspace = true
@@ -24,7 +27,7 @@ xtt.workspace = true
 
 [dev-dependencies]
 dotenvy.workspace = true
-tempfile = "3.27.0"
+tempfile.workspace = true
 
 [[test]]
 name = "hw1"

@@ -51,6 +51,7 @@ pub struct ValidateReport {
 }
 
 impl ValidateReport {
+    #[must_use]
     pub fn passed(&self) -> usize {
         self.files
             .iter()
@@ -58,6 +59,7 @@ impl ValidateReport {
             .count()
     }
 
+    #[must_use]
     pub fn failed(&self) -> usize {
         self.files
             .iter()
@@ -65,6 +67,7 @@ impl ValidateReport {
             .count()
     }
 
+    #[must_use]
     pub fn missing(&self) -> usize {
         self.files
             .iter()
@@ -72,6 +75,7 @@ impl ValidateReport {
             .count()
     }
 
+    #[must_use]
     pub fn total_warnings(&self) -> usize {
         self.files
             .iter()
@@ -115,6 +119,7 @@ fn parse_children_warned<'de, T: serde::Deserialize<'de>>(
     Ok((items, all_warnings))
 }
 
+#[allow(clippy::too_many_lines)] // Each entry documents one validated database file.
 fn db_files() -> Vec<DbFile> {
     vec![
         DbFile {

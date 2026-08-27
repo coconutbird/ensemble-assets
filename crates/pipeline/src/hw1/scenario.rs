@@ -9,7 +9,7 @@
 //! - Scene data ([`ScenarioData`]) parsed from the `.scn` XML file, containing
 //!   placed objects, players, cinematics, objectives, and trigger variables.
 //!
-//! [`find_scenario`] handles fuzzy matching so callers can pass a map name
+//! [`crate::hw1::loader::find_scenario_era`] handles fuzzy matching so callers can pass a map name
 //! (e.g. `"blood_gulch"`), an ERA filename, or a full SCN path.
 
 use std::collections::HashMap;
@@ -58,14 +58,17 @@ pub struct ScenarioObject {
 
 impl ScenarioObject {
     /// Parse the position string into `[f32; 3]`.
+    #[must_use]
     pub fn position_vec3(&self) -> [f32; 3] {
         parse_vec3(&self.position)
     }
     /// Parse the forward string into `[f32; 3]`.
+    #[must_use]
     pub fn forward_vec3(&self) -> [f32; 3] {
         parse_vec3(&self.forward)
     }
     /// Parse the right string into `[f32; 3]`.
+    #[must_use]
     pub fn right_vec3(&self) -> [f32; 3] {
         parse_vec3(&self.right)
     }
@@ -134,10 +137,12 @@ pub struct ScenarioPosition {
 
 impl ScenarioPosition {
     /// Parse the position string into `[f32; 3]`.
+    #[must_use]
     pub fn position_vec3(&self) -> [f32; 3] {
         parse_vec3(&self.position)
     }
     /// Parse the forward string into `[f32; 3]`.
+    #[must_use]
     pub fn forward_vec3(&self) -> [f32; 3] {
         parse_vec3(&self.forward)
     }
@@ -272,6 +277,7 @@ pub struct SimBoundsInfo {
 
 impl SimBoundsInfo {
     /// Convert to `[min_x, min_z, max_x, max_z]`, returning `None` if all zero.
+    #[must_use]
     pub fn to_array(&self) -> Option<[f32; 4]> {
         let arr = [
             self.min_x.unwrap_or(0.0),
@@ -344,34 +350,42 @@ pub struct ScenarioData {
 
 impl ScenarioData {
     /// Terrain reference name.
+    #[must_use]
     pub fn terrain(&self) -> &str {
         self.terrain_info.as_ref().map_or("", |t| t.name.as_str())
     }
     /// Whether to load the terrain visual representation.
+    #[must_use]
     pub fn terrain_load_vis_rep(&self) -> bool {
         self.terrain_info.as_ref().is_some_and(|t| t.load_vis_rep)
     }
     /// Sky dome reference.
+    #[must_use]
     pub fn sky(&self) -> &str {
         self.sky.as_deref().unwrap_or("")
     }
     /// Terrain environment texture path.
+    #[must_use]
     pub fn terrain_env(&self) -> &str {
         self.terrain_env.as_deref().unwrap_or("")
     }
     /// Global lightset reference.
+    #[must_use]
     pub fn lightset(&self) -> &str {
         self.lightset.as_deref().unwrap_or("")
     }
     /// Additional lightset entries.
+    #[must_use]
     pub fn lightsets(&self) -> &[String] {
         self.lightsets.as_ref().map_or(&[], |w| &w.entries)
     }
     /// Pathing reference.
+    #[must_use]
     pub fn pathing(&self) -> &str {
         self.pathing.as_deref().unwrap_or("")
     }
     /// Minimap texture path.
+    #[must_use]
     pub fn minimap_texture(&self) -> &str {
         self.minimap
             .as_ref()
@@ -379,45 +393,60 @@ impl ScenarioData {
             .unwrap_or("")
     }
     /// Player placement type.
+    #[must_use]
     pub fn player_placement_type(&self) -> &str {
         self.player_placement
             .as_ref()
             .map_or("", |p| p.placement_type.as_str())
     }
     /// All placed objects.
+    #[must_use]
     pub fn objects(&self) -> &[ScenarioObject] {
         self.objects.as_ref().map_or(&[], |w| &w.entries)
     }
     /// Player definitions.
+    #[must_use]
     pub fn players(&self) -> &[ScenarioPlayer] {
         self.players.as_ref().map_or(&[], |w| &w.entries)
     }
     /// Start positions.
+    #[must_use]
     pub fn positions(&self) -> &[ScenarioPosition] {
         self.positions.as_ref().map_or(&[], |w| &w.entries)
     }
     /// Cinematic references.
+    #[must_use]
     pub fn cinematics(&self) -> &[CinematicRef] {
         self.cinematics.as_ref().map_or(&[], |w| &w.entries)
     }
     /// Talking head references.
+    #[must_use]
     pub fn talking_heads(&self) -> &[TalkingHeadRef] {
         self.talking_heads.as_ref().map_or(&[], |w| &w.entries)
     }
     /// Objective references.
+    #[must_use]
     pub fn objectives(&self) -> &[ObjectiveRef] {
         self.objectives_wrapper.as_ref().map_or(&[], |w| &w.entries)
     }
     /// Sound bank names.
+    #[must_use]
     pub fn sound_banks(&self) -> &[String] {
         self.sound_banks.as_ref().map_or(&[], |w| &w.entries)
     }
     /// Sim bounds as `[min_x, min_z, max_x, max_z]`, or `None` if absent/all-zero.
+    #[must_use]
     pub fn sim_bounds(&self) -> Option<[f32; 4]> {
-        self.sim_bounds_info.as_ref().and_then(|s| s.to_array())
+        self.sim_bounds_info
+            .as_ref()
+            .and_then(SimBoundsInfo::to_array)
     }
 
     /// Serialize this scenario data back to an XMB document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the scenario data cannot be serialized into an XMB node.
     pub fn to_document(&self) -> Result<xmb::Document, bdt_serde::Error> {
         let node = bdt_serde::to_node("Scenario", self)?;
         Ok(xmb::Document::with_root(node))
@@ -460,6 +489,7 @@ pub struct ScenarioDescriptor {
 
 impl ScenarioDescriptor {
     /// Derive a short name from the `File` path (last path component, no extension).
+    #[must_use]
     pub fn name(&self) -> &str {
         self.file
             .rsplit(['\\', '/'])
@@ -471,6 +501,7 @@ impl ScenarioDescriptor {
     /// Path to this scenario's `.scn` file inside the asset source.
     ///
     /// The engine prepends `scenario\` to the file path from the descriptor.
+    #[must_use]
     pub fn scn_path(&self) -> String {
         let normalized = self.file.replace('/', "\\");
         format!("scenario\\{normalized}")
@@ -506,6 +537,7 @@ impl ScenarioDescriptor {
     ///
     /// Follows the engine's `BTerrainIOLoader::loadXTDInternal` logic:
     /// `scenario\{scn_path_without_ext}.xtd`
+    #[must_use]
     pub fn xtd_path(&self) -> Option<String> {
         self.terrain_base().map(|b| format!("{b}.xtd"))
     }
@@ -514,6 +546,7 @@ impl ScenarioDescriptor {
     ///
     /// Follows the engine's `BTerrainIOLoader::loadXTTInternal` logic:
     /// `scenario\{scn_path_without_ext}.xtt`
+    #[must_use]
     pub fn xtt_path(&self) -> Option<String> {
         self.terrain_base().map(|b| format!("{b}.xtt"))
     }
@@ -521,6 +554,7 @@ impl ScenarioDescriptor {
     /// Path to this scenario's GLS (lightset) file.
     ///
     /// `scenario\{scn_path_without_ext}.gls`
+    #[must_use]
     pub fn gls_path(&self) -> Option<String> {
         self.terrain_base().map(|b| format!("{b}.gls"))
     }
@@ -528,6 +562,7 @@ impl ScenarioDescriptor {
     /// Path to this scenario's FLS (SH fill light) file.
     ///
     /// `scenario\{scn_path_without_ext}.fls`
+    #[must_use]
     pub fn fls_path(&self) -> Option<String> {
         self.terrain_base().map(|b| format!("{b}.fls"))
     }
@@ -574,6 +609,10 @@ impl ScenarioList {
     /// Serialize all scenario descriptors back into an XMB [`Document`](xmb::Document).
     ///
     /// Produces `<ScenarioDescriptions><ScenarioInfo .../>...</ScenarioDescriptions>`.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if a scenario descriptor cannot be serialized into an XMB node.
     pub fn to_document(&self) -> Result<xmb::Document, bdt_serde::Error> {
         let mut root = bdt::Node::new("ScenarioDescriptions");
         // Sort by name for deterministic output
@@ -587,6 +626,7 @@ impl ScenarioList {
 }
 
 /// Parse a `<Scenario>` XMB root node into [`ScenarioData`] via `bdt-serde`.
+#[must_use]
 pub fn parse_scenario_data(root: &bdt::Node) -> ScenarioData {
     bdt_serde::from_node(root).unwrap_or_default()
 }
@@ -596,6 +636,7 @@ impl ScenarioData {
     ///
     /// Convenience for tests and tools. Parses the XML into an XMB
     /// document, then deserialises the root `<Scenario>` node.
+    #[must_use]
     pub fn from_xml_str(xml: &str) -> Option<Self> {
         let doc = xmb::Document::from_xml(xml).ok()?;
         let root = doc.root()?;

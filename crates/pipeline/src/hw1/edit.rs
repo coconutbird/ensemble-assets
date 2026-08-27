@@ -41,7 +41,7 @@
 //!
 //! // Key-level: modify a single visual file.
 //! if let Some(mut vis) = world.visual_mut("unsc_inf_marine_01") {
-//!     vis.default_model_index = Some(0);
+//!     vis.default_model = Some("Default".to_string());
 //! } // ← KeyDirtyGuard drops, only "unsc_inf_marine_01" visual marked dirty.
 //!
 //! assert!(world.is_dirty());
@@ -110,6 +110,7 @@ impl TableId {
     /// Map a normalised game path (e.g. `"data\\objects.xml"`) to a `TableId`.
     ///
     /// Returns `None` for paths that don't correspond to a database table.
+    #[must_use]
     pub fn from_game_path(path: &str) -> Option<Self> {
         // Normalise: lowercase, forward-slash → backslash, strip `.xmb` suffix.
         let p = path.to_ascii_lowercase().replace('/', "\\");
@@ -125,12 +126,15 @@ impl TableId {
             "data\\weapontypes.xml" => Some(Self::WeaponTypes),
             "data\\damagetypes.xml" => Some(Self::DamageTypes),
             "data\\gamedata.xml" => Some(Self::GameData),
-            _ if p.starts_with("scenario\\") && p.ends_with(".scn") => Some(Self::Scenario),
+            _ if p.starts_with("scenario\\") && crate::source::has_extension(p, "scn") => {
+                Some(Self::Scenario)
+            }
             _ => None,
         }
     }
 
-    /// The well-known game path for this table (reverse of [`from_game_path`]).
+    /// The well-known game path for this table (reverse of [`Self::from_game_path`]).
+    #[must_use]
     pub fn game_path(self) -> Option<&'static str> {
         match self {
             Self::Objects => Some("data\\objects.xml"),
@@ -200,6 +204,7 @@ impl AssetKind {
     ///
     /// Accepts paths with forward or back slashes, with or without an
     /// `.xmb` suffix.  Returns `None` for unrecognised patterns.
+    #[must_use]
     pub fn from_game_path(path: &str) -> Option<Self> {
         let p = path.to_ascii_lowercase().replace('/', "\\");
         let p = p.strip_suffix(".xmb").unwrap_or(&p);
@@ -215,39 +220,39 @@ impl AssetKind {
         }
 
         // 2. Per-file XML assets (by extension or path convention).
-        if p.ends_with(".vis") {
+        if crate::source::has_extension(p, "vis") {
             return Some(Self::Visual(p.to_string()));
         }
         // Tactics files live under data\tactics\*.xml (not .tactics).
-        if p.starts_with("data\\tactics\\") && p.ends_with(".xml") {
+        if p.starts_with("data\\tactics\\") && crate::source::has_extension(p, "xml") {
             return Some(Self::Tactics(p.to_string()));
         }
-        if p.ends_with(".physics") {
+        if crate::source::has_extension(p, "physics") {
             return Some(Self::Physics(p.to_string()));
         }
-        if p.ends_with(".blueprint") {
+        if crate::source::has_extension(p, "blueprint") {
             return Some(Self::Blueprint(p.to_string()));
         }
-        if p.ends_with(".shp") {
+        if crate::source::has_extension(p, "shp") {
             return Some(Self::Shape(p.to_string()));
         }
 
         // 3. Binary assets (by extension).
-        if p.ends_with(".ugx") {
+        if crate::source::has_extension(p, "ugx") {
             return Some(Self::Model(p.to_string()));
         }
-        if p.ends_with(".uax") {
+        if crate::source::has_extension(p, "uax") {
             return Some(Self::Animation(p.to_string()));
         }
-        if p.ends_with(".ddx") {
+        if crate::source::has_extension(p, "ddx") {
             return Some(Self::Texture(p.to_string()));
         }
 
         // 4. Terrain files.
-        if p.ends_with(".xtd") {
+        if crate::source::has_extension(p, "xtd") {
             return Some(Self::TerrainData(p.to_string()));
         }
-        if p.ends_with(".xtt") {
+        if crate::source::has_extension(p, "xtt") {
             return Some(Self::TerrainTextures(p.to_string()));
         }
 
@@ -255,6 +260,7 @@ impl AssetKind {
     }
 
     /// The game path carried by this asset kind (if any).
+    #[must_use]
     pub fn game_path(&self) -> &str {
         match self {
             Self::DatabaseTable(t) => t.game_path().unwrap_or(""),
@@ -273,6 +279,7 @@ impl AssetKind {
     }
 
     /// Whether this is a parseable XML/XMB asset (vs. a binary blob).
+    #[must_use]
     pub fn is_xml(&self) -> bool {
         matches!(
             self,
@@ -287,6 +294,7 @@ impl AssetKind {
     }
 
     /// Whether this is a binary asset that the engine loads lazily.
+    #[must_use]
     pub fn is_binary(&self) -> bool {
         matches!(
             self,
@@ -302,7 +310,7 @@ impl AssetKind {
 /// Tracks which tables have been modified.
 ///
 /// For per-file tables (Visuals, Tactics, Physics), also tracks which
-/// specific keys (object names) are dirty so that [`World::save`] can
+/// specific keys (object names) are dirty so that [`super::World::save`] can
 /// write only the changed files instead of the entire table.
 pub struct DirtySet {
     flags: [Cell<bool>; TableId::COUNT],

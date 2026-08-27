@@ -163,7 +163,7 @@ impl<F: FileProvider> AssetSource<F> {
     /// Set the override directory for read/write support.
     ///
     /// When set, [`resolve`](AssetResolver::resolve) checks this directory
-    /// first, and [`write_file`] writes into it.
+    /// first, and [`Self::write_file`] writes into it.
     pub fn set_override_dir(&mut self, path: impl Into<PathBuf>) {
         self.override_dir = Some(path.into());
     }
@@ -174,6 +174,10 @@ impl<F: FileProvider> AssetSource<F> {
     }
 
     /// Open an encrypted ERA archive and add it to the source.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the provider cannot open `path` or the data is not a valid ERA archive.
     pub fn add_era(&mut self, path: &str) -> Result<usize, String> {
         let data = self
             .provider
@@ -196,8 +200,7 @@ impl<F: FileProvider> AssetSource<F> {
         let entry_count = reader.entries().len();
         let label = std::path::Path::new(path)
             .file_name()
-            .map(|s| s.to_string_lossy().into_owned())
-            .unwrap_or_else(|| path.to_string());
+            .map_or_else(|| path.to_string(), |s| s.to_string_lossy().into_owned());
 
         self.archives.push(LoadedArchive {
             reader,
@@ -219,6 +222,10 @@ impl<F: FileProvider> AssetSource<F> {
     /// Files are indexed by their path relative to `dir`, normalised the same
     /// way as ERA entries (lowercase, backslash separators). Returns the number
     /// of files indexed.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if `dir` is not a directory or one of its directories cannot be read.
     pub fn add_folder(&mut self, dir: &str, rule: LoadRule) -> Result<usize, String> {
         let root = PathBuf::from(dir);
         if !root.is_dir() {
@@ -246,13 +253,8 @@ impl<F: FileProvider> AssetSource<F> {
         let count = index.len();
         let label = root
             .file_name()
-            .map(|s| s.to_string_lossy().into_owned())
-            .unwrap_or_else(|| dir.to_string());
-        self.folders.push(FolderLayer {
-            label,
-            index,
-            rule,
-        });
+            .map_or_else(|| dir.to_string(), |s| s.to_string_lossy().into_owned());
+        self.folders.push(FolderLayer { label, index, rule });
         Ok(count)
     }
 
@@ -265,7 +267,7 @@ impl<F: FileProvider> AssetSource<F> {
     /// (lowest priority first). Each folder is probed for the unpacked form and
     /// then the packed `.xmb` form, mirroring [`resolve_data`](Self::resolve_data).
     ///
-    /// Unlike [`resolve_data`], which returns only the top layer's version, this
+    /// Unlike [`Self::resolve_data`], which returns only the top layer's version, this
     /// surfaces each layer's version — the input a schema-aware merge needs to
     /// combine the same table across several mods.
     pub fn read_each_folder_data(&self, path: &str) -> Vec<(String, Vec<u8>)> {
@@ -296,12 +298,23 @@ impl<F: FileProvider> AssetSource<F> {
     ///   already provides it; [`LoadRule::Replace`] layers always win.
     ///
     /// Paths provided by more than one layer are reported as [`Overwrite`]s.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if a source file cannot be read or an output file cannot be created.
     pub fn flatten_folders_to_dir(
         &mut self,
         out_dir: &Path,
         skip: &std::collections::HashSet<String>,
         only_changed: bool,
     ) -> Result<FlattenReport, String> {
+        struct PlanItem {
+            key: String,
+            src: PathBuf,
+            previous: Option<String>,
+            winner: String,
+        }
+
         // Plan with an immutable borrow: for each path, the ordered layer
         // indices that contribute it, honouring each layer's rule.
         let mut providers: std::collections::BTreeMap<String, Vec<usize>> =
@@ -321,19 +334,13 @@ impl<F: FileProvider> AssetSource<F> {
             }
         }
 
-        struct PlanItem {
-            key: String,
-            src: PathBuf,
-            previous: Option<String>,
-            winner: String,
-        }
         let plan: Vec<PlanItem> = providers
             .into_iter()
             .filter_map(|(key, idxs)| {
                 let &win = idxs.last()?;
                 let src = self.folders[win].index.get(&key)?.clone();
-                let previous = (idxs.len() > 1)
-                    .then(|| self.folders[idxs[idxs.len() - 2]].label.clone());
+                let previous =
+                    (idxs.len() > 1).then(|| self.folders[idxs[idxs.len() - 2]].label.clone());
                 Some(PlanItem {
                     key,
                     src,
@@ -401,8 +408,12 @@ impl<F: FileProvider> AssetSource<F> {
     /// Add an ERA from the source directory by filename.
     ///
     /// Requires [`set_source_dir`](Self::set_source_dir) to have been called.
-    /// Returns `Ok(entry_count)` on success, or `Err` if source_dir is unset
+    /// Returns `Ok(entry_count)` on success, or `Err` if `source_dir` is unset
     /// or the ERA cannot be loaded.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the source directory is unset, the ERA is missing, or loading fails.
     pub fn add_era_by_name(&mut self, era_name: &str) -> Result<usize, String> {
         let dir = self
             .source_dir
@@ -501,8 +512,9 @@ impl<F: FileProvider> AssetSource<F> {
         self.archives
             .iter()
             .map(|a| {
-                let mut files: Vec<&str> = a.index.keys().map(|k| k.as_str()).collect();
-                files.sort();
+                let mut files: Vec<&str> =
+                    a.index.keys().map(std::string::String::as_str).collect();
+                files.sort_unstable();
                 (a.label.as_str(), files)
             })
             .collect()
@@ -588,6 +600,10 @@ impl<F: FileProvider> AssetSource<F> {
     }
 
     /// Write raw bytes to `{override_dir}/{era_label}/{game_path}`.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if no override directory is set or the output cannot be written.
     pub fn write_file(&self, game_path: &str, data: &[u8]) -> Result<PathBuf, String> {
         let dir = self
             .override_dir
@@ -597,8 +613,7 @@ impl<F: FileProvider> AssetSource<F> {
         let key = normalise_path(game_path);
         let era_label = self
             .provenance_data_era_only(&key)
-            .map(|p| p.era_label)
-            .unwrap_or_else(|| "_new".into());
+            .map_or_else(|| "_new".into(), |p| p.era_label);
 
         let fs_path = override_fs_path(dir, &era_label, &key);
         if let Some(parent) = fs_path.parent() {
@@ -615,10 +630,14 @@ impl<F: FileProvider> AssetSource<F> {
     /// Convenience wrapper around [`write_file`](Self::write_file) that
     /// serializes the document with [`xmb::Writer`].  The output path will
     /// have an `.xmb` extension.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if serialization fails or the output cannot be written.
     pub fn write_xmb(&self, game_path: &str, doc: &xmb::Document) -> Result<PathBuf, String> {
         let bytes = xmb::Writer::write_native(doc).map_err(|e| format!("XMB write error: {e}"))?;
         let key = normalise_path(game_path);
-        let xmb_path = if key.ends_with(".xmb") {
+        let xmb_path = if has_extension(&key, "xmb") {
             key
         } else {
             format!("{key}.xmb")
@@ -627,16 +646,20 @@ impl<F: FileProvider> AssetSource<F> {
     }
 
     /// Write an XMB document as human-readable XML to the override directory.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if no override directory is set or the output cannot be written.
     pub fn write_xml(&self, game_path: &str, doc: &xmb::Document) -> Result<PathBuf, String> {
         let xml_string = doc.to_xml();
         let key = normalise_path(game_path);
-        let xml_path = if key.ends_with(".xmb") {
+        let xml_path = if has_extension(&key, "xmb") {
             key.trim_end_matches(".xmb").to_string()
         } else {
             key
         };
         // Ensure it ends with .xml
-        let xml_path = if xml_path.ends_with(".xml") {
+        let xml_path = if has_extension(&xml_path, "xml") {
             xml_path
         } else {
             format!("{xml_path}.xml")
@@ -738,7 +761,7 @@ fn override_fs_path_scan(override_dir: &Path, game_path: &str) -> PathBuf {
 
     if let Ok(entries) = std::fs::read_dir(override_dir) {
         for entry in entries.flatten() {
-            if entry.file_type().map(|t| t.is_dir()).unwrap_or(false) {
+            if entry.file_type().is_ok_and(|t| t.is_dir()) {
                 let candidate = entry.path().join(&rel);
                 if candidate.exists() {
                     return candidate;
@@ -789,8 +812,16 @@ impl FileProvider for StdFileProvider {
 }
 
 /// Normalise a game path to lowercase with backslash separators.
+#[must_use]
 pub fn normalise_path(path: &str) -> String {
     path.to_lowercase().replace('/', "\\")
+}
+
+/// Check a game path's final extension without relying on host path separators.
+#[must_use]
+pub(crate) fn has_extension(path: &str, expected: &str) -> bool {
+    path.rsplit_once('.')
+        .is_some_and(|(_, extension)| extension.eq_ignore_ascii_case(expected))
 }
 
 #[cfg(test)]
@@ -825,12 +856,23 @@ mod tests {
         std::fs::write(b.join("art/banner.ddx"), b"b-banner").unwrap();
 
         let mut src = AssetSource::with_provider(StdFileProvider);
-        assert_eq!(src.add_folder(&a.to_string_lossy(), LoadRule::Replace).unwrap(), 2);
-        assert_eq!(src.add_folder(&b.to_string_lossy(), LoadRule::Replace).unwrap(), 2);
+        assert_eq!(
+            src.add_folder(&a.to_string_lossy(), LoadRule::Replace)
+                .unwrap(),
+            2
+        );
+        assert_eq!(
+            src.add_folder(&b.to_string_lossy(), LoadRule::Replace)
+                .unwrap(),
+            2
+        );
         assert_eq!(src.folder_count(), 2);
 
         // Later layer wins on resolve.
-        assert_eq!(src.resolve_data("art\\icon.ddx").as_deref(), Some(&b"b-icon"[..]));
+        assert_eq!(
+            src.resolve_data("art\\icon.ddx").as_deref(),
+            Some(&b"b-icon"[..])
+        );
         // read_each surfaces both versions, in load order.
         let each = src.read_each_folder_data("art\\icon.ddx");
         assert_eq!(each.len(), 2);
@@ -843,7 +885,10 @@ mod tests {
         let report = src.flatten_folders_to_dir(&out, &skip, false).unwrap();
 
         assert_eq!(std::fs::read(out.join("art/icon.ddx")).unwrap(), b"b-icon"); // B won
-        assert_eq!(std::fs::read(out.join("art/banner.ddx")).unwrap(), b"b-banner");
+        assert_eq!(
+            std::fs::read(out.join("art/banner.ddx")).unwrap(),
+            b"b-banner"
+        );
         assert!(!out.join("data/objects.xml").exists()); // skipped table path
         assert_eq!(report.overwrites.len(), 1);
         assert_eq!(report.overwrites[0].game_path, "art\\icon.ddx");
@@ -864,10 +909,14 @@ mod tests {
         std::fs::write(b.join("extra.txt"), b"from-b").unwrap();
 
         let mut src = AssetSource::with_provider(StdFileProvider);
-        src.add_folder(&a.to_string_lossy(), LoadRule::Replace).unwrap();
-        src.add_folder(&b.to_string_lossy(), LoadRule::Additive).unwrap();
+        src.add_folder(&a.to_string_lossy(), LoadRule::Replace)
+            .unwrap();
+        src.add_folder(&b.to_string_lossy(), LoadRule::Additive)
+            .unwrap();
 
-        let report = src.flatten_folders_to_dir(&out, &HashSet::new(), false).unwrap();
+        let report = src
+            .flatten_folders_to_dir(&out, &HashSet::new(), false)
+            .unwrap();
 
         // B is additive: it adds `extra` but does not override A's `shared`.
         assert_eq!(std::fs::read(out.join("shared.txt")).unwrap(), b"from-a");

@@ -155,6 +155,10 @@ fn default_one() -> i32 {
 }
 
 /// Parse all squads from a `squads.xml.xmb` document.
+///
+/// # Errors
+///
+/// Returns an error if the document root is invalid or a squad cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Squad>> {
     let root = expect_root(doc, "Squads")?;
     let squads: Vec<Squad> = root

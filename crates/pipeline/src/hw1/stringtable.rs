@@ -108,12 +108,14 @@ impl StringTable {
     }
 
     /// Look up a string by its `_locID` (default / gamepad text).
+    #[must_use]
     pub fn get(&self, loc_id: i32) -> Option<&str> {
         self.strings.get(&loc_id).map(|e| e.text.as_str())
     }
 
     /// Look up a string by its `_locID`, preferring the mouse+keyboard
     /// override when available. This is what the engine uses on PC.
+    #[must_use]
     pub fn get_pc(&self, loc_id: i32) -> Option<&str> {
         self.strings
             .get(&loc_id)
@@ -121,26 +123,31 @@ impl StringTable {
     }
 
     /// Look up a string entry by its `_locID`.
+    #[must_use]
     pub fn get_entry(&self, loc_id: i32) -> Option<&StringEntry> {
         self.strings.get(&loc_id)
     }
 
     /// Number of strings in this table.
+    #[must_use]
     pub fn len(&self) -> usize {
         self.strings.len()
     }
 
     /// Whether this table is empty.
+    #[must_use]
     pub fn is_empty(&self) -> bool {
         self.strings.is_empty()
     }
 
     /// The game path for this string table (e.g. `"data\\stringtable-en.xml"`).
+    #[must_use]
     pub fn game_path(&self) -> String {
         format!("data\\stringtable-{}.xml", self.language_code)
     }
 
     /// Serialize this string table back to an XMB document.
+    #[must_use]
     pub fn to_document(&self) -> xmb::Document {
         use bdt::Variant;
         use xmb::Attribute;

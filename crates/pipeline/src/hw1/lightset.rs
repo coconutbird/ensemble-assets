@@ -112,6 +112,7 @@ impl Default for LightSetData {
 impl LightSetData {
     /// Unit direction vector **toward** the sun, derived from inclination
     /// (polar angle from zenith) and rotation (azimuthal angle).
+    #[must_use]
     pub fn sun_direction(&self) -> [f32; 3] {
         let inc = self.sun_inclination_deg.to_radians();
         let rot = self.sun_rotation_deg.to_radians();
@@ -120,6 +121,7 @@ impl LightSetData {
     }
 
     /// Sun colour scaled by terrain intensity (linear-space).
+    #[must_use]
     pub fn sun_color_linear(&self) -> [f32; 3] {
         let i = self.sun_terrain_intensity;
         [
@@ -279,8 +281,7 @@ impl From<GlsRaw> for LightSetData {
             sun_terrain_color: raw
                 .set_terrain_color
                 .as_deref()
-                .map(parse_color)
-                .unwrap_or(d.sun_terrain_color),
+                .map_or(d.sun_terrain_color, parse_color),
             sun_terrain_intensity: raw.sun_terrain_intensity.unwrap_or(d.sun_terrain_intensity),
             sun_terrain_shadow_darkness: raw
                 .sun_terrain_shadow_darkness
@@ -289,13 +290,11 @@ impl From<GlsRaw> for LightSetData {
             hemi_terrain_top_color: raw
                 .hemi_terrain_top_color
                 .as_deref()
-                .map(parse_color)
-                .unwrap_or(d.hemi_terrain_top_color),
+                .map_or(d.hemi_terrain_top_color, parse_color),
             hemi_terrain_bottom_color: raw
                 .hemi_terrain_bottom_color
                 .as_deref()
-                .map(parse_color)
-                .unwrap_or(d.hemi_terrain_bottom_color),
+                .map_or(d.hemi_terrain_bottom_color, parse_color),
             hemi_terrain_intensity: raw
                 .hemi_terrain_intensity
                 .unwrap_or(d.hemi_terrain_intensity),
@@ -303,16 +302,14 @@ impl From<GlsRaw> for LightSetData {
             z_fog_color: raw
                 .z_fog_color
                 .as_deref()
-                .map(parse_color)
-                .unwrap_or(d.z_fog_color),
+                .map_or(d.z_fog_color, parse_color),
             z_fog_intensity: raw.z_fog_intensity.unwrap_or(d.z_fog_intensity),
             z_fog_start: raw.z_fog_start.unwrap_or(d.z_fog_start),
             z_fog_density: raw.z_fog_density.unwrap_or(d.z_fog_density),
             planar_fog_color: raw
                 .planar_fog_color
                 .as_deref()
-                .map(parse_color)
-                .unwrap_or(d.planar_fog_color),
+                .map_or(d.planar_fog_color, parse_color),
             planar_fog_intensity: raw.planar_fog_intensity.unwrap_or(d.planar_fog_intensity),
             planar_fog_start: raw.planar_fog_start.unwrap_or(d.planar_fog_start),
             planar_fog_density: raw.planar_fog_density.unwrap_or(d.planar_fog_density),
@@ -345,6 +342,7 @@ impl From<GlsRaw> for LightSetData {
 /// Parse a GLS XMB document into a [`LightSetData`] via `bdt_serde`.
 ///
 /// Unrecognised fields are silently ignored; missing fields use defaults.
+#[must_use]
 pub fn parse_gls(doc: &xmb::Document) -> LightSetData {
     let Some(root) = doc.root() else {
         return LightSetData::default();
@@ -357,6 +355,14 @@ pub fn parse_gls(doc: &xmb::Document) -> LightSetData {
 ///
 /// Handles both binary XMB and plain-text XML FLS files.
 pub fn parse_fls(data: &[u8], ls: &mut LightSetData) {
+    fn extract_tag_content<'a>(xml: &'a str, tag: &str) -> Option<&'a str> {
+        let open = format!("<{tag}>");
+        let close = format!("</{tag}>");
+        let start = xml.find(&open)? + open.len();
+        let end = xml[start..].find(&close)? + start;
+        Some(xml[start..end].trim())
+    }
+
     // Try binary XMB first (compiled FLS).
     if let Ok(doc) = xmb::Reader::read(data)
         && let Some(root) = doc.root()
@@ -375,18 +381,9 @@ pub fn parse_fls(data: &[u8], ls: &mut LightSetData) {
     }
 
     // Fall back to plain-text XML via the xml crate's tree builder.
-    let text = match std::str::from_utf8(data) {
-        Ok(t) => t,
-        Err(_) => return,
+    let Ok(text) = std::str::from_utf8(data) else {
+        return;
     };
-
-    fn extract_tag_content<'a>(xml: &'a str, tag: &str) -> Option<&'a str> {
-        let open = format!("<{tag}>");
-        let close = format!("</{tag}>");
-        let start = xml.find(&open)? + open.len();
-        let end = xml[start..].find(&close)? + start;
-        Some(xml[start..end].trim())
-    }
 
     if let Some(r) = extract_tag_content(text, "R") {
         ls.sh_coeffs_r = parse_sh_coeffs(r);
