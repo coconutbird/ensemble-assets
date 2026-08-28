@@ -22,15 +22,15 @@ database = { path = "crates/database" }
 pipeline = { path = "crates/pipeline" }
 
 # ensemble-formats crates (git deps)
-bdt = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
-bdt-serde = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
-ddx = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
-era = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
-uax = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
-ugx = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
-xmb = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
-xtd = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
-xtt = { git = "https://github.com/coconutbird/ensemble-formats.git", branch = "dev/prim" }
+bdt = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+bdt-serde = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+ddx = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+era = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+uax = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+ugx = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+xmb = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+xtd = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+xtt = { git = "https://github.com/coconutbird/ensemble-formats.git" }
 
 watch = { path = "crates/watch" }
 
