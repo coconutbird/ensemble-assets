@@ -6,6 +6,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
+use super::Vector3;
 use crate::node_ext::expect_root;
 
 /// A single leader definition from `leaders.xml`.
@@ -38,6 +39,9 @@ pub struct Leader {
     /// Tech to apply for this leader.
     #[serde(rename = "Tech")]
     pub tech: Option<String>,
+    /// Primary leader power.
+    #[serde(rename = "Power")]
+    pub power: Option<String>,
     /// Name string ID.
     #[serde(rename = "NameID")]
     pub name_id: Option<i32>,
@@ -59,15 +63,18 @@ pub struct Leader {
     /// Starting resources.
     #[serde(rename = "Resource", default)]
     pub resources: Vec<ResourceEntry>,
-    /// Starting unit definition.
-    #[serde(rename = "StartingUnit")]
-    pub starting_unit: Option<StartingUnit>,
+    /// Starting unit definitions.
+    #[serde(rename = "StartingUnit", default)]
+    pub starting_units: Vec<StartingUnit>,
     /// Starting squad definitions.
     #[serde(rename = "StartingSquad", default)]
     pub starting_squads: Vec<StartingSquad>,
     /// Rally point offset.
     #[serde(rename = "RallyPointOffset")]
-    pub rally_point_offset: Option<String>,
+    pub rally_point_offset: Option<Vector3>,
+    /// Groups of support powers exposed by this leader.
+    #[serde(rename = "SupportPower", default)]
+    pub support_powers: Vec<SupportPower>,
     /// Repair rate.
     #[serde(rename = "RepairRate")]
     pub repair_rate: Option<f32>,
@@ -106,7 +113,7 @@ pub struct StartingUnit {
     #[serde(rename = "$text", default)]
     pub proto_object: String,
     #[serde(rename = "@Offset")]
-    pub offset: Option<String>,
+    pub offset: Option<Vector3>,
     #[serde(rename = "@BuildOther")]
     pub build_other: Option<String>,
     #[serde(rename = "@DoppleOnStart")]
@@ -121,7 +128,18 @@ pub struct StartingSquad {
     #[serde(rename = "@FlyIn")]
     pub fly_in: Option<bool>,
     #[serde(rename = "@Offset")]
-    pub offset: Option<String>,
+    pub offset: Option<Vector3>,
+}
+
+/// A support-power group and its menu placement/prerequisite metadata.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct SupportPower {
+    #[serde(rename = "@IconLocation")]
+    pub icon_location: Option<i32>,
+    #[serde(rename = "@TechPrereq")]
+    pub tech_prereq: Option<String>,
+    #[serde(rename = "Power", default)]
+    pub powers: Vec<String>,
 }
 
 /// A population entry (type + count + max).

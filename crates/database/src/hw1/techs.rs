@@ -44,6 +44,9 @@ pub struct Tech {
     /// Prerequisites wrapper.
     #[serde(rename = "Prereqs")]
     pub prereqs: Option<PrereqsWrapper>,
+    /// Alternate prerequisite group supported by the game loader.
+    #[serde(rename = "OrPrereqs")]
+    pub or_prereqs: Option<PrereqsWrapper>,
     /// Research animation.
     #[serde(rename = "ResearchAnim")]
     pub research_anim: Option<String>,
@@ -97,7 +100,7 @@ pub struct TechEffect {
     pub action: Option<String>,
     /// All actions flag.
     #[serde(rename = "@allactions")]
-    pub allactions: Option<String>,
+    pub allactions: Option<bool>,
     /// Command data.
     #[serde(rename = "@CommandData")]
     pub command_data: Option<String>,
@@ -168,6 +171,8 @@ pub struct TechCost {
 pub struct PrereqsWrapper {
     #[serde(rename = "TechStatus", default)]
     pub entries: Vec<TechStatusEntry>,
+    #[serde(rename = "TypeCount", default)]
+    pub type_counts: Vec<TypeCountEntry>,
 }
 
 /// A prerequisite tech status entry.
@@ -180,6 +185,17 @@ pub struct TechStatusEntry {
     /// Text content of the element.
     #[serde(rename = "$text")]
     pub text: Option<String>,
+}
+
+/// A prerequisite requiring a count of a unit type.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct TypeCountEntry {
+    #[serde(rename = "@unit", default)]
+    pub unit: String,
+    #[serde(rename = "@operator")]
+    pub operator: Option<String>,
+    #[serde(rename = "@count")]
+    pub count: Option<i32>,
 }
 
 /// Parse all techs from a `techs.xml.xmb` document.

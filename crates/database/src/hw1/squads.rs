@@ -6,6 +6,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
+use super::Vector3;
 use crate::node_ext::expect_root;
 
 /// A squad definition from `squads.xml`.
@@ -44,12 +45,12 @@ pub struct Squad {
     /// Units in this squad (wrapper element).
     #[serde(rename = "Units")]
     pub units: Option<UnitsWrapper>,
-    /// HP bar name.
+    /// HP bar style and optional size/offset overrides.
     #[serde(rename = "HPBar")]
-    pub hp_bar: Option<String>,
+    pub hp_bar: Option<HpBar>,
     /// Birth configuration.
     #[serde(rename = "Birth")]
-    pub birth: Option<String>,
+    pub birth: Option<Birth>,
     /// Flags.
     #[serde(rename = "Flag", default)]
     pub flags: Vec<String>,
@@ -68,12 +69,24 @@ pub struct Squad {
     /// Update flag (incremental data merge).
     #[serde(rename = "@update")]
     pub update: Option<bool>,
-    /// Ability recovery bar name.
+    /// Ability recovery bar style and placement.
     #[serde(rename = "AbilityRecoveryBar")]
-    pub ability_recovery_bar: Option<String>,
+    pub ability_recovery_bar: Option<StatusBar>,
     /// Bobble head configuration.
     #[serde(rename = "BobbleHead")]
     pub bobble_head: Option<String>,
+    /// Alternate portrait/icon path.
+    #[serde(rename = "AltIcon")]
+    pub alt_icon: Option<String>,
+    /// Default combat stance.
+    #[serde(rename = "Stance")]
+    pub stance: Option<String>,
+    /// Animation used while the squad is trained.
+    #[serde(rename = "TrainAnim")]
+    pub train_anim: Option<String>,
+    /// Building-strength display style.
+    #[serde(rename = "BuildingStrengthDisplay")]
+    pub building_strength_display: Option<String>,
     /// Whether the squad can attack while moving.
     #[serde(rename = "CanAttackWhileMoving")]
     pub can_attack_while_moving: Option<bool>,
@@ -94,19 +107,28 @@ pub struct Squad {
     pub minimap_scale: Option<f32>,
     /// Selection configuration.
     #[serde(rename = "Selection")]
-    pub selection: Option<String>,
-    /// Sound configuration.
-    #[serde(rename = "Sound")]
-    pub sound: Option<String>,
+    pub selection: Option<Selection>,
+    /// Sound cue bindings.
+    #[serde(rename = "Sound", default)]
+    pub sounds: Vec<SquadSound>,
     /// Stats name string ID.
     #[serde(rename = "StatsNameID")]
     pub stats_name_id: Option<i32>,
     /// Turn radius (with optional min attribute).
     #[serde(rename = "TurnRadius")]
     pub turn_radius: Option<TurnRadius>,
-    /// Veterancy bar name.
+    /// Veterancy bar style and placement.
     #[serde(rename = "VeterancyBar")]
-    pub veterancy_bar: Option<String>,
+    pub veterancy_bar: Option<StatusBar>,
+    /// General progression level.
+    #[serde(rename = "Level")]
+    pub level: Option<i32>,
+    /// Required technology level.
+    #[serde(rename = "TechLevel")]
+    pub tech_level: Option<i32>,
+    /// Effect used while an ability is recovering.
+    #[serde(rename = "RecoveringEffect")]
+    pub recovering_effect: Option<String>,
 }
 
 /// Wrapper for the `<Units>` element containing `<Unit>` children.
@@ -148,6 +170,89 @@ pub struct TurnRadius {
     pub max: Option<f32>,
     #[serde(rename = "$text", default)]
     pub value: f32,
+}
+
+/// HP-bar style plus optional geometry overrides.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct HpBar {
+    #[serde(rename = "$text")]
+    pub style: Option<String>,
+    #[serde(rename = "@sizeX")]
+    pub size_x: Option<f32>,
+    #[serde(rename = "@sizeY")]
+    pub size_y: Option<f32>,
+    #[serde(rename = "@offset")]
+    pub offset: Option<Vector3>,
+}
+
+/// A veterancy or ability-recovery bar and its screen-space placement.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct StatusBar {
+    #[serde(rename = "$text")]
+    pub style: Option<String>,
+    #[serde(rename = "@Centered")]
+    pub centered_style: Option<String>,
+    #[serde(rename = "@sizeX")]
+    pub size_x: Option<f32>,
+    #[serde(rename = "@sizeY")]
+    pub size_y: Option<f32>,
+    #[serde(rename = "@offsetX")]
+    pub offset_x: Option<f32>,
+    #[serde(rename = "@offsetY")]
+    pub offset_y: Option<f32>,
+}
+
+/// Birth/spawn animation configuration.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct Birth {
+    #[serde(rename = "$text")]
+    pub birth_type: Option<String>,
+    #[serde(rename = "@spawnPoint")]
+    pub spawn_point: Option<String>,
+    #[serde(rename = "@endPoint")]
+    pub end_point: Option<String>,
+    #[serde(rename = "@anim0")]
+    pub animation_0: Option<String>,
+    #[serde(rename = "@anim1")]
+    pub animation_1: Option<String>,
+    #[serde(rename = "@anim2")]
+    pub animation_2: Option<String>,
+    #[serde(rename = "@anim3")]
+    pub animation_3: Option<String>,
+    #[serde(rename = "@trainerAnim")]
+    pub trainer_animation: Option<String>,
+}
+
+/// Selection decal geometry and orientation behavior.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct Selection {
+    #[serde(rename = "@RadiusX")]
+    pub radius_x: Option<f32>,
+    #[serde(rename = "@RadiusZ")]
+    pub radius_z: Option<f32>,
+    #[serde(rename = "@YOffset")]
+    pub y_offset: Option<f32>,
+    #[serde(rename = "@ZOffset")]
+    pub z_offset: Option<f32>,
+    #[serde(rename = "@ConformToTerrain")]
+    pub conform_to_terrain: Option<bool>,
+    #[serde(rename = "@AllowOrientation")]
+    pub allow_orientation: Option<bool>,
+}
+
+/// A squad sound cue with its trigger and optional filters.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct SquadSound {
+    #[serde(rename = "$text", default)]
+    pub cue: String,
+    #[serde(rename = "@Type")]
+    pub sound_type: Option<String>,
+    #[serde(rename = "@Squad")]
+    pub squad: Option<String>,
+    #[serde(rename = "@World")]
+    pub world: Option<String>,
+    #[serde(rename = "@CastingUnitOnly")]
+    pub casting_unit_only: Option<bool>,
 }
 
 fn default_one() -> i32 {

@@ -419,7 +419,7 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
             );
         }
         // Leader → StartingUnit (proto-object)
-        if let Some(su) = leader.starting_unit.as_ref() {
+        for su in &leader.starting_units {
             check_ref_exists(
                 &su.proto_object,
                 &object_names,

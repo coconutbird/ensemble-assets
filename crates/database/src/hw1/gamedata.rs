@@ -7,6 +7,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
+use super::RgbColor;
 use crate::node_ext::expect_root;
 
 /// Global game data from `gamedata.xml`.
@@ -49,7 +50,7 @@ pub struct GameData {
     // Difficulty settings
     #[serde(rename = "DifficultyEasy")]
     pub difficulty_easy: Option<f32>,
-    #[serde(rename = "DifficultyNormal")]
+    #[serde(rename = "DifficultyNormal", alias = "DifficultyNormali")]
     pub difficulty_normal: Option<f32>,
     #[serde(rename = "DifficultyHard")]
     pub difficulty_hard: Option<f32>,
@@ -118,13 +119,13 @@ pub struct GameData {
 
     // Shields
     #[serde(rename = "ShieldBarColor")]
-    pub shield_bar_color: Option<String>,
+    pub shield_bar_color: Option<RgbColor>,
     #[serde(rename = "ShieldRegenDelay")]
     pub shield_regen_delay: Option<f32>,
     #[serde(rename = "ShieldRegenTime")]
     pub shield_regen_time: Option<f32>,
     #[serde(rename = "AmmoBarColor")]
-    pub ammo_bar_color: Option<String>,
+    pub ammo_bar_color: Option<RgbColor>,
 
     // Projectiles
     #[serde(rename = "ProjectileGravity")]
@@ -163,10 +164,11 @@ pub struct GameData {
     pub attack_rating_multiplier: Option<f32>,
     #[serde(rename = "DefenseRatingMultiplier")]
     pub defense_rating_multiplier: Option<f32>,
-    #[serde(rename = "GoodAgainstMinAttackGrade")]
-    pub good_against_min_attack_grade: Option<f32>,
-    #[serde(rename = "GoodAgainstMinAttackRating")]
-    pub good_against_min_attack_rating: Option<f32>,
+    #[serde(
+        rename = "GoodAgainstMinAttackRating",
+        alias = "GoodAgainstMinAttackGrade"
+    )]
+    pub good_against_min_attack_rating: Option<i32>,
 
     // Opportunity
     #[serde(rename = "OpportunityBeingAttackedPriBonus")]

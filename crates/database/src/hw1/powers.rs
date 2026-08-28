@@ -17,6 +17,9 @@ pub struct Power {
     /// Trigger script file name.
     #[serde(rename = "TriggerScript")]
     pub trigger_script: Option<String>,
+    /// Script invoked by the command path for this power.
+    #[serde(rename = "CommandTriggerScript")]
+    pub command_trigger_script: Option<String>,
     /// Power attributes (contains data levels too).
     #[serde(rename = "Attributes")]
     pub attributes: Option<PowerAttributes>,
@@ -28,12 +31,15 @@ pub struct PowerAttributes {
     /// Power type: `"Transport"`, `"Cleansing"`, etc.
     #[serde(rename = "PowerType")]
     pub power_type: Option<String>,
+    /// Power action kind.
+    #[serde(rename = "Action")]
+    pub action: Option<String>,
     /// Presence-based: element exists = true.
     #[serde(rename = "InfiniteUses")]
-    pub infinite_uses: Option<String>,
+    pub infinite_uses: Option<bool>,
     /// Presence-based: element exists = true.
     #[serde(rename = "LeaderPower")]
-    pub leader_power: Option<String>,
+    pub leader_power: Option<bool>,
     /// Auto-recharge flag.
     #[serde(rename = "AutoRecharge")]
     pub auto_recharge: Option<i32>,
@@ -46,6 +52,9 @@ pub struct PowerAttributes {
     /// Prereq text string ID.
     #[serde(rename = "PrereqTextID")]
     pub prereq_text_id: Option<i32>,
+    /// Text shown while choosing a target.
+    #[serde(rename = "ChooseTextID")]
+    pub choose_text_id: Option<i32>,
     /// Icon path.
     #[serde(rename = "Icon")]
     pub icon: Option<String>,
@@ -58,12 +67,21 @@ pub struct PowerAttributes {
     /// Cost element.
     #[serde(rename = "Cost")]
     pub cost: Option<PowerCost>,
+    /// Object-dependent dynamic cost multipliers.
+    #[serde(rename = "DynamicCost", default)]
+    pub dynamic_costs: Vec<DynamicCost>,
+    /// Object-dependent target effectiveness values.
+    #[serde(rename = "TargetEffectiveness", default)]
+    pub target_effectiveness: Vec<TargetEffectiveness>,
     /// Show transport arrows.
     #[serde(rename = "ShowTransportArrows")]
     pub show_transport_arrows: Option<bool>,
     /// Presence-based: element exists = true.
     #[serde(rename = "ShowLimit")]
-    pub show_limit: Option<String>,
+    pub show_limit: Option<bool>,
+    /// Maximum number of uses when the power is limited.
+    #[serde(rename = "UseLimit")]
+    pub use_limit: Option<i32>,
     /// Min distance to squad.
     #[serde(rename = "MinDistanceToSquad")]
     pub min_distance_to_squad: Option<f32>,
@@ -91,6 +109,12 @@ pub struct PowerAttributes {
     /// Allow user camera zoom during power.
     #[serde(rename = "CameraEnableUserZoom")]
     pub camera_enable_user_zoom: Option<bool>,
+    /// Allow the camera to choose its zoom automatically.
+    #[serde(rename = "CameraEnableAutoZoom")]
+    pub camera_enable_auto_zoom: Option<bool>,
+    /// Apply automatic camera zoom immediately.
+    #[serde(rename = "CameraEnableAutoZoomInstant")]
+    pub camera_enable_auto_zoom_instant: Option<bool>,
     /// Camera pitch maximum during power.
     #[serde(rename = "CameraPitchMax")]
     pub camera_pitch_max: Option<f32>,
@@ -111,16 +135,16 @@ pub struct PowerAttributes {
     pub multi_recharge_power: Option<String>,
     /// Power cannot be disrupted.
     #[serde(rename = "NotDisruptable")]
-    pub not_disruptable: Option<String>,
+    pub not_disruptable: Option<bool>,
     /// Sequential recharge flag.
     #[serde(rename = "SequentialRecharge")]
-    pub sequential_recharge: Option<String>,
+    pub sequential_recharge: Option<bool>,
     /// Show in power menu.
     #[serde(rename = "ShowInPowerMenu")]
     pub show_in_power_menu: Option<bool>,
     /// Show target highlight effect.
     #[serde(rename = "ShowTargetHighlight")]
-    pub show_target_highlight: Option<bool>,
+    pub show_target_highlight: Option<TargetHighlight>,
     /// Tech prerequisite name.
     #[serde(rename = "TechPrereq")]
     pub tech_prereq: Option<String>,
@@ -128,12 +152,14 @@ pub struct PowerAttributes {
     #[serde(rename = "UnitPower")]
     pub unit_power: Option<bool>,
     /// Population type reference.
-    #[serde(rename = "Pop")]
-    pub pop: Option<String>,
-
-    /// Unused leftover from development — loaded by the Flash UI system, not the power loader.
+    #[serde(rename = "Pop", default)]
+    pub population: Vec<PowerPopulation>,
+    /// Proto-objects created or owned by the power.
+    #[serde(rename = "ChildObjects")]
+    pub child_objects: Option<PowerChildObjects>,
+    /// Legacy Flash UI marker retained by shipped XML but ignored by the runtime power loader.
     #[serde(rename = "FlashUI")]
-    pub flash_ui: Option<String>,
+    pub flash_ui: Option<bool>,
 }
 
 /// Cost element with attribute-based supplies/power.
@@ -143,6 +169,51 @@ pub struct PowerCost {
     pub supplies: Option<f32>,
     #[serde(rename = "@Power")]
     pub power: Option<f32>,
+}
+
+/// An object-specific cost multiplier.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct DynamicCost {
+    #[serde(rename = "@ObjectType", default)]
+    pub object_type: String,
+    #[serde(rename = "$text", default = "default_one")]
+    pub multiplier: f32,
+}
+
+/// An object-specific target-effectiveness grade.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct TargetEffectiveness {
+    #[serde(rename = "@ObjectType", default)]
+    pub object_type: String,
+    #[serde(rename = "$text", default)]
+    pub grade: i32,
+}
+
+/// Target-highlight settings, including the optional relation filter.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct TargetHighlight {
+    #[serde(rename = "@ObjectType")]
+    pub object_type: Option<String>,
+    #[serde(rename = "@Relation")]
+    pub relation: Option<String>,
+    #[serde(rename = "$text")]
+    pub enabled: Option<bool>,
+}
+
+/// A population amount used by a power.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct PowerPopulation {
+    #[serde(rename = "@type")]
+    pub population_type: Option<String>,
+    #[serde(rename = "$text", default)]
+    pub amount: f32,
+}
+
+/// Wrapper for the `<ChildObjects>` element.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct PowerChildObjects {
+    #[serde(rename = "Object", default)]
+    pub objects: Vec<String>,
 }
 
 /// A data level entry (level-specific power parameters).
@@ -168,6 +239,10 @@ pub struct DataEntry {
     /// Data value (text content).
     #[serde(rename = "$text", default)]
     pub value: String,
+}
+
+fn default_one() -> f32 {
+    1.0
 }
 
 /// Parse all powers from a `powers.xml.xmb` document.

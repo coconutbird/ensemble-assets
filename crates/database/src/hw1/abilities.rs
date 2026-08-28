@@ -47,6 +47,12 @@ pub struct Ability {
     /// Duration in seconds.
     #[serde(rename = "Duration")]
     pub duration: Option<f32>,
+    /// Ammunition consumed when the ability is used.
+    #[serde(rename = "AmmoCost")]
+    pub ammo_cost: Option<f32>,
+    /// Whether attacking switches the squad into its configured attack mode.
+    #[serde(rename = "AttackSquadMode")]
+    pub attack_squad_mode: Option<bool>,
     /// Movement speed modifier while active.
     #[serde(rename = "MovementSpeedModifier")]
     pub movement_speed_modifier: Option<f32>,
@@ -62,15 +68,15 @@ pub struct Ability {
     /// Whether to avoid interrupting the current attack.
     #[serde(rename = "DontInterruptAttack")]
     pub dont_interrupt_attack: Option<bool>,
-    /// Sprinting modifier.
-    #[serde(rename = "SprintingModifier")]
-    pub sprinting_modifier: Option<f32>,
-    /// Icon path.
-    #[serde(rename = "Icon")]
-    pub icon: Option<String>,
+    /// Whether the ability uses sprinting movement.
+    #[serde(rename = "Sprinting")]
+    pub sprinting: Option<bool>,
     /// Damage taken modifier while ability is active.
     #[serde(rename = "DamageTakenModifier")]
     pub damage_taken_modifier: Option<f32>,
+    /// Dodge chance modifier while ability is active.
+    #[serde(rename = "DodgeModifier")]
+    pub dodge_modifier: Option<f32>,
     /// Recovery animation attachment point.
     #[serde(rename = "RecoverAnimAttachment")]
     pub recover_anim_attachment: Option<String>,

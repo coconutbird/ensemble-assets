@@ -26,6 +26,7 @@ pub mod powers;
 pub mod squads;
 pub mod tactics;
 pub mod techs;
+pub mod types;
 pub mod visual;
 pub mod weapontypes;
 
@@ -48,6 +49,7 @@ pub use powers::Power;
 pub use squads::Squad;
 pub use tactics::TacticData;
 pub use techs::Tech;
+pub use types::{RgbColor, Vector3};
 pub use visual::Visual;
 pub use weapontypes::WeaponType;
 
