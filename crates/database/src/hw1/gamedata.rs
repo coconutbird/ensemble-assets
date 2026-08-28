@@ -71,7 +71,7 @@ pub struct GameData {
 
     // Transport settings
     #[serde(rename = "TransportMax")]
-    pub transport_max: Option<i32>,
+    pub transport_max: Option<u32>,
 
     // Cryo/freeze settings
     #[serde(rename = "TimeFrozenToThaw")]
@@ -168,7 +168,7 @@ pub struct GameData {
         rename = "GoodAgainstMinAttackRating",
         alias = "GoodAgainstMinAttackGrade"
     )]
-    pub good_against_min_attack_rating: Option<i32>,
+    pub good_against_min_attack_rating: Option<u32>,
 
     // Opportunity
     #[serde(rename = "OpportunityBeingAttackedPriBonus")]
@@ -182,7 +182,7 @@ pub struct GameData {
     #[serde(rename = "BuildingSelfDestructTime")]
     pub building_self_destruct_time: Option<f32>,
     #[serde(rename = "GoodAgainstReticle")]
-    pub good_against_reticle: Option<String>,
+    pub good_against_reticle: Option<GoodAgainstReticle>,
 
     // Economy
     #[serde(rename = "TributeAmount")]
@@ -210,13 +210,13 @@ pub struct GameData {
 
     // Infection
     #[serde(rename = "InfectionMap")]
-    pub infection_map: Option<String>,
+    pub infection_map: Option<InfectionMapWrapper>,
 
     // Pathing
     #[serde(rename = "MaxSquadPathsPerFrame")]
-    pub max_squad_paths_per_frame: Option<i32>,
+    pub max_squad_paths_per_frame: Option<u32>,
     #[serde(rename = "MaxPlatoonPathsPerFrame")]
-    pub max_platoon_paths_per_frame: Option<i32>,
+    pub max_platoon_paths_per_frame: Option<u32>,
 
     // XP
     #[serde(rename = "DamageReceivedXPFactor")]
@@ -253,8 +253,13 @@ pub struct GameData {
     pub objective_arrow_radial_offset: Option<f32>,
     #[serde(rename = "ObjectiveArrowSwitchOffset")]
     pub objective_arrow_switch_offset: Option<f32>,
-    #[serde(rename = "ObjectiveArrowMaxIndex")]
-    pub objective_arrow_max_index: Option<f32>,
+    #[serde(
+        rename = "ObjectiveArrowMaxIndex",
+        default,
+        deserialize_with = "super::types::deserialize_optional_u8",
+        serialize_with = "super::types::serialize_optional_u8"
+    )]
+    pub objective_arrow_max_index: Option<u8>,
     #[serde(rename = "ObjectiveArrowYOffset")]
     pub objective_arrow_y_offset: Option<f32>,
 
@@ -292,13 +297,13 @@ pub struct GameData {
     #[serde(rename = "TransportMaxSearchRadiusScale")]
     pub transport_max_search_radius_scale: Option<f32>,
     #[serde(rename = "TransportMaxSearchLocations")]
-    pub transport_max_search_locations: Option<i32>,
+    pub transport_max_search_locations: Option<u32>,
     #[serde(rename = "TransportBlockTime")]
-    pub transport_block_time: Option<f32>,
+    pub transport_block_time: Option<u32>,
     #[serde(rename = "TransportLoadBlockTime")]
-    pub transport_load_block_time: Option<f32>,
+    pub transport_load_block_time: Option<u32>,
     #[serde(rename = "TransportMaxBlockAttempts")]
-    pub transport_max_block_attempts: Option<f32>,
+    pub transport_max_block_attempts: Option<u32>,
     #[serde(rename = "TransportIncomingHeight")]
     pub transport_incoming_height: Option<f32>,
     #[serde(rename = "TransportIncomingOffset")]
@@ -338,7 +343,7 @@ pub struct GameData {
 
     // Dot damage
     #[serde(rename = "Dot")]
-    pub dot: Option<String>,
+    pub dot: Option<DotSettings>,
 
     // Squad leash
     #[serde(rename = "SquadLeashLength")]
@@ -363,6 +368,48 @@ pub struct BurningEffectLimitEntry {
     pub limit: Option<i32>,
     #[serde(rename = "$text", default)]
     pub value: String,
+}
+
+/// Wrapper for `<InfectionMap>`.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct InfectionMapWrapper {
+    #[serde(rename = "InfectionMapEntry", default)]
+    pub entries: Vec<InfectionMapEntry>,
+}
+
+/// Maps a base proto-object to its infected proto-object and squad forms.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct InfectionMapEntry {
+    #[serde(rename = "@base", default)]
+    pub base: String,
+    #[serde(rename = "@infected", default)]
+    pub infected: String,
+    #[serde(rename = "@infectedSquad", default)]
+    pub infected_squad: String,
+}
+
+/// Reticle grades used for the five attack-effectiveness bands.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct GoodAgainstReticle {
+    #[serde(rename = "NoEffect")]
+    pub no_effect: Option<u32>,
+    #[serde(rename = "Weak")]
+    pub weak: Option<u32>,
+    #[serde(rename = "Fair")]
+    pub fair: Option<u32>,
+    #[serde(rename = "Good")]
+    pub good: Option<u32>,
+    #[serde(rename = "Extreme")]
+    pub extreme: Option<u32>,
+}
+
+/// Minimap dot sizes for small and medium units.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct DotSettings {
+    #[serde(rename = "@small")]
+    pub small: Option<f32>,
+    #[serde(rename = "@medium")]
+    pub medium: Option<f32>,
 }
 
 /// Wrapper for `<Resources>` containing `<Resource>` children.

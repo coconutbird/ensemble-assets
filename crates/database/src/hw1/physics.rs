@@ -18,7 +18,11 @@ pub struct Physics {
     #[serde(rename = "blueprint")]
     pub blueprint: Option<String>,
     /// Whether this object can be thrown by projectiles.
-    #[serde(rename = "ThrownByProjectiles")]
+    #[serde(
+        rename = "ThrownByProjectiles",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub thrown_by_projectiles: Option<bool>,
     /// Vehicle type name.
     #[serde(rename = "Vehicle")]

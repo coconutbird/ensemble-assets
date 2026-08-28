@@ -4,7 +4,7 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::node_ext::expect_root;
 
@@ -35,14 +35,22 @@ pub struct PowerAttributes {
     #[serde(rename = "Action")]
     pub action: Option<String>,
     /// Presence-based: element exists = true.
-    #[serde(rename = "InfiniteUses")]
+    #[serde(
+        rename = "InfiniteUses",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub infinite_uses: Option<bool>,
     /// Presence-based: element exists = true.
-    #[serde(rename = "LeaderPower")]
+    #[serde(
+        rename = "LeaderPower",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub leader_power: Option<bool>,
-    /// Auto-recharge flag.
+    /// Auto-recharge interval in milliseconds.
     #[serde(rename = "AutoRecharge")]
-    pub auto_recharge: Option<i32>,
+    pub auto_recharge: Option<u32>,
     /// Display name string ID.
     #[serde(rename = "DisplayNameID")]
     pub display_name_id: Option<i32>,
@@ -58,9 +66,9 @@ pub struct PowerAttributes {
     /// Icon path.
     #[serde(rename = "Icon")]
     pub icon: Option<String>,
-    /// Icon location index.
-    #[serde(rename = "IconLocation")]
-    pub icon_location: Option<i32>,
+    /// Icon location indices. The runtime appends every repeated element.
+    #[serde(rename = "IconLocation", default)]
+    pub icon_locations: Vec<i32>,
     /// UI radius.
     #[serde(rename = "UIRadius")]
     pub ui_radius: Option<f32>,
@@ -74,10 +82,18 @@ pub struct PowerAttributes {
     #[serde(rename = "TargetEffectiveness", default)]
     pub target_effectiveness: Vec<TargetEffectiveness>,
     /// Show transport arrows.
-    #[serde(rename = "ShowTransportArrows")]
+    #[serde(
+        rename = "ShowTransportArrows",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub show_transport_arrows: Option<bool>,
     /// Presence-based: element exists = true.
-    #[serde(rename = "ShowLimit")]
+    #[serde(
+        rename = "ShowLimit",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub show_limit: Option<bool>,
     /// Maximum number of uses when the power is limited.
     #[serde(rename = "UseLimit")]
@@ -101,19 +117,39 @@ pub struct PowerAttributes {
     #[serde(rename = "CameraEffectOut")]
     pub camera_effect_out: Option<String>,
     /// Allow user camera scroll during power.
-    #[serde(rename = "CameraEnableUserScroll")]
+    #[serde(
+        rename = "CameraEnableUserScroll",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub camera_enable_user_scroll: Option<bool>,
     /// Allow user camera yaw during power.
-    #[serde(rename = "CameraEnableUserYaw")]
+    #[serde(
+        rename = "CameraEnableUserYaw",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub camera_enable_user_yaw: Option<bool>,
     /// Allow user camera zoom during power.
-    #[serde(rename = "CameraEnableUserZoom")]
+    #[serde(
+        rename = "CameraEnableUserZoom",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub camera_enable_user_zoom: Option<bool>,
     /// Allow the camera to choose its zoom automatically.
-    #[serde(rename = "CameraEnableAutoZoom")]
+    #[serde(
+        rename = "CameraEnableAutoZoom",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub camera_enable_auto_zoom: Option<bool>,
     /// Apply automatic camera zoom immediately.
-    #[serde(rename = "CameraEnableAutoZoomInstant")]
+    #[serde(
+        rename = "CameraEnableAutoZoomInstant",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub camera_enable_auto_zoom_instant: Option<bool>,
     /// Camera pitch maximum during power.
     #[serde(rename = "CameraPitchMax")]
@@ -130,26 +166,50 @@ pub struct PowerAttributes {
     /// Minigame name associated with this power.
     #[serde(rename = "Minigame")]
     pub minigame: Option<String>,
-    /// Multi-recharge power name.
-    #[serde(rename = "MultiRechargePower")]
-    pub multi_recharge_power: Option<String>,
+    /// Presence-based multi-recharge behavior flag.
+    #[serde(
+        rename = "MultiRechargePower",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
+    pub multi_recharge_power: Option<bool>,
     /// Power cannot be disrupted.
-    #[serde(rename = "NotDisruptable")]
+    #[serde(
+        rename = "NotDisruptable",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub not_disruptable: Option<bool>,
     /// Sequential recharge flag.
-    #[serde(rename = "SequentialRecharge")]
+    #[serde(
+        rename = "SequentialRecharge",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub sequential_recharge: Option<bool>,
     /// Show in power menu.
-    #[serde(rename = "ShowInPowerMenu")]
+    #[serde(
+        rename = "ShowInPowerMenu",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub show_in_power_menu: Option<bool>,
     /// Show target highlight effect.
-    #[serde(rename = "ShowTargetHighlight")]
+    #[serde(
+        rename = "ShowTargetHighlight",
+        default,
+        deserialize_with = "deserialize_optional_target_highlight"
+    )]
     pub show_target_highlight: Option<TargetHighlight>,
-    /// Tech prerequisite name.
-    #[serde(rename = "TechPrereq")]
-    pub tech_prereq: Option<String>,
+    /// Tech prerequisite names. The runtime appends every repeated element.
+    #[serde(rename = "TechPrereq", default)]
+    pub tech_prerequisites: Vec<String>,
     /// Whether this is a unit power.
-    #[serde(rename = "UnitPower")]
+    #[serde(
+        rename = "UnitPower",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub unit_power: Option<bool>,
     /// Population type reference.
     #[serde(rename = "Pop", default)]
@@ -158,17 +218,25 @@ pub struct PowerAttributes {
     #[serde(rename = "ChildObjects")]
     pub child_objects: Option<PowerChildObjects>,
     /// Legacy Flash UI marker retained by shipped XML but ignored by the runtime power loader.
-    #[serde(rename = "FlashUI")]
+    #[serde(
+        rename = "FlashUI",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub flash_ui: Option<bool>,
 }
 
-/// Cost element with attribute-based supplies/power.
+/// Cost element with one attribute per registered game resource.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PowerCost {
     #[serde(rename = "@Supplies")]
     pub supplies: Option<f32>,
     #[serde(rename = "@Power")]
     pub power: Option<f32>,
+    #[serde(rename = "@CampaignFoo")]
+    pub campaign_foo: Option<f32>,
+    #[serde(rename = "@Collectable")]
+    pub collectable: Option<f32>,
 }
 
 /// An object-specific cost multiplier.
@@ -200,6 +268,15 @@ pub struct TargetHighlight {
     pub enabled: Option<bool>,
 }
 
+fn deserialize_optional_target_highlight<'de, D>(
+    deserializer: D,
+) -> Result<Option<TargetHighlight>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    TargetHighlight::deserialize(deserializer).map(Some)
+}
+
 /// A population amount used by a power.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PowerPopulation {
@@ -221,7 +298,7 @@ pub struct PowerChildObjects {
 pub struct DataLevel {
     /// Level index (0-based). Absent for `BaseDataLevel`.
     #[serde(rename = "@level")]
-    pub level: Option<i32>,
+    pub level: Option<u32>,
     /// Key-value data entries.
     #[serde(rename = "Data", default)]
     pub entries: Vec<DataEntry>,

@@ -23,6 +23,9 @@ pub struct Ability {
     /// Rollover text string ID.
     #[serde(rename = "RolloverTextID")]
     pub rollover_text_id: Option<i32>,
+    /// Icon path used by the ability UI.
+    #[serde(rename = "Icon")]
+    pub icon: Option<String>,
     /// Ability type: `"Work"`, `"ChangeMode"`, `"Unload"`, `"CommandMenu"`, etc.
     #[serde(rename = "Type")]
     pub ability_type: Option<String>,
@@ -30,11 +33,19 @@ pub struct Ability {
     #[serde(rename = "SquadMode")]
     pub squad_mode: Option<String>,
     /// Whether to keep the squad mode after ability ends.
-    #[serde(rename = "KeepSquadMode")]
+    #[serde(
+        rename = "KeepSquadMode",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub keep_squad_mode: Option<bool>,
     /// Target type: `"Unit"`, `"Location"`, `"UnitOrLocation"`.
     #[serde(rename = "TargetType")]
     pub target_type: Option<String>,
+    /// Proto-object filters accepted by the ability. The loader appends every
+    /// repeated `<Object>` entry.
+    #[serde(rename = "Object", default)]
+    pub objects: Vec<String>,
     /// Recovery start trigger: `"Attack"`.
     #[serde(rename = "RecoverStart")]
     pub recover_start: Option<String>,
@@ -51,7 +62,11 @@ pub struct Ability {
     #[serde(rename = "AmmoCost")]
     pub ammo_cost: Option<f32>,
     /// Whether attacking switches the squad into its configured attack mode.
-    #[serde(rename = "AttackSquadMode")]
+    #[serde(
+        rename = "AttackSquadMode",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub attack_squad_mode: Option<bool>,
     /// Movement speed modifier while active.
     #[serde(rename = "MovementSpeedModifier")]
@@ -60,16 +75,32 @@ pub struct Ability {
     #[serde(rename = "MovementModifierType")]
     pub movement_modifier_type: Option<String>,
     /// Whether this ability can be used in hetero-command groups.
-    #[serde(rename = "CanHeteroCommand")]
+    #[serde(
+        rename = "CanHeteroCommand",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub can_hetero_command: Option<bool>,
     /// Whether to suppress the ability reticle.
-    #[serde(rename = "NoAbilityReticle")]
+    #[serde(
+        rename = "NoAbilityReticle",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub no_ability_reticle: Option<bool>,
     /// Whether to avoid interrupting the current attack.
-    #[serde(rename = "DontInterruptAttack")]
+    #[serde(
+        rename = "DontInterruptAttack",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub dont_interrupt_attack: Option<bool>,
     /// Whether the ability uses sprinting movement.
-    #[serde(rename = "Sprinting")]
+    #[serde(
+        rename = "Sprinting",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub sprinting: Option<bool>,
     /// Damage taken modifier while ability is active.
     #[serde(rename = "DamageTakenModifier")]

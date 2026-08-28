@@ -4,7 +4,8 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::{Deserialize, Serialize};
+use serde::de::Error as _;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use crate::node_ext::expect_root;
 
@@ -12,7 +13,7 @@ use super::Vector3;
 
 /// A single proto-object definition from `objects.xml`.
 ///
-/// Every field below is confirmed present in the engine's `BProtoObject::loadFromXml`
+/// Every field below is confirmed present in the engine's `BProtoObject::load`
 /// (IDA @ `0x140341620`) and cross-referenced against the 2006 source leak
 /// (`BProtoObject::load`). Fields are sorted alphabetically within each group.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -353,7 +354,7 @@ pub struct ProtoObject {
     #[serde(rename = "MinimapIcon")]
     pub minimap_icon: Option<MinimapIcon>,
 
-    /// Unused leftover from development — not read by `BProtoObject::loadFromXml`.
+    /// Unused leftover from development — not read by `BProtoObject::load`.
     #[serde(rename = "MinimapIconName")]
     pub minimap_icon_name: Option<String>,
 
@@ -605,7 +606,7 @@ pub struct ProtoObject {
     #[serde(rename = "TurnRate")]
     pub turn_rate: Option<f32>,
 
-    /// Unused leftover from development — not read by `BProtoObject::loadFromXml`.
+    /// Unused leftover from development — not read by `BProtoObject::load`.
     #[serde(rename = "UIVisual")]
     pub ui_visual: Option<String>,
 
@@ -683,20 +684,49 @@ pub struct ChildObjects {
 }
 
 /// Runtime attachment behavior for a child object.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ChildObjectType {
-    #[serde(rename = "ParkingLot")]
     ParkingLot,
-    #[serde(rename = "Socket")]
     Socket,
-    #[serde(rename = "Rally")]
     Rally,
-    #[serde(rename = "OneTimeSpawnSquad")]
     OneTimeSpawnSquad,
-    #[serde(rename = "Unit")]
     Unit,
-    #[serde(rename = "Foundation")]
     Foundation,
+}
+
+impl<'de> Deserialize<'de> for ChildObjectType {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        match String::deserialize(deserializer)?.as_str() {
+            "ParkingLot" => Ok(Self::ParkingLot),
+            "Socket" => Ok(Self::Socket),
+            "Rally" => Ok(Self::Rally),
+            "OneTimeSpawnSquad" => Ok(Self::OneTimeSpawnSquad),
+            "Unit" => Ok(Self::Unit),
+            "Foundation" => Ok(Self::Foundation),
+            value => Err(D::Error::custom(format_args!(
+                "unknown child-object type `{value}`"
+            ))),
+        }
+    }
+}
+
+impl Serialize for ChildObjectType {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(match self {
+            Self::ParkingLot => "ParkingLot",
+            Self::Socket => "Socket",
+            Self::Rally => "Rally",
+            Self::OneTimeSpawnSquad => "OneTimeSpawnSquad",
+            Self::Unit => "Unit",
+            Self::Foundation => "Foundation",
+        })
+    }
 }
 
 /// One object attached through a `<ChildObjects>` entry.
@@ -778,8 +808,13 @@ pub struct GroundIk {
     pub bone: String,
     #[serde(rename = "@ikRange")]
     pub ik_range: Option<f32>,
-    #[serde(rename = "@linkCount")]
-    pub link_count: Option<i32>,
+    #[serde(
+        rename = "@linkCount",
+        default,
+        deserialize_with = "super::types::deserialize_optional_u8",
+        serialize_with = "super::types::serialize_optional_u8"
+    )]
+    pub link_count: Option<u8>,
     #[serde(rename = "@x")]
     pub x: Option<f32>,
     #[serde(rename = "@z")]
@@ -839,12 +874,40 @@ pub struct HpBar {
 }
 
 /// Supported impact-decal orientation modes.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ImpactDecalOrientation {
-    #[serde(rename = "random", alias = "Random")]
     Random,
-    #[serde(rename = "forward", alias = "Forward")]
     Forward,
+}
+
+impl<'de> Deserialize<'de> for ImpactDecalOrientation {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = String::deserialize(deserializer)?;
+        if value.eq_ignore_ascii_case("random") {
+            Ok(Self::Random)
+        } else if value.eq_ignore_ascii_case("forward") {
+            Ok(Self::Forward)
+        } else {
+            Err(D::Error::custom(format_args!(
+                "unknown impact-decal orientation `{value}`"
+            )))
+        }
+    }
+}
+
+impl Serialize for ImpactDecalOrientation {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(match self {
+            Self::Random => "random",
+            Self::Forward => "forward",
+        })
+    }
 }
 
 /// Decal material, dimensions, timing, and orientation.
@@ -951,8 +1014,13 @@ pub struct SquadModeAnimation {
 pub struct SweetSpotIk {
     #[serde(rename = "$text", default)]
     pub bone: String,
-    #[serde(rename = "@linkCount")]
-    pub link_count: Option<i32>,
+    #[serde(
+        rename = "@linkCount",
+        default,
+        deserialize_with = "super::types::deserialize_optional_u8",
+        serialize_with = "super::types::serialize_optional_u8"
+    )]
+    pub link_count: Option<u8>,
 }
 
 /// Trainer category and formation behavior.
@@ -965,12 +1033,37 @@ pub struct TrainerType {
 }
 
 /// Target database selected by a train-limit entry.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TrainLimitType {
-    #[serde(rename = "Unit")]
     Unit,
-    #[serde(rename = "Squad")]
     Squad,
+}
+
+impl<'de> Deserialize<'de> for TrainLimitType {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        match String::deserialize(deserializer)?.as_str() {
+            "Unit" => Ok(Self::Unit),
+            "Squad" => Ok(Self::Squad),
+            value => Err(D::Error::custom(format_args!(
+                "unknown train-limit type `{value}`"
+            ))),
+        }
+    }
+}
+
+impl Serialize for TrainLimitType {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(match self {
+            Self::Unit => "Unit",
+            Self::Squad => "Squad",
+        })
+    }
 }
 
 /// A train-limit target with count and shared-bucket constraints.
@@ -980,9 +1073,19 @@ pub struct TrainLimit {
     pub target: String,
     #[serde(rename = "@Type")]
     pub limit_type: Option<TrainLimitType>,
-    #[serde(rename = "@Count")]
+    #[serde(
+        rename = "@Count",
+        default,
+        deserialize_with = "super::types::deserialize_optional_u8",
+        serialize_with = "super::types::serialize_optional_u8"
+    )]
     pub count: Option<u8>,
-    #[serde(rename = "@Bucket")]
+    #[serde(
+        rename = "@Bucket",
+        default,
+        deserialize_with = "super::types::deserialize_optional_u8",
+        serialize_with = "super::types::serialize_optional_u8"
+    )]
     pub bucket: Option<u8>,
 }
 

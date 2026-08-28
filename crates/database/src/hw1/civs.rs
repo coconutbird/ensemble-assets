@@ -54,7 +54,11 @@ pub struct Civ {
     #[serde(rename = "LeaderMenuNameID")]
     pub leader_menu_name_id: Option<i32>,
     /// Whether powers come from the hero unit.
-    #[serde(rename = "PowerFromHero")]
+    #[serde(
+        rename = "PowerFromHero",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub power_from_hero: Option<bool>,
     /// UI control background image path.
     #[serde(rename = "UIControlBackground")]

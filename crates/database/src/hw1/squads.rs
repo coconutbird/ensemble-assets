@@ -88,7 +88,11 @@ pub struct Squad {
     #[serde(rename = "BuildingStrengthDisplay")]
     pub building_strength_display: Option<String>,
     /// Whether the squad can attack while moving.
-    #[serde(rename = "CanAttackWhileMoving")]
+    #[serde(
+        rename = "CanAttackWhileMoving",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
     pub can_attack_while_moving: Option<bool>,
     /// Cryo points.
     #[serde(rename = "CryoPoints")]
@@ -99,9 +103,9 @@ pub struct Squad {
     /// Leash deadzone distance.
     #[serde(rename = "LeashDeadzone")]
     pub leash_deadzone: Option<f32>,
-    /// Leash recall delay in seconds.
+    /// Leash recall delay in milliseconds.
     #[serde(rename = "LeashRecallDelay")]
-    pub leash_recall_delay: Option<f32>,
+    pub leash_recall_delay: Option<u32>,
     /// Minimap icon scale.
     #[serde(rename = "MinimapScale")]
     pub minimap_scale: Option<f32>,
@@ -226,17 +230,17 @@ pub struct Birth {
 /// Selection decal geometry and orientation behavior.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Selection {
-    #[serde(rename = "@RadiusX")]
+    #[serde(rename = "RadiusX")]
     pub radius_x: Option<f32>,
-    #[serde(rename = "@RadiusZ")]
+    #[serde(rename = "RadiusZ")]
     pub radius_z: Option<f32>,
-    #[serde(rename = "@YOffset")]
+    #[serde(rename = "YOffset")]
     pub y_offset: Option<f32>,
-    #[serde(rename = "@ZOffset")]
+    #[serde(rename = "ZOffset")]
     pub z_offset: Option<f32>,
-    #[serde(rename = "@ConformToTerrain")]
+    #[serde(rename = "ConformToTerrain")]
     pub conform_to_terrain: Option<bool>,
-    #[serde(rename = "@AllowOrientation")]
+    #[serde(rename = "AllowOrientation")]
     pub allow_orientation: Option<bool>,
 }
 

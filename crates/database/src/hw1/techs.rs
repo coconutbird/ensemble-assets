@@ -107,6 +107,18 @@ pub struct TechEffect {
     /// Command type.
     #[serde(rename = "@commandType")]
     pub command_type: Option<String>,
+    /// Rate-table reference used by rate-related data effects.
+    #[serde(rename = "@Rate")]
+    pub rate: Option<String>,
+    /// Weapon-type reference used by weapon damage modifier effects.
+    #[serde(rename = "@WeaponType")]
+    pub weapon_type: Option<String>,
+    /// Damage-type reference used by weapon damage modifier effects.
+    #[serde(rename = "@DamageType")]
+    pub damage_type: Option<String>,
+    /// String-table identifier used by data effects that target localized text.
+    #[serde(rename = "@StringID")]
+    pub string_id: Option<u32>,
     /// From type (for conversion effects).
     #[serde(rename = "@FromType")]
     pub from_type: Option<String>,
@@ -140,6 +152,9 @@ pub struct TechEffect {
     /// Squad name reference.
     #[serde(rename = "@squadName")]
     pub squad_name: Option<String>,
+    /// Squad type used by squad-targeted and attach-squad effects.
+    #[serde(rename = "@SquadType")]
+    pub squad_type: Option<String>,
     /// Unit type reference.
     #[serde(rename = "@unitType")]
     pub unit_type: Option<String>,
