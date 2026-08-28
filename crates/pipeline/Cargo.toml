@@ -19,6 +19,7 @@ ddx.workspace = true
 era.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+memmap2.workspace = true
 uax.workspace = true
 ugx.workspace = true
 xmb.workspace = true

@@ -34,7 +34,7 @@
 //!    to the override directory. Per-file saves (e.g. [`save_visual`](World::save_visual))
 //!    are also available for fine-grained control.
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
 
 use crate::source::AssetSource;
@@ -48,6 +48,193 @@ use super::manifest::{
 };
 use super::resolve::{LoadStats, ObjectAssets, PhysicsChain, resolve_physics_chain};
 use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList};
+
+/// Controls which optional asset inventories are built while loading a world.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct WorldLoadOptions {
+    resolve_object_assets: bool,
+    discover_texture_manifest: bool,
+}
+
+impl WorldLoadOptions {
+    /// Load every editable object asset and eagerly inventory referenced textures.
+    #[must_use]
+    pub const fn full() -> Self {
+        Self {
+            resolve_object_assets: true,
+            discover_texture_manifest: true,
+        }
+    }
+
+    /// Load runtime-critical database and scenario data without editor inventories.
+    ///
+    /// Object visuals can subsequently be populated on demand with
+    /// [`World::load_visuals_for`]. Tactics and physics asset chains remain
+    /// unloaded because the runtime simulation uses the typed game database.
+    #[must_use]
+    pub const fn runtime() -> Self {
+        Self {
+            resolve_object_assets: false,
+            discover_texture_manifest: false,
+        }
+    }
+}
+
+impl Default for WorldLoadOptions {
+    fn default() -> Self {
+        Self::full()
+    }
+}
+
+#[derive(Default)]
+struct ObjectAssetInventory {
+    assets: HashMap<String, ObjectAssets>,
+    visuals: HashMap<String, database::hw1::Visual>,
+    tactics: HashMap<String, database::hw1::TacticData>,
+    physics: HashMap<String, PhysicsChain>,
+    manifest: AssetManifest,
+    stats: LoadStats,
+}
+
+impl ObjectAssetInventory {
+    fn empty(objects_total: usize) -> Self {
+        Self {
+            stats: LoadStats {
+                objects_total,
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    fn load(
+        src: &mut AssetSource<impl assets::FileProvider>,
+        database: &database::hw1::Database,
+    ) -> Self {
+        let mut inventory = Self::empty(database.objects.len());
+        for object in &database.objects {
+            let mut object_assets = ObjectAssets {
+                name: object.name.clone(),
+                object_class: object.object_class.clone(),
+                object_types: object.object_types.clone(),
+                ..Default::default()
+            };
+
+            resolve_visual_asset(src, object, &mut object_assets, &mut inventory);
+            resolve_tactics_asset(src, object, &mut object_assets, &mut inventory);
+            resolve_physics_asset(src, object, &mut object_assets, &mut inventory);
+            inventory.assets.insert(object.name.clone(), object_assets);
+        }
+        inventory
+    }
+}
+
+fn resolve_visual_asset(
+    src: &mut AssetSource<impl assets::FileProvider>,
+    object: &database::hw1::ProtoObject,
+    object_assets: &mut ObjectAssets,
+    inventory: &mut ObjectAssetInventory,
+) {
+    let Some(visual_ref) = &object.visual else {
+        return;
+    };
+
+    inventory.stats.objects_with_visual += 1;
+    let visual_normalized = visual_ref.replace('/', "\\");
+    let visual_normalized = visual_normalized.trim_start_matches('\\');
+    let visual_base = format!("art\\{visual_normalized}");
+    object_assets.visual = Some(visual_base.clone());
+
+    let Some(visual_document) = src.read_xmb(&visual_base) else {
+        inventory.stats.visuals_failed.push(visual_base);
+        return;
+    };
+    match database::hw1::visual::parse(&visual_document) {
+        Ok(visual) => {
+            inventory.stats.visuals_resolved += 1;
+            collect_visual_assets(&visual, &mut inventory.manifest);
+            collect_object_visual_assets(&visual, object_assets);
+            inventory.visuals.insert(object.name.clone(), visual);
+        }
+        Err(error) => inventory
+            .stats
+            .visuals_failed
+            .push(format!("{visual_base}: {error}")),
+    }
+}
+
+fn resolve_tactics_asset(
+    src: &mut AssetSource<impl assets::FileProvider>,
+    object: &database::hw1::ProtoObject,
+    object_assets: &mut ObjectAssets,
+    inventory: &mut ObjectAssetInventory,
+) {
+    let Some(tactics_ref) = &object.tactics else {
+        return;
+    };
+
+    inventory.stats.objects_with_tactics += 1;
+    let tactics_base = format!("data\\tactics\\{tactics_ref}");
+    object_assets.tactics = Some(tactics_base.clone());
+
+    let Some(tactics_document) = src.read_xmb(&tactics_base) else {
+        inventory.stats.tactics_failed.push(tactics_base);
+        return;
+    };
+    match database::hw1::tactics::parse(&tactics_document) {
+        Ok(tactics) => {
+            inventory.stats.tactics_resolved += 1;
+            inventory.tactics.insert(object.name.clone(), tactics);
+        }
+        Err(error) => inventory
+            .stats
+            .tactics_failed
+            .push(format!("{tactics_base}: {error}")),
+    }
+}
+
+fn resolve_physics_asset(
+    src: &mut AssetSource<impl assets::FileProvider>,
+    object: &database::hw1::ProtoObject,
+    object_assets: &mut ObjectAssets,
+    inventory: &mut ObjectAssetInventory,
+) {
+    let Some(physics_ref) = &object.physics_info else {
+        return;
+    };
+
+    inventory.stats.objects_with_physics += 1;
+    let physics_base = format!("physics\\{physics_ref}.physics");
+    object_assets.physics = Some(physics_base.clone());
+
+    let Some(physics_document) = src.read_xmb(&physics_base) else {
+        inventory.stats.physics_failed.push(physics_base);
+        return;
+    };
+    match database::hw1::physics::parse_physics(&physics_document) {
+        Ok(physics) => {
+            inventory.stats.physics_resolved += 1;
+            let mut chain = PhysicsChain {
+                physics,
+                ..Default::default()
+            };
+            resolve_physics_chain(src, &mut chain, &mut inventory.stats);
+            if let Some(blueprint) = &chain.blueprint {
+                if let Some(blueprint_ref) = chain.physics.primary_blueprint() {
+                    object_assets.blueprint = Some(format!("physics\\{blueprint_ref}.blueprint"));
+                }
+                if let Some(shape_ref) = &blueprint.shape {
+                    object_assets.shape = Some(format!("physics\\{shape_ref}.shp"));
+                }
+            }
+            inventory.physics.insert(object.name.clone(), chain);
+        }
+        Err(error) => inventory
+            .stats
+            .physics_failed
+            .push(format!("{physics_base}: {error}")),
+    }
+}
 
 /// A fully loaded HW1 game world: database, resolved assets, scenario, and manifest.
 ///
@@ -122,9 +309,25 @@ impl World {
     /// # Errors
     ///
     /// Returns an error if any required database asset cannot be decoded or deserialized.
-    #[allow(clippy::too_many_lines)] // The ordered load stages intentionally remain visible together.
     pub fn load_from_source(
         src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> crate::Result<Self> {
+        Self::load_from_source_with_options(src, WorldLoadOptions::default())
+    }
+
+    /// Load from a pre-configured asset source using the requested load profile.
+    ///
+    /// [`WorldLoadOptions::runtime`] omits editor-oriented, whole-database asset
+    /// inventories. This substantially reduces startup work for applications
+    /// that resolve presentation assets only for active entities.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if any required database or scenario asset cannot be
+    /// decoded or deserialized.
+    pub fn load_from_source_with_options(
+        src: &mut AssetSource<impl assets::FileProvider>,
+        options: WorldLoadOptions,
     ) -> crate::Result<Self> {
         // 1. Load the full database
         let database = database::hw1::Database::load(src)?;
@@ -132,102 +335,19 @@ impl World {
         // 2. Load scenario descriptors
         let scenario_list = ScenarioList::load(src);
 
-        // 3. Resolve all per-object asset chains
-        let mut assets_map: HashMap<String, ObjectAssets> = HashMap::new();
-        let mut visuals = HashMap::new();
-        let mut tactics = HashMap::new();
-        let mut physics = HashMap::new();
-        let mut manifest = AssetManifest::default();
-        let mut stats = LoadStats {
-            objects_total: database.objects.len(),
-            ..Default::default()
+        // 3. Resolve all per-object asset chains when the load profile needs them.
+        let ObjectAssetInventory {
+            assets: assets_map,
+            visuals,
+            tactics,
+            physics,
+            mut manifest,
+            stats,
+        } = if options.resolve_object_assets {
+            ObjectAssetInventory::load(src, &database)
+        } else {
+            ObjectAssetInventory::empty(database.objects.len())
         };
-
-        for obj in &database.objects {
-            let mut obj_assets = ObjectAssets {
-                name: obj.name.clone(),
-                object_class: obj.object_class.clone(),
-                object_types: obj.object_types.clone(),
-                ..Default::default()
-            };
-
-            // Visual chain: object → .vis → .ugx/.uax
-            if let Some(vis_ref) = &obj.visual {
-                stats.objects_with_visual += 1;
-                let vis_normalized = vis_ref.replace('/', "\\");
-                let vis_normalized = vis_normalized.trim_start_matches('\\');
-                let vis_base = format!("art\\{vis_normalized}");
-                obj_assets.visual = Some(vis_base.clone());
-
-                if let Some(vis_doc) = src.read_xmb(&vis_base) {
-                    match database::hw1::visual::parse(&vis_doc) {
-                        Ok(vis) => {
-                            stats.visuals_resolved += 1;
-                            collect_visual_assets(&vis, &mut manifest);
-                            collect_object_visual_assets(&vis, &mut obj_assets);
-                            visuals.insert(obj.name.clone(), vis);
-                        }
-                        Err(e) => stats.visuals_failed.push(format!("{vis_base}: {e}")),
-                    }
-                } else {
-                    stats.visuals_failed.push(vis_base);
-                }
-            }
-
-            // Tactics chain: object → .tactics
-            if let Some(tac_ref) = &obj.tactics {
-                stats.objects_with_tactics += 1;
-                let tac_base = format!("data\\tactics\\{tac_ref}");
-                obj_assets.tactics = Some(tac_base.clone());
-
-                if let Some(tac_doc) = src.read_xmb(&tac_base) {
-                    match database::hw1::tactics::parse(&tac_doc) {
-                        Ok(tac) => {
-                            stats.tactics_resolved += 1;
-                            tactics.insert(obj.name.clone(), tac);
-                        }
-                        Err(e) => stats.tactics_failed.push(format!("{tac_base}: {e}")),
-                    }
-                } else {
-                    stats.tactics_failed.push(tac_base);
-                }
-            }
-
-            // Physics chain: .physics → .blueprint → .shp
-            if let Some(phys_ref) = &obj.physics_info {
-                stats.objects_with_physics += 1;
-                let phys_base = format!("physics\\{phys_ref}.physics");
-                obj_assets.physics = Some(phys_base.clone());
-
-                if let Some(phys_doc) = src.read_xmb(&phys_base) {
-                    match database::hw1::physics::parse_physics(&phys_doc) {
-                        Ok(phys) => {
-                            stats.physics_resolved += 1;
-                            let mut chain = PhysicsChain {
-                                physics: phys,
-                                ..Default::default()
-                            };
-                            resolve_physics_chain(src, &mut chain, &mut stats);
-                            if let Some(bp) = &chain.blueprint {
-                                if let Some(bp_ref) = chain.physics.primary_blueprint() {
-                                    obj_assets.blueprint =
-                                        Some(format!("physics\\{bp_ref}.blueprint"));
-                                }
-                                if let Some(shp_ref) = &bp.shape {
-                                    obj_assets.shape = Some(format!("physics\\{shp_ref}.shp"));
-                                }
-                            }
-                            physics.insert(obj.name.clone(), chain);
-                        }
-                        Err(e) => stats.physics_failed.push(format!("{phys_base}: {e}")),
-                    }
-                } else {
-                    stats.physics_failed.push(phys_base);
-                }
-            }
-
-            assets_map.insert(obj.name.clone(), obj_assets);
-        }
 
         // 4. Parse preload lists from scenario ERAs
         parse_preload_list(src, "visFileList.txt", &mut manifest.preload_vis_refs);
@@ -235,14 +355,18 @@ impl World {
         parse_preload_list(src, "tfxFileList.txt", &mut manifest.preload_tfx_refs);
 
         // 5. Eagerly discover texture references from UGX material chunks
-        discover_textures(src, &manifest.model_refs, &mut manifest.texture_refs);
-        discover_textures(src, &manifest.damage_model_refs, &mut manifest.texture_refs);
+        if options.discover_texture_manifest {
+            discover_textures(src, &manifest.model_refs, &mut manifest.texture_refs);
+            discover_textures(src, &manifest.damage_model_refs, &mut manifest.texture_refs);
+        }
 
         // 6. Auto-detect and load scenario from the SCN file
         let (scenario, scenario_data) = resolve_scenario(src, &scenario_list, &mut manifest);
 
         // 7. Discover terrain texture references from XTT files
-        discover_terrain_textures(src, &manifest.terrain_refs, &mut manifest.texture_refs);
+        if options.discover_texture_manifest {
+            discover_terrain_textures(src, &manifest.terrain_refs, &mut manifest.texture_refs);
+        }
 
         // 8. Load the default (English) string table from locale.era
         let strings = super::stringtable::load_default(src);
@@ -283,6 +407,81 @@ impl World {
             dirty: DirtySet::default(),
             base_era_count: 0,
         })
+    }
+
+    /// Resolve visual definitions for the requested proto-object names.
+    ///
+    /// Already-attempted objects are skipped. Missing objects, missing visual
+    /// files, and invalid visual documents are recorded in [`Self::stats`],
+    /// matching the behavior of a full world load.
+    ///
+    /// Returns the number of visual definitions newly loaded.
+    pub fn load_visuals_for<I, S>(
+        &mut self,
+        src: &mut AssetSource<impl assets::FileProvider>,
+        object_names: I,
+    ) -> usize
+    where
+        I: IntoIterator<Item = S>,
+        S: AsRef<str>,
+    {
+        let requested: HashSet<String> = object_names
+            .into_iter()
+            .map(|name| name.as_ref().to_ascii_lowercase())
+            .collect();
+        let requests = self
+            .database
+            .objects
+            .iter()
+            .filter(|object| requested.contains(&object.name.to_ascii_lowercase()))
+            .filter(|object| {
+                self.assets
+                    .get(&object.name)
+                    .is_none_or(|assets| assets.visual.is_none())
+            })
+            .filter_map(|object| {
+                Some((
+                    object.name.clone(),
+                    object.object_class.clone(),
+                    object.object_types.clone(),
+                    object.visual.clone()?,
+                ))
+            })
+            .collect::<Vec<_>>();
+
+        let mut loaded = 0;
+        for (object_name, object_class, object_types, visual_ref) in requests {
+            self.stats.objects_with_visual += 1;
+            let normalized = visual_ref.replace('/', "\\");
+            let normalized = normalized.trim_start_matches('\\');
+            let path = format!("art\\{normalized}");
+            let object_assets =
+                self.assets
+                    .entry(object_name.clone())
+                    .or_insert_with(|| ObjectAssets {
+                        name: object_name.clone(),
+                        object_class,
+                        object_types,
+                        ..ObjectAssets::default()
+                    });
+            object_assets.visual = Some(path.clone());
+
+            let Some(document) = src.read_xmb(&path) else {
+                self.stats.visuals_failed.push(path);
+                continue;
+            };
+            match database::hw1::visual::parse(&document) {
+                Ok(visual) => {
+                    self.stats.visuals_resolved += 1;
+                    collect_visual_assets(&visual, &mut self.manifest);
+                    collect_object_visual_assets(&visual, object_assets);
+                    self.visuals.insert(object_name, visual);
+                    loaded += 1;
+                }
+                Err(error) => self.stats.visuals_failed.push(format!("{path}: {error}")),
+            }
+        }
+        loaded
     }
 
     /// Unload the current scenario without loading a new one.

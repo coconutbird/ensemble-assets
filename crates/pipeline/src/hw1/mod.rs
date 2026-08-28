@@ -55,4 +55,4 @@ pub use scenario::{
     ScenarioPosition, TalkingHeadRef,
 };
 pub use validate::{ValidateReport, validate};
-pub use world::World;
+pub use world::{World, WorldLoadOptions};

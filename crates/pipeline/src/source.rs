@@ -57,7 +57,7 @@ use assets::{AssetResolver, FileProvider};
 
 /// A loaded ERA archive with a pre-built filename → entry index map.
 struct LoadedArchive<D: AsRef<[u8]>> {
-    reader: era::Reader<era::crypto::decrypt::Reader<std::io::Cursor<D>>>,
+    reader: era::EncryptedBytesReader<D>,
     /// Archive label for diagnostics (e.g. "root.era").
     label: String,
     /// Normalised filename → entry index.
@@ -184,9 +184,7 @@ impl<F: FileProvider> AssetSource<F> {
             .open(path)
             .ok_or_else(|| format!("File not found: {path}"))?;
 
-        // Cursor<D> owns the data and provides Read + Seek.
-        let cursor = std::io::Cursor::new(data);
-        let reader = era::Reader::from_encrypted(cursor, era::TeaKeys::default_archive_keys())
+        let reader = era::Reader::from_encrypted_bytes(data, era::TeaKeys::default_archive_keys())
             .map_err(|e| format!("Failed to parse ERA archive {path}: {e}"))?;
 
         let mut index = HashMap::with_capacity(reader.entries().len());
@@ -709,9 +707,9 @@ impl<F: FileProvider> AssetSource<F> {
     /// Resolve an exact path from ERA archives only (last-loaded wins).
     fn resolve_era(&mut self, path: &str) -> Option<Vec<u8>> {
         let key = normalise_path(path);
-        for archive in self.archives.iter_mut().rev() {
+        for archive in self.archives.iter().rev() {
             if let Some(&entry_idx) = archive.index.get(&key) {
-                return archive.reader.read_entry(entry_idx).ok();
+                return archive.reader.read_entry_direct(entry_idx).ok();
             }
         }
         None
@@ -775,7 +773,11 @@ fn override_fs_path_scan(override_dir: &Path, game_path: &str) -> PathBuf {
 
 // Concrete FileProvider for std environments
 
-/// [`FileProvider`] backed by `std::fs::read` — reads entire files into heap.
+/// [`FileProvider`] backed by read-only memory maps.
+///
+/// Mapping keeps archive startup proportional to the ERA metadata that is
+/// actually inspected. Entry pages are faulted in only when an asset is read,
+/// instead of copying every loaded archive into the heap up front.
 impl AssetSource<StdFileProvider> {
     /// Load a scenario ERA by name (map name, ERA filename, or SCN path).
     ///
@@ -800,10 +802,13 @@ impl AssetSource<StdFileProvider> {
 pub struct StdFileProvider;
 
 impl FileProvider for StdFileProvider {
-    type Data = Vec<u8>;
+    type Data = memmap2::Mmap;
 
     fn open(&self, path: &str) -> Option<Self::Data> {
-        std::fs::read(path).ok()
+        let file = std::fs::File::open(path).ok()?;
+        // SAFETY: AssetSource retains the mapping and treats shipped ERA files
+        // as immutable for its lifetime. Writes go to separate override files.
+        unsafe { memmap2::MmapOptions::new().map(&file).ok() }
     }
 
     fn exists(&self, path: &str) -> bool {
