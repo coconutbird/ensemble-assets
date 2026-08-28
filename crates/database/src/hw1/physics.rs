@@ -7,16 +7,19 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use serde::{Deserialize, Serialize};
+use serde::de::Error as _;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use crate::node_ext::expect_root;
+
+use super::Vector3;
 
 /// Physics configuration from a `.physics.xmb` file.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Physics {
-    /// Blueprint name reference.
-    #[serde(rename = "blueprint")]
-    pub blueprint: Option<String>,
+    /// Blueprint name references. Clamshell objects can use three.
+    #[serde(rename = "blueprint", default)]
+    pub blueprints: Vec<String>,
     /// Whether this object can be thrown by projectiles.
     #[serde(
         rename = "ThrownByProjectiles",
@@ -24,15 +27,270 @@ pub struct Physics {
         deserialize_with = "super::types::deserialize_optional_bool"
     )]
     pub thrown_by_projectiles: Option<bool>,
-    /// Vehicle type name.
-    #[serde(rename = "Vehicle")]
-    pub vehicle: Option<String>,
-    /// Center of mass offset (comma-separated floats).
-    #[serde(rename = "CenterOffset")]
-    pub center_offset: Option<String>,
+    /// Whether projectile impacts destroy this object.
+    #[serde(rename = "DestroyedByProjectiles")]
+    pub destroyed_by_projectiles: Option<bool>,
     /// Terrain effects path.
     #[serde(rename = "TerrainEffects")]
     pub terrain_effects: Option<String>,
+    /// Whether physics is activated when the owning entity dies.
+    #[serde(rename = "PhysicsOnDeath")]
+    pub physics_on_death: Option<bool>,
+    /// Vehicle class and optional vehicle tuning data.
+    #[serde(rename = "Vehicle", alias = "vehicle")]
+    pub vehicle: Option<PhysicsVehicle>,
+    /// Three-part upper/lower/pelvis rigid-body definition.
+    #[serde(rename = "clamshell")]
+    pub clamshell: Option<Clamshell>,
+    /// Center-of-mass offset.
+    #[serde(rename = "CenterOffset", alias = "centerOffset")]
+    pub center_offset: Option<Vector3>,
+    /// Minimum impact velocity that triggers impact behavior.
+    #[serde(rename = "ImpactMinVelocity")]
+    pub impact_min_velocity: Option<f32>,
+    /// Presence-based phantom-body flag.
+    #[serde(
+        rename = "Phantom",
+        default,
+        deserialize_with = "super::types::deserialize_optional_bool"
+    )]
+    pub phantom: Option<bool>,
+    /// Havok motion mode.
+    #[serde(rename = "MotionType")]
+    pub motion_type: Option<MotionType>,
+}
+
+impl Physics {
+    /// Return the primary blueprint used by the legacy single-body pipeline.
+    #[must_use]
+    pub fn primary_blueprint(&self) -> Option<&str> {
+        self.blueprints.first().map(String::as_str).or_else(|| {
+            self.clamshell
+                .as_ref()
+                .and_then(|clamshell| clamshell.upper.as_ref())
+                .map(|part| part.blueprint.as_str())
+        })
+    }
+}
+
+/// A physics vehicle class and its optional tuning block.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct PhysicsVehicle {
+    #[serde(rename = "$text", default)]
+    pub vehicle_type: PhysicsVehicleType,
+    #[serde(rename = "info")]
+    pub info: Option<PhysicsVehicleInfo>,
+}
+
+/// Vehicle classes recognized by `BPhysicsInfo::load`.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum PhysicsVehicleType {
+    /// The XML spelling used for a non-vehicle body.
+    #[default]
+    None,
+    Warthog,
+    Ghost,
+    Scorpion,
+    Cobra,
+    Wolverine,
+    Grizzly,
+    Elephant,
+    Hawk,
+    Hornet,
+    Vulture,
+    Banshee,
+    Vampire,
+    Sentinel,
+    Ground,
+    Gremlin,
+    Chopper,
+    Rhino,
+    Reactor,
+}
+
+impl<'de> Deserialize<'de> for PhysicsVehicleType {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = String::deserialize(deserializer)?;
+        match value.trim() {
+            "false" => Ok(Self::None),
+            "warthog" => Ok(Self::Warthog),
+            "ghost" => Ok(Self::Ghost),
+            "scorpion" => Ok(Self::Scorpion),
+            "cobra" => Ok(Self::Cobra),
+            "wolverine" => Ok(Self::Wolverine),
+            "grizzly" => Ok(Self::Grizzly),
+            "elephant" => Ok(Self::Elephant),
+            "hawk" => Ok(Self::Hawk),
+            "hornet" => Ok(Self::Hornet),
+            "vulture" => Ok(Self::Vulture),
+            "banshee" => Ok(Self::Banshee),
+            "vampire" => Ok(Self::Vampire),
+            "sentinel" => Ok(Self::Sentinel),
+            "ground" => Ok(Self::Ground),
+            "gremlin" => Ok(Self::Gremlin),
+            "chopper" => Ok(Self::Chopper),
+            "rhino" => Ok(Self::Rhino),
+            "reactor" => Ok(Self::Reactor),
+            value => Err(D::Error::custom(format_args!(
+                "unknown physics vehicle type `{value}`"
+            ))),
+        }
+    }
+}
+
+impl Serialize for PhysicsVehicleType {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(match self {
+            Self::None => "false",
+            Self::Warthog => "warthog",
+            Self::Ghost => "ghost",
+            Self::Scorpion => "scorpion",
+            Self::Cobra => "cobra",
+            Self::Wolverine => "wolverine",
+            Self::Grizzly => "grizzly",
+            Self::Elephant => "elephant",
+            Self::Hawk => "hawk",
+            Self::Hornet => "hornet",
+            Self::Vulture => "vulture",
+            Self::Banshee => "banshee",
+            Self::Vampire => "vampire",
+            Self::Sentinel => "sentinel",
+            Self::Ground => "ground",
+            Self::Gremlin => "gremlin",
+            Self::Chopper => "chopper",
+            Self::Rhino => "rhino",
+            Self::Reactor => "reactor",
+        })
+    }
+}
+
+/// Extra suspension and tread tuning nested below a vehicle element.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct PhysicsVehicleInfo {
+    #[serde(rename = "suspension")]
+    pub suspension: Option<VehicleSuspension>,
+    #[serde(rename = "chassisInertia")]
+    pub chassis_inertia: Option<ChassisInertia>,
+    #[serde(rename = "hardpoints")]
+    pub hardpoints: Option<VehicleHardpoints>,
+    #[serde(rename = "treadpoints")]
+    pub treadpoints: Option<VehicleTreadpoints>,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct VehicleSuspension {
+    #[serde(rename = "@springLength")]
+    pub spring_length: Option<f32>,
+    #[serde(rename = "@wheelRadius")]
+    pub wheel_radius: Option<f32>,
+    #[serde(rename = "@springStrength")]
+    pub spring_strength: Option<f32>,
+    #[serde(rename = "@dampingCompression")]
+    pub damping_compression: Option<f32>,
+    #[serde(rename = "@dampingRelaxation")]
+    pub damping_relaxation: Option<f32>,
+    #[serde(rename = "@normalClippingAngle")]
+    pub normal_clipping_angle: Option<f32>,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct ChassisInertia {
+    #[serde(rename = "@yaw")]
+    pub yaw: Option<f32>,
+    #[serde(rename = "@pitch")]
+    pub pitch: Option<f32>,
+    #[serde(rename = "@roll")]
+    pub roll: Option<f32>,
+}
+
+/// Vehicle hardpoint vectors. The engine ignores each child's element name;
+/// `hardpoint` is the canonical spelling emitted by this parser.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct VehicleHardpoints {
+    #[serde(rename = "hardpoint", alias = "point", default)]
+    pub points: Vec<Vector3>,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct VehicleTreadpoints {
+    #[serde(rename = "@height")]
+    pub height: Option<f32>,
+    #[serde(rename = "@length")]
+    pub length: Option<f32>,
+    #[serde(rename = "@velocityScalar")]
+    pub velocity_scalar: Option<f32>,
+    #[serde(rename = "@wheelAttachments")]
+    pub wheel_attachments: Option<bool>,
+    #[serde(rename = "treadpoint", alias = "point", default)]
+    pub points: Vec<Treadpoint>,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct Treadpoint {
+    #[serde(rename = "@zOffset")]
+    pub z_offset: Option<f32>,
+    #[serde(rename = "$text", default)]
+    pub position: Vector3,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct Clamshell {
+    #[serde(rename = "upper")]
+    pub upper: Option<ClamshellPart>,
+    #[serde(rename = "lower")]
+    pub lower: Option<ClamshellPart>,
+    #[serde(rename = "pelvis")]
+    pub pelvis: Option<ClamshellPart>,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct ClamshellPart {
+    #[serde(rename = "@heightOffset")]
+    pub height_offset: Option<f32>,
+    #[serde(rename = "$text", default)]
+    pub blueprint: String,
+}
+
+/// Havok motion modes recognized by the game.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum MotionType {
+    #[default]
+    Normal,
+    Fixed,
+}
+
+impl<'de> Deserialize<'de> for MotionType {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = String::deserialize(deserializer)?;
+        match value.trim() {
+            "normal" => Ok(Self::Normal),
+            "fixed" => Ok(Self::Fixed),
+            value => Err(D::Error::custom(format_args!(
+                "unknown physics motion type `{value}`"
+            ))),
+        }
+    }
+}
+
+impl Serialize for MotionType {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(match self {
+            Self::Normal => "normal",
+            Self::Fixed => "fixed",
+        })
+    }
 }
 
 /// Physical properties from a `.blueprint.xmb` file.
@@ -47,6 +305,9 @@ pub struct Blueprint {
     /// Restitution (bounciness).
     #[serde(rename = "restitution")]
     pub restitution: Option<f32>,
+    /// Center-of-mass offset.
+    #[serde(rename = "centerOfMassOffset")]
+    pub center_of_mass_offset: Option<Vector3>,
     /// Linear damping.
     #[serde(rename = "linearDamping")]
     pub linear_damping: Option<f32>,
@@ -56,6 +317,9 @@ pub struct Blueprint {
     /// Shape reference name.
     #[serde(rename = "shape")]
     pub shape: Option<String>,
+    /// Optional collision half-extents override.
+    #[serde(rename = "halfExtents")]
+    pub half_extents: Option<Vector3>,
 }
 
 /// A Havok collision shape from a `.shp.xmb` file.

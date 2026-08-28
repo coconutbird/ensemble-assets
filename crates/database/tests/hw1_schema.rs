@@ -154,6 +154,7 @@ fn ida_object_handler_fields_round_trip() {
             <Cost ResourceType="Power">25</Cost>
             <CaptureCost Civ="unsc" ResourceType="Supplies">50</CaptureCost>
             <ChildObjects>
+                <Object Type="Object">ChildObject</Object>
                 <Object Type="ParkingLot" AttachBone="root" Offset="7,8,9" Rotation="45" UserCiv="unsc">ChildA</Object>
                 <Object Type="Foundation">ChildB</Object>
             </ChildObjects>
@@ -198,7 +199,15 @@ fn ida_object_handler_fields_round_trip() {
             .child_objects
             .as_ref()
             .map(|children| children.objects.len()),
-        Some(2)
+        Some(3)
+    );
+    assert_eq!(
+        object
+            .child_objects
+            .as_ref()
+            .and_then(|children| children.objects.first())
+            .and_then(|child| child.child_type),
+        Some(database::hw1::objects::ChildObjectType::Object)
     );
     assert_eq!(
         object

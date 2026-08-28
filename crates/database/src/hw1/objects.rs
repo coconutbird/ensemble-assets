@@ -686,6 +686,8 @@ pub struct ChildObjects {
 /// Runtime attachment behavior for a child object.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ChildObjectType {
+    /// Ordinary attached proto-object.
+    Object,
     ParkingLot,
     Socket,
     Rally,
@@ -700,6 +702,7 @@ impl<'de> Deserialize<'de> for ChildObjectType {
         D: Deserializer<'de>,
     {
         match String::deserialize(deserializer)?.as_str() {
+            "Object" => Ok(Self::Object),
             "ParkingLot" => Ok(Self::ParkingLot),
             "Socket" => Ok(Self::Socket),
             "Rally" => Ok(Self::Rally),
@@ -719,6 +722,7 @@ impl Serialize for ChildObjectType {
         S: Serializer,
     {
         serializer.serialize_str(match self {
+            Self::Object => "Object",
             Self::ParkingLot => "ParkingLot",
             Self::Socket => "Socket",
             Self::Rally => "Rally",

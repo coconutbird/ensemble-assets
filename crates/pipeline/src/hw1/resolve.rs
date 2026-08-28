@@ -118,7 +118,7 @@ pub(crate) fn resolve_physics_chain(
     chain: &mut PhysicsChain,
     stats: &mut LoadStats,
 ) {
-    if let Some(bp_ref) = &chain.physics.blueprint {
+    if let Some(bp_ref) = chain.physics.primary_blueprint() {
         let bp_base = format!("physics\\{bp_ref}.blueprint");
         if let Some(bp_doc) = src.read_xmb(&bp_base)
             && let Ok(bp) = database::hw1::physics::parse_blueprint(&bp_doc)

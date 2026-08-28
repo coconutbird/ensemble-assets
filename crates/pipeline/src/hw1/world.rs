@@ -209,7 +209,7 @@ impl World {
                             };
                             resolve_physics_chain(src, &mut chain, &mut stats);
                             if let Some(bp) = &chain.blueprint {
-                                if let Some(bp_ref) = &chain.physics.blueprint {
+                                if let Some(bp_ref) = chain.physics.primary_blueprint() {
                                     obj_assets.blueprint =
                                         Some(format!("physics\\{bp_ref}.blueprint"));
                                 }

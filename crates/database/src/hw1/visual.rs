@@ -18,6 +18,9 @@ pub struct Visual {
     /// Named models (e.g. `"Default"`, `"Turret"`, `"Wheel"`).
     #[serde(rename = "model", default)]
     pub models: Vec<Model>,
+    /// Root-level model-selection logic.
+    #[serde(rename = "logic")]
+    pub logic: Option<Logic>,
 }
 
 /// A named model within a visual.
@@ -66,6 +69,26 @@ pub struct Asset {
     /// Weight for random selection.
     #[serde(rename = "weight")]
     pub weight: Option<i32>,
+    /// Per-texture-channel UV offsets.
+    #[serde(rename = "uvOffset", default)]
+    pub uv_offsets: Vec<UvOffset>,
+    /// Animation event tags attached to this asset.
+    #[serde(rename = "tag", default)]
+    pub tags: Vec<VisualTag>,
+    /// Optional opacity progression.
+    #[serde(rename = "progression")]
+    pub progression: Option<FloatProgression>,
+}
+
+/// A model texture-coordinate offset.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct UvOffset {
+    #[serde(rename = "@channel")]
+    pub channel: Option<u32>,
+    #[serde(rename = "@uOfs")]
+    pub u_offset: Option<f32>,
+    #[serde(rename = "@vOfs")]
+    pub v_offset: Option<f32>,
 }
 
 /// An attachment point.
@@ -86,6 +109,9 @@ pub struct Attachment {
     /// Whether to sync animations.
     #[serde(rename = "@syncanims")]
     pub sync_anims: Option<bool>,
+    /// Discard the source bone's orientation when attaching.
+    #[serde(rename = "@disregardorient")]
+    pub disregard_orient: Option<bool>,
 }
 
 /// A point on a component (impact, board, launch, pickup).
@@ -98,7 +124,7 @@ pub struct Point {
     #[serde(rename = "@bone")]
     pub bone: Option<String>,
     /// Point data (material type, e.g. `"Metal"`).
-    #[serde(rename = "@pointData")]
+    #[serde(rename = "@pointData", alias = "@pointdata")]
     pub point_data: Option<String>,
 }
 
@@ -128,6 +154,9 @@ pub struct LogicEntry {
     /// The asset selected for this variant.
     #[serde(rename = "asset")]
     pub asset: Option<Asset>,
+    /// Nested selection logic for this result model.
+    #[serde(rename = "logic")]
+    pub logic: Option<Logic>,
 }
 
 /// An animation definition.
@@ -151,6 +180,81 @@ pub struct Anim {
     /// Attachments active during this animation.
     #[serde(rename = "attach", default)]
     pub attachments: Vec<Attachment>,
+    /// Meshes enabled only while this animation is active.
+    #[serde(rename = "meshEnable", default)]
+    pub enabled_meshes: Vec<String>,
+}
+
+/// An animation event tag. Attribute meanings depend on `tag_type`, matching
+/// the tagged union used by `BProtoVisualTag`.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct VisualTag {
+    #[serde(rename = "@type", default)]
+    pub tag_type: String,
+    #[serde(rename = "@position")]
+    pub position: Option<f32>,
+    #[serde(rename = "@name")]
+    pub name: Option<String>,
+    #[serde(rename = "@tobone")]
+    pub to_bone: Option<String>,
+    #[serde(rename = "@lifespan")]
+    pub lifespan: Option<f32>,
+    #[serde(rename = "@force")]
+    pub force: Option<f32>,
+    #[serde(rename = "@force2")]
+    pub force2: Option<f32>,
+    #[serde(rename = "@checkvisible", alias = "@checkVisible")]
+    pub check_visible: Option<bool>,
+    #[serde(rename = "@checkFOW")]
+    pub check_fow: Option<bool>,
+    #[serde(rename = "@checkSelected")]
+    pub check_selected: Option<bool>,
+    #[serde(rename = "@end")]
+    pub end: Option<f32>,
+    #[serde(rename = "@start")]
+    pub start: Option<f32>,
+    #[serde(rename = "@lockToGround")]
+    pub lock_to_ground: Option<bool>,
+    #[serde(rename = "@attach")]
+    pub attach: Option<bool>,
+    /// Mini-language used by terrain-alpha, decal, and UV-offset tags.
+    #[serde(rename = "@userData")]
+    pub user_data: Option<String>,
+    #[serde(rename = "@leftRumbleType")]
+    pub left_rumble_type: Option<String>,
+    #[serde(rename = "@rightRumbleType")]
+    pub right_rumble_type: Option<String>,
+    #[serde(rename = "@loop")]
+    pub looped: Option<bool>,
+    #[serde(rename = "@disregardorient")]
+    pub disregard_orient: Option<bool>,
+}
+
+/// An opacity curve applied to a visual asset.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct FloatProgression {
+    #[serde(rename = "Stages")]
+    pub stages: Option<FloatProgressionStages>,
+    #[serde(rename = "Loop")]
+    pub looped: Option<bool>,
+    #[serde(rename = "Cycles")]
+    pub cycles: Option<f32>,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct FloatProgressionStages {
+    #[serde(rename = "Stage", default)]
+    pub stages: Vec<FloatProgressionStage>,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct FloatProgressionStage {
+    #[serde(rename = "Value")]
+    pub value: Option<f32>,
+    #[serde(rename = "Alpha")]
+    pub alpha: Option<f32>,
+    #[serde(rename = "ValueVariance")]
+    pub value_variance: Option<f32>,
 }
 
 /// Parse a visual definition from a `.vis.xmb` document.

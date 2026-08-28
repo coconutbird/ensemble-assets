@@ -49,7 +49,7 @@ pub use powers::Power;
 pub use squads::Squad;
 pub use tactics::TacticData;
 pub use techs::Tech;
-pub use types::{RgbColor, Vector3};
+pub use types::{RgbColor, Vector2, Vector3};
 pub use visual::Visual;
 pub use weapontypes::WeaponType;
 

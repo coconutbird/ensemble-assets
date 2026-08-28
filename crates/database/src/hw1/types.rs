@@ -20,7 +20,32 @@ where
         .transpose()
 }
 
+pub(crate) fn deserialize_optional_i8<'de, D>(deserializer: D) -> Result<Option<i8>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    Option::<String>::deserialize(deserializer)?
+        .map(|value| {
+            value
+                .parse()
+                .map_err(|_| D::Error::custom("invalid signed byte value"))
+        })
+        .transpose()
+}
+
+// `serialize_with` callbacks receive a reference to the field value, so this
+// signature cannot use Clippy's preferred `Option<&u8>` or pass-by-value form.
+#[allow(clippy::ref_option, clippy::trivially_copy_pass_by_ref)]
 pub(crate) fn serialize_optional_u8<S>(value: &Option<u8>, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    value.map(|value| format!("{value}")).serialize(serializer)
+}
+
+// See `serialize_optional_u8`; serde imposes the same callback signature here.
+#[allow(clippy::ref_option, clippy::trivially_copy_pass_by_ref)]
+pub(crate) fn serialize_optional_i8<S>(value: &Option<i8>, serializer: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
@@ -35,6 +60,48 @@ where
     D: Deserializer<'de>,
 {
     bool::deserialize(deserializer).map(Some)
+}
+
+/// A two-component vector encoded as comma- or whitespace-separated text.
+#[derive(Debug, Clone, Copy, Default, PartialEq)]
+pub struct Vector2 {
+    pub x: f32,
+    pub y: f32,
+}
+
+impl Vector2 {
+    fn parse(value: &str) -> Result<Self, &'static str> {
+        let mut components = value
+            .split(|character: char| character == ',' || character.is_ascii_whitespace())
+            .filter(|component| !component.is_empty());
+
+        let x = parse_f32(components.next())?;
+        let y = parse_f32(components.next())?;
+        if components.next().is_some() {
+            return Err("expected exactly two vector components");
+        }
+
+        Ok(Self { x, y })
+    }
+}
+
+impl<'de> Deserialize<'de> for Vector2 {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = String::deserialize(deserializer)?;
+        Self::parse(&value).map_err(D::Error::custom)
+    }
+}
+
+impl Serialize for Vector2 {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&format!("{},{}", self.x, self.y))
+    }
 }
 
 /// A three-component vector encoded as comma- or whitespace-separated text.
@@ -142,5 +209,11 @@ fn parse_u8(component: Option<&str>) -> Result<u8, &'static str> {
 impl fmt::Display for Vector3 {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(formatter, "{},{},{}", self.x, self.y, self.z)
+    }
+}
+
+impl fmt::Display for Vector2 {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(formatter, "{},{}", self.x, self.y)
     }
 }
