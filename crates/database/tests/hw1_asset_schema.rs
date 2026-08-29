@@ -137,6 +137,25 @@ where
 }
 
 #[test]
+fn empty_interpolation_values_use_their_typed_default() {
+    let tactics = assert_synthetic_schema::<database::hw1::TacticData>(
+        r#"<TacticData><Weapon><Name>Rage</Name><DamagePerSecond>1655</DamagePerSecond>
+<ImpactCameraEffect><RadialBlurFactor use3DPos="true"><Value time="0"/></RadialBlurFactor>
+</ImpactCameraEffect></Weapon></TacticData>"#,
+        "TacticData",
+    );
+    let table = tactics.weapons[0]
+        .impact_camera_effect
+        .as_ref()
+        .unwrap()
+        .radial_blur_factor
+        .as_ref()
+        .unwrap();
+
+    assert_eq!(table.values[0].value, database::hw1::Vector2::default());
+}
+
+#[test]
 #[allow(clippy::too_many_lines)]
 fn engine_supported_tactics_fields_are_typed() {
     let tactics = assert_synthetic_schema::<database::hw1::TacticData>(

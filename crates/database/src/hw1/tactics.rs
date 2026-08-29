@@ -364,7 +364,7 @@ pub struct InterpolationTable<T> {
 pub struct InterpolationValue<T> {
     #[serde(rename = "@time", default)]
     pub time: f32,
-    #[serde(rename = "$text")]
+    #[serde(rename = "$text", default)]
     pub value: T,
 }
 
