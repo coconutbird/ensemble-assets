@@ -57,6 +57,12 @@ pub struct LightSetData {
     pub terrain_bump_strength: f32,
     pub terrain_ao_diffuse_intensity: f32,
 
+    // -- Animated light effects --
+    /// Global intensity applied to `.lgt` local-light scenes.
+    pub lgt_intensity_scale: f32,
+    /// Global scale applied when particles sample the retail light volume.
+    pub lgt_particle_intensity_scale: f32,
+
     // -- HDR / tone mapping --
     pub middle_grey: f32,
     pub bright_mask_thresh: f32,
@@ -96,6 +102,8 @@ impl Default for LightSetData {
             terrain_specular_power: 20.0,
             terrain_bump_strength: 1.0,
             terrain_ao_diffuse_intensity: 1.0,
+            lgt_intensity_scale: 1.3,
+            lgt_particle_intensity_scale: 1.4,
             middle_grey: 0.22,
             bright_mask_thresh: 0.8,
             bloom_intensity: 0.0,
@@ -195,6 +203,12 @@ struct GlsRaw {
     terrain_bump_strength: Option<f32>,
     #[serde(rename = "TerrainAODiffuseIntensity")]
     terrain_ao_diffuse_intensity: Option<f32>,
+
+    // -- Animated light effects --
+    #[serde(rename = "LGTIntensityScale")]
+    lgt_intensity_scale: Option<f32>,
+    #[serde(rename = "LGTParticleIntensityScale")]
+    lgt_particle_intensity_scale: Option<f32>,
 
     // -- HDR / tone mapping --
     #[serde(rename = "middleGrey")]
@@ -320,6 +334,14 @@ impl From<GlsRaw> for LightSetData {
             terrain_ao_diffuse_intensity: raw
                 .terrain_ao_diffuse_intensity
                 .unwrap_or(d.terrain_ao_diffuse_intensity),
+            lgt_intensity_scale: raw
+                .lgt_intensity_scale
+                .unwrap_or(d.lgt_intensity_scale)
+                .clamp(0.0125, 16.0),
+            lgt_particle_intensity_scale: raw
+                .lgt_particle_intensity_scale
+                .unwrap_or(d.lgt_particle_intensity_scale)
+                .clamp(0.0125, 16.0),
             middle_grey: raw.middle_grey.unwrap_or(d.middle_grey),
             bright_mask_thresh: raw.bright_mask_thresh.unwrap_or(d.bright_mask_thresh),
             bloom_intensity: raw.bloom_intensity.unwrap_or(d.bloom_intensity),
@@ -435,4 +457,31 @@ pub fn load(
     }
 
     Some(ls)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::parse_gls;
+
+    #[test]
+    fn animated_light_scales_follow_retail_defaults_and_limits() {
+        let defaults = parse_gls(&xmb::Document::from_xml("<lightSet/>").unwrap());
+        assert_eq!(defaults.lgt_intensity_scale.to_bits(), 1.3_f32.to_bits());
+        assert_eq!(
+            defaults.lgt_particle_intensity_scale.to_bits(),
+            1.4_f32.to_bits()
+        );
+
+        let document = xmb::Document::from_xml(
+            "<lightSet><LGTIntensityScale>0</LGTIntensityScale>\
+             <LGTParticleIntensityScale>20</LGTParticleIntensityScale></lightSet>",
+        )
+        .unwrap();
+        let lightset = parse_gls(&document);
+        assert_eq!(lightset.lgt_intensity_scale.to_bits(), 0.0125_f32.to_bits());
+        assert_eq!(
+            lightset.lgt_particle_intensity_scale.to_bits(),
+            16.0_f32.to_bits()
+        );
+    }
 }
