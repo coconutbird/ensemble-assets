@@ -80,9 +80,10 @@ The crates of this repository are in four layers:
 1. `assets`: `no_std` traits that resolve game assets.
 2. `database`: a `no_std` parser that changes XMB documents into typed structs.
 3. `pipeline`: ERA loading, scenario loading, asset resolution and the edit and save workflows.
-4. Tool crates: `pipeline-cli` and `watch`.
+4. Tool crates: `pipeline-cli`, `watch` and `test-utils`.
 
 - Make a crate depend only on crates in lower layers.
+- A dev-dependency on `test-utils` is permitted in all layers.
 - Do not do file or network I/O in `assets` or `database`. `pipeline` supplies the bytes.
 - Keep `assets` and `database` `no_std`.
 - Use the `ensemble-formats` crates to read and write file formats. Put a new format parser or
@@ -100,7 +101,7 @@ The crates of this repository are in four layers:
 - Add a regression test for each defect. Make sure that the test fails before the fix.
 - Make tests deterministic. Compare floating-point values with a tolerance or by bit pattern.
 - If a test needs game files, mark it with `#[ignore = "requires ..."]`. Read the game
-  directory from `HW1_GAME_DIR`.
+  directory from `HW1_GAME_DIR` with `test_utils::require_game_dir`.
 - Run the ignored tests with `cargo test --workspace --all-features -- --ignored`.
 
 ## Working copies

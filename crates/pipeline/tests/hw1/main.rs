@@ -1,9 +1,8 @@
 //! HW1 integration tests.
 //!
-//! Requires `HW1_GAME_DIR` to be set in the workspace `.env` file
-//! (or as an environment variable) pointing to a Halo Wars DE installation.
-//!
-//! These tests are skipped when the variable is not set.
+//! Each test requires `HW1_GAME_DIR` in the workspace `.env` file or in the environment. The
+//! variable names a Halo Wars DE installation. The tests are ignored by default; run them with
+//! `cargo test --workspace --all-features -- --ignored`.
 
 mod base;
 mod save;
@@ -12,17 +11,6 @@ mod scenario;
 use pipeline::hw1::loader::load_game_dir;
 use pipeline::hw1::validate::{FileOutcome, ValidateReport};
 use pipeline::source::{AssetSource, StdFileProvider};
-
-/// Load the `.env` from the workspace root and return `HW1_GAME_DIR` if set.
-fn hw1_game_dir() -> Option<String> {
-    let workspace_root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .and_then(|p| p.parent())
-        .expect("could not find workspace root");
-    let env_path = workspace_root.join(".env");
-    let _ = dotenvy::from_path(&env_path);
-    std::env::var("HW1_GAME_DIR").ok()
-}
 
 fn load_hw1(dir: &str) -> AssetSource<StdFileProvider> {
     load_game_dir(dir)

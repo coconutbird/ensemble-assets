@@ -1,19 +1,8 @@
 //! Integration tests for the watch crate.
 //!
-//! Requires `HW1_GAME_DIR` to point to a Halo Wars DE installation.
+//! The ignored tests require `HW1_GAME_DIR` to point to a Halo Wars DE installation.
 
-use std::path::Path;
-
-/// Load the `.env` from the workspace root and return `HW1_GAME_DIR` if set.
-fn hw1_game_dir() -> Option<String> {
-    let workspace_root = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .and_then(|p| p.parent())
-        .expect("could not find workspace root");
-    let env_path = workspace_root.join(".env");
-    let _ = dotenvy::from_path(&env_path);
-    std::env::var("HW1_GAME_DIR").ok()
-}
+use test_utils::require_game_dir;
 
 #[test]
 fn table_for_override_path_unit() {
@@ -27,11 +16,9 @@ fn table_for_override_path_unit() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn manual_reload_updates_world() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     // Load world + source
     let tmp = tempfile::tempdir().expect("tempdir");
@@ -103,11 +90,9 @@ fn manual_reload_updates_world() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn filesystem_watcher_detects_change() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let tmp = tempfile::tempdir().expect("tempdir");
     let (world, mut src) = pipeline::hw1::World::load(&dir).expect("load");

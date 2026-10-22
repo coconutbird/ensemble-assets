@@ -1,14 +1,12 @@
 //! Base game edit and save tests: round trips for visuals, tactics, physics,
 //! string tables, models, textures and animations.
 
-use super::hw1_game_dir;
+use test_utils::require_game_dir;
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn per_file_save_visual_tactics_physics() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     // 1. Load world
     let (mut world, src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
@@ -171,11 +169,9 @@ fn per_file_save_visual_tactics_physics() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn string_table_edit_save_round_trip() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -285,11 +281,9 @@ fn string_table_edit_save_round_trip() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn model_edit_save_round_trip() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -366,11 +360,9 @@ fn model_edit_save_round_trip() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn texture_edit_save_round_trip() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -440,11 +432,9 @@ fn texture_edit_save_round_trip() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn animation_edit_save_round_trip() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 

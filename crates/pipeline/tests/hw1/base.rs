@@ -1,15 +1,14 @@
 //! Base game integration tests — ERA loading, database, validation,
 //! models, animations, textures, and binary asset verification.
 
-use super::{hw1_game_dir, load_hw1, print_report};
+use super::{load_hw1, print_report};
 use pipeline::hw1::loader::load_game_dir;
+use test_utils::require_game_dir;
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn validate_base_game() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let mut src = load_hw1(&dir);
     let report = pipeline::hw1::validate(&mut src);
@@ -25,11 +24,9 @@ fn validate_base_game() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn load_world_base_game() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (world, _src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -54,11 +51,9 @@ fn load_world_base_game() {
 ///
 /// This catches serialization regressions that would silently drop data.
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn roundtrip_database_serialize() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("HW1_GAME_DIR not set — skipping roundtrip test");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let mut src = load_game_dir(&dir);
 
@@ -220,11 +215,9 @@ fn roundtrip_database_serialize() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn read_model_ugx() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -259,11 +252,9 @@ fn read_model_ugx() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn read_animation_uax() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -299,11 +290,9 @@ fn read_animation_uax() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn read_texture_ddx() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -349,11 +338,9 @@ fn read_texture_ddx() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn validate_binary_assets_sample() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -424,11 +411,9 @@ fn validate_binary_assets_sample() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn texture_refs_populated_eagerly() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (world, _src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -452,11 +437,9 @@ fn texture_refs_populated_eagerly() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn cross_reference_diagnostics() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (world, _src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 
@@ -506,11 +489,9 @@ fn cross_reference_diagnostics() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn inject_bad_reference_produces_diagnostic() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (mut world, _src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
 

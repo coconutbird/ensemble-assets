@@ -1,20 +1,18 @@
 //! Scenario-specific integration tests — ERA layering, SCN parsing,
 //! scenario-scoped manifest collection, and full end-to-end validation.
 
-use super::hw1_game_dir;
+use test_utils::require_game_dir;
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn validate_with_scenario_era() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let scenario_path = format!("{dir}/PHXscn01.era");
-    if !std::path::Path::new(&scenario_path).exists() {
-        eprintln!("SKIP: PHXscn01.era not found");
-        return;
-    }
+    assert!(
+        std::path::Path::new(&scenario_path).exists(),
+        "{scenario_path} not found"
+    );
 
     let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "PHXscn01.era");
     let report = pipeline::hw1::validate(&mut src);
@@ -30,17 +28,15 @@ fn validate_with_scenario_era() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn load_world_with_scenario() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let scenario_path = format!("{dir}/PHXscn01.era");
-    if !std::path::Path::new(&scenario_path).exists() {
-        eprintln!("SKIP: PHXscn01.era not found");
-        return;
-    }
+    assert!(
+        std::path::Path::new(&scenario_path).exists(),
+        "{scenario_path} not found"
+    );
 
     // The refactored pipeline auto-wires scenario loading.
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
@@ -66,11 +62,9 @@ fn load_world_with_scenario() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn dump_scn_structure() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
     let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "PHXscn01.era");
     let list = pipeline::hw1::scenario::ScenarioList::load(&mut src);
 
@@ -139,11 +133,9 @@ fn dump_node(node: &bdt::Node, depth: usize) {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn read_scenario_scn() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "PHXscn01.era");
     let list = pipeline::hw1::scenario::ScenarioList::load(&mut src);
@@ -198,17 +190,15 @@ fn read_scenario_scn() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn scenario_manifest_collection() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let scenario_path = format!("{dir}/PHXscn01.era");
-    if !std::path::Path::new(&scenario_path).exists() {
-        eprintln!("SKIP: PHXscn01.era not found");
-        return;
-    }
+    assert!(
+        std::path::Path::new(&scenario_path).exists(),
+        "{scenario_path} not found"
+    );
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
     world.swap_scenario(&mut src, "PHXscn01.era");
@@ -260,17 +250,15 @@ fn scenario_manifest_collection() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn full_scenario_validation() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let scenario_path = format!("{dir}/PHXscn01.era");
-    if !std::path::Path::new(&scenario_path).exists() {
-        eprintln!("SKIP: PHXscn01.era not found");
-        return;
-    }
+    assert!(
+        std::path::Path::new(&scenario_path).exists(),
+        "{scenario_path} not found"
+    );
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
     world.swap_scenario(&mut src, "PHXscn01");
@@ -346,11 +334,9 @@ fn full_scenario_validation() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn terrain_textures_from_xtt() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
     world.swap_scenario(&mut src, "PHXscn01.era");
@@ -402,17 +388,15 @@ fn terrain_textures_from_xtt() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn edit_save_round_trip() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let scenario_path = format!("{dir}/PHXscn01.era");
-    if !std::path::Path::new(&scenario_path).exists() {
-        eprintln!("SKIP: PHXscn01.era not found");
-        return;
-    }
+    assert!(
+        std::path::Path::new(&scenario_path).exists(),
+        "{scenario_path} not found"
+    );
 
     // 1. Load world
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
@@ -505,17 +489,15 @@ fn edit_save_round_trip() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn terrain_edit_save_round_trip() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let scenario_path = format!("{dir}/PHXscn01.era");
-    if !std::path::Path::new(&scenario_path).exists() {
-        eprintln!("SKIP: PHXscn01.era not found");
-        return;
-    }
+    assert!(
+        std::path::Path::new(&scenario_path).exists(),
+        "{scenario_path} not found"
+    );
 
     // 1. Load world with scenario — terrain should be eagerly loaded
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
@@ -662,17 +644,15 @@ fn terrain_edit_save_round_trip() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn clear_scenario_unloads_state() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let scenario_path = format!("{dir}/PHXscn01.era");
-    if !std::path::Path::new(&scenario_path).exists() {
-        eprintln!("SKIP: PHXscn01.era not found");
-        return;
-    }
+    assert!(
+        std::path::Path::new(&scenario_path).exists(),
+        "{scenario_path} not found"
+    );
 
     // 1. Load world with scenario
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
@@ -752,17 +732,15 @@ fn clear_scenario_unloads_state() {
 }
 
 #[test]
+#[ignore = "requires HW1_GAME_DIR"]
 fn swap_scenario_reloads_state() {
-    let Some(dir) = hw1_game_dir() else {
-        eprintln!("SKIP: HW1_GAME_DIR not set");
-        return;
-    };
+    let dir = require_game_dir("HW1_GAME_DIR");
 
     let scenario_path = format!("{dir}/PHXscn01.era");
-    if !std::path::Path::new(&scenario_path).exists() {
-        eprintln!("SKIP: PHXscn01.era not found");
-        return;
-    }
+    assert!(
+        std::path::Path::new(&scenario_path).exists(),
+        "{scenario_path} not found"
+    );
 
     // 1. Load world with scenario
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
