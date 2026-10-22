@@ -434,7 +434,7 @@ pub fn parse_fls(data: &[u8], ls: &mut LightSetData) {
         return;
     }
 
-    // Fall back to plain-text XML via the xml crate's tree builder.
+    // Fall back to plain-text XML. Find the first `<R>`, `<G>` and `<B>` tags by substring search.
     let Ok(text) = std::str::from_utf8(data) else {
         return;
     };
