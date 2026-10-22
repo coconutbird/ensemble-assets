@@ -1,43 +1,13 @@
 //! Schema tests that parse synthetic HW1 database XML and check typed round trips.
 
+#[path = "support/schema.rs"]
+mod schema;
+
 use std::collections::BTreeSet;
 
-use serde::{Serialize, de::DeserializeOwned};
+use serde::de::DeserializeOwned;
 
-fn assert_schema_round_trip<T>(label: &str, xml: &str) -> T
-where
-    T: DeserializeOwned + Serialize,
-{
-    let document = xmb::Document::from_xml(xml)
-        .unwrap_or_else(|error| panic!("failed to read {label}: {error}"));
-    let root = document.root().expect("synthetic fixture has no root node");
-    let (value, warnings) = bdt_serde::from_node_warned::<T>(root)
-        .unwrap_or_else(|error| panic!("failed to parse {label}: {error}"));
-    let warnings = warnings
-        .into_iter()
-        .map(|warning| warning.to_string())
-        .collect::<BTreeSet<_>>();
-    assert!(
-        warnings.is_empty(),
-        "unmapped schema in {label}:\n{}",
-        warnings.into_iter().collect::<Vec<_>>().join("\n")
-    );
-
-    let serialized = bdt_serde::to_node(root.name.as_str(), &value)
-        .unwrap_or_else(|error| panic!("failed to serialize {label}: {error}"));
-    let (round_trip, warnings) = bdt_serde::from_node_warned::<T>(&serialized)
-        .unwrap_or_else(|error| panic!("failed to reparse {label}: {error}"));
-    let warnings = warnings
-        .into_iter()
-        .map(|warning| warning.to_string())
-        .collect::<BTreeSet<_>>();
-    assert!(
-        warnings.is_empty(),
-        "round-trip schema warnings in {label}:\n{}",
-        warnings.into_iter().collect::<Vec<_>>().join("\n")
-    );
-    round_trip
-}
+use schema::assert_xml_round_trip;
 
 fn assert_table_schema<T>(label: &str, xml: &str, root_name: &str, child_name: &str)
 where
@@ -145,7 +115,7 @@ fn shipped_game_data_has_no_unmapped_fields() {
 
 #[test]
 fn ida_object_handler_fields_round_trip() {
-    let object = assert_schema_round_trip::<database::hw1::ProtoObject>(
+    let (_, object) = assert_xml_round_trip::<database::hw1::ProtoObject>(
         "synthetic proto object",
         r#"<Object name="SyntheticObject">
             <ActiveScanChance radiusScale="1.5">0.25</ActiveScanChance>
@@ -187,6 +157,7 @@ fn ida_object_handler_fields_round_trip() {
             <TrainLimit Type="Unit" Count="6" Bucket="1">UnitA</TrainLimit>
             <TrainLimit Type="Squad" Count="4" Bucket="2">SquadA</TrainLimit>
         </Object>"#,
+        "Object",
     );
 
     assert_eq!(object.name, "SyntheticObject");
@@ -229,7 +200,7 @@ fn ida_object_handler_fields_round_trip() {
 
 #[test]
 fn ida_ability_and_power_handler_fields_round_trip() {
-    let ability = assert_schema_round_trip::<database::hw1::Ability>(
+    let (_, ability) = assert_xml_round_trip::<database::hw1::Ability>(
         "synthetic ability",
         r#"<Ability Name="SyntheticAbility">
             <Icon>ui\ability_icon</Icon>
@@ -240,12 +211,13 @@ fn ida_ability_and_power_handler_fields_round_trip() {
             <Sprinting />
             <DodgeModifier>0.25</DodgeModifier>
         </Ability>"#,
+        "Ability",
     );
     assert_eq!(ability.icon.as_deref(), Some("ui\\ability_icon"));
     assert_eq!(ability.objects, ["UnitA", "UnitB"]);
     assert_eq!(ability.sprinting, Some(true));
 
-    let power = assert_schema_round_trip::<database::hw1::Power>(
+    let (_, power) = assert_xml_round_trip::<database::hw1::Power>(
         "synthetic power",
         r#"<Power name="SyntheticPower">
             <TriggerScript>trigger.lua</TriggerScript>
@@ -276,6 +248,7 @@ fn ida_ability_and_power_handler_fields_round_trip() {
                 <DataLevel level="1"><Data type="int" name="Count">2</Data></DataLevel>
             </Attributes>
         </Power>"#,
+        "Power",
     );
     let attributes = power.attributes.expect("power attributes");
     assert_eq!(attributes.icon_locations, [1, 4]);
@@ -304,7 +277,7 @@ fn ida_ability_and_power_handler_fields_round_trip() {
 
 #[test]
 fn ida_tech_effect_handler_fields_round_trip() {
-    let tech = assert_schema_round_trip::<database::hw1::Tech>(
+    let (_, tech) = assert_xml_round_trip::<database::hw1::Tech>(
         "synthetic tech",
         r#"<Tech name="SyntheticTech" type="Normal">
             <OrPrereqs>
@@ -325,6 +298,7 @@ fn ida_tech_effect_handler_fields_round_trip() {
                 <Effect type="AttachSquad" squadType="SquadC" />
             </Effects>
         </Tech>"#,
+        "Tech",
     );
     let effects = &tech.effects.expect("tech effects").entries;
     assert_eq!(effects.len(), 3);
@@ -346,7 +320,7 @@ fn ida_tech_effect_handler_fields_round_trip() {
 
 #[test]
 fn ida_leader_and_squad_handler_fields_round_trip() {
-    let leader = assert_schema_round_trip::<database::hw1::Leader>(
+    let (_, leader) = assert_xml_round_trip::<database::hw1::Leader>(
         "synthetic leader",
         r#"<Leader Name="SyntheticLeader">
             <Civ>unsc</Civ>
@@ -358,6 +332,7 @@ fn ida_leader_and_squad_handler_fields_round_trip() {
                 <Power>SupportA</Power><Power>SupportB</Power>
             </SupportPower>
         </Leader>"#,
+        "Leader",
     );
     assert_eq!(leader.power.as_deref(), Some("PrimaryPower"));
     assert_eq!(leader.starting_units.len(), 2);
@@ -370,7 +345,7 @@ fn ida_leader_and_squad_handler_fields_round_trip() {
     );
     assert_eq!(leader.support_powers[0].powers, ["SupportA", "SupportB"]);
 
-    let squad = assert_schema_round_trip::<database::hw1::Squad>(
+    let (_, squad) = assert_xml_round_trip::<database::hw1::Squad>(
         "synthetic squad",
         r#"<Squad name="SyntheticSquad">
             <HPBar sizeX="2" sizeY="3" offset="1,2,3">Vehicle</HPBar>
@@ -384,6 +359,7 @@ fn ida_leader_and_squad_handler_fields_round_trip() {
             <Sound Type="Select" Squad="SquadA" World="WorldA" CastingUnitOnly="true">cue_select</Sound>
             <Level>3</Level><TechLevel>4</TechLevel>
         </Squad>"#,
+        "Squad",
     );
     assert_eq!(squad.hp_bar.as_ref().and_then(|bar| bar.size_x), Some(2.0));
     assert_eq!(
@@ -407,7 +383,7 @@ fn ida_leader_and_squad_handler_fields_round_trip() {
 
 #[test]
 fn ida_game_data_scalar_types_round_trip() {
-    let game_data = assert_schema_round_trip::<database::hw1::GameData>(
+    let (_, game_data) = assert_xml_round_trip::<database::hw1::GameData>(
         "synthetic game data",
         r#"<GameData>
             <DifficultyNormali>1.25</DifficultyNormali>
@@ -431,6 +407,7 @@ fn ida_game_data_scalar_types_round_trip() {
                 <InfectionMapEntry base="UnitB" infected="InfectedUnitB" infectedSquad="InfectedSquadB" />
             </InfectionMap>
         </GameData>"#,
+        "GameData",
     );
     assert_eq!(game_data.difficulty_normal, Some(1.25));
     assert_eq!(game_data.good_against_min_attack_rating, Some(7));

@@ -1,9 +1,14 @@
 //! Schema tests for HW1 asset documents, such as tactics files, with typed round trips.
 
+#[path = "support/schema.rs"]
+mod schema;
+
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
 use serde::{Serialize, de::DeserializeOwned};
+
+use schema::{NodeRoundTrip, assert_xml_round_trip, round_trip_node};
 
 fn fixture_root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -66,27 +71,21 @@ where
             path.display()
         );
 
-        let (value, warnings) = bdt_serde::from_node_warned::<T>(root)
-            .unwrap_or_else(|error| panic!("failed to deserialize {}: {error}", path.display()));
+        let label = path.display().to_string();
+        let NodeRoundTrip {
+            original,
+            round_trip: _,
+            warnings,
+            round_trip_warnings,
+        } = round_trip_node::<T>(&label, root);
         for warning in warnings {
-            problems
-                .entry(warning.to_string())
-                .or_insert_with(|| path.display().to_string());
+            problems.entry(warning).or_insert_with(|| label.clone());
         }
-        inspect(&value);
-
-        let serialized = bdt_serde::to_node(root_name, &value)
-            .unwrap_or_else(|error| panic!("failed to serialize {}: {error}", path.display()));
-        let (_, warnings) = bdt_serde::from_node_warned::<T>(&serialized).unwrap_or_else(|error| {
-            panic!(
-                "failed to deserialize round trip for {}: {error}",
-                path.display()
-            )
-        });
-        for warning in warnings {
+        inspect(&original);
+        for warning in round_trip_warnings {
             problems
                 .entry(format!("round trip: {warning}"))
-                .or_insert_with(|| path.display().to_string());
+                .or_insert_with(|| label.clone());
         }
     }
 
@@ -102,45 +101,10 @@ where
     files.len()
 }
 
-fn assert_synthetic_schema<T>(xml: &str, root_name: &str) -> T
-where
-    T: DeserializeOwned + Serialize,
-{
-    let document = xmb::Document::from_xml(xml).expect("synthetic XML should parse");
-    let root = document.root().expect("synthetic XML should have a root");
-    assert_eq!(root.name, root_name);
-
-    let (value, warnings) = bdt_serde::from_node_warned::<T>(root)
-        .expect("synthetic XML should deserialize into its schema");
-    assert!(
-        warnings.is_empty(),
-        "unmapped synthetic schema:\n{}",
-        warnings
-            .iter()
-            .map(ToString::to_string)
-            .collect::<Vec<_>>()
-            .join("\n")
-    );
-
-    let serialized = bdt_serde::to_node(root_name, &value)
-        .expect("synthetic schema should serialize back to a node");
-    let (_, warnings) = bdt_serde::from_node_warned::<T>(&serialized)
-        .expect("serialized synthetic schema should deserialize");
-    assert!(
-        warnings.is_empty(),
-        "unmapped synthetic round trip:\n{}",
-        warnings
-            .iter()
-            .map(ToString::to_string)
-            .collect::<Vec<_>>()
-            .join("\n")
-    );
-    value
-}
-
 #[test]
 fn empty_interpolation_values_use_their_typed_default() {
-    let tactics = assert_synthetic_schema::<database::hw1::TacticData>(
+    let (tactics, _) = assert_xml_round_trip::<database::hw1::TacticData>(
+        "synthetic tactics",
         r#"<TacticData><Weapon><Name>Rage</Name><DamagePerSecond>1655</DamagePerSecond>
 <ImpactCameraEffect><RadialBlurFactor use3DPos="true"><Value time="0"/></RadialBlurFactor>
 </ImpactCameraEffect></Weapon></TacticData>"#,
@@ -159,7 +123,8 @@ fn empty_interpolation_values_use_their_typed_default() {
 
 #[test]
 fn engine_supported_tactics_fields_are_typed() {
-    let tactics = assert_synthetic_schema::<database::hw1::TacticData>(
+    let (tactics, _) = assert_xml_round_trip::<database::hw1::TacticData>(
+        "synthetic tactics",
         r#"<TacticData>
 <Weapon>
   <Name>AllWeaponFields</Name><DamagePerSecond>12.5</DamagePerSecond>
@@ -283,7 +248,8 @@ fn engine_supported_tactics_fields_are_typed() {
 
 #[test]
 fn engine_supported_physics_fields_are_typed() {
-    let physics = assert_synthetic_schema::<database::hw1::Physics>(
+    let (physics, _) = assert_xml_round_trip::<database::hw1::Physics>(
+        "synthetic physics",
         r#"<physics>
   <blueprint>body_a</blueprint><blueprint>body_b</blueprint>
   <ThrownByProjectiles>true</ThrownByProjectiles>
@@ -321,7 +287,8 @@ fn engine_supported_physics_fields_are_typed() {
         2
     );
 
-    let blueprint = assert_synthetic_schema::<database::hw1::Blueprint>(
+    let (blueprint, _) = assert_xml_round_trip::<database::hw1::Blueprint>(
+        "synthetic blueprint",
         r"<blueprint><mass>10</mass><friction>0.5</friction><restitution>0.25</restitution>
   <centerOfMassOffset>1,2,3</centerOfMassOffset><angularDamping>0.1</angularDamping>
   <linearDamping>0.2</linearDamping><shape>shape_ref</shape><halfExtents>4,5,6</halfExtents>
@@ -334,7 +301,8 @@ fn engine_supported_physics_fields_are_typed() {
 
 #[test]
 fn engine_supported_visual_fields_are_typed() {
-    let visual = assert_synthetic_schema::<database::hw1::Visual>(
+    let (visual, _) = assert_xml_round_trip::<database::hw1::Visual>(
+        "synthetic visual",
         r#"<visual defaultmodel="Default">
   <model name="Default"><component>
     <asset type="Model"><file>model</file><damagefile>model_damage</damagefile><weight>2</weight>
