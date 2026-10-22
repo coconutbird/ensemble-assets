@@ -11,6 +11,7 @@
 //! 7. **Manifest** ([`manifest`]) — passive inventory of all binary asset references
 //! 8. **String table** ([`stringtable`]) — localized string lookup by `_locID`
 //! 9. **Terrain textures** ([`terrain`]) — terrain texture paths and decoded terrain maps
+//! 10. **Particle effects** ([`pfx`]) — PFX path resolution and loading
 //!
 //! # Usage
 //!
@@ -36,6 +37,7 @@ pub mod lightset;
 pub mod loader;
 pub mod manifest;
 pub mod merge;
+pub mod pfx;
 pub mod resolve;
 pub mod scenario;
 pub mod stringtable;
