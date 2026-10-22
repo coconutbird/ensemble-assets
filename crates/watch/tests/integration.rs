@@ -70,7 +70,6 @@ fn manual_reload_updates_world() {
             }
             watch::WorldEvent::Error(e) => panic!("unexpected error: {e}"),
             watch::WorldEvent::UnknownFile(p) => panic!("unexpected unknown: {}", p.display()),
-            watch::WorldEvent::TableReloaded(_) => {}
         }
     }
 

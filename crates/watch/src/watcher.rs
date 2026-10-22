@@ -14,8 +14,6 @@ use pipeline::source::{AssetSource, StdFileProvider};
 pub enum WorldEvent {
     /// An asset was successfully reloaded from disk.
     AssetReloaded(AssetKind),
-    /// Legacy alias for database-table reloads.
-    TableReloaded(TableId),
     /// Cross-reference diagnostics were re-computed after a reload.
     DiagnosticsUpdated(DiagnosticReport),
     /// A file changed but could not be mapped to a known asset type.
@@ -35,7 +33,7 @@ pub enum WorldEvent {
 /// // Engine hot-reload loop:
 /// for event in watcher.poll() {
 ///     match event {
-///         WorldEvent::TableReloaded(t) => println!("reloaded {t:?}"),
+///         WorldEvent::AssetReloaded(AssetKind::DatabaseTable(t)) => println!("reloaded {t:?}"),
 ///         WorldEvent::DiagnosticsUpdated(r) => r.print_summary(),
 ///         _ => {}
 ///     }
