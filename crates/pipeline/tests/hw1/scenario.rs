@@ -505,7 +505,6 @@ fn edit_save_round_trip() {
 }
 
 #[test]
-#[allow(clippy::float_cmp, clippy::too_many_lines)] // Exact values verify lossless binary round trips.
 fn terrain_edit_save_round_trip() {
     let Some(dir) = hw1_game_dir() else {
         eprintln!("SKIP: HW1_GAME_DIR not set");
@@ -628,11 +627,13 @@ fn terrain_edit_save_round_trip() {
     let saved_xtd_bytes = std::fs::read(terrain_data_files[0]).expect("read saved XTD");
     let saved_xtd = xtd::Reader::read(&saved_xtd_bytes).expect("parse saved XTD");
     assert_eq!(
-        saved_xtd.header.tile_scale, 42.0,
+        saved_xtd.header.tile_scale.to_bits(),
+        42.0_f32.to_bits(),
         "saved XTD tile_scale should be 42.0"
     );
     assert_eq!(
-        saved_xtd.header.world_min[1], -999.0,
+        saved_xtd.header.world_min[1].to_bits(),
+        (-999.0_f32).to_bits(),
         "saved XTD world_min.y should be -999.0"
     );
 
@@ -652,7 +653,8 @@ fn terrain_edit_save_round_trip() {
     let re_read_bytes = std::fs::read(&xtd_path).expect("read re-saved XTD");
     let re_read = xtd::Reader::read(&re_read_bytes).expect("parse re-saved XTD");
     assert_eq!(
-        re_read.header.tile_scale, 123.0,
+        re_read.header.tile_scale.to_bits(),
+        123.0_f32.to_bits(),
         "per-file saved XTD tile_scale should be 123.0"
     );
 

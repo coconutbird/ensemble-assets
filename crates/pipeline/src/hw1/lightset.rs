@@ -21,40 +21,63 @@ use super::scenario::ScenarioDescriptor;
 #[derive(Debug, Clone)]
 pub struct LightSetData {
     // -- Sun / directional light --
+    /// Sun inclination in degrees, from the GLS `sunInclination` tag.
     pub sun_inclination_deg: f32,
+    /// Sun rotation in degrees, from the GLS `sunRotation` tag.
     pub sun_rotation_deg: f32,
     /// Sun colour for terrain, normalised 0..1.
     pub sun_terrain_color: [f32; 3],
+    /// Sun intensity on terrain, from the GLS `sunTerrainIntensity` tag.
     pub sun_terrain_intensity: f32,
+    /// Darkness of terrain shadows, from the GLS `sunTerrainShadowDarkness` tag.
     pub sun_terrain_shadow_darkness: f32,
+    /// `true` if the sun casts shadows, from the GLS `sunShadows` tag.
     pub sun_shadows: bool,
 
     // -- Hemisphere fill light --
+    /// Top hemisphere colour for terrain, normalised 0..1 (`hemiTerrainTopColor`).
     pub hemi_terrain_top_color: [f32; 3],
+    /// Bottom hemisphere colour for terrain, normalised 0..1 (`hemiTerrainBottomColor`).
     pub hemi_terrain_bottom_color: [f32; 3],
+    /// Hemisphere light intensity on terrain (`hemiTerrainIntensity`).
     pub hemi_terrain_intensity: f32,
 
     // -- SH fill --
+    /// Intensity of the SH fill light, from the GLS `SHFillIntensity` tag.
     pub sh_fill_intensity: f32,
+    /// Nine SH coefficients of the red channel, from the FLS file.
     pub sh_coeffs_r: [f32; 9],
+    /// Nine SH coefficients of the green channel, from the FLS file.
     pub sh_coeffs_g: [f32; 9],
+    /// Nine SH coefficients of the blue channel, from the FLS file.
     pub sh_coeffs_b: [f32; 9],
 
     // -- Z-fog --
+    /// Z-fog colour, normalised 0..1 (`zFogColor`).
     pub z_fog_color: [f32; 3],
+    /// Z-fog intensity (`zFogIntensity`).
     pub z_fog_intensity: f32,
+    /// Z-fog start distance (`zFogStart`).
     pub z_fog_start: f32,
+    /// Z-fog density (`zFogDensity`).
     pub z_fog_density: f32,
 
     // -- Planar fog --
+    /// Planar fog colour, normalised 0..1 (`planarFogColor`).
     pub planar_fog_color: [f32; 3],
+    /// Planar fog intensity (`planarFogIntensity`).
     pub planar_fog_intensity: f32,
+    /// Planar fog start height (`planarFogStart`).
     pub planar_fog_start: f32,
+    /// Planar fog density (`planarFogDensity`).
     pub planar_fog_density: f32,
 
     // -- Terrain material --
+    /// Terrain specular power (`terrainSpecularPower`).
     pub terrain_specular_power: f32,
+    /// Terrain bump map strength (`terrainBumpStrength`).
     pub terrain_bump_strength: f32,
+    /// Terrain ambient occlusion diffuse intensity (`TerrainAODiffuseIntensity`).
     pub terrain_ao_diffuse_intensity: f32,
 
     // -- Animated light effects --
@@ -64,14 +87,23 @@ pub struct LightSetData {
     pub lgt_particle_intensity_scale: f32,
 
     // -- HDR / tone mapping --
+    /// Middle grey value for tone mapping (`middleGrey`).
     pub middle_grey: f32,
+    /// Brightness threshold of the bloom mask (`brightMaskThresh`).
     pub bright_mask_thresh: f32,
+    /// Bloom intensity (`bloomIntensity`).
     pub bloom_intensity: f32,
+    /// Gaussian sigma of the bloom blur (`bloomSigma`).
     pub bloom_sigma: f32,
+    /// Eye adaptation rate (`adaptationRate`).
     pub adaptation_rate: f32,
+    /// Minimum log-average luminance (`logAveMin`).
     pub log_ave_min: f32,
+    /// Maximum log-average luminance (`logAveMax`).
     pub log_ave_max: f32,
+    /// Minimum white point (`whitePointMin`).
     pub white_point_min: f32,
+    /// Maximum white point (`whitePointMax`).
     pub white_point_max: f32,
 }
 

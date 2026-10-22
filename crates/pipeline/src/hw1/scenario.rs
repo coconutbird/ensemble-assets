@@ -195,6 +195,7 @@ pub struct TerrainInfo {
 /// `<Lightsets>` wrapper containing `<Lightset>` children.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct LightsetsWrapper {
+    /// Lightset names from the `<Lightset>` children.
     #[serde(rename = "Lightset", default)]
     pub entries: Vec<String>,
 }
@@ -202,6 +203,7 @@ pub struct LightsetsWrapper {
 /// `<PlayerPlacement>` element with a `Type` attribute.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PlayerPlacementInfo {
+    /// Placement type from the `Type` attribute.
     #[serde(rename = "@Type", default)]
     pub placement_type: String,
 }
@@ -209,6 +211,7 @@ pub struct PlayerPlacementInfo {
 /// `<Minimap>` wrapper containing `<MinimapTexture>` child.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct MinimapInfo {
+    /// Minimap texture path from `<MinimapTexture>`.
     #[serde(rename = "MinimapTexture", default)]
     pub texture: Option<String>,
 }
@@ -216,6 +219,7 @@ pub struct MinimapInfo {
 /// `<Objects>` wrapper containing `<Object>` children.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct ObjectsWrapper {
+    /// Scenario objects from the `<Object>` children.
     #[serde(rename = "Object", default)]
     pub entries: Vec<ScenarioObject>,
 }
@@ -223,6 +227,7 @@ pub struct ObjectsWrapper {
 /// `<Players>` wrapper containing `<Player>` children.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PlayersWrapper {
+    /// Players from the `<Player>` children.
     #[serde(rename = "Player", default)]
     pub entries: Vec<ScenarioPlayer>,
 }
@@ -230,6 +235,7 @@ pub struct PlayersWrapper {
 /// `<Positions>` wrapper containing `<Position>` children.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PositionsWrapper {
+    /// Player start positions from the `<Position>` children.
     #[serde(rename = "Position", default)]
     pub entries: Vec<ScenarioPosition>,
 }
@@ -237,6 +243,7 @@ pub struct PositionsWrapper {
 /// `<Cinematics>` wrapper containing `<Cinematic>` children.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct CinematicsWrapper {
+    /// Cinematics from the `<Cinematic>` children.
     #[serde(rename = "Cinematic", default)]
     pub entries: Vec<CinematicRef>,
 }
@@ -244,6 +251,7 @@ pub struct CinematicsWrapper {
 /// `<TalkingHeads>` wrapper containing `<TalkingHead>` children.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TalkingHeadsWrapper {
+    /// Talking heads from the `<TalkingHead>` children.
     #[serde(rename = "TalkingHead", default)]
     pub entries: Vec<TalkingHeadRef>,
 }
@@ -251,6 +259,7 @@ pub struct TalkingHeadsWrapper {
 /// `<Objectives>` wrapper containing `<Objective>` children.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct ObjectivesWrapper {
+    /// Objectives from the `<Objective>` children.
     #[serde(rename = "Objective", default)]
     pub entries: Vec<ObjectiveRef>,
 }
@@ -258,6 +267,7 @@ pub struct ObjectivesWrapper {
 /// `<SoundBanks>` wrapper — child element names vary, so we collect text.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct SoundBanksWrapper {
+    /// Sound bank names from the `<SoundBank>` children.
     #[serde(rename = "SoundBank", default)]
     pub entries: Vec<String>,
 }
@@ -265,12 +275,16 @@ pub struct SoundBanksWrapper {
 /// Sim bounds from the SCN file.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct SimBoundsInfo {
+    /// Minimum X of the sim bounds, from `<MinX>`.
     #[serde(rename = "MinX", default)]
     pub min_x: Option<f32>,
+    /// Minimum Z of the sim bounds, from `<MinZ>`.
     #[serde(rename = "MinZ", default)]
     pub min_z: Option<f32>,
+    /// Maximum X of the sim bounds, from `<MaxX>`.
     #[serde(rename = "MaxX", default)]
     pub max_x: Option<f32>,
+    /// Maximum Z of the sim bounds, from `<MaxZ>`.
     #[serde(rename = "MaxZ", default)]
     pub max_z: Option<f32>,
 }

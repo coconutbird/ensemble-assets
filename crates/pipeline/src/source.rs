@@ -799,15 +799,20 @@ impl AssetSource<StdFileProvider> {
     }
 }
 
+/// `FileProvider` that reads files from the local file system and maps them into memory.
 pub struct StdFileProvider;
 
 impl FileProvider for StdFileProvider {
     type Data = memmap2::Mmap;
 
+    #[expect(
+        unsafe_code,
+        reason = "memmap2 file mapping is unsafe; this is the one permitted use"
+    )]
     fn open(&self, path: &str) -> Option<Self::Data> {
         let file = std::fs::File::open(path).ok()?;
-        // SAFETY: AssetSource retains the mapping and treats shipped ERA files
-        // as immutable for its lifetime. Writes go to separate override files.
+        // SAFETY: `AssetSource` keeps the mapping for its lifetime. Shipped ERA files are
+        // immutable while they are mapped. All writes go to separate override files.
         unsafe { memmap2::MmapOptions::new().map(&file).ok() }
     }
 

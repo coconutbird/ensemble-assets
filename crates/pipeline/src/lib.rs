@@ -94,4 +94,5 @@ impl core::fmt::Display for Error {
 
 impl std::error::Error for Error {}
 
+/// Result type of the pipeline, with `Error` as the error type.
 pub type Result<T> = std::result::Result<T, Error>;

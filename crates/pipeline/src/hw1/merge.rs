@@ -38,10 +38,15 @@ pub struct ModOverlay {
 /// A field-level conflict: two mods changed the same entry field differently,
 /// or two mods shipped the same loose file.
 pub struct Conflict {
+    /// Table name, or `files` for a loose file conflict.
     pub table: String,
+    /// Entry key in the table, or the game path of the loose file.
     pub entry: String,
+    /// Field name, or `<entry>` / `<file>` for a whole entry or file.
     pub field: String,
+    /// Label of the mod whose value lost.
     pub previous_mod: String,
+    /// Label of the mod whose value won.
     pub winning_mod: String,
 }
 
@@ -60,10 +65,13 @@ impl Default for MergeOptions {
 
 /// Summary of a merge run.
 pub struct MergeReport {
+    /// Paths of all files that the merge wrote.
     pub files_written: Vec<PathBuf>,
+    /// All conflicts between mods, in detection order.
     pub conflicts: Vec<Conflict>,
 }
 
+/// Error of a mod merge.
 #[derive(Debug)]
 pub enum MergeError {
     /// No mods were provided to merge.

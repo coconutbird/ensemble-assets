@@ -65,17 +65,29 @@ pub struct ObjectAssets {
 /// Statistics from the world loading process.
 #[derive(Debug, Clone, Default)]
 pub struct LoadStats {
+    /// Number of objects in the database.
     pub objects_total: usize,
+    /// Number of objects that reference a visual.
     pub objects_with_visual: usize,
+    /// Number of objects that reference a tactics file.
     pub objects_with_tactics: usize,
+    /// Number of objects that reference a physics entry.
     pub objects_with_physics: usize,
+    /// Number of visuals that loaded.
     pub visuals_resolved: usize,
+    /// Visuals that failed to load.
     pub visuals_failed: Vec<String>,
+    /// Number of tactics files that loaded.
     pub tactics_resolved: usize,
+    /// Tactics files that failed to load.
     pub tactics_failed: Vec<String>,
+    /// Number of physics files that loaded.
     pub physics_resolved: usize,
+    /// Physics files that failed to load.
     pub physics_failed: Vec<String>,
+    /// Number of blueprint files that loaded.
     pub blueprints_resolved: usize,
+    /// Number of shape files that loaded.
     pub shapes_resolved: usize,
 }
 

@@ -63,25 +63,40 @@ pub struct AssetManifest {
 /// Result of verifying binary asset references against loaded archives.
 #[derive(Debug, Clone, Default)]
 pub struct VerifyResult {
+    /// Number of model (`.ugx`) references found in the archives.
     pub models_found: usize,
+    /// Paths of model references not found in the archives.
     pub models_missing: Vec<String>,
+    /// Number of animation (`.uax`) references found in the archives.
     pub anims_found: usize,
+    /// Paths of animation references not found in the archives.
     pub anims_missing: Vec<String>,
+    /// Number of texture (`.ddx`) references found in the archives.
     pub textures_found: usize,
+    /// Paths of texture references not found in the archives.
     pub textures_missing: Vec<String>,
 }
 
 /// Result of deep-validating binary assets (parse every file, not just check existence).
 #[derive(Debug, Clone, Default)]
 pub struct BinaryValidation {
+    /// Number of models that parse without error.
     pub models_ok: usize,
+    /// Models that failed to parse, as `path: error`.
     pub models_failed: Vec<String>,
+    /// Paths of models not found in the archives.
     pub models_missing: Vec<String>,
+    /// Number of animations that parse without error.
     pub anims_ok: usize,
+    /// Animations that failed to parse, as `path: error`.
     pub anims_failed: Vec<String>,
+    /// Paths of animations not found in the archives.
     pub anims_missing: Vec<String>,
+    /// Number of textures that parse without error.
     pub textures_ok: usize,
+    /// Textures that failed to parse, as `path: error`.
     pub textures_failed: Vec<String>,
+    /// Paths of textures not found in the archives.
     pub textures_missing: Vec<String>,
 }
 

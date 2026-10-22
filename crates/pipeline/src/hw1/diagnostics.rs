@@ -71,11 +71,19 @@ pub enum Location {
     /// The whole file/table.
     Table(TableId),
     /// A specific named entry within a table (e.g. object "warthog").
-    Entry { table: TableId, name: String },
+    Entry {
+        /// Table that holds the entry.
+        table: TableId,
+        /// Name of the entry.
+        name: String,
+    },
     /// A specific field on a named entry.
     Field {
+        /// Table that holds the entry.
         table: TableId,
+        /// Name of the entry.
         name: String,
+        /// Name of the field, as in the XML (for example `Visual`).
         field: String,
     },
 }
@@ -120,11 +128,14 @@ impl fmt::Display for Diagnostic {
 /// Aggregate diagnostics from a validation pass.
 #[derive(Debug, Clone, Default)]
 pub struct DiagnosticReport {
+    /// All diagnostics, in the order of the checks.
     pub diagnostics: Vec<Diagnostic>,
+    /// Time that the validation pass took.
     pub elapsed: std::time::Duration,
 }
 
 impl DiagnosticReport {
+    /// Return the number of diagnostics with `Severity::Error`.
     #[must_use]
     pub fn errors(&self) -> usize {
         self.diagnostics
@@ -133,6 +144,7 @@ impl DiagnosticReport {
             .count()
     }
 
+    /// Return the number of diagnostics with `Severity::Warning`.
     #[must_use]
     pub fn warnings(&self) -> usize {
         self.diagnostics
@@ -141,6 +153,7 @@ impl DiagnosticReport {
             .count()
     }
 
+    /// Return the number of diagnostics with `Severity::Info`.
     #[must_use]
     pub fn infos(&self) -> usize {
         self.diagnostics
@@ -172,283 +185,274 @@ impl DiagnosticReport {
 /// - Each object's `physics_info` references a loaded physics entry
 /// - Each squad's unit entries reference valid proto-object names
 /// - No duplicate object or squad names
-#[allow(clippy::too_many_lines)] // Keeping the validation checklist linear makes each rule auditable.
 pub fn validate_world(world: &super::World) -> DiagnosticReport {
     let start = std::time::Instant::now();
     let mut diagnostics = Vec::new();
 
     // ── Build lookup sets ───────────────────────────────────────────
-    let object_names: std::collections::HashSet<&str> = world
-        .database
-        .objects
-        .iter()
-        .map(|o| o.name.as_str())
-        .collect();
-
-    let squad_names: std::collections::HashSet<&str> = world
-        .database
-        .squads
-        .iter()
-        .map(|s| s.name.as_str())
-        .collect();
-
-    let tech_names: std::collections::HashSet<&str> = world
-        .database
-        .techs
-        .iter()
-        .map(|t| t.name.as_str())
-        .collect();
-
-    let civ_names: std::collections::HashSet<&str> = world
-        .database
-        .civs
-        .iter()
-        .map(|c| c.name.as_str())
-        .collect();
-
-    let weapon_type_names: std::collections::HashSet<&str> = world
-        .database
-        .weapon_types
-        .iter()
-        .map(|w| w.name.as_str())
-        .collect();
-
-    // ── Duplicate name checks ───────────────────────────────────────
-    check_duplicates(
-        &world
+    let names = NameSets {
+        objects: world
             .database
             .objects
             .iter()
             .map(|o| o.name.as_str())
-            .collect::<Vec<_>>(),
-        "data\\objects.xml",
-        TableId::Objects,
-        "object",
-        &mut diagnostics,
-    );
-    check_duplicates(
-        &world
+            .collect(),
+        squads: world
             .database
             .squads
             .iter()
             .map(|s| s.name.as_str())
-            .collect::<Vec<_>>(),
-        "data\\squads.xml",
-        TableId::Squads,
-        "squad",
-        &mut diagnostics,
-    );
-    check_duplicates(
-        &world
+            .collect(),
+        techs: world
             .database
             .techs
             .iter()
             .map(|t| t.name.as_str())
-            .collect::<Vec<_>>(),
-        "data\\techs.xml",
-        TableId::Techs,
-        "tech",
-        &mut diagnostics,
-    );
-    check_duplicates(
-        &world
-            .database
-            .abilities
-            .iter()
-            .map(|a| a.name.as_str())
-            .collect::<Vec<_>>(),
-        "data\\abilities.xml",
-        TableId::Abilities,
-        "ability",
-        &mut diagnostics,
-    );
-    check_duplicates(
-        &world
-            .database
-            .powers
-            .iter()
-            .map(|p| p.name.as_str())
-            .collect::<Vec<_>>(),
-        "data\\powers.xml",
-        TableId::Powers,
-        "power",
-        &mut diagnostics,
-    );
-    check_duplicates(
-        &world
-            .database
-            .leaders
-            .iter()
-            .map(|l| l.name.as_str())
-            .collect::<Vec<_>>(),
-        "data\\leaders.xml",
-        TableId::Leaders,
-        "leader",
-        &mut diagnostics,
-    );
-    check_duplicates(
-        &world
+            .collect(),
+        civs: world
             .database
             .civs
             .iter()
             .map(|c| c.name.as_str())
-            .collect::<Vec<_>>(),
-        "data\\civs.xml",
-        TableId::Civs,
-        "civ",
-        &mut diagnostics,
-    );
-    check_duplicates(
-        &world
+            .collect(),
+        weapon_types: world
             .database
             .weapon_types
             .iter()
             .map(|w| w.name.as_str())
-            .collect::<Vec<_>>(),
-        "data\\weapontypes.xml",
-        TableId::WeaponTypes,
-        "weapon type",
-        &mut diagnostics,
-    );
-    check_duplicates(
-        &world
-            .database
-            .damage_types
-            .iter()
-            .map(|d| d.name.as_str())
-            .collect::<Vec<_>>(),
-        "data\\damagetypes.xml",
-        TableId::DamageTypes,
-        "damage type",
-        &mut diagnostics,
-    );
+            .collect(),
+    };
 
-    // ── Object cross-references ─────────────────────────────────────
+    check_all_duplicates(world, &mut diagnostics);
+    check_object_refs(world, &mut diagnostics);
+    check_squad_refs(world, &names, &mut diagnostics);
+    check_leader_refs(world, &names, &mut diagnostics);
+    check_civ_refs(world, &names, &mut diagnostics);
+    check_tech_refs(world, &names, &mut diagnostics);
+    check_tactics_refs(world, &names, &mut diagnostics);
+    check_weapon_type_refs(world, &mut diagnostics);
+
+    DiagnosticReport {
+        diagnostics,
+        elapsed: start.elapsed(),
+    }
+}
+
+/// Name lookup sets of the database tables that other tables refer to.
+struct NameSets<'a> {
+    /// Proto-object names from `data\objects.xml`.
+    objects: std::collections::HashSet<&'a str>,
+    /// Proto-squad names from `data\squads.xml`.
+    squads: std::collections::HashSet<&'a str>,
+    /// Tech names from `data\techs.xml`.
+    techs: std::collections::HashSet<&'a str>,
+    /// Civ names from `data\civs.xml`.
+    civs: std::collections::HashSet<&'a str>,
+    /// Weapon type names from `data\weapontypes.xml`.
+    weapon_types: std::collections::HashSet<&'a str>,
+}
+
+/// The location of one reference field, for a diagnostic.
+struct RefSite<'a> {
+    /// Game path of the file that holds the reference.
+    path: &'a str,
+    /// Table that holds the reference.
+    table: TableId,
+    /// Name of the entry that holds the reference.
+    entry_name: &'a str,
+    /// Name of the field that holds the reference.
+    field: &'a str,
+    /// Severity of the diagnostic if the reference is broken.
+    severity: Severity,
+}
+
+/// Check for duplicate names in every database table.
+fn check_all_duplicates(world: &super::World, diagnostics: &mut Vec<Diagnostic>) {
+    let db = &world.database;
+    let tables: [(Vec<&str>, &str, TableId, &str); 9] = [
+        (
+            db.objects.iter().map(|o| o.name.as_str()).collect(),
+            "data\\objects.xml",
+            TableId::Objects,
+            "object",
+        ),
+        (
+            db.squads.iter().map(|s| s.name.as_str()).collect(),
+            "data\\squads.xml",
+            TableId::Squads,
+            "squad",
+        ),
+        (
+            db.techs.iter().map(|t| t.name.as_str()).collect(),
+            "data\\techs.xml",
+            TableId::Techs,
+            "tech",
+        ),
+        (
+            db.abilities.iter().map(|a| a.name.as_str()).collect(),
+            "data\\abilities.xml",
+            TableId::Abilities,
+            "ability",
+        ),
+        (
+            db.powers.iter().map(|p| p.name.as_str()).collect(),
+            "data\\powers.xml",
+            TableId::Powers,
+            "power",
+        ),
+        (
+            db.leaders.iter().map(|l| l.name.as_str()).collect(),
+            "data\\leaders.xml",
+            TableId::Leaders,
+            "leader",
+        ),
+        (
+            db.civs.iter().map(|c| c.name.as_str()).collect(),
+            "data\\civs.xml",
+            TableId::Civs,
+            "civ",
+        ),
+        (
+            db.weapon_types.iter().map(|w| w.name.as_str()).collect(),
+            "data\\weapontypes.xml",
+            TableId::WeaponTypes,
+            "weapon type",
+        ),
+        (
+            db.damage_types.iter().map(|d| d.name.as_str()).collect(),
+            "data\\damagetypes.xml",
+            TableId::DamageTypes,
+            "damage type",
+        ),
+    ];
+    for (names, path, table, label) in &tables {
+        check_duplicates(names, path, *table, label, diagnostics);
+    }
+}
+
+/// Check the visual, tactics and physics references of each object.
+fn check_object_refs(world: &super::World, diagnostics: &mut Vec<Diagnostic>) {
     for obj in &world.database.objects {
+        let site = |field, severity| RefSite {
+            path: "data\\objects.xml",
+            table: TableId::Objects,
+            entry_name: &obj.name,
+            field,
+            severity,
+        };
         check_ref_loaded(
             obj.visual.as_deref(),
             &world.visuals,
-            "data\\objects.xml",
-            TableId::Objects,
-            &obj.name,
-            "Visual",
+            &site("Visual", Severity::Warning),
             "visual",
-            Severity::Warning,
-            &mut diagnostics,
+            diagnostics,
         );
         check_ref_loaded(
             obj.tactics.as_deref(),
             &world.tactics,
-            "data\\objects.xml",
-            TableId::Objects,
-            &obj.name,
-            "Tactics",
+            &site("Tactics", Severity::Warning),
             "tactics",
-            Severity::Warning,
-            &mut diagnostics,
+            diagnostics,
         );
         check_ref_loaded(
             obj.physics_info.as_deref(),
             &world.physics,
-            "data\\objects.xml",
-            TableId::Objects,
-            &obj.name,
-            "PhysicsInfo",
+            &site("PhysicsInfo", Severity::Info),
             "physics",
-            Severity::Info,
-            &mut diagnostics,
+            diagnostics,
         );
     }
+}
 
-    // ── Squad → object cross-references ─────────────────────────────
+/// Check that each squad unit entry refers to an existing object.
+fn check_squad_refs(world: &super::World, names: &NameSets<'_>, diagnostics: &mut Vec<Diagnostic>) {
     for squad in &world.database.squads {
         if let Some(ref units) = squad.units {
             for unit in &units.entries {
                 check_ref_exists(
                     &unit.proto_object,
-                    &object_names,
-                    "data\\squads.xml",
-                    TableId::Squads,
-                    &squad.name,
-                    "Units",
+                    &names.objects,
+                    &RefSite {
+                        path: "data\\squads.xml",
+                        table: TableId::Squads,
+                        entry_name: &squad.name,
+                        field: "Units",
+                        severity: Severity::Warning,
+                    },
                     &format!(
                         "squad '{}' references object '{}' which does not exist",
                         squad.name, unit.proto_object
                     ),
-                    Severity::Warning,
-                    &mut diagnostics,
+                    diagnostics,
                 );
             }
         }
     }
+}
 
-    // ── Leader cross-references ─────────────────────────────────────
+/// Check the civ, tech, starting unit and starting squad references of each leader.
+fn check_leader_refs(
+    world: &super::World,
+    names: &NameSets<'_>,
+    diagnostics: &mut Vec<Diagnostic>,
+) {
     for leader in &world.database.leaders {
+        let site = |field| RefSite {
+            path: "data\\leaders.xml",
+            table: TableId::Leaders,
+            entry_name: &leader.name,
+            field,
+            severity: Severity::Warning,
+        };
         // Leader → Civ
         if let Some(civ) = leader.civ.as_deref() {
             check_ref_exists(
                 civ,
-                &civ_names,
-                "data\\leaders.xml",
-                TableId::Leaders,
-                &leader.name,
-                "Civ",
+                &names.civs,
+                &site("Civ"),
                 &format!(
                     "leader '{}' references civ '{}' which does not exist",
                     leader.name, civ
                 ),
-                Severity::Warning,
-                &mut diagnostics,
+                diagnostics,
             );
         }
         // Leader → Tech
         if let Some(tech) = leader.tech.as_deref() {
             check_ref_exists(
                 tech,
-                &tech_names,
-                "data\\leaders.xml",
-                TableId::Leaders,
-                &leader.name,
-                "Tech",
+                &names.techs,
+                &site("Tech"),
                 &format!(
                     "leader '{}' references tech '{}' which does not exist",
                     leader.name, tech
                 ),
-                Severity::Warning,
-                &mut diagnostics,
+                diagnostics,
             );
         }
         // Leader → StartingUnit (proto-object)
         for su in &leader.starting_units {
             check_ref_exists(
                 &su.proto_object,
-                &object_names,
-                "data\\leaders.xml",
-                TableId::Leaders,
-                &leader.name,
-                "StartingUnit",
+                &names.objects,
+                &site("StartingUnit"),
                 &format!(
                     "leader '{}' starting unit '{}' does not exist in objects",
                     leader.name, su.proto_object
                 ),
-                Severity::Warning,
-                &mut diagnostics,
+                diagnostics,
             );
             // StartingUnit → BuildOther (proto-object)
             if let Some(bo) = su.build_other.as_deref() {
                 check_ref_exists(
                     bo,
-                    &object_names,
-                    "data\\leaders.xml",
-                    TableId::Leaders,
-                    &leader.name,
-                    "StartingUnit.BuildOther",
+                    &names.objects,
+                    &site("StartingUnit.BuildOther"),
                     &format!(
                         "leader '{}' starting unit BuildOther '{}' does not exist in objects",
                         leader.name, bo
                     ),
-                    Severity::Warning,
-                    &mut diagnostics,
+                    diagnostics,
                 );
             }
         }
@@ -456,37 +460,37 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
         for ss in &leader.starting_squads {
             check_ref_exists(
                 &ss.proto_squad,
-                &squad_names,
-                "data\\leaders.xml",
-                TableId::Leaders,
-                &leader.name,
-                "StartingSquad",
+                &names.squads,
+                &site("StartingSquad"),
                 &format!(
                     "leader '{}' starting squad '{}' does not exist in squads",
                     leader.name, ss.proto_squad
                 ),
-                Severity::Warning,
-                &mut diagnostics,
+                diagnostics,
             );
         }
     }
+}
 
-    // ── Civ cross-references ────────────────────────────────────────
+/// Check the tech and object references of each civ.
+fn check_civ_refs(world: &super::World, names: &NameSets<'_>, diagnostics: &mut Vec<Diagnostic>) {
     for civ in &world.database.civs {
         if let Some(ct) = civ.civ_tech.as_deref() {
             check_ref_exists(
                 ct,
-                &tech_names,
-                "data\\civs.xml",
-                TableId::Civs,
-                &civ.name,
-                "CivTech",
+                &names.techs,
+                &RefSite {
+                    path: "data\\civs.xml",
+                    table: TableId::Civs,
+                    entry_name: &civ.name,
+                    field: "CivTech",
+                    severity: Severity::Warning,
+                },
                 &format!(
                     "civ '{}' references tech '{}' which does not exist",
                     civ.name, ct
                 ),
-                Severity::Warning,
-                &mut diagnostics,
+                diagnostics,
             );
         }
         // Object references from civs
@@ -500,51 +504,63 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
             if let Some(name) = val {
                 check_ref_exists(
                     name,
-                    &object_names,
-                    "data\\civs.xml",
-                    TableId::Civs,
-                    &civ.name,
-                    field,
+                    &names.objects,
+                    &RefSite {
+                        path: "data\\civs.xml",
+                        table: TableId::Civs,
+                        entry_name: &civ.name,
+                        field,
+                        severity: Severity::Info,
+                    },
                     &format!(
                         "civ '{}' field {} references object '{}' which does not exist",
                         civ.name, field, name
                     ),
-                    Severity::Info,
-                    &mut diagnostics,
+                    diagnostics,
                 );
             }
         }
     }
+}
 
-    // ── Tech prereq cross-references ────────────────────────────────
+/// Check that each tech prerequisite refers to an existing tech.
+fn check_tech_refs(world: &super::World, names: &NameSets<'_>, diagnostics: &mut Vec<Diagnostic>) {
     for tech in &world.database.techs {
         if let Some(ref prereqs) = tech.prereqs {
             for entry in &prereqs.entries {
                 check_ref_exists(
                     &entry.tech,
-                    &tech_names,
-                    "data\\techs.xml",
-                    TableId::Techs,
-                    &tech.name,
-                    "Prereqs",
+                    &names.techs,
+                    &RefSite {
+                        path: "data\\techs.xml",
+                        table: TableId::Techs,
+                        entry_name: &tech.name,
+                        field: "Prereqs",
+                        severity: Severity::Warning,
+                    },
                     &format!(
                         "tech '{}' prereq '{}' does not exist in techs",
                         tech.name, entry.tech
                     ),
-                    Severity::Warning,
-                    &mut diagnostics,
+                    diagnostics,
                 );
             }
         }
     }
+}
 
-    // ── Tactics weapon cross-references ─────────────────────────────
+/// Check the weapon type and projectile references of each tactics weapon.
+fn check_tactics_refs(
+    world: &super::World,
+    names: &NameSets<'_>,
+    diagnostics: &mut Vec<Diagnostic>,
+) {
     for (tac_name, tac_data) in &world.tactics {
         for weapon in &tac_data.weapons {
             // Weapon → WeaponType
             if let Some(wt) = weapon.weapon_type.as_deref()
                 && !wt.is_empty()
-                && !weapon_type_names.contains(wt)
+                && !names.weapon_types.contains(wt)
             {
                 diagnostics.push(Diagnostic {
                     path: format!("data\\tactics\\{tac_name}.xml"),
@@ -564,7 +580,7 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
             // Weapon → Projectile (proto-object)
             if let Some(proj) = weapon.projectile.as_deref()
                 && !proj.is_empty()
-                && !object_names.contains(proj)
+                && !names.objects.contains(proj)
             {
                 diagnostics.push(Diagnostic {
                     path: format!("data\\tactics\\{tac_name}.xml"),
@@ -583,8 +599,10 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
             }
         }
     }
+}
 
-    // ── WeaponType → DamageType cross-references ────────────────────
+/// Check that each weapon type damage modifier refers to an existing damage type.
+fn check_weapon_type_refs(world: &super::World, diagnostics: &mut Vec<Diagnostic>) {
     let damage_type_names: std::collections::HashSet<&str> = world
         .database
         .damage_types
@@ -611,11 +629,6 @@ pub fn validate_world(world: &super::World) -> DiagnosticReport {
                 });
             }
         }
-    }
-
-    DiagnosticReport {
-        diagnostics,
-        elapsed: start.elapsed(),
     }
 }
 
@@ -714,16 +727,11 @@ fn check_duplicates(
 }
 
 /// Check that an optional reference points to a loaded `HashMap` entry.
-#[allow(clippy::too_many_arguments)]
 fn check_ref_loaded<V>(
     reference: Option<&str>,
     map: &std::collections::HashMap<String, V>,
-    path: &str,
-    table: TableId,
-    entry_name: &str,
-    field: &str,
+    site: &RefSite<'_>,
     asset_kind: &str,
-    severity: Severity,
     diagnostics: &mut Vec<Diagnostic>,
 ) {
     if let Some(name) = reference
@@ -731,43 +739,39 @@ fn check_ref_loaded<V>(
         && !map.contains_key(name)
     {
         diagnostics.push(Diagnostic {
-            path: path.into(),
+            path: site.path.into(),
             location: Location::Field {
-                table,
-                name: entry_name.to_string(),
-                field: field.to_string(),
+                table: site.table,
+                name: site.entry_name.to_string(),
+                field: site.field.to_string(),
             },
-            severity,
+            severity: site.severity,
             code: DiagnosticCode::MissingReference,
             message: format!(
-                "'{entry_name}' references {asset_kind} '{name}' which was not loaded"
+                "'{}' references {asset_kind} '{name}' which was not loaded",
+                site.entry_name
             ),
         });
     }
 }
 
 /// Check that a string value exists in a lookup set.
-#[allow(clippy::too_many_arguments)]
 fn check_ref_exists(
     value: &str,
     lookup: &std::collections::HashSet<&str>,
-    path: &str,
-    table: TableId,
-    entry_name: &str,
-    field: &str,
+    site: &RefSite<'_>,
     message: &str,
-    severity: Severity,
     diagnostics: &mut Vec<Diagnostic>,
 ) {
     if !value.is_empty() && !lookup.contains(value) {
         diagnostics.push(Diagnostic {
-            path: path.into(),
+            path: site.path.into(),
             location: Location::Field {
-                table,
-                name: entry_name.to_string(),
-                field: field.to_string(),
+                table: site.table,
+                name: site.entry_name.to_string(),
+                field: site.field.to_string(),
             },
-            severity,
+            severity: site.severity,
             code: DiagnosticCode::MissingReference,
             message: message.to_string(),
         });

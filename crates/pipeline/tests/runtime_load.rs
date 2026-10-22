@@ -1,3 +1,5 @@
+//! Tests that `WorldLoadOptions` defers runtime asset loading and populates visuals on demand.
+
 use pipeline::hw1::{World, WorldLoadOptions};
 use pipeline::source::{AssetSource, LoadRule, StdFileProvider};
 

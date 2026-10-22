@@ -32,4 +32,4 @@ tempfile.workspace = true
 
 [[test]]
 name = "hw1"
-path = "tests/hw1/mod.rs"
+path = "tests/hw1/main.rs"

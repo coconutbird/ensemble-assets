@@ -53,7 +53,7 @@ fn manual_reload_updates_world() {
     // Save to override dir
     {
         let written = watcher.save().expect("save");
-        assert!(!written.is_empty());
+        assert_ne!(written, Vec::<std::path::PathBuf>::new());
         println!("Wrote {} files", written.len());
     }
 
@@ -126,7 +126,7 @@ fn filesystem_watcher_detects_change() {
     }
     {
         let written = watcher.save().expect("save");
-        assert!(!written.is_empty());
+        assert_ne!(written, Vec::<std::path::PathBuf>::new());
         println!("Wrote to override dir: {:?}", written[0]);
     }
 

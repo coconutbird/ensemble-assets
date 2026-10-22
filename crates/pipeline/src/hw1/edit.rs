@@ -55,31 +55,53 @@ use std::ops::{Deref, DerefMut};
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[repr(u8)]
 pub enum TableId {
+    /// Proto-objects in `data\objects.xml`.
     Objects,
+    /// Proto-squads in `data\squads.xml`.
     Squads,
+    /// Techs in `data\techs.xml`.
     Techs,
+    /// Abilities in `data\abilities.xml`.
     Abilities,
+    /// Powers in `data\powers.xml`.
     Powers,
+    /// Civs in `data\civs.xml`.
     Civs,
+    /// Leaders in `data\leaders.xml`.
     Leaders,
+    /// Weapon types in `data\weapontypes.xml`.
     WeaponTypes,
+    /// Damage types in `data\damagetypes.xml`.
     DamageTypes,
+    /// Global game settings in `data\gamedata.xml`.
     GameData,
+    /// The active scenario file (`scenario\...\*.scn`).
     Scenario,
+    /// Per-object visual files (`.vis`).
     Visuals,
+    /// Per-object tactics files.
     Tactics,
+    /// Per-object physics chains (physics, blueprint and shape files).
     Physics,
+    /// Terrain data (`.xtd`) of the active scenario.
     TerrainData,
+    /// Terrain textures (`.xtt`) of the active scenario.
     TerrainTextures,
+    /// The localized string table.
     Strings,
+    /// Model files (`.ugx`).
     Models,
+    /// Animation files (`.uax`).
     Animations,
+    /// Texture files (`.ddx`).
     Textures,
 }
 
 impl TableId {
+    /// Number of `TableId` variants.
     pub const COUNT: usize = 20;
 
+    /// All `TableId` variants, in declaration order.
     pub const ALL: [TableId; Self::COUNT] = [
         Self::Objects,
         Self::Squads,
@@ -338,14 +360,17 @@ impl Default for DirtySet {
 }
 
 impl DirtySet {
+    /// Return `true` if `table` has unsaved changes.
     pub fn is_dirty(&self, table: TableId) -> bool {
         self.flags[table.index()].get()
     }
 
+    /// Return `true` if any table has unsaved changes.
     pub fn is_any_dirty(&self) -> bool {
         self.flags.iter().any(Cell::get)
     }
 
+    /// Return the tables that have unsaved changes, in `TableId::ALL` order.
     pub fn dirty_tables(&self) -> Vec<TableId> {
         TableId::ALL
             .iter()
@@ -413,6 +438,7 @@ impl DirtySet {
         }
     }
 
+    /// Clear the dirty state of all tables, with all per-file keys.
     pub fn clear(&self) {
         for flag in &self.flags {
             flag.set(false);

@@ -6,6 +6,7 @@
 //! These tests are skipped when the variable is not set.
 
 mod base;
+mod save;
 mod scenario;
 
 use pipeline::hw1::loader::load_game_dir;

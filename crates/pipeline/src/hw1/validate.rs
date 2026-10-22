@@ -27,7 +27,9 @@ struct DbFile {
 
 /// Result of validating a single database file.
 pub struct FileResult {
+    /// Short label of the database file (for example `objects`).
     pub label: String,
+    /// Validation outcome of the file.
     pub outcome: FileOutcome,
 }
 
@@ -35,7 +37,9 @@ pub struct FileResult {
 pub enum FileOutcome {
     /// Parsed successfully with a summary string and optional warnings.
     Ok {
+        /// Short summary of the parsed content (for example `12 squads`).
         summary: String,
+        /// Warnings from the deserializer.
         warnings: Vec<Warning>,
     },
     /// Parse or type error.
@@ -46,11 +50,14 @@ pub enum FileOutcome {
 
 /// Aggregate result of a full validation run.
 pub struct ValidateReport {
+    /// Results of each database file, in validation order.
     pub files: Vec<FileResult>,
+    /// Time that the validation run took.
     pub elapsed: std::time::Duration,
 }
 
 impl ValidateReport {
+    /// Return the number of files that parsed.
     #[must_use]
     pub fn passed(&self) -> usize {
         self.files
@@ -59,6 +66,7 @@ impl ValidateReport {
             .count()
     }
 
+    /// Return the number of files that failed to parse.
     #[must_use]
     pub fn failed(&self) -> usize {
         self.files
@@ -67,6 +75,7 @@ impl ValidateReport {
             .count()
     }
 
+    /// Return the number of files not found in the asset source.
     #[must_use]
     pub fn missing(&self) -> usize {
         self.files
@@ -75,6 +84,7 @@ impl ValidateReport {
             .count()
     }
 
+    /// Return the total number of warnings from all parsed files.
     #[must_use]
     pub fn total_warnings(&self) -> usize {
         self.files
@@ -119,7 +129,6 @@ fn parse_children_warned<'de, T: serde::Deserialize<'de>>(
     Ok((items, all_warnings))
 }
 
-#[allow(clippy::too_many_lines)] // Each entry documents one validated database file.
 fn db_files() -> Vec<DbFile> {
     vec![
         DbFile {
