@@ -229,12 +229,16 @@ pub struct PowerAttributes {
 /// Cost element with one attribute per registered game resource.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PowerCost {
+    /// Cost in supplies (`@Supplies`).
     #[serde(rename = "@Supplies")]
     pub supplies: Option<f32>,
+    /// Cost in power (`@Power`).
     #[serde(rename = "@Power")]
     pub power: Option<f32>,
+    /// Cost in the `CampaignFoo` resource.
     #[serde(rename = "@CampaignFoo")]
     pub campaign_foo: Option<f32>,
+    /// Cost in the `Collectable` resource.
     #[serde(rename = "@Collectable")]
     pub collectable: Option<f32>,
 }
@@ -242,8 +246,10 @@ pub struct PowerCost {
 /// An object-specific cost multiplier.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct DynamicCost {
+    /// Object type that the multiplier applies to.
     #[serde(rename = "@ObjectType", default)]
     pub object_type: String,
+    /// Cost multiplier. The default is 1.
     #[serde(rename = "$text", default = "default_one")]
     pub multiplier: f32,
 }
@@ -251,8 +257,10 @@ pub struct DynamicCost {
 /// An object-specific target-effectiveness grade.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TargetEffectiveness {
+    /// Object type that the grade applies to.
     #[serde(rename = "@ObjectType", default)]
     pub object_type: String,
+    /// Effectiveness grade against the object type.
     #[serde(rename = "$text", default)]
     pub grade: i32,
 }
@@ -260,10 +268,13 @@ pub struct TargetEffectiveness {
 /// Target-highlight settings, including the optional relation filter.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TargetHighlight {
+    /// Object type to highlight, from `@ObjectType`.
     #[serde(rename = "@ObjectType")]
     pub object_type: Option<String>,
+    /// Player relation filter for the highlight, from `@Relation`.
     #[serde(rename = "@Relation")]
     pub relation: Option<String>,
+    /// When `true`, the targets are highlighted.
     #[serde(rename = "$text")]
     pub enabled: Option<bool>,
 }
@@ -280,8 +291,10 @@ where
 /// A population amount used by a power.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PowerPopulation {
+    /// Population type name from `@type`.
     #[serde(rename = "@type")]
     pub population_type: Option<String>,
+    /// Population amount that the power uses.
     #[serde(rename = "$text", default)]
     pub amount: f32,
 }
@@ -289,6 +302,7 @@ pub struct PowerPopulation {
 /// Wrapper for the `<ChildObjects>` element.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PowerChildObjects {
+    /// Proto-object names from the `<Object>` children.
     #[serde(rename = "Object", default)]
     pub objects: Vec<String>,
 }

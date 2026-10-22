@@ -70,6 +70,7 @@ pub struct Tech {
 /// Wrapper for the `<Effects>` element containing `<Effect>` children.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct EffectsWrapper {
+    /// Effects from the `<Effect>` children.
     #[serde(rename = "Effect", default)]
     pub entries: Vec<TechEffect>,
 }
@@ -166,8 +167,10 @@ pub struct TechEffect {
 /// Target element within an effect: `<Target type="...">value</Target>`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct EffectTarget {
+    /// Target kind from `@type`, for example `ProtoUnit` or `ProtoSquad`.
     #[serde(rename = "@type")]
     pub target_type: Option<String>,
+    /// Name of the target.
     #[serde(rename = "$text")]
     pub value: Option<String>,
 }
@@ -175,8 +178,10 @@ pub struct EffectTarget {
 /// A resource cost entry for a tech.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TechCost {
+    /// Resource name from `@resourcetype`.
     #[serde(rename = "@resourcetype", default)]
     pub resource_type: String,
+    /// Cost amount.
     #[serde(rename = "$text", default)]
     pub amount: f32,
 }
@@ -184,8 +189,10 @@ pub struct TechCost {
 /// Prerequisites wrapper containing tech status entries.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PrereqsWrapper {
+    /// Required tech states, from the `<TechStatus>` children.
     #[serde(rename = "TechStatus", default)]
     pub entries: Vec<TechStatusEntry>,
+    /// Required unit counts, from the `<TypeCount>` children.
     #[serde(rename = "TypeCount", default)]
     pub type_counts: Vec<TypeCountEntry>,
 }
@@ -193,8 +200,10 @@ pub struct PrereqsWrapper {
 /// A prerequisite tech status entry.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TechStatusEntry {
+    /// Name of the required tech.
     #[serde(rename = "@tech", default)]
     pub tech: String,
+    /// Required status of the tech, for example `Active`.
     #[serde(rename = "@status", default)]
     pub status: String,
     /// Text content of the element.
@@ -205,10 +214,13 @@ pub struct TechStatusEntry {
 /// A prerequisite requiring a count of a unit type.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TypeCountEntry {
+    /// Unit type to count.
     #[serde(rename = "@unit", default)]
     pub unit: String,
+    /// Compare operator for the count, from `@operator`.
     #[serde(rename = "@operator")]
     pub operator: Option<String>,
+    /// Unit count to compare against.
     #[serde(rename = "@count")]
     pub count: Option<i32>,
 }

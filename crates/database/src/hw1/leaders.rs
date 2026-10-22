@@ -101,8 +101,10 @@ pub struct Leader {
 /// A resource entry (type + amount).
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct ResourceEntry {
+    /// Resource name from `@Type`, for example `Supplies` or `Power`.
     #[serde(rename = "@Type", default)]
     pub resource_type: String,
+    /// Starting amount of the resource.
     #[serde(rename = "$text", default)]
     pub amount: f32,
 }
@@ -110,12 +112,16 @@ pub struct ResourceEntry {
 /// A starting unit definition.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct StartingUnit {
+    /// Proto-object name of the unit.
     #[serde(rename = "$text", default)]
     pub proto_object: String,
+    /// Spawn offset from the start position, from `@Offset`.
     #[serde(rename = "@Offset")]
     pub offset: Option<Vector3>,
+    /// Proto-object that the unit builds on start, from `@BuildOther`.
     #[serde(rename = "@BuildOther")]
     pub build_other: Option<String>,
+    /// When `true`, the unit is doppled on start (`@DoppleOnStart`).
     #[serde(rename = "@DoppleOnStart")]
     pub dopple_on_start: Option<bool>,
 }
@@ -123,10 +129,13 @@ pub struct StartingUnit {
 /// A starting squad definition.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct StartingSquad {
+    /// Proto-squad name of the squad.
     #[serde(rename = "$text", default)]
     pub proto_squad: String,
+    /// When `true`, the squad flies in on start (`@FlyIn`).
     #[serde(rename = "@FlyIn")]
     pub fly_in: Option<bool>,
+    /// Spawn offset from the start position, from `@Offset`.
     #[serde(rename = "@Offset")]
     pub offset: Option<Vector3>,
 }
@@ -134,10 +143,13 @@ pub struct StartingSquad {
 /// A support-power group and its menu placement/prerequisite metadata.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct SupportPower {
+    /// Slot index of the power icon in the support-power menu.
     #[serde(rename = "@IconLocation")]
     pub icon_location: Option<i32>,
+    /// Tech that the player must have before the group unlocks.
     #[serde(rename = "@TechPrereq")]
     pub tech_prereq: Option<String>,
+    /// Power names in this group, from the `<Power>` children.
     #[serde(rename = "Power", default)]
     pub powers: Vec<String>,
 }
@@ -145,10 +157,13 @@ pub struct SupportPower {
 /// A population entry (type + count + max).
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct PopEntry {
+    /// Population type name from `@Type`.
     #[serde(rename = "@Type", default)]
     pub pop_type: String,
+    /// Starting population count.
     #[serde(rename = "$text", default)]
     pub count: f32,
+    /// Maximum population cap, from `@Max`.
     #[serde(rename = "@Max")]
     pub max: Option<f32>,
 }
