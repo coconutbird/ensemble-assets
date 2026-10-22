@@ -138,6 +138,7 @@ pub struct Squad {
 /// Wrapper for the `<Units>` element containing `<Unit>` children.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct UnitsWrapper {
+    /// The `<Unit>` entries.
     #[serde(rename = "Unit", default)]
     pub entries: Vec<UnitEntry>,
 }
@@ -145,8 +146,10 @@ pub struct UnitsWrapper {
 /// A resource cost entry.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Cost {
+    /// Resource type name (`@resourcetype`).
     #[serde(rename = "@resourcetype", default)]
     pub resource_type: String,
+    /// Cost quantity. Comes from the element text.
     #[serde(rename = "$text", default)]
     pub amount: f32,
 }
@@ -168,10 +171,13 @@ pub struct UnitEntry {
 /// Turn radius element: `<TurnRadius min="..." max="...">value</TurnRadius>`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct TurnRadius {
+    /// Minimum turn radius (`@min`).
     #[serde(rename = "@min")]
     pub min: Option<f32>,
+    /// Maximum turn radius (`@max`).
     #[serde(rename = "@max")]
     pub max: Option<f32>,
+    /// Turn radius value. Comes from the element text.
     #[serde(rename = "$text", default)]
     pub value: f32,
 }
@@ -179,12 +185,16 @@ pub struct TurnRadius {
 /// HP-bar style plus optional geometry overrides.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct HpBar {
+    /// HP-bar style name. Comes from the element text.
     #[serde(rename = "$text")]
     pub style: Option<String>,
+    /// Bar width override (`@sizeX`).
     #[serde(rename = "@sizeX")]
     pub size_x: Option<f32>,
+    /// Bar height override (`@sizeY`).
     #[serde(rename = "@sizeY")]
     pub size_y: Option<f32>,
+    /// Bar position offset (`@offset`).
     #[serde(rename = "@offset")]
     pub offset: Option<Vector3>,
 }
@@ -192,16 +202,22 @@ pub struct HpBar {
 /// A veterancy or ability-recovery bar and its screen-space placement.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct StatusBar {
+    /// Bar style name. Comes from the element text.
     #[serde(rename = "$text")]
     pub style: Option<String>,
+    /// Bar style for centered placement (`@Centered`).
     #[serde(rename = "@Centered")]
     pub centered_style: Option<String>,
+    /// Bar width (`@sizeX`).
     #[serde(rename = "@sizeX")]
     pub size_x: Option<f32>,
+    /// Bar height (`@sizeY`).
     #[serde(rename = "@sizeY")]
     pub size_y: Option<f32>,
+    /// Horizontal screen offset (`@offsetX`).
     #[serde(rename = "@offsetX")]
     pub offset_x: Option<f32>,
+    /// Vertical screen offset (`@offsetY`).
     #[serde(rename = "@offsetY")]
     pub offset_y: Option<f32>,
 }
@@ -209,20 +225,28 @@ pub struct StatusBar {
 /// Birth/spawn animation configuration.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Birth {
+    /// Birth type name. Comes from the element text.
     #[serde(rename = "$text")]
     pub birth_type: Option<String>,
+    /// Spawn point name (`@spawnPoint`).
     #[serde(rename = "@spawnPoint")]
     pub spawn_point: Option<String>,
+    /// End point name (`@endPoint`).
     #[serde(rename = "@endPoint")]
     pub end_point: Option<String>,
+    /// Birth animation 0 (`@anim0`).
     #[serde(rename = "@anim0")]
     pub animation_0: Option<String>,
+    /// Birth animation 1 (`@anim1`).
     #[serde(rename = "@anim1")]
     pub animation_1: Option<String>,
+    /// Birth animation 2 (`@anim2`).
     #[serde(rename = "@anim2")]
     pub animation_2: Option<String>,
+    /// Birth animation 3 (`@anim3`).
     #[serde(rename = "@anim3")]
     pub animation_3: Option<String>,
+    /// Animation of the trainer building (`@trainerAnim`).
     #[serde(rename = "@trainerAnim")]
     pub trainer_animation: Option<String>,
 }
@@ -230,16 +254,22 @@ pub struct Birth {
 /// Selection decal geometry and orientation behavior.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Selection {
+    /// Decal half-width (`<RadiusX>`).
     #[serde(rename = "RadiusX")]
     pub radius_x: Option<f32>,
+    /// Decal half-depth (`<RadiusZ>`).
     #[serde(rename = "RadiusZ")]
     pub radius_z: Option<f32>,
+    /// Vertical offset of the decal (`<YOffset>`).
     #[serde(rename = "YOffset")]
     pub y_offset: Option<f32>,
+    /// Forward offset of the decal (`<ZOffset>`).
     #[serde(rename = "ZOffset")]
     pub z_offset: Option<f32>,
+    /// Make the decal follow the terrain (`<ConformToTerrain>`).
     #[serde(rename = "ConformToTerrain")]
     pub conform_to_terrain: Option<bool>,
+    /// Let the decal rotate with the squad (`<AllowOrientation>`).
     #[serde(rename = "AllowOrientation")]
     pub allow_orientation: Option<bool>,
 }
@@ -247,14 +277,19 @@ pub struct Selection {
 /// A squad sound cue with its trigger and optional filters.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct SquadSound {
+    /// Sound cue name. Comes from the element text.
     #[serde(rename = "$text", default)]
     pub cue: String,
+    /// Sound event that plays the cue (`@Type`).
     #[serde(rename = "@Type")]
     pub sound_type: Option<String>,
+    /// Squad filter (`@Squad`).
     #[serde(rename = "@Squad")]
     pub squad: Option<String>,
+    /// World filter (`@World`).
     #[serde(rename = "@World")]
     pub world: Option<String>,
+    /// Play the cue only for the casting unit (`@CastingUnitOnly`).
     #[serde(rename = "@CastingUnitOnly")]
     pub casting_unit_only: Option<bool>,
 }

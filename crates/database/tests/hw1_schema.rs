@@ -1,3 +1,5 @@
+//! Schema tests that parse synthetic HW1 database XML and check typed round trips.
+
 use std::collections::BTreeSet;
 
 use serde::{Serialize, de::DeserializeOwned};

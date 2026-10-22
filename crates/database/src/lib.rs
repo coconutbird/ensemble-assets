@@ -16,10 +16,19 @@ use alloc::string::String;
 /// Errors that can occur when parsing database files.
 #[derive(Debug)]
 pub enum Error {
+    /// The XMB document is not valid.
     Xmb(xmb::Error),
+    /// An XMB node does not deserialize into the typed schema.
     Deserialize(bdt_serde::Error),
+    /// The document has no root element.
     MissingRoot,
-    UnexpectedRoot { expected: String, actual: String },
+    /// The root element name is not the name that the parser expects.
+    UnexpectedRoot {
+        /// Root element name that the parser expects.
+        expected: String,
+        /// Root element name in the document.
+        actual: String,
+    },
 }
 
 impl From<xmb::Error> for Error {
@@ -50,4 +59,5 @@ impl core::fmt::Display for Error {
     }
 }
 
-pub type Result<T> = core::result::Result<T, Error>;
+/// Result type for database parsing. The default error is [`Error`].
+pub type Result<T, E = Error> = core::result::Result<T, E>;

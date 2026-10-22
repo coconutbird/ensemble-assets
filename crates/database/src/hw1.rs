@@ -92,15 +92,25 @@ impl_keyed!(
 /// A complete HW1 game database, loaded from XMB documents.
 #[derive(Debug, Default)]
 pub struct Database {
+    /// Proto-objects from `objects.xml.xmb`.
     pub objects: Vec<ProtoObject>,
+    /// Squads from `squads.xml.xmb`.
     pub squads: Vec<Squad>,
+    /// Techs from `techs.xml.xmb`.
     pub techs: Vec<Tech>,
+    /// Abilities from `abilities.xml.xmb`.
     pub abilities: Vec<Ability>,
+    /// Leader powers from `powers.xml.xmb`.
     pub powers: Vec<Power>,
+    /// Civilizations from `civs.xml.xmb`.
     pub civs: Vec<Civ>,
+    /// Leaders from `leaders.xml.xmb`.
     pub leaders: Vec<Leader>,
+    /// Weapon types from `weapontypes.xml.xmb`.
     pub weapon_types: Vec<WeaponType>,
+    /// Damage types from `damagetypes.xml.xmb`.
     pub damage_types: Vec<DamageType>,
+    /// Global constants from `gamedata.xml.xmb`.
     pub game_data: Option<GameData>,
 }
 

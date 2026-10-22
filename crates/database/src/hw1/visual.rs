@@ -83,10 +83,13 @@ pub struct Asset {
 /// A model texture-coordinate offset.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct UvOffset {
+    /// Texture-coordinate channel (`@channel`).
     #[serde(rename = "@channel")]
     pub channel: Option<u32>,
+    /// U offset (`@uOfs`).
     #[serde(rename = "@uOfs")]
     pub u_offset: Option<f32>,
+    /// V offset (`@vOfs`).
     #[serde(rename = "@vOfs")]
     pub v_offset: Option<f32>,
 }
@@ -189,43 +192,61 @@ pub struct Anim {
 /// the tagged union used by `BProtoVisualTag`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct VisualTag {
+    /// Tag type, for example `Sound` or `Particle` (`@type`).
     #[serde(rename = "@type", default)]
     pub tag_type: String,
+    /// Event time in the animation (`@position`).
     #[serde(rename = "@position")]
     pub position: Option<f32>,
+    /// Referenced asset or cue name (`@name`).
     #[serde(rename = "@name")]
     pub name: Option<String>,
+    /// Bone that the tag attaches to (`@tobone`).
     #[serde(rename = "@tobone")]
     pub to_bone: Option<String>,
+    /// Lifespan of the spawned effect (`@lifespan`).
     #[serde(rename = "@lifespan")]
     pub lifespan: Option<f32>,
+    /// First force value (`@force`).
     #[serde(rename = "@force")]
     pub force: Option<f32>,
+    /// Second force value (`@force2`).
     #[serde(rename = "@force2")]
     pub force2: Option<f32>,
+    /// Fire only when the object is visible (`@checkvisible`).
     #[serde(rename = "@checkvisible", alias = "@checkVisible")]
     pub check_visible: Option<bool>,
+    /// Fire only when the object is out of fog of war (`@checkFOW`).
     #[serde(rename = "@checkFOW")]
     pub check_fow: Option<bool>,
+    /// Fire only when the object is selected (`@checkSelected`).
     #[serde(rename = "@checkSelected")]
     pub check_selected: Option<bool>,
+    /// End value (`@end`).
     #[serde(rename = "@end")]
     pub end: Option<f32>,
+    /// Start value (`@start`).
     #[serde(rename = "@start")]
     pub start: Option<f32>,
+    /// Lock the effect to the ground (`@lockToGround`).
     #[serde(rename = "@lockToGround")]
     pub lock_to_ground: Option<bool>,
+    /// Attach the effect to the object (`@attach`).
     #[serde(rename = "@attach")]
     pub attach: Option<bool>,
     /// Mini-language used by terrain-alpha, decal, and UV-offset tags.
     #[serde(rename = "@userData")]
     pub user_data: Option<String>,
+    /// Rumble type for the left motor (`@leftRumbleType`).
     #[serde(rename = "@leftRumbleType")]
     pub left_rumble_type: Option<String>,
+    /// Rumble type for the right motor (`@rightRumbleType`).
     #[serde(rename = "@rightRumbleType")]
     pub right_rumble_type: Option<String>,
+    /// Loop the tag effect (`@loop`).
     #[serde(rename = "@loop")]
     pub looped: Option<bool>,
+    /// Discard the bone orientation when attaching (`@disregardorient`).
     #[serde(rename = "@disregardorient")]
     pub disregard_orient: Option<bool>,
 }
@@ -233,26 +254,35 @@ pub struct VisualTag {
 /// An opacity curve applied to a visual asset.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct FloatProgression {
+    /// Curve stages (`<Stages>`).
     #[serde(rename = "Stages")]
     pub stages: Option<FloatProgressionStages>,
+    /// Repeat the curve (`<Loop>`).
     #[serde(rename = "Loop")]
     pub looped: Option<bool>,
+    /// Number of curve cycles (`<Cycles>`).
     #[serde(rename = "Cycles")]
     pub cycles: Option<f32>,
 }
 
+/// Wrapper for the `<Stages>` list of a float progression.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct FloatProgressionStages {
+    /// The `<Stage>` entries, in order.
     #[serde(rename = "Stage", default)]
     pub stages: Vec<FloatProgressionStage>,
 }
 
+/// One stage of a float progression curve.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct FloatProgressionStage {
+    /// Value at this stage (`<Value>`).
     #[serde(rename = "Value")]
     pub value: Option<f32>,
+    /// Position of the stage on the curve (`<Alpha>`).
     #[serde(rename = "Alpha")]
     pub alpha: Option<f32>,
+    /// Random variance added to the value (`<ValueVariance>`).
     #[serde(rename = "ValueVariance")]
     pub value_variance: Option<f32>,
 }

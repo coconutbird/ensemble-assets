@@ -35,7 +35,11 @@ where
 
 // `serialize_with` callbacks receive a reference to the field value, so this
 // signature cannot use Clippy's preferred `Option<&u8>` or pass-by-value form.
-#[allow(clippy::ref_option, clippy::trivially_copy_pass_by_ref)]
+#[expect(
+    clippy::ref_option,
+    clippy::trivially_copy_pass_by_ref,
+    reason = "serde `serialize_with` callbacks must take `&Option<u8>`"
+)]
 pub(crate) fn serialize_optional_u8<S>(value: &Option<u8>, serializer: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
@@ -44,7 +48,11 @@ where
 }
 
 // See `serialize_optional_u8`; serde imposes the same callback signature here.
-#[allow(clippy::ref_option, clippy::trivially_copy_pass_by_ref)]
+#[expect(
+    clippy::ref_option,
+    clippy::trivially_copy_pass_by_ref,
+    reason = "serde `serialize_with` callbacks must take `&Option<i8>`"
+)]
 pub(crate) fn serialize_optional_i8<S>(value: &Option<i8>, serializer: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
@@ -65,7 +73,9 @@ where
 /// A two-component vector encoded as comma- or whitespace-separated text.
 #[derive(Debug, Clone, Copy, Default, PartialEq)]
 pub struct Vector2 {
+    /// X component.
     pub x: f32,
+    /// Y component.
     pub y: f32,
 }
 
@@ -107,8 +117,11 @@ impl Serialize for Vector2 {
 /// A three-component vector encoded as comma- or whitespace-separated text.
 #[derive(Debug, Clone, Copy, Default, PartialEq)]
 pub struct Vector3 {
+    /// X component.
     pub x: f32,
+    /// Y component.
     pub y: f32,
+    /// Z component.
     pub z: f32,
 }
 
@@ -151,8 +164,11 @@ impl Serialize for Vector3 {
 /// An RGB color encoded as three decimal byte values.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct RgbColor {
+    /// Red channel (0–255).
     pub red: u8,
+    /// Green channel (0–255).
     pub green: u8,
+    /// Blue channel (0–255).
     pub blue: u8,
 }
 

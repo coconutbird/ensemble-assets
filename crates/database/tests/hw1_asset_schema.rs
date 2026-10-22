@@ -1,3 +1,5 @@
+//! Schema tests for HW1 asset documents, such as tactics files, with typed round trips.
+
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
@@ -156,7 +158,6 @@ fn empty_interpolation_values_use_their_typed_default() {
 }
 
 #[test]
-#[allow(clippy::too_many_lines)]
 fn engine_supported_tactics_fields_are_typed() {
     let tactics = assert_synthetic_schema::<database::hw1::TacticData>(
         r#"<TacticData>
