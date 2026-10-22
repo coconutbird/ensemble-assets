@@ -8,7 +8,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
-use crate::node_ext::expect_root;
+use crate::node_ext::parse_table;
 
 pub use elements::{
     ActiveScanChance, AddedResource, AutoParkingLot, CaptureCost, ChildObject, ChildObjectType,
@@ -774,12 +774,5 @@ pub struct VeterancyLevel {
 ///
 /// Returns an error if the document root is invalid or an object cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<ProtoObject>> {
-    let root = expect_root(doc, "Objects")?;
-    let objects: Vec<ProtoObject> = root
-        .children
-        .iter()
-        .filter(|c| c.name == "Object")
-        .map(bdt_serde::from_node)
-        .collect::<Result<_, _>>()?;
-    Ok(objects)
+    parse_table(doc, "Objects", "Object")
 }

@@ -6,7 +6,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
-use crate::node_ext::expect_root;
+use crate::node_ext::parse_table;
 
 /// A single ability definition from `abilities.xml`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -128,12 +128,5 @@ pub struct Ability {
 ///
 /// Returns an error if the document root is invalid or an ability cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Ability>> {
-    let root = expect_root(doc, "Abilities")?;
-    let abilities: Vec<Ability> = root
-        .children
-        .iter()
-        .filter(|c| c.name == "Ability")
-        .map(bdt_serde::from_node)
-        .collect::<Result<_, _>>()?;
-    Ok(abilities)
+    parse_table(doc, "Abilities", "Ability")
 }

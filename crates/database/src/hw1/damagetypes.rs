@@ -6,7 +6,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
-use crate::node_ext::expect_root;
+use crate::node_ext::parse_table;
 
 /// A single damage type definition from `damagetypes.xml`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -31,12 +31,5 @@ pub struct DamageType {
 ///
 /// Returns an error if the document root is invalid or a damage type cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<DamageType>> {
-    let root = expect_root(doc, "DamageTypes")?;
-    let types: Vec<DamageType> = root
-        .children
-        .iter()
-        .filter(|c| c.name == "DamageType")
-        .map(bdt_serde::from_node)
-        .collect::<Result<_, _>>()?;
-    Ok(types)
+    parse_table(doc, "DamageTypes", "DamageType")
 }

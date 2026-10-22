@@ -6,7 +6,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
-use crate::node_ext::expect_root;
+use crate::node_ext::parse_table;
 
 /// A single weapon type with its damage modifier table.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -51,12 +51,5 @@ pub struct DamageModifier {
 ///
 /// Returns an error if the document root is invalid or a weapon type cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<WeaponType>> {
-    let root = expect_root(doc, "WeaponTypes")?;
-    let types: Vec<WeaponType> = root
-        .children
-        .iter()
-        .filter(|c| c.name == "WeaponType")
-        .map(bdt_serde::from_node)
-        .collect::<Result<_, _>>()?;
-    Ok(types)
+    parse_table(doc, "WeaponTypes", "WeaponType")
 }

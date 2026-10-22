@@ -6,7 +6,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
-use crate::node_ext::expect_root;
+use crate::node_ext::parse_table;
 
 /// A single civilization definition from `civs.xml`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -71,12 +71,5 @@ pub struct Civ {
 ///
 /// Returns an error if the document root is invalid or a civilization cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Civ>> {
-    let root = expect_root(doc, "Civs")?;
-    let civs: Vec<Civ> = root
-        .children
-        .iter()
-        .filter(|c| c.name == "Civ")
-        .map(bdt_serde::from_node)
-        .collect::<Result<_, _>>()?;
-    Ok(civs)
+    parse_table(doc, "Civs", "Civ")
 }

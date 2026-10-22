@@ -6,7 +6,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Deserializer, Serialize};
 
-use crate::node_ext::expect_root;
+use crate::node_ext::parse_table;
 
 /// A single leader power definition from `powers.xml`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -342,12 +342,5 @@ fn default_one() -> f32 {
 ///
 /// Returns an error if the document root is invalid or a power cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Power>> {
-    let root = expect_root(doc, "Powers")?;
-    let powers: Vec<Power> = root
-        .children
-        .iter()
-        .filter(|c| c.name == "Power")
-        .map(bdt_serde::from_node)
-        .collect::<Result<_, _>>()?;
-    Ok(powers)
+    parse_table(doc, "Powers", "Power")
 }

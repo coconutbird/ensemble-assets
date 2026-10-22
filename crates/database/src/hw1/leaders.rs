@@ -7,7 +7,7 @@ use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
 use super::Vector3;
-use crate::node_ext::expect_root;
+use crate::node_ext::parse_table;
 
 /// A single leader definition from `leaders.xml`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -174,12 +174,5 @@ pub struct PopEntry {
 ///
 /// Returns an error if the document root is invalid or a leader cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Leader>> {
-    let root = expect_root(doc, "Leaders")?;
-    let leaders: Vec<Leader> = root
-        .children
-        .iter()
-        .filter(|c| c.name == "Leader")
-        .map(bdt_serde::from_node)
-        .collect::<Result<_, _>>()?;
-    Ok(leaders)
+    parse_table(doc, "Leaders", "Leader")
 }

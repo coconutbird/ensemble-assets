@@ -117,3 +117,26 @@ pub fn expect_root<'a>(doc: &'a xmb::Document, expected: &str) -> crate::Result<
     }
     Ok(root)
 }
+
+/// Parse a table document into one record for each child named `entry`.
+///
+/// The root element must have the name `root`. The parser ignores children with other names. The
+/// records stay in document order.
+///
+/// # Errors
+///
+/// Returns an error if the root element is incorrect or a record does not deserialize. The error
+/// is the error of the first record that fails.
+pub(crate) fn parse_table<T>(doc: &xmb::Document, root: &str, entry: &str) -> crate::Result<Vec<T>>
+where
+    T: serde::de::DeserializeOwned,
+{
+    let root = expect_root(doc, root)?;
+    let records = root
+        .children
+        .iter()
+        .filter(|c| c.name == entry)
+        .map(bdt_serde::from_node)
+        .collect::<Result<_, _>>()?;
+    Ok(records)
+}

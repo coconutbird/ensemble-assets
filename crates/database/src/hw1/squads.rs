@@ -7,7 +7,7 @@ use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
 use super::Vector3;
-use crate::node_ext::expect_root;
+use crate::node_ext::parse_table;
 
 /// A squad definition from `squads.xml`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -304,12 +304,5 @@ fn default_one() -> i32 {
 ///
 /// Returns an error if the document root is invalid or a squad cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Squad>> {
-    let root = expect_root(doc, "Squads")?;
-    let squads: Vec<Squad> = root
-        .children
-        .iter()
-        .filter(|c| c.name == "Squad")
-        .map(bdt_serde::from_node)
-        .collect::<Result<_, _>>()?;
-    Ok(squads)
+    parse_table(doc, "Squads", "Squad")
 }

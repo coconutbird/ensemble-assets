@@ -6,7 +6,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
-use crate::node_ext::expect_root;
+use crate::node_ext::parse_table;
 
 /// A tech definition from `techs.xml`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -231,12 +231,5 @@ pub struct TypeCountEntry {
 ///
 /// Returns an error if the document root is invalid or a tech cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Tech>> {
-    let root = expect_root(doc, "TechTree")?;
-    let techs: Vec<Tech> = root
-        .children
-        .iter()
-        .filter(|c| c.name == "Tech")
-        .map(bdt_serde::from_node)
-        .collect::<Result<_, _>>()?;
-    Ok(techs)
+    parse_table(doc, "TechTree", "Tech")
 }
