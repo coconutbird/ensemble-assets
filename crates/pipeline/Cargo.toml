@@ -25,6 +25,7 @@ memmap2.workspace = true
 uax.workspace = true
 ugx.workspace = true
 xmb.workspace = true
+xsd.workspace = true
 xtd.workspace = true
 xtt.workspace = true
 

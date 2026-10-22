@@ -14,9 +14,15 @@
 
 use std::collections::HashMap;
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::source::AssetSource;
+
+mod design_lines;
+mod objectives;
+
+pub use design_lines::{DesignLine, DesignLineError, parse_design_lines};
+pub use objectives::{ObjectiveDefinition, ObjectiveError, parse_objectives};
 
 /// A placed object in the scenario.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -48,9 +54,16 @@ pub struct ScenarioObject {
     /// Object group ID (-1 = none).
     #[serde(rename = "@Group", default)]
     pub group: i32,
-    /// Visual variation index.
-    #[serde(rename = "@VisualVariationIndex", default)]
-    pub visual_variation_index: i32,
+    /// Authored visual variation index, or `None` if the attribute is absent.
+    ///
+    /// Retail uses an absent index to select the variation from the visual
+    /// logic. Text that is not a decimal integer counts as absent.
+    #[serde(
+        rename = "@VisualVariationIndex",
+        default,
+        deserialize_with = "optional_integer_text"
+    )]
+    pub visual_variation_index: Option<i32>,
     /// Tint value.
     #[serde(rename = "@TintValue", default)]
     pub tint_value: f32,
@@ -360,6 +373,17 @@ pub struct ScenarioData {
     /// Sim bounds.
     #[serde(rename = "SimBounds")]
     pub sim_bounds_info: Option<SimBoundsInfo>,
+    /// Whether the scenario enables veterancy.
+    ///
+    /// Retail starts with veterancy disabled. An `AllowVeterancy` element
+    /// enables it, unless its trimmed text is `0` or `false` (any case).
+    #[serde(
+        rename = "AllowVeterancy",
+        default,
+        deserialize_with = "retail_flag_text",
+        skip_serializing_if = "std::ops::Not::not"
+    )]
+    pub allow_veterancy: bool,
 }
 
 impl ScenarioData {
@@ -565,6 +589,35 @@ impl ScenarioDescriptor {
         self.terrain_base().map(|b| format!("{b}.xtt"))
     }
 
+    /// Path to this scenario's XSD (simulation terrain) file.
+    ///
+    /// `scenario\{scn_path_without_ext}.xsd`
+    #[must_use]
+    pub fn xsd_path(&self) -> Option<String> {
+        self.terrain_base().map(|b| format!("{b}.xsd"))
+    }
+
+    /// Load and decode this scenario's XSD simulation terrain.
+    ///
+    /// The source resolves the exact [`xsd_path`](Self::xsd_path), with no
+    /// extension fallback. Returns `Ok(None)` if the descriptor has no `.scn`
+    /// path or if the source has no XSD file.
+    ///
+    /// # Errors
+    ///
+    /// Returns an [`xsd::Error`] if the XSD file is malformed.
+    pub fn read_simulation_terrain(
+        &self,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> Result<Option<xsd::Terrain>, xsd::Error> {
+        let Some(path) = self.xsd_path() else {
+            return Ok(None);
+        };
+        src.resolve_exact(&path)
+            .map(|bytes| xsd::Terrain::read(&bytes))
+            .transpose()
+    }
+
     /// Path to this scenario's GLS (lightset) file.
     ///
     /// `scenario\{scn_path_without_ext}.gls`
@@ -666,3 +719,27 @@ fn parse_vec3(s: &str) -> [f32; 3] {
     let z = parts.next().and_then(|v| v.parse().ok()).unwrap_or(0.0);
     [x, y, z]
 }
+
+/// Decode an optional integer attribute from its trimmed text.
+///
+/// Text that is not a decimal `i32` gives `None`, the same as an absent
+/// attribute.
+fn optional_integer_text<'de, D: Deserializer<'de>>(
+    deserializer: D,
+) -> Result<Option<i32>, D::Error> {
+    let text = String::deserialize(deserializer)?;
+    Ok(text.trim().parse().ok())
+}
+
+/// Decode a retail boolean element that is present in the document.
+///
+/// Empty text gives `true`. Trimmed text `0` or `false` (any case) gives
+/// `false`. All other text gives `true`.
+fn retail_flag_text<'de, D: Deserializer<'de>>(deserializer: D) -> Result<bool, D::Error> {
+    let text = String::deserialize(deserializer)?;
+    let value = text.trim();
+    Ok(value.is_empty() || (!value.eq_ignore_ascii_case("false") && value != "0"))
+}
+
+#[cfg(test)]
+mod tests;

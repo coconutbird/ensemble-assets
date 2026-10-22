@@ -12,6 +12,7 @@
 //! 8. **String table** ([`stringtable`]) — localized string lookup by `_locID`
 //! 9. **Terrain textures** ([`terrain`]) — terrain texture paths and decoded terrain maps
 //! 10. **Particle effects** ([`pfx`]) — PFX path resolution and loading
+//! 11. **Startup configuration** ([`startup`]) — retail `startup\*.cfg` symbols
 //!
 //! # Usage
 //!
@@ -40,6 +41,7 @@ pub mod merge;
 pub mod pfx;
 pub mod resolve;
 pub mod scenario;
+pub mod startup;
 pub mod stringtable;
 pub mod terrain;
 pub mod validate;

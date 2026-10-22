@@ -31,6 +31,7 @@ era = { git = "https://github.com/coconutbird/ensemble-formats.git" }
 uax = { git = "https://github.com/coconutbird/ensemble-formats.git" }
 ugx = { git = "https://github.com/coconutbird/ensemble-formats.git" }
 xmb = { git = "https://github.com/coconutbird/ensemble-formats.git" }
+xsd = { git = "https://github.com/coconutbird/ensemble-formats.git" }
 xtd = { git = "https://github.com/coconutbird/ensemble-formats.git" }
 xtt = { git = "https://github.com/coconutbird/ensemble-formats.git" }
 

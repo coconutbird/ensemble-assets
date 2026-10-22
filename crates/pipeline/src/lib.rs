@@ -47,6 +47,7 @@ pub use ddx;
 pub use uax;
 pub use ugx;
 pub use xmb;
+pub use xsd;
 pub use xtd;
 pub use xtt;
 pub mod hw1;
