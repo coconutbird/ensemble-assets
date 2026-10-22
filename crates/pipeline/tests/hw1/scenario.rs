@@ -40,7 +40,9 @@ fn load_world_with_scenario() {
 
     // The refactored pipeline auto-wires scenario loading.
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
-    world.swap_scenario(&mut src, "PHXscn01");
+    world
+        .swap_scenario(&mut src, "PHXscn01")
+        .expect("failed to load scenario");
 
     world.print_summary();
 
@@ -156,7 +158,7 @@ fn read_scenario_scn() {
     println!("  Lightset:     '{}'", scene.lightset());
     println!("  Pathing:      '{}'", scene.pathing());
     println!("  Minimap:      '{}'", scene.minimap_texture());
-    println!("  Placement:    '{}'", scene.player_placement_type());
+    println!("  Placement:    {:?}", scene.player_placement());
     println!("  Objects:      {}", scene.objects().len());
     println!("  Players:      {}", scene.players().len());
     println!("  Positions:    {}", scene.positions().len());
@@ -185,7 +187,10 @@ fn read_scenario_scn() {
     assert!(!p1.civ.is_empty(), "player civ empty");
     println!(
         "  First player: '{}' civ={} team={} supplies={}",
-        p1.name, p1.civ, p1.team, p1.supplies
+        p1.name,
+        p1.civ,
+        p1.team,
+        p1.resource("Supplies")
     );
 }
 
@@ -201,7 +206,9 @@ fn scenario_manifest_collection() {
     );
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
-    world.swap_scenario(&mut src, "PHXscn01.era");
+    world
+        .swap_scenario(&mut src, "PHXscn01.era")
+        .expect("failed to load scenario");
 
     let scn = world
         .scenario_data
@@ -261,7 +268,9 @@ fn full_scenario_validation() {
     );
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
-    world.swap_scenario(&mut src, "PHXscn01");
+    world
+        .swap_scenario(&mut src, "PHXscn01")
+        .expect("failed to load scenario");
 
     world.print_summary();
 
@@ -339,7 +348,9 @@ fn terrain_textures_from_xtt() {
     let dir = require_game_dir("HW1_GAME_DIR");
 
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
-    world.swap_scenario(&mut src, "PHXscn01.era");
+    world
+        .swap_scenario(&mut src, "PHXscn01.era")
+        .expect("failed to load scenario");
 
     // Terrain refs should include at least one .xtt file
     let xtt_refs: Vec<_> = world
@@ -400,7 +411,9 @@ fn edit_save_round_trip() {
 
     // 1. Load world
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
-    world.swap_scenario(&mut src, "PHXscn01");
+    world
+        .swap_scenario(&mut src, "PHXscn01")
+        .expect("failed to load scenario");
 
     // Set up a temp override directory
     let tmp = tempfile::tempdir().expect("failed to create tempdir");
@@ -501,7 +514,9 @@ fn terrain_edit_save_round_trip() {
 
     // 1. Load world with scenario — terrain should be eagerly loaded
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
-    world.swap_scenario(&mut src, "PHXscn01");
+    world
+        .swap_scenario(&mut src, "PHXscn01")
+        .expect("failed to load scenario");
 
     let tmp = tempfile::tempdir().expect("failed to create tempdir");
     src.set_override_dir(tmp.path());
@@ -656,7 +671,9 @@ fn clear_scenario_unloads_state() {
 
     // 1. Load world with scenario
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
-    world.swap_scenario(&mut src, "PHXscn01");
+    world
+        .swap_scenario(&mut src, "PHXscn01")
+        .expect("failed to load scenario");
 
     // Verify scenario is loaded
     assert!(world.scenario.is_some(), "scenario should be loaded");
@@ -744,7 +761,9 @@ fn swap_scenario_reloads_state() {
 
     // 1. Load world with scenario
     let (mut world, mut src) = pipeline::hw1::World::load(&dir).expect("failed to load world");
-    world.swap_scenario(&mut src, "PHXscn01");
+    world
+        .swap_scenario(&mut src, "PHXscn01")
+        .expect("failed to load scenario");
 
     let era_count_before = src.era_count();
     let db_objects = world.database.objects.len();
@@ -759,7 +778,9 @@ fn swap_scenario_reloads_state() {
         .to_string();
 
     // 2. Swap to the same scenario (only one guaranteed to exist)
-    world.swap_scenario(&mut src, "PHXscn01");
+    world
+        .swap_scenario(&mut src, "PHXscn01")
+        .expect("failed to load scenario");
 
     // 3. Scenario should be re-loaded
     assert!(

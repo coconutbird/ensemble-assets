@@ -74,9 +74,10 @@ Loaded now:
 - `database`: `objects`, `squads`, `techs`, `abilities`, `powers`, `civs`, `leaders`,
   `weapontypes`, `damagetypes`, `gamedata` (`data\*.xml.xmb`), `*.vis`, `*.tactics`,
   `*.physics`, `*.blueprint`, `*.shp`, `*.pfx`.
-- `pipeline`: `.scn` scenario data, `scenariodescriptions.xml`, `stringtable-<lang>.xml`,
-  `.gls` and `.fls` lightsets, `.xsd`, `.xtd`, `.xtt` terrain, and the preload lists
-  `visFileList.txt`, `tfxFileList.txt` and `pfxFileList.txt`.
+- `pipeline`: `.scn` scenario data, `.sc2` and `.sc3` scenario objects,
+  `scenariodescriptions.xml`, `stringtable-<lang>.xml`, `.gls` and `.fls` lightsets, `.xsd`,
+  `.xtd`, `.xtt` terrain, and the preload lists `visFileList.txt`, `tfxFileList.txt` and
+  `pfxFileList.txt`.
 - `openensemble` (not this workspace) reads `terrainTileTypes.xml`, `impacteffects.xml`, `.tfx`
   and `.lgt` in `crates/render`.
 
@@ -85,7 +86,6 @@ Not loaded (the engine loads these; no crate in the three repositories parses th
 | File | Engine evidence | Notes |
 | ---- | --------------- | ----- |
 | `objects_update.xml`, `squads_update.xml`, `techs_update.xml` | strings @ `0x1411a36b8`, `0x1411a37f0`, `0x1411a37d0` | Patch overlays. `ProtoObject` has an update flag, but no loader merges these files. |
-| `.sc2`, `.sc3` | `BScenario_load` @ `0x140377be0` (strings @ `0x1411b6f90`, `0x1411b6f88`) | Companion files of the `.scn`, read with the same reader. |
 | `.lrp` | `BScenario_load` @ `0x140377be0` (string @ `0x1411b713c`) | Read in the `Pathing` branch of the scenario load. |
 | `.xth` | `sub_140667A90` (string @ `0x1411d68e0`) | Terrain file next to `.xtd` and `.xtt`. |
 | `objecttypes.xml` | string @ `0x1411a2688` | `gamedata` reads only `CodeObjectTypes`. |
@@ -119,6 +119,7 @@ read.
 | physics | `BPhysicsInfo_load` @ `0x1402d3cd0` | `ImpactSound` (engine string @ `0x1411a19b8`, read in `sub_1401D83B0`); `DestroyedByBallistics`, `ThrownByBallistics` (data only) |
 | blueprint | `BPhysicsObjectBlueprint_load` @ `0x1407ba2f0` | `angularDampening` (data only) |
 | pfx | particle loader `sub_14079D440` | `Masks` (engine string @ `0x1411e2ba4`); `UseExternalWind`, `ExternalWindDelay`, `ExternalWindInfluence`, `CycleTime`, `CycleVariance`, `GradientPoint` (data only) |
+| scn | `BScenario_load` @ `0x140377be0`, `BScenario_loadPlayer` @ `0x1403808a0`, `BScenario_loadPosition` @ `0x14037f430`, `BScenario_loadObject` @ `0x14037d6a0` | `Lights`, `ObjectGroups`, `DesignObjects` (the sim reads design lines from the document), `BuildingTextureIndexUNSC`, `BuildingTextureIndexCOVN`, `EnvironmentReverbPreset`, `ScenarioWorld`; `Leader2`, `Favor`, `Relics`, `Honor`, `EditorOnlyData`, `NextID`, `GlobalExcludeObjects` (data only) |
 
 Abilities, civs, leaders, weapon types, damage types, game data and visuals have no unread tag
 in the retail XML.

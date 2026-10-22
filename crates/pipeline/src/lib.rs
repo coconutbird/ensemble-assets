@@ -13,7 +13,7 @@
 //! // Load the base world, then load a scenario.
 //! let (mut world, mut src) = World::load("/path/to/HaloWarsDE")
 //!     .expect("failed to load world");
-//! world.swap_scenario(&mut src, "blood_gulch");
+//! world.swap_scenario(&mut src, "blood_gulch").expect("failed to load scenario");
 //!
 //! // Inspect loaded data.
 //! println!("{} objects", world.database.objects.len());
@@ -68,6 +68,13 @@ pub enum Error {
     Xmb(xmb::Error),
     /// A required asset was not found in any loaded ERA or override directory.
     NotFound(String),
+    /// A scenario file does not match the scenario schema.
+    Scenario {
+        /// Game path of the scenario file.
+        path: String,
+        /// Deserialization error.
+        source: bdt_serde::Error,
+    },
 }
 
 impl From<database::Error> for Error {
@@ -89,6 +96,7 @@ impl core::fmt::Display for Error {
             Self::Database(e) => write!(f, "database error: {e}"),
             Self::Xmb(e) => write!(f, "XMB error: {e}"),
             Self::NotFound(path) => write!(f, "asset not found: {path}"),
+            Self::Scenario { path, source } => write!(f, "scenario file {path}: {source}"),
         }
     }
 }

@@ -7,6 +7,7 @@
 mod base;
 mod save;
 mod scenario;
+mod scenario_setup;
 
 use pipeline::hw1::loader::load_game_dir;
 use pipeline::hw1::validate::{FileOutcome, ValidateReport};

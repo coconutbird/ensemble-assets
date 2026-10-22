@@ -8,6 +8,12 @@
 //!   base ERA stack for map-specific overrides.
 //! - Scene data ([`ScenarioData`]) parsed from the `.scn` XML file, containing
 //!   placed objects, players, cinematics, objectives, and trigger variables.
+//! - Two optional object files, `.sc2` and `.sc3` ([`ScenarioObjectFile`]).
+//!   `BScenario_load` @ `0x140377be0` creates their objects after all `.scn`
+//!   elements, first `.sc2` and then `.sc3`.
+//!
+//! The field defaults of the scene data types are the engine defaults. The
+//! engine reads each value with the readers in `retail_text`.
 //!
 //! [`crate::hw1::loader::find_scenario_era`] handles fuzzy matching so callers can pass a map name
 //! (e.g. `"blood_gulch"`), an ERA filename, or a full SCN path.
@@ -19,147 +25,29 @@ use serde::{Deserialize, Deserializer, Serialize};
 use crate::source::AssetSource;
 
 mod design_lines;
+mod diplomacy;
+mod object;
 mod objectives;
+mod player;
+mod position;
+mod retail_text;
+mod trigger_sources;
 
 pub use design_lines::{DesignLine, DesignLineError, parse_design_lines};
+pub use diplomacy::{
+    DIPLOMACY_TEAM_COUNT, DiplomaciesWrapper, DiplomacyTable, ScenarioDiplomacy,
+    ScenarioDiplomacyEntry, ScenarioRelation,
+};
+pub use object::{ObjectsWrapper, ScenarioObject, ScenarioObjectFile};
 pub use objectives::{ObjectiveDefinition, ObjectiveError, parse_objectives};
+pub use player::{
+    ForbidObjectsWrapper, ForbidSquadsWrapper, ForbidTechsWrapper, PopsWrapper, ScenarioPlayer,
+    ScenarioPop,
+};
+pub use position::{PlayerPlacement, PlayerPlacementInfo, ScenarioPosition};
+pub use trigger_sources::{ExternalTriggerScript, ScenarioTriggerSource, scenario_trigger_sources};
 
-/// A placed object in the scenario.
-#[derive(Debug, Clone, Default, Deserialize, Serialize)]
-pub struct ScenarioObject {
-    /// Proto-object name (the text content of the `<Object>` node).
-    #[serde(rename = "$text", default)]
-    pub proto_name: String,
-    /// Unique object ID within the scenario.
-    #[serde(rename = "@ID", default)]
-    pub id: i32,
-    /// Whether this is a squad placement.
-    #[serde(rename = "@IsSquad", default)]
-    pub is_squad: bool,
-    /// Owning player index (1-based, 0 = Gaia).
-    #[serde(rename = "@Player", default)]
-    pub player: i32,
-    /// Editor name (e.g. `"cov_bldg_shadeTurret_01_11446"`).
-    #[serde(rename = "@EditorName", default)]
-    pub editor_name: String,
-    /// World position as comma-separated `"x,y,z"` string.
-    #[serde(rename = "@Position", default)]
-    pub position: String,
-    /// Forward direction as comma-separated `"x,y,z"` string.
-    #[serde(rename = "@Forward", default)]
-    pub forward: String,
-    /// Right direction as comma-separated `"x,y,z"` string.
-    #[serde(rename = "@Right", default)]
-    pub right: String,
-    /// Object group ID (-1 = none).
-    #[serde(rename = "@Group", default)]
-    pub group: i32,
-    /// Authored visual variation index, or `None` if the attribute is absent.
-    ///
-    /// Retail uses an absent index to select the variation from the visual
-    /// logic. Text that is not a decimal integer counts as absent.
-    #[serde(
-        rename = "@VisualVariationIndex",
-        default,
-        deserialize_with = "optional_integer_text"
-    )]
-    pub visual_variation_index: Option<i32>,
-    /// Tint value.
-    #[serde(rename = "@TintValue", default)]
-    pub tint_value: f32,
-}
-
-impl ScenarioObject {
-    /// Parse the position string into `[f32; 3]`.
-    #[must_use]
-    pub fn position_vec3(&self) -> [f32; 3] {
-        parse_vec3(&self.position)
-    }
-    /// Parse the forward string into `[f32; 3]`.
-    #[must_use]
-    pub fn forward_vec3(&self) -> [f32; 3] {
-        parse_vec3(&self.forward)
-    }
-    /// Parse the right string into `[f32; 3]`.
-    #[must_use]
-    pub fn right_vec3(&self) -> [f32; 3] {
-        parse_vec3(&self.right)
-    }
-}
-
-/// A player definition in the scenario.
-#[derive(Debug, Clone, Default, Deserialize, Serialize)]
-pub struct ScenarioPlayer {
-    /// Player name (e.g. `"Player1"`, `"Covenant"`).
-    #[serde(rename = "@Name", default)]
-    pub name: String,
-    /// Localised display name (e.g. `"25532,Player1"`).
-    #[serde(rename = "@LocalisedDisplayName", default)]
-    pub localised_display_name: String,
-    /// Civilization (e.g. `"UNSC"`, `"Covenant"`).
-    #[serde(rename = "@Civ", default)]
-    pub civ: String,
-    /// Leader name (e.g. `"Major Vanilla"`).
-    #[serde(rename = "@Leader1", default)]
-    pub leader1: String,
-    /// Team number.
-    #[serde(rename = "@Team", default)]
-    pub team: i32,
-    /// Player colour index.
-    #[serde(rename = "@Color", default)]
-    pub color: i32,
-    /// Whether the player is controllable.
-    #[serde(rename = "@Controllable", default)]
-    pub controllable: bool,
-    /// Starting supplies.
-    #[serde(rename = "@Supplies", default)]
-    pub supplies: f32,
-    /// Starting power (reactors).
-    #[serde(rename = "@Power", default)]
-    pub power: f32,
-}
-
-/// A start position in the scenario.
-#[derive(Debug, Clone, Default, Deserialize, Serialize)]
-pub struct ScenarioPosition {
-    /// Player index for this position (-1 = unassigned).
-    #[serde(rename = "@Player", default)]
-    pub player: i32,
-    /// Position number.
-    #[serde(rename = "@Number", default)]
-    pub number: i32,
-    /// World position as comma-separated `"x,y,z"` string.
-    #[serde(rename = "@Position", default)]
-    pub position: String,
-    /// Forward direction as comma-separated `"x,y,z"` string.
-    #[serde(rename = "@Forward", default)]
-    pub forward: String,
-    /// Default camera flag.
-    #[serde(rename = "@DefaultCamera", default)]
-    pub default_camera: bool,
-    /// Camera yaw in degrees.
-    #[serde(rename = "@CameraYaw", default)]
-    pub camera_yaw: f32,
-    /// Camera pitch in degrees.
-    #[serde(rename = "@CameraPitch", default)]
-    pub camera_pitch: f32,
-    /// Camera zoom level.
-    #[serde(rename = "@CameraZoom", default)]
-    pub camera_zoom: f32,
-}
-
-impl ScenarioPosition {
-    /// Parse the position string into `[f32; 3]`.
-    #[must_use]
-    pub fn position_vec3(&self) -> [f32; 3] {
-        parse_vec3(&self.position)
-    }
-    /// Parse the forward string into `[f32; 3]`.
-    #[must_use]
-    pub fn forward_vec3(&self) -> [f32; 3] {
-        parse_vec3(&self.forward)
-    }
-}
+use retail_text::optional_float;
 
 /// A cinematic reference from the SCN file.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -213,28 +101,12 @@ pub struct LightsetsWrapper {
     pub entries: Vec<String>,
 }
 
-/// `<PlayerPlacement>` element with a `Type` attribute.
-#[derive(Debug, Clone, Default, Deserialize, Serialize)]
-pub struct PlayerPlacementInfo {
-    /// Placement type from the `Type` attribute.
-    #[serde(rename = "@Type", default)]
-    pub placement_type: String,
-}
-
 /// `<Minimap>` wrapper containing `<MinimapTexture>` child.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct MinimapInfo {
     /// Minimap texture path from `<MinimapTexture>`.
     #[serde(rename = "MinimapTexture", default)]
     pub texture: Option<String>,
-}
-
-/// `<Objects>` wrapper containing `<Object>` children.
-#[derive(Debug, Clone, Default, Deserialize, Serialize)]
-pub struct ObjectsWrapper {
-    /// Scenario objects from the `<Object>` children.
-    #[serde(rename = "Object", default)]
-    pub entries: Vec<ScenarioObject>,
 }
 
 /// `<Players>` wrapper containing `<Player>` children.
@@ -277,49 +149,6 @@ pub struct ObjectivesWrapper {
     pub entries: Vec<ObjectiveRef>,
 }
 
-/// `<SoundBanks>` wrapper — child element names vary, so we collect text.
-#[derive(Debug, Clone, Default, Deserialize, Serialize)]
-pub struct SoundBanksWrapper {
-    /// Sound bank names from the `<SoundBank>` children.
-    #[serde(rename = "SoundBank", default)]
-    pub entries: Vec<String>,
-}
-
-/// Sim bounds from the SCN file.
-#[derive(Debug, Clone, Default, Deserialize, Serialize)]
-pub struct SimBoundsInfo {
-    /// Minimum X of the sim bounds, from `<MinX>`.
-    #[serde(rename = "MinX", default)]
-    pub min_x: Option<f32>,
-    /// Minimum Z of the sim bounds, from `<MinZ>`.
-    #[serde(rename = "MinZ", default)]
-    pub min_z: Option<f32>,
-    /// Maximum X of the sim bounds, from `<MaxX>`.
-    #[serde(rename = "MaxX", default)]
-    pub max_x: Option<f32>,
-    /// Maximum Z of the sim bounds, from `<MaxZ>`.
-    #[serde(rename = "MaxZ", default)]
-    pub max_z: Option<f32>,
-}
-
-impl SimBoundsInfo {
-    /// Convert to `[min_x, min_z, max_x, max_z]`, returning `None` if all zero.
-    #[must_use]
-    pub fn to_array(&self) -> Option<[f32; 4]> {
-        let arr = [
-            self.min_x.unwrap_or(0.0),
-            self.min_z.unwrap_or(0.0),
-            self.max_x.unwrap_or(0.0),
-            self.max_z.unwrap_or(0.0),
-        ];
-        if arr == [0.0, 0.0, 0.0, 0.0] {
-            None
-        } else {
-            Some(arr)
-        }
-    }
-}
-
 /// The fully parsed `.scn` scenario file.
 ///
 /// Deserialized directly from the `<Scenario>` XMB root via `bdt-serde`.
@@ -343,9 +172,12 @@ pub struct ScenarioData {
     /// Pathing reference.
     #[serde(rename = "Pathing")]
     pub pathing: Option<String>,
-    /// Player placement type.
+    /// Player placement rule.
     #[serde(rename = "PlayerPlacement")]
     pub player_placement: Option<PlayerPlacementInfo>,
+    /// Team relations.
+    #[serde(rename = "Diplomacies")]
+    pub diplomacies: Option<DiplomaciesWrapper>,
     /// Minimap configuration.
     #[serde(rename = "Minimap")]
     pub minimap: Option<MinimapInfo>,
@@ -367,12 +199,54 @@ pub struct ScenarioData {
     /// Objective names.
     #[serde(rename = "Objectives")]
     pub objectives_wrapper: Option<ObjectivesWrapper>,
-    /// Sound bank names.
-    #[serde(rename = "SoundBanks")]
-    pub sound_banks: Option<SoundBanksWrapper>,
-    /// Sim bounds.
-    #[serde(rename = "SimBounds")]
-    pub sim_bounds_info: Option<SimBoundsInfo>,
+    /// Sound bank names from the top-level `<SoundBank>` elements.
+    ///
+    /// `BScenario_load` collects every top-level `SoundBank` element in
+    /// document order before it reads the other elements.
+    #[serde(rename = "SoundBank", default, skip_serializing_if = "Vec::is_empty")]
+    pub sound_banks: Vec<String>,
+    /// Minimum X of the simulation bounds, from `<SimBoundsMinX>`.
+    #[serde(
+        rename = "SimBoundsMinX",
+        default,
+        deserialize_with = "optional_float",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sim_bounds_min_x: Option<f32>,
+    /// Minimum Z of the simulation bounds, from `<SimBoundsMinZ>`.
+    #[serde(
+        rename = "SimBoundsMinZ",
+        default,
+        deserialize_with = "optional_float",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sim_bounds_min_z: Option<f32>,
+    /// Maximum X of the simulation bounds, from `<SimBoundsMaxX>`.
+    #[serde(
+        rename = "SimBoundsMaxX",
+        default,
+        deserialize_with = "optional_float",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sim_bounds_max_x: Option<f32>,
+    /// Maximum Z of the simulation bounds, from `<SimBoundsMaxZ>`.
+    #[serde(
+        rename = "SimBoundsMaxZ",
+        default,
+        deserialize_with = "optional_float",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sim_bounds_max_z: Option<f32>,
+    /// External trigger scripts from the `<ExternalTriggerScript>` elements.
+    ///
+    /// Use [`scenario_trigger_sources`] for their order relative to the
+    /// `TriggerSystem` elements.
+    #[serde(
+        rename = "ExternalTriggerScript",
+        default,
+        skip_serializing_if = "Vec::is_empty"
+    )]
+    pub external_trigger_scripts: Vec<ExternalTriggerScript>,
     /// Whether the scenario enables veterancy.
     ///
     /// Retail starts with veterancy disabled. An `AllowVeterancy` element
@@ -387,6 +261,9 @@ pub struct ScenarioData {
 }
 
 impl ScenarioData {
+    /// Maximum number of `<Player>` elements that `BScenario_load` reads.
+    pub const MAX_PLAYERS: usize = 8;
+
     /// Terrain reference name.
     #[must_use]
     pub fn terrain(&self) -> &str {
@@ -430,12 +307,21 @@ impl ScenarioData {
             .and_then(|m| m.texture.as_deref())
             .unwrap_or("")
     }
-    /// Player placement type.
+    /// Player placement rule. An absent element gives [`PlayerPlacement::Fixed`].
     #[must_use]
-    pub fn player_placement_type(&self) -> &str {
+    pub fn player_placement(&self) -> PlayerPlacement {
         self.player_placement
             .as_ref()
-            .map_or("", |p| p.placement_type.as_str())
+            .map_or(PlayerPlacement::Fixed, PlayerPlacementInfo::placement)
+    }
+    /// Team relation table, or `None` if the file has no `<Diplomacy>` element.
+    ///
+    /// See [`DiplomaciesWrapper::table`].
+    #[must_use]
+    pub fn diplomacy_table(&self) -> Option<DiplomacyTable> {
+        self.diplomacies
+            .as_ref()
+            .and_then(DiplomaciesWrapper::table)
     }
     /// All placed objects.
     #[must_use]
@@ -443,6 +329,9 @@ impl ScenarioData {
         self.objects.as_ref().map_or(&[], |w| &w.entries)
     }
     /// Player definitions.
+    ///
+    /// `BScenario_load` reads at most [`MAX_PLAYERS`](Self::MAX_PLAYERS)
+    /// `<Player>` elements. This list keeps all of them.
     #[must_use]
     pub fn players(&self) -> &[ScenarioPlayer] {
         self.players.as_ref().map_or(&[], |w| &w.entries)
@@ -470,14 +359,27 @@ impl ScenarioData {
     /// Sound bank names.
     #[must_use]
     pub fn sound_banks(&self) -> &[String] {
-        self.sound_banks.as_ref().map_or(&[], |w| &w.entries)
+        &self.sound_banks
     }
-    /// Sim bounds as `[min_x, min_z, max_x, max_z]`, or `None` if absent/all-zero.
+    /// Simulation bounds as `[min_x, min_z, max_x, max_z]`.
+    ///
+    /// An absent or empty element gives the engine default: `0.0` for the
+    /// minimum values and `f32::MAX` for the maximum values.
+    /// `BWorld_setSimBounds` @ `0x1405d2210` then clamps the bounds to the
+    /// terrain.
     #[must_use]
-    pub fn sim_bounds(&self) -> Option<[f32; 4]> {
-        self.sim_bounds_info
-            .as_ref()
-            .and_then(SimBoundsInfo::to_array)
+    pub fn sim_bounds(&self) -> [f32; 4] {
+        [
+            self.sim_bounds_min_x.unwrap_or(0.0),
+            self.sim_bounds_min_z.unwrap_or(0.0),
+            self.sim_bounds_max_x.unwrap_or(f32::MAX),
+            self.sim_bounds_max_z.unwrap_or(f32::MAX),
+        ]
+    }
+    /// External trigger scripts in document order.
+    #[must_use]
+    pub fn external_trigger_scripts(&self) -> &[ExternalTriggerScript] {
+        &self.external_trigger_scripts
     }
 
     /// Serialize this scenario data back to an XMB document.
@@ -569,6 +471,55 @@ impl ScenarioDescriptor {
         let base = self.file.strip_suffix(".scn")?;
         let base = base.replace('/', "\\");
         Some(format!("scenario\\{base}"))
+    }
+
+    /// Path to this scenario's `.sc2` object file.
+    ///
+    /// `BScenario_load` appends `.sc2` to the scenario path without `.scn`:
+    /// `scenario\{scn_path_without_ext}.sc2`.
+    #[must_use]
+    pub fn sc2_path(&self) -> Option<String> {
+        self.terrain_base().map(|b| format!("{b}.sc2"))
+    }
+
+    /// Path to this scenario's `.sc3` object file.
+    ///
+    /// `scenario\{scn_path_without_ext}.sc3`
+    #[must_use]
+    pub fn sc3_path(&self) -> Option<String> {
+        self.terrain_base().map(|b| format!("{b}.sc3"))
+    }
+
+    /// Load and parse this scenario's `.sc2` object file.
+    ///
+    /// Returns `Ok(None)` if the source has no readable `.sc2` document. The
+    /// engine then loads the scenario without it.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`crate::Error::Scenario`] if the document does not match the
+    /// object schema.
+    pub fn read_sc2(
+        &self,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> crate::Result<Option<ScenarioObjectFile>> {
+        read_object_file(self.sc2_path(), src)
+    }
+
+    /// Load and parse this scenario's `.sc3` object file.
+    ///
+    /// Returns `Ok(None)` if the source has no readable `.sc3` document. The
+    /// engine then loads the scenario without it.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`crate::Error::Scenario`] if the document does not match the
+    /// object schema.
+    pub fn read_sc3(
+        &self,
+        src: &mut AssetSource<impl assets::FileProvider>,
+    ) -> crate::Result<Option<ScenarioObjectFile>> {
+        read_object_file(self.sc3_path(), src)
     }
 
     /// Path to this scenario's XTD (terrain displacement/heightmap) file.
@@ -711,24 +662,23 @@ impl ScenarioData {
     }
 }
 
-/// Parse a comma-separated `"x,y,z"` string into `[f32; 3]`.
-fn parse_vec3(s: &str) -> [f32; 3] {
-    let mut parts = s.split(',');
-    let x = parts.next().and_then(|v| v.parse().ok()).unwrap_or(0.0);
-    let y = parts.next().and_then(|v| v.parse().ok()).unwrap_or(0.0);
-    let z = parts.next().and_then(|v| v.parse().ok()).unwrap_or(0.0);
-    [x, y, z]
-}
-
-/// Decode an optional integer attribute from its trimmed text.
-///
-/// Text that is not a decimal `i32` gives `None`, the same as an absent
-/// attribute.
-fn optional_integer_text<'de, D: Deserializer<'de>>(
-    deserializer: D,
-) -> Result<Option<i32>, D::Error> {
-    let text = String::deserialize(deserializer)?;
-    Ok(text.trim().parse().ok())
+/// Read a `.sc2` or `.sc3` document, or `None` if the path does not resolve.
+fn read_object_file(
+    path: Option<String>,
+    src: &mut AssetSource<impl assets::FileProvider>,
+) -> crate::Result<Option<ScenarioObjectFile>> {
+    let Some(path) = path else {
+        return Ok(None);
+    };
+    let Some(document) = src.read_xmb(&path) else {
+        return Ok(None);
+    };
+    let Some(root) = document.root() else {
+        return Ok(None);
+    };
+    ScenarioObjectFile::from_node(root)
+        .map(Some)
+        .map_err(|source| crate::Error::Scenario { path, source })
 }
 
 /// Decode a retail boolean element that is present in the document.

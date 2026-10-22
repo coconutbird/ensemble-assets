@@ -22,7 +22,7 @@
 //! // Load the base world, then load a scenario.
 //! let (mut world, mut src) = World::load("/path/to/HaloWarsDE")
 //!     .expect("failed to load world");
-//! world.swap_scenario(&mut src, "blood_gulch");
+//! world.swap_scenario(&mut src, "blood_gulch").expect("failed to load scenario");
 //!
 //! println!("Loaded {} objects", world.database.objects.len());
 //! println!("Resolved {} visuals", world.visuals.len());
@@ -57,8 +57,8 @@ pub use manifest::{AssetManifest, BinaryValidation, VerifyResult};
 pub use merge::{Conflict, MergeError, MergeOptions, MergeReport, ModOverlay, merge_mods};
 pub use resolve::{LoadStats, ObjectAssets, PhysicsChain};
 pub use scenario::{
-    CinematicRef, ObjectiveRef, ScenarioData, ScenarioDescriptor, ScenarioObject, ScenarioPlayer,
-    ScenarioPosition, TalkingHeadRef,
+    CinematicRef, ObjectiveRef, ScenarioData, ScenarioDescriptor, ScenarioObject,
+    ScenarioObjectFile, ScenarioPlayer, ScenarioPosition, TalkingHeadRef,
 };
 pub use validate::{ValidateReport, validate};
 pub use world::{World, WorldLoadOptions};

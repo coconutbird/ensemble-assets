@@ -51,7 +51,7 @@ use super::manifest::{
     resolve_scenario, resolve_textures_for,
 };
 use super::resolve::{LoadStats, ObjectAssets, PhysicsChain, resolve_physics_chain};
-use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList};
+use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList, ScenarioObjectFile};
 
 /// Controls which optional asset inventories are built while loading a world.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -293,6 +293,14 @@ pub struct World {
     pub scenario: Option<ScenarioDescriptor>,
     /// Parsed `.scn` data (placed objects, players, terrain, etc.).
     pub scenario_data: Option<ScenarioData>,
+    /// Parsed `.sc2` objects of the active scenario.
+    ///
+    /// `BScenario_load` creates these objects after all `.scn` elements.
+    pub scenario_sc2: Option<ScenarioObjectFile>,
+    /// Parsed `.sc3` objects of the active scenario.
+    ///
+    /// `BScenario_load` creates these objects after the `.sc2` objects.
+    pub scenario_sc3: Option<ScenarioObjectFile>,
     /// All scenarios from the scenario descriptions file.
     pub scenario_list: ScenarioList,
     /// Inventory of the binary assets that the world refers to.
@@ -330,7 +338,7 @@ impl World {
     ///
     /// ```rust,no_run
     /// let (mut world, mut src) = pipeline::hw1::World::load("/path/to/hw1").unwrap();
-    /// world.swap_scenario(&mut src, "blood_gulch");
+    /// world.swap_scenario(&mut src, "blood_gulch").unwrap();
     /// ```
     ///
     /// # Errors
@@ -365,7 +373,8 @@ impl World {
     /// # Errors
     ///
     /// Returns an error if any required database or scenario asset cannot be
-    /// decoded or deserialized.
+    /// decoded or deserialized, or if a `.sc2` or `.sc3` file does not match
+    /// the object schema.
     pub fn load_from_source_with_options(
         src: &mut AssetSource<impl assets::FileProvider>,
         options: WorldLoadOptions,
@@ -403,6 +412,7 @@ impl World {
 
         // 6. Auto-detect and load scenario from the SCN file
         let (scenario, scenario_data) = resolve_scenario(src, &scenario_list, &mut manifest);
+        let (scenario_sc2, scenario_sc3) = read_scenario_object_files(scenario.as_ref(), src)?;
 
         // 7. Discover terrain texture references from XTT files
         if options.discover_texture_manifest {
@@ -435,6 +445,8 @@ impl World {
             physics,
             scenario,
             scenario_data,
+            scenario_sc2,
+            scenario_sc3,
             scenario_list,
             manifest,
             stats,
@@ -523,7 +535,7 @@ impl World {
     /// ```rust,no_run
     /// # let dir = "path/to/hw1";
     /// let (mut world, mut src) = pipeline::hw1::World::load(&dir).unwrap();
-    /// world.swap_scenario(&mut src, "PHXscn01");
+    /// world.swap_scenario(&mut src, "PHXscn01").unwrap();
     /// // Unload the scenario, popping its ERA from the stack.
     /// world.clear_scenario(&mut src);
     /// assert!(world.scenario.is_none());
@@ -538,6 +550,8 @@ impl World {
 
         self.scenario = None;
         self.scenario_data = None;
+        self.scenario_sc2 = None;
+        self.scenario_sc3 = None;
         self.lightset = None;
         self.terrain_data = None;
         self.terrain_textures = None;
@@ -567,21 +581,26 @@ impl World {
     /// # Example
     /// ```rust,no_run
     /// let (mut world, mut src) = pipeline::hw1::World::load("path/to/hw1").unwrap();
-    /// world.swap_scenario(&mut src, "PHXscn01");
+    /// world.swap_scenario(&mut src, "PHXscn01").unwrap();
     /// // Switch to a different map — no need to track state.
-    /// world.swap_scenario(&mut src, "blood_gulch");
+    /// world.swap_scenario(&mut src, "blood_gulch").unwrap();
     /// ```
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the `.sc2` or `.sc3` file of the new scenario does
+    /// not match the object schema. The world then has no active scenario.
     pub fn swap_scenario(
         &mut self,
         src: &mut AssetSource<crate::source::StdFileProvider>,
         scenario: &str,
-    ) {
+    ) -> crate::Result<()> {
         // 1. Unload current scenario (pop any scenario ERAs).
         self.clear_scenario(src);
 
         // 2. Find and load the new scenario ERA.
         if !src.load_scenario(scenario) {
-            return;
+            return Ok(());
         }
 
         // 3. Re-parse preload lists from the new scenario ERA.
@@ -592,6 +611,7 @@ impl World {
         // 4. Resolve the scenario from the new ERA.
         let (scenario_desc, scenario_data) =
             resolve_scenario(src, &self.scenario_list, &mut self.manifest);
+        let (scenario_sc2, scenario_sc3) = read_scenario_object_files(scenario_desc.as_ref(), src)?;
 
         // 5. Discover terrain textures from the new scenario.
         discover_terrain_textures(
@@ -617,6 +637,9 @@ impl World {
 
         self.scenario = scenario_desc;
         self.scenario_data = scenario_data;
+        self.scenario_sc2 = scenario_sc2;
+        self.scenario_sc3 = scenario_sc3;
+        Ok(())
     }
 
     /// Resolve a localized string by its `_locID`.
@@ -846,4 +869,18 @@ fn load_lightset(
         return None;
     }
     super::lightset::load(desc, ls_ref, src)
+}
+
+/// Object files of a scenario: `.sc2` and `.sc3`.
+type ScenarioObjectFiles = (Option<ScenarioObjectFile>, Option<ScenarioObjectFile>);
+
+/// Read the `.sc2` and `.sc3` object files of a scenario descriptor.
+fn read_scenario_object_files(
+    descriptor: Option<&ScenarioDescriptor>,
+    src: &mut AssetSource<impl assets::FileProvider>,
+) -> crate::Result<ScenarioObjectFiles> {
+    let Some(descriptor) = descriptor else {
+        return Ok((None, None));
+    };
+    Ok((descriptor.read_sc2(src)?, descriptor.read_sc3(src)?))
 }

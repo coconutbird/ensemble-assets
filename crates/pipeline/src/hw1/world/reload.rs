@@ -107,11 +107,15 @@ impl super::World {
                 }
             }
             TableId::Scenario => {
-                // Scenario reload requires re-reading the .scn file
+                // Scenario reload re-reads the .scn, .sc2 and .sc3 files.
                 if let Some(desc) = &self.scenario
                     && let Some(scn) = desc.read_scenario(src)
                 {
+                    let sc2 = desc.read_sc2(src)?;
+                    let sc3 = desc.read_sc3(src)?;
                     self.scenario_data = Some(scn);
+                    self.scenario_sc2 = sc2;
+                    self.scenario_sc3 = sc3;
                     return Ok(true);
                 }
                 Ok(false)

@@ -144,8 +144,11 @@ fn run_load(game_dir: &str, scenario: Option<&str>) {
         eprintln!("Failed to load world: {e}");
         std::process::exit(1);
     });
-    if let Some(scen) = scenario {
-        world.swap_scenario(&mut src, scen);
+    if let Some(scen) = scenario
+        && let Err(e) = world.swap_scenario(&mut src, scen)
+    {
+        eprintln!("Failed to load scenario {scen}: {e}");
+        std::process::exit(1);
     }
     println!();
     world.print_summary();
