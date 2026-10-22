@@ -52,8 +52,18 @@ directory are above all ERAs.
 ### Update files
 
 `root_update.era` adds new files. It also holds `objects_update.xml.xmb`,
-`squads_update.xml.xmb` and `techs_update.xml.xmb`. Elements in these files have
-`update="true"`. The engine merges them into the entries with the same name.
+`squads_update.xml.xmb` and `techs_update.xml.xmb`. The engine does not merge fields. It
+replaces or appends whole records (`BDatabase_setupDependentData` @ `0x1401EE690`,
+`BDatabase_setupProtoObjects` @ `0x1401F27F0`, `BDatabase_setupProtoSquads` @ `0x1401F2FC0`,
+`BDatabase_setupProtoTechs` @ `0x1401F4E80`):
+
+1. For objects and squads, the engine skips each record of the base file that has
+   `update="true"`. Then it appends each record of the `_update` file.
+2. For techs, the engine appends each record of `techs_update.xml` after the records of
+   `techs.xml`. It does not read the `update` attribute.
+3. The record index is the engine ID. The name maps ignore case and keep the first name. A
+   second object with the same name stops the database setup. A second squad or tech with the
+   same name keeps its index.
 
 ```xml
 <Object name="game_CTF_flag_01" is="0" id="2061" dbid="4355" update="true">
@@ -62,14 +72,26 @@ directory are above all ERAs.
 </Object>
 ```
 
-Gap: `pipeline` does not load or merge the `*_update.xml` files. `ProtoObject` has the update
-flag only.
+In the retail data, `objects.xml` has three `update="true"` records. `sys_icon_53_01` moves from
+index 1073 to index 2495, and `game_CTF_flag_01` gets LOS 14 from `objects_update.xml`.
+`techs_update.xml` adds 11 `Shadow` techs, from `ProtectorNoCollect` to `ScarabBuff`.
+
+`Database::load` (`crates/database/src/hw1/overlay.rs`) applies these rules.
+`Database::load_base_files` reads the base files only; the mod merge uses it.
+`Database::to_documents` and the `World` save write an overlay table as the full base file and an
+empty `_update` file, so the engine loads the same records at the same indices.
 
 ## Database files
 
 - `data\objects.xml.xmb` has about 2500 objects. An object has no parent. All properties are in
   the object element.
 - `data\squads.xml.xmb` lists the units of each squad.
+- `data\objecttypes.xml.xmb` declares 96 object types. Objects and types share one name map:
+  type `j` has the engine ID `objects.len() + j`. `BProtoObject_load` @ `0x140341620` ignores an
+  `<ObjectType>` that is not a declared type. For example, 53 objects list `Icon`, but only
+  `_Icon` is declared. `ObjectTypeIndex` (`Database::object_type_index`) gives this lookup.
+- `data\gamemodes.xml.xmb` lists the skirmish game modes with their world and player trigger
+  scripts (`BGameMode_load` @ `0x140240E70`).
 - `<Tactics>` gives a file name without a directory. The file is in `data\tactics\`.
 - `<PhysicsInfo>` and `<PhysicsReplacementInfo>` give a bare name. The engine adds `physics\`
   and the extension.
