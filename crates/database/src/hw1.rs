@@ -98,6 +98,8 @@ pub struct Database {
     pub objects: Vec<ProtoObject>,
     /// Squads from `squads.xml.xmb`.
     pub squads: Vec<Squad>,
+    /// `<MergedSquads>` groups from `squads.xml.xmb`, in document order.
+    pub merged_squads: Vec<squads::MergedSquads>,
     /// Techs from `techs.xml.xmb`.
     pub techs: Vec<Tech>,
     /// Abilities from `abilities.xml.xmb`.
@@ -202,7 +204,7 @@ impl Database {
         Ok(count)
     }
 
-    /// Load squads from a `squads.xml.xmb` document.
+    /// Load squads and `<MergedSquads>` groups from a `squads.xml.xmb` document.
     ///
     /// # Errors
     ///
@@ -211,6 +213,7 @@ impl Database {
         let squads = squads::parse(doc)?;
         let count = squads.len();
         self.squads = squads;
+        self.merged_squads = squads::parse_merged(doc)?;
         Ok(count)
     }
 

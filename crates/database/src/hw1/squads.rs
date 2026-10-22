@@ -7,7 +7,7 @@ use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
 use super::Vector3;
-use crate::node_ext::parse_table;
+use crate::node_ext::{expect_root, parse_table};
 
 /// A squad definition from `squads.xml`.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -298,6 +298,20 @@ fn default_one() -> i32 {
     1
 }
 
+/// A `<MergedSquads>` group from `squads.xml`.
+///
+/// The engine (`BDatabase::setupProtoSquads`) makes one merged proto squad for each
+/// `<MergedSquad>` child. The merged squad combines the child squad with the squad that the
+/// group text names. Merged squads get the proto squad IDs that follow the `<Squad>` records.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct MergedSquads {
+    /// Text of the `<MergedSquads>` element: the name of the squad that joins.
+    pub squad: String,
+    /// Texts of the `<MergedSquad>` children, in document order: the names of the squads that
+    /// receive the joining squad.
+    pub targets: Vec<String>,
+}
+
 /// Parse all squads from a `squads.xml.xmb` document.
 ///
 /// # Errors
@@ -305,4 +319,62 @@ fn default_one() -> i32 {
 /// Returns an error if the document root is invalid or a squad cannot be deserialized.
 pub fn parse(doc: &xmb::Document) -> crate::Result<Vec<Squad>> {
     parse_table(doc, "Squads", "Squad")
+}
+
+/// Parse the `<MergedSquads>` groups of a `squads.xml.xmb` document in document order.
+///
+/// The element names match without case, as `_stricmp` does in the engine. The texts stay as
+/// authored (the engine does not trim them).
+///
+/// # Errors
+///
+/// Returns an error if the document root is not `Squads`.
+pub fn parse_merged(doc: &xmb::Document) -> crate::Result<Vec<MergedSquads>> {
+    let root = expect_root(doc, "Squads")?;
+    Ok(root
+        .children
+        .iter()
+        .filter(|node| node.name.eq_ignore_ascii_case("MergedSquads"))
+        .map(|group| MergedSquads {
+            squad: group.text_string(),
+            targets: group
+                .children
+                .iter()
+                .filter(|node| node.name.eq_ignore_ascii_case("MergedSquad"))
+                .map(xmb::Node::text_string)
+                .collect(),
+        })
+        .collect())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use alloc::vec;
+
+    #[test]
+    fn merged_groups_keep_document_order_and_ignore_element_case() {
+        let document = xmb::Document::from_xml(
+            "<Squads><Squad name=\"a\"/><MergedSquads>spartan\
+             <MergedSquad>marine</MergedSquad><mergedsquad>odst</mergedsquad>\
+             <Other>x</Other></MergedSquads><mergedSQUADS>hero\
+             <MergedSquad>grunt</MergedSquad></mergedSQUADS></Squads>",
+        )
+        .unwrap();
+
+        assert_eq!(
+            parse_merged(&document).unwrap(),
+            [
+                MergedSquads {
+                    squad: "spartan".into(),
+                    targets: vec!["marine".into(), "odst".into()],
+                },
+                MergedSquads {
+                    squad: "hero".into(),
+                    targets: vec!["grunt".into()],
+                },
+            ]
+        );
+        assert_eq!(parse(&document).unwrap().len(), 1);
+    }
 }

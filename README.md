@@ -112,7 +112,7 @@ read.
 | Schema | Engine loader | Tags in retail XML that we do not read |
 | ------ | ------------- | -------------------------------------- |
 | objects | `BProtoObject_load` @ `0x140341620` | `@direction`; `CircleMenuFrameIDNormal`, `CircleMenuFrameIDHighlight` (no engine string: data only) |
-| squads | `BProtoSquad_load` @ `0x140350d90`, `BDatabase_setupProtoSquads` | `MergedSquads`/`MergedSquad`, `ShieldBubbleTypes`/`ShieldBubble` (engine reads both in `BDatabase_setupProtoSquads`) |
+| squads | `BProtoSquad_load` @ `0x140350d90`, `BDatabase_setupProtoSquads` | `ShieldBubbleTypes`/`ShieldBubble` (engine reads it in `BDatabase_setupProtoSquads`). `MergedSquads`/`MergedSquad` go to `Database::merged_squads`. |
 | techs | `BProtoTech_load` @ `0x140356ad0`, `BTechEffect_load` @ `0x14040e2c0` | `TechDataCommandType`, `TechDataRelativity`, `TechDataSubType`, `TechDataSubTypeProtoSquad` (no engine string: data only) |
 | powers | `BProtoPower_load` @ `0x14034cb00` | `CircleMenuFrameIDNormal`, `CircleMenuFrameIDHighlight` (data only) |
 | tactics | `BTactic_loadTactic` @ `0x140408e80`, `BWeapon_loadWeapon` @ `0x1403fea70`, `BProtoAction_loadProtoAction` @ `0x140401f40` | `DodgePercent`, `HoverAltitude`, `ReloadAnimation`, `RestrictedAutoTarget`, `Walk{Forward,Back,Left,Right}Anim` (no engine string: data only) |
