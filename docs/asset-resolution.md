@@ -99,7 +99,8 @@ bones (for example four `Wheel` attachments).
 
 Gap: `visit_asset_refs` makes `art\<damagefile>.ugx` for a damage file. That file does not exist
 in the retail data (for example `art\unsc\vehicle\warthog_01\warthog_01.dmg.xmb` exists but
-`warthog_01.ugx` does not). The correct path is `art\<damagefile>.dmg.xmb`.
+`warthog_01.ugx` does not). The correct path is `art\<damagefile>.dmg.xmb`
+([ensemble-assets#1](https://github.com/coconutbird/ensemble-assets/issues/1)).
 
 ## Damage models
 
