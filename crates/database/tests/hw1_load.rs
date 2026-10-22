@@ -252,3 +252,40 @@ fn game_modes_read_every_engine_field() {
     assert_eq!(cap_flag.tech_name(), Some("armor"));
     assert_eq!(cap_flag.world_script, None);
 }
+
+/// `BAI_loadDifficultySettings` @ `0x140150640` reads each `AIDifficultySetting`, its
+/// `DefaultValue` children and the `DataPoint` children of its `PiecewiseFunc`.
+#[test]
+fn ai_difficulty_settings_read_defaults_and_data_points() {
+    let mut assets = MemoryAssets::default().with_xml(
+        "data\\aidifficultysettings.xml",
+        r#"<AIDifficultySettings>
+            <AIDifficultySetting Name="MaxMissionFocusTime" InputLabel="Difficulty" OutputLabel="Seconds">
+                <DefaultValue Name="SPCEasy" Value="9999"/>
+                <PiecewiseFunc>
+                    <DataPoint Input="0" Output="60"/>
+                    <DataPoint Input="0.67" Output="10"/>
+                </PiecewiseFunc>
+            </AIDifficultySetting>
+            <AIDifficultySetting Name="EconMultiplier"/>
+        </AIDifficultySettings>"#,
+    );
+
+    let db = Database::load(&mut assets).expect("load");
+
+    assert_eq!(
+        names(&db.ai_difficulty_settings),
+        ["MaxMissionFocusTime", "EconMultiplier"]
+    );
+    let focus = &db.ai_difficulty_settings[0];
+    assert_eq!(focus.input_label.as_deref(), Some("Difficulty"));
+    assert_eq!(focus.output_label.as_deref(), Some("Seconds"));
+    assert_eq!(focus.default_values.len(), 1);
+    assert_eq!(focus.default_values[0].name, "SPCEasy");
+    assert!((focus.default_values[0].value - 9999.0).abs() < 1.0e-3);
+    let points = &focus.function.as_ref().expect("function").points;
+    assert_eq!(points.len(), 2);
+    assert!((points[1].input - 0.67).abs() < 1.0e-6);
+    assert!((points[1].output - 10.0).abs() < 1.0e-6);
+    assert!(db.ai_difficulty_settings[1].function.is_none());
+}

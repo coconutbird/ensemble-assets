@@ -13,12 +13,14 @@
 //! - `damagetypes.xml.xmb` — damage type definitions
 //! - `gamedata.xml.xmb` — global game constants
 //! - `gamemodes.xml.xmb` — skirmish game modes
+//! - `aidifficultysettings.xml.xmb` — named AI settings by difficulty
 //! - `*.vis.xmb` — visual definitions (models, animations, attachments)
 //! - `*.tactics.xmb` — combat tactics (weapons, actions)
 //! - `*.physics.xmb` / `*.blueprint.xmb` / `*.shp.xmb` — physics data
 //! - `*.pfx.xmb` — particle effect definitions
 
 pub mod abilities;
+pub mod aidifficultysettings;
 pub mod civs;
 pub mod damagetypes;
 pub mod gamedata;
@@ -46,6 +48,7 @@ use assets::AssetResolver;
 type DbLoader = fn(&mut Database, &xmb::Document) -> crate::Result<()>;
 
 pub use abilities::Ability;
+pub use aidifficultysettings::AIDifficultySetting;
 pub use civs::Civ;
 pub use damagetypes::DamageType;
 pub use gamedata::GameData;
@@ -99,6 +102,7 @@ impl_keyed!(
     DamageType,
     ObjectType,
     GameMode,
+    AIDifficultySetting,
 );
 
 /// A complete HW1 game database, loaded from XMB documents.
@@ -134,6 +138,8 @@ pub struct Database {
     pub game_data: Option<GameData>,
     /// Game modes from `gamemodes.xml.xmb`.
     pub game_modes: Vec<GameMode>,
+    /// AI difficulty settings from `aidifficultysettings.xml.xmb`.
+    pub ai_difficulty_settings: Vec<AIDifficultySetting>,
 }
 
 impl Database {
@@ -241,6 +247,10 @@ impl Database {
                 db.load_game_modes(doc)?;
                 Ok(())
             }),
+            ("data\\aidifficultysettings.xml", |db, doc| {
+                db.load_ai_difficulty_settings(doc)?;
+                Ok(())
+            }),
         ];
 
         for &(path, loader) in loaders {
@@ -324,6 +334,16 @@ impl Database {
     pub fn load_game_modes(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         self.game_modes = gamemodes::parse(doc)?;
         Ok(self.game_modes.len())
+    }
+
+    /// Load the AI difficulty settings from an `aidifficultysettings.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or a setting is invalid.
+    pub fn load_ai_difficulty_settings(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
+        self.ai_difficulty_settings = aidifficultysettings::parse(doc)?;
+        Ok(self.ai_difficulty_settings.len())
     }
 
     /// Build the engine name map of the objects and the object types.
@@ -496,6 +516,16 @@ impl Database {
             docs.push((
                 String::from("data\\gamemodes.xml"),
                 self.to_document_single("GameModes", "GameMode", &self.game_modes)?,
+            ));
+        }
+        if !self.ai_difficulty_settings.is_empty() {
+            docs.push((
+                String::from("data\\aidifficultysettings.xml"),
+                self.to_document_single(
+                    "AIDifficultySettings",
+                    "AIDifficultySetting",
+                    &self.ai_difficulty_settings,
+                )?,
             ));
         }
 

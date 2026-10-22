@@ -73,9 +73,9 @@ Loaded now:
 
 - `database`: `objects` with `objects_update`, `objecttypes`, `squads` with `squads_update`,
   `techs` with `techs_update`, `abilities`, `powers`, `civs`, `leaders`, `weapontypes`,
-  `damagetypes`, `gamedata`, `gamemodes` (`data\*.xml.xmb`), `*.vis`, `*.tactics`,
-  `*.physics`, `*.blueprint`, `*.shp`, `*.pfx`. `Database::load` applies the `_update` files as
-  the engine does (see `docs/asset-resolution.md`).
+  `damagetypes`, `gamedata`, `gamemodes`, `aidifficultysettings` (`data\*.xml.xmb`), `*.vis`,
+  `*.tactics`, `*.physics`, `*.blueprint`, `*.shp`, `*.pfx`. `Database::load` applies the
+  `_update` files as the engine does (see `docs/asset-resolution.md`).
 - `pipeline`: `.scn` scenario data, `.sc2` and `.sc3` scenario objects,
   `scenariodescriptions.xml`, `stringtable-<lang>.xml`, `.gls` and `.fls` lightsets, `.xsd`,
   `.xtd`, `.xtt` terrain, and the preload lists `visFileList.txt`, `tfxFileList.txt` and
@@ -95,7 +95,7 @@ Not loaded (the engine loads these; no crate in the three repositories parses th
 | `preloadxmlfiles.xml` | `BDatabase_setupPreloadXmlFiles` @ `0x1401fcab0` | |
 | `soundInfo.xml`, `soundTable.xml`, `chattertable.xml` | strings @ `0x1411c9310`, `0x1411a2608`, `0x1411e8620` | Sound data. |
 | `fogOfWar.xml`, `gamesettings.xml`, `stats.xml`, `userclasses.xml`, `achievements.xml` | strings @ `0x1411daa68`, `0x1411a8860`, `0x1411bb638`, `0x1411c11e8`, `0x14118f870` | |
-| `aidifficultysettings.xml`, `aifactoids.xml`, `data\aidata\*` | strings @ `0x141196b38`, `0x141196ff8` | AI data. |
+| `aifactoids.xml`, `data\aidata\*` | string @ `0x141196ff8` | AI data. |
 | `.cin` | string `*.cin` @ `0x1411abab0` | The manifest records `.cin` paths, but no crate parses them. |
 | `dlc%02u.xml` | string @ `0x1411a8448` | `loader.rs` loads `dlcNN.era`, but not the DLC XML files. |
 
