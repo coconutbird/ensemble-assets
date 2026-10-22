@@ -14,6 +14,7 @@
 //! - `*.vis.xmb` — visual definitions (models, animations, attachments)
 //! - `*.tactics.xmb` — combat tactics (weapons, actions)
 //! - `*.physics.xmb` / `*.blueprint.xmb` / `*.shp.xmb` — physics data
+//! - `*.pfx.xmb` — particle effect definitions
 
 pub mod abilities;
 pub mod civs;
@@ -21,6 +22,7 @@ pub mod damagetypes;
 pub mod gamedata;
 pub mod leaders;
 pub mod objects;
+pub mod pfx;
 pub mod physics;
 pub mod powers;
 pub mod squads;
