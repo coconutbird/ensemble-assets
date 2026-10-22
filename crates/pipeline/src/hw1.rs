@@ -10,6 +10,7 @@
 //! 6. **Validation** ([`mod@validate`], [`diagnostics`]) — structured cross-reference checks
 //! 7. **Manifest** ([`manifest`]) — passive inventory of all binary asset references
 //! 8. **String table** ([`stringtable`]) — localized string lookup by `_locID`
+//! 9. **Terrain textures** ([`terrain`]) — terrain texture paths and decoded terrain maps
 //!
 //! # Usage
 //!
@@ -38,6 +39,7 @@ pub mod merge;
 pub mod resolve;
 pub mod scenario;
 pub mod stringtable;
+pub mod terrain;
 pub mod validate;
 pub mod world;
 
