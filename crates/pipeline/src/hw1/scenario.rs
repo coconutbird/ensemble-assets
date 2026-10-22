@@ -24,7 +24,7 @@ use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::source::AssetSource;
 
-mod design_lines;
+mod design_objects;
 mod diplomacy;
 mod object;
 mod objectives;
@@ -33,7 +33,9 @@ mod position;
 mod retail_text;
 mod trigger_sources;
 
-pub use design_lines::{DesignLine, DesignLineError, parse_design_lines};
+pub use design_objects::{
+    DesignData, DesignLine, DesignObjectError, DesignObjects, DesignSphere, parse_design_objects,
+};
 pub use diplomacy::{
     DIPLOMACY_TEAM_COUNT, DiplomaciesWrapper, DiplomacyTable, ScenarioDiplomacy,
     ScenarioDiplomacyEntry, ScenarioRelation,

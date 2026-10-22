@@ -1,6 +1,8 @@
 //! Scenario setup fields of the shipped Blood Gulch map, as `BScenario_load` reads them.
 
-use pipeline::hw1::scenario::{PlayerPlacement, ScenarioList, ScenarioRelation};
+use pipeline::hw1::scenario::{
+    PlayerPlacement, ScenarioList, ScenarioRelation, parse_design_objects,
+};
 use test_utils::require_game_dir;
 
 #[test]
@@ -89,4 +91,41 @@ fn blood_gulch_setup_fields_match_the_engine_reads() {
             .iter()
             .all(|object| !object.proto_name.starts_with("env_arcadia_pinetree_"))
     );
+}
+
+/// `BDesignObjectManager_load` keeps six `Creeps` spheres and one camera boundary line.
+#[test]
+#[ignore = "requires HW1_GAME_DIR"]
+fn blood_gulch_design_objects_match_the_engine_reads() {
+    let dir = require_game_dir("HW1_GAME_DIR");
+    let mut src = pipeline::hw1::loader::load_with_scenario(&dir, "blood_gulch.era");
+    let list = ScenarioList::load(&mut src);
+    let descriptor = list
+        .scenarios
+        .get("blood_gulch")
+        .expect("blood_gulch descriptor");
+    let document = src
+        .read_xmb(&descriptor.scn_path())
+        .expect("blood_gulch .scn document");
+    let objects = parse_design_objects(&document).expect("valid design objects");
+
+    assert_eq!(
+        objects
+            .spheres
+            .iter()
+            .map(|sphere| (sphere.id, sphere.radius, sphere.data.type_name.as_str()))
+            .collect::<Vec<_>>(),
+        [
+            (24, 55.0, "Creeps"),
+            (25, 55.0, "Creeps"),
+            (27, 20.0, "Creeps"),
+            (29, 20.0, "Creeps"),
+            (148, 35.0, "Creeps"),
+            (149, 35.0, "Creeps"),
+        ]
+    );
+    assert_eq!(objects.spheres[0].position, [447.258, 0.0, 268.722]);
+    assert_eq!(objects.lines.len(), 1);
+    assert_eq!(objects.lines[0].id, 140);
+    assert_eq!(objects.lines[0].points.len(), 11);
 }

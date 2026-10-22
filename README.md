@@ -119,7 +119,7 @@ read.
 | physics | `BPhysicsInfo_load` @ `0x1402d3cd0` | `ImpactSound` (engine string @ `0x1411a19b8`, read in `sub_1401D83B0`); `DestroyedByBallistics`, `ThrownByBallistics` (data only) |
 | blueprint | `BPhysicsObjectBlueprint_load` @ `0x1407ba2f0` | `angularDampening` (data only) |
 | pfx | particle loader `sub_14079D440` | `Masks` (engine string @ `0x1411e2ba4`); `UseExternalWind`, `ExternalWindDelay`, `ExternalWindInfluence`, `CycleTime`, `CycleVariance`, `GradientPoint` (data only) |
-| scn | `BScenario_load` @ `0x140377be0`, `BScenario_loadPlayer` @ `0x1403808a0`, `BScenario_loadPosition` @ `0x14037f430`, `BScenario_loadObject` @ `0x14037d6a0` | `Lights`, `ObjectGroups`, `DesignObjects` (the sim reads design lines from the document), `BuildingTextureIndexUNSC`, `BuildingTextureIndexCOVN`, `EnvironmentReverbPreset`, `ScenarioWorld`; `Leader2`, `Favor`, `Relics`, `Honor`, `EditorOnlyData`, `NextID`, `GlobalExcludeObjects` (data only) |
+| scn | `BScenario_load` @ `0x140377be0`, `BScenario_loadPlayer` @ `0x1403808a0`, `BScenario_loadPosition` @ `0x14037f430`, `BScenario_loadObject` @ `0x14037d6a0`, `BDesignObjectManager_load` @ `0x140200530` | `Lights`, `ObjectGroups`, `DesignObjects` (`parse_design_objects` reads its spheres and lines from the document), `BuildingTextureIndexUNSC`, `BuildingTextureIndexCOVN`, `EnvironmentReverbPreset`, `ScenarioWorld`; `Leader2`, `Favor`, `Relics`, `Honor`, `EditorOnlyData`, `NextID`, `GlobalExcludeObjects` (data only) |
 
 Abilities, civs, leaders, weapon types, damage types, game data, object types, game modes and
 visuals have no unread tag in the retail XML.
