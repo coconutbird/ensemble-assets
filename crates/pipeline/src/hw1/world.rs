@@ -143,27 +143,56 @@ fn resolve_visual_asset(
         return;
     };
 
-    inventory.stats.objects_with_visual += 1;
+    load_object_visual(
+        src,
+        object,
+        visual_ref,
+        object_assets,
+        &mut inventory.visuals,
+        &mut inventory.manifest,
+        &mut inventory.stats,
+    );
+}
+
+/// Load the visual file `visual_ref` of one object.
+///
+/// The function sets the visual path of `object_assets` and counts the attempt in `stats`. If
+/// the visual loads, the function adds its asset paths to `object_assets` and `manifest` and
+/// inserts it in `visuals`. If the visual does not load, the function records the failure in
+/// `stats`.
+///
+/// Returns `true` if the visual loads.
+fn load_object_visual(
+    src: &mut AssetSource<impl assets::FileProvider>,
+    object: &database::hw1::ProtoObject,
+    visual_ref: &str,
+    object_assets: &mut ObjectAssets,
+    visuals: &mut HashMap<String, database::hw1::Visual>,
+    manifest: &mut AssetManifest,
+    stats: &mut LoadStats,
+) -> bool {
+    stats.objects_with_visual += 1;
     let visual_normalized = visual_ref.replace('/', "\\");
     let visual_normalized = visual_normalized.trim_start_matches('\\');
     let visual_base = format!("art\\{visual_normalized}");
     object_assets.visual = Some(visual_base.clone());
 
     let Some(visual_document) = src.read_xmb(&visual_base) else {
-        inventory.stats.visuals_failed.push(visual_base);
-        return;
+        stats.visuals_failed.push(visual_base);
+        return false;
     };
     match database::hw1::visual::parse(&visual_document) {
         Ok(visual) => {
-            inventory.stats.visuals_resolved += 1;
-            collect_visual_assets(&visual, &mut inventory.manifest);
+            stats.visuals_resolved += 1;
+            collect_visual_assets(&visual, manifest);
             collect_object_visual_assets(&visual, object_assets);
-            inventory.visuals.insert(object.name.clone(), visual);
+            visuals.insert(object.name.clone(), visual);
+            true
         }
-        Err(error) => inventory
-            .stats
-            .visuals_failed
-            .push(format!("{visual_base}: {error}")),
+        Err(error) => {
+            stats.visuals_failed.push(format!("{visual_base}: {error}"));
+            false
+        }
     }
 }
 
@@ -451,46 +480,30 @@ impl World {
                     .get(&object.name)
                     .is_none_or(|assets| assets.visual.is_none())
             })
-            .filter_map(|object| {
-                Some((
-                    object.name.clone(),
-                    object.object_class.clone(),
-                    object.object_types.clone(),
-                    object.visual.clone()?,
-                ))
-            })
+            .filter_map(|object| Some((object, object.visual.as_deref()?)))
             .collect::<Vec<_>>();
 
         let mut loaded = 0;
-        for (object_name, object_class, object_types, visual_ref) in requests {
-            self.stats.objects_with_visual += 1;
-            let normalized = visual_ref.replace('/', "\\");
-            let normalized = normalized.trim_start_matches('\\');
-            let path = format!("art\\{normalized}");
+        for (object, visual_ref) in requests {
             let object_assets =
                 self.assets
-                    .entry(object_name.clone())
+                    .entry(object.name.clone())
                     .or_insert_with(|| ObjectAssets {
-                        name: object_name.clone(),
-                        object_class,
-                        object_types,
+                        name: object.name.clone(),
+                        object_class: object.object_class.clone(),
+                        object_types: object.object_types.clone(),
                         ..ObjectAssets::default()
                     });
-            object_assets.visual = Some(path.clone());
-
-            let Some(document) = src.read_xmb(&path) else {
-                self.stats.visuals_failed.push(path);
-                continue;
-            };
-            match database::hw1::visual::parse(&document) {
-                Ok(visual) => {
-                    self.stats.visuals_resolved += 1;
-                    collect_visual_assets(&visual, &mut self.manifest);
-                    collect_object_visual_assets(&visual, object_assets);
-                    self.visuals.insert(object_name, visual);
-                    loaded += 1;
-                }
-                Err(error) => self.stats.visuals_failed.push(format!("{path}: {error}")),
+            if load_object_visual(
+                src,
+                object,
+                visual_ref,
+                object_assets,
+                &mut self.visuals,
+                &mut self.manifest,
+                &mut self.stats,
+            ) {
+                loaded += 1;
             }
         }
         loaded

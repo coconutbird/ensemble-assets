@@ -165,18 +165,31 @@ impl AssetManifest {
     }
 }
 
-/// Collect all model/anim asset references from a parsed visual.
-pub(crate) fn collect_visual_assets(vis: &database::hw1::Visual, manifest: &mut AssetManifest) {
+/// A typed asset path that a visual references.
+enum VisualAssetRef {
+    /// A model file (`.ugx`).
+    Model(String),
+    /// An animation file (`.uax`).
+    Anim(String),
+    /// A damage model file (`.ugx`).
+    DamageModel(String),
+}
+
+/// Visit each model, animation and damage model path in a visual.
+///
+/// The visit order is the order of the assets in the visual. For each asset, the model or
+/// animation path comes before the damage model path.
+fn for_each_visual_asset_ref(vis: &database::hw1::Visual, mut visit: impl FnMut(VisualAssetRef)) {
     for model in &vis.models {
         if let Some(comp) = &model.component {
             for asset in &comp.assets {
-                register_asset(asset, manifest);
+                visit_asset_refs(asset, &mut visit);
             }
 
             if let Some(logic) = &comp.logic {
                 for entry in &logic.entries {
                     if let Some(asset) = &entry.asset {
-                        register_asset(asset, manifest);
+                        visit_asset_refs(asset, &mut visit);
                     }
                 }
             }
@@ -184,73 +197,49 @@ pub(crate) fn collect_visual_assets(vis: &database::hw1::Visual, manifest: &mut 
 
         for anim in &model.anims {
             for asset in &anim.assets {
-                register_asset(asset, manifest);
+                visit_asset_refs(asset, &mut visit);
             }
         }
     }
 }
 
-/// Register a single asset reference in the manifest.
-fn register_asset(asset: &database::hw1::visual::Asset, manifest: &mut AssetManifest) {
+/// Visit the typed paths of a single visual asset.
+fn visit_asset_refs(asset: &database::hw1::visual::Asset, visit: &mut impl FnMut(VisualAssetRef)) {
     if let Some(file) = &asset.file {
         let normalized = file.replace('/', "\\");
         match asset.asset_type.as_str() {
-            "Model" => {
-                manifest.model_refs.insert(format!("art\\{normalized}.ugx"));
-            }
-            "Anim" => {
-                manifest.anim_refs.insert(format!("art\\{normalized}.uax"));
-            }
+            "Model" => visit(VisualAssetRef::Model(format!("art\\{normalized}.ugx"))),
+            "Anim" => visit(VisualAssetRef::Anim(format!("art\\{normalized}.uax"))),
             _ => {}
         }
     }
 
     if let Some(dmg) = &asset.damage_file {
-        manifest
-            .damage_model_refs
-            .insert(format!("art\\{}.ugx", dmg.replace('/', "\\")));
+        visit(VisualAssetRef::DamageModel(format!(
+            "art\\{}.ugx",
+            dmg.replace('/', "\\")
+        )));
     }
+}
+
+/// Collect all model/anim asset references from a parsed visual.
+pub(crate) fn collect_visual_assets(vis: &database::hw1::Visual, manifest: &mut AssetManifest) {
+    for_each_visual_asset_ref(vis, |asset| {
+        match asset {
+            VisualAssetRef::Model(path) => manifest.model_refs.insert(path),
+            VisualAssetRef::Anim(path) => manifest.anim_refs.insert(path),
+            VisualAssetRef::DamageModel(path) => manifest.damage_model_refs.insert(path),
+        };
+    });
 }
 
 /// Collect model/anim/damage paths from a visual into a per-object bundle.
 pub(crate) fn collect_object_visual_assets(vis: &database::hw1::Visual, obj: &mut ObjectAssets) {
-    for model in &vis.models {
-        if let Some(comp) = &model.component {
-            for asset in &comp.assets {
-                register_object_asset(asset, obj);
-            }
-
-            if let Some(logic) = &comp.logic {
-                for entry in &logic.entries {
-                    if let Some(asset) = &entry.asset {
-                        register_object_asset(asset, obj);
-                    }
-                }
-            }
-        }
-
-        for anim in &model.anims {
-            for asset in &anim.assets {
-                register_object_asset(asset, obj);
-            }
-        }
-    }
-}
-
-/// Register a single asset reference in a per-object bundle.
-fn register_object_asset(asset: &database::hw1::visual::Asset, obj: &mut ObjectAssets) {
-    if let Some(file) = &asset.file {
-        let normalized = file.replace('/', "\\");
-        match asset.asset_type.as_str() {
-            "Model" => obj.models.push(format!("art\\{normalized}.ugx")),
-            "Anim" => obj.anims.push(format!("art\\{normalized}.uax")),
-            _ => {}
-        }
-    }
-    if let Some(dmg) = &asset.damage_file {
-        obj.damage_models
-            .push(format!("art\\{}.ugx", dmg.replace('/', "\\")));
-    }
+    for_each_visual_asset_ref(vis, |asset| match asset {
+        VisualAssetRef::Model(path) => obj.models.push(path),
+        VisualAssetRef::Anim(path) => obj.anims.push(path),
+        VisualAssetRef::DamageModel(path) => obj.damage_models.push(path),
+    });
 }
 
 /// Parse a preload list file (e.g. `visFileList.txt`) from the asset source.
@@ -287,7 +276,38 @@ pub(crate) fn discover_textures(
     model_refs: &BTreeSet<String>,
     texture_refs: &mut BTreeSet<String>,
 ) {
-    for ugx_path in model_refs {
+    collect_model_texture_refs(src, model_refs, texture_refs);
+}
+
+/// Read UGX materials for all models in an object and return the
+/// deduplicated, sorted list of texture paths they reference.
+///
+/// Only decompresses the material chunk (0x704) of each UGX — geometry,
+/// vertex buffers, and index buffers are never touched.
+pub(crate) fn resolve_textures_for(
+    obj: &ObjectAssets,
+    src: &mut AssetSource<impl assets::FileProvider>,
+) -> Vec<String> {
+    let mut textures = BTreeSet::new();
+    collect_model_texture_refs(
+        src,
+        obj.models.iter().chain(&obj.damage_models),
+        &mut textures,
+    );
+    textures.into_iter().collect()
+}
+
+/// Add the texture paths of the legacy UGX materials of each model to `texture_refs`.
+///
+/// The function reads only the material chunk (0x704) of each UGX file. It skips models that
+/// do not resolve or do not parse, and map entries with an empty name. It normalises each
+/// texture name to the `art\...\name.ddx` form.
+fn collect_model_texture_refs<'a>(
+    src: &mut AssetSource<impl assets::FileProvider>,
+    model_paths: impl IntoIterator<Item = &'a String>,
+    texture_refs: &mut BTreeSet<String>,
+) {
+    for ugx_path in model_paths {
         let Some(data) = src.resolve_exact(ugx_path) else {
             continue;
         };
@@ -312,50 +332,6 @@ pub(crate) fn discover_textures(
             }
         }
     }
-}
-
-/// Read UGX materials for all models in an object and return the
-/// deduplicated, sorted list of texture paths they reference.
-///
-/// Only decompresses the material chunk (0x704) of each UGX — geometry,
-/// vertex buffers, and index buffers are never touched.
-pub(crate) fn resolve_textures_for(
-    obj: &ObjectAssets,
-    src: &mut AssetSource<impl assets::FileProvider>,
-) -> Vec<String> {
-    let mut textures = BTreeSet::new();
-
-    let ugx_paths: Vec<&str> = obj
-        .models
-        .iter()
-        .chain(obj.damage_models.iter())
-        .map(std::string::String::as_str)
-        .collect();
-
-    for ugx_path in ugx_paths {
-        let Some(data) = src.resolve_exact(ugx_path) else {
-            continue;
-        };
-        let Ok(materials) = ugx::read_materials(&data) else {
-            continue;
-        };
-        for mat in &materials {
-            let Some(legacy) = mat.legacy() else {
-                continue;
-            };
-            for maps in &legacy.maps {
-                for map in maps {
-                    if !map.name.is_empty() {
-                        let tex_name = map.name.trim_start_matches(['\\', '/']);
-                        let tex_name = tex_name.replace('/', "\\");
-                        textures.insert(format!("art\\{tex_name}.ddx"));
-                    }
-                }
-            }
-        }
-    }
-
-    textures.into_iter().collect()
 }
 
 /// Discover texture references from XTT terrain files.
