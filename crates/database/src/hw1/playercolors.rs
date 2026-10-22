@@ -56,6 +56,9 @@ pub struct PlayerColorSet {
     /// Color of enemies when relation colors are on.
     #[serde(rename = "friendOrFoeEnemy")]
     pub friend_or_foe_enemy: Option<PlayerColor>,
+    /// Element text. The shipped `.xmb` sets have the text `` ` ``; the engine does not read it.
+    #[serde(rename = "$text", skip_serializing_if = "Option::is_none")]
+    pub text: Option<String>,
 }
 
 impl PlayerColorSet {

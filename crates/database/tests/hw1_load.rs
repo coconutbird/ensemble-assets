@@ -364,7 +364,7 @@ fn hp_bars_read_literals_empty_uvs_and_defaults() {
         (208, 16, 16)
     );
     assert_close(hitpoint[1].intensity, 2.0);
-    assert!(stages.ammo.stages.is_empty());
+    assert_eq!(stages.ammo.stages.len(), 0);
     assert_close(stages.shield.stages[0].intensity, 0.0);
 
     assert_eq!(definition.hp_bar_id("unsc_health"), Some(0));

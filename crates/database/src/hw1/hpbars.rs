@@ -2,8 +2,8 @@
 //! strength definitions of the unit UI.
 //!
 //! `BDatabase_setupHPBars` @ `0x1401ece90` loads the file. The root must be
-//! `<HPBarDefinition>` (the compare ignores case), else the engine logs "BHPBar::loadXML: this
-//! is not a hpbar definition file.". Each child goes to the list of its kind, so the index in
+//! `<HPBarDefinition>` (the compare ignores case), else the engine logs `BHPBar::loadXML: this
+//! is not a hpbar definition file.`. Each child goes to the list of its kind, so the index in
 //! a list is the engine ID of the definition:
 //!
 //! - `<HPBar>`: `BHPBar_loadHPBarDef` @ `0x140040320`.

@@ -117,6 +117,19 @@ fn database_loads_shipped_hp_bars_and_player_colors() {
 
     let db = database::hw1::Database::load(&mut src).expect("failed to load database");
 
+    // The shipped `.xmb` files map without warnings (the retail `<skirmish>` and `<spc>` have
+    // the text "`", which the `.xml` form of the files does not show).
+    let report = pipeline::hw1::validate(&mut src);
+    for file in &report.files {
+        if file.label == "hpbars" || file.label == "playercolors" {
+            match &file.outcome {
+                pipeline::hw1::validate::FileOutcome::Ok { warnings, .. } => {
+                    assert_eq!(warnings.len(), 0, "{} warnings", file.label);
+                }
+                _ => panic!("{} did not parse", file.label),
+            }
+        }
+    }
     let hp_bars = db.hp_bars.as_ref().expect("hpbars.xml");
     assert_eq!(hp_bars.hp_bars.len(), 20);
     assert_eq!(hp_bars.color_stages.len(), 1);
