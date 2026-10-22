@@ -17,6 +17,7 @@ use crate::source::AssetSource;
 
 use super::resolve::ObjectAssets;
 use super::scenario::{ScenarioData, ScenarioDescriptor, ScenarioList};
+use super::terrain::terrain_texture_path;
 
 /// Manifest of all binary asset references discovered during resolution.
 ///
@@ -362,10 +363,13 @@ pub(crate) fn resolve_textures_for(
 /// XTT files contain three kinds of texture references:
 ///
 /// 1. **Active textures** — splat/detail terrain textures (e.g. `arctic/snowdrift_01`).
-///    The engine resolves these as `art\{filename}_df.ddx` (and `_nm`, `_sp`, etc).
-/// 2. **Active decals** — projected decal textures baked into the terrain.
+///    The engine resolves these as `art\terrain\{filename}_df.ddx` (and `_nm`, `_sp`, etc).
+/// 2. **Active decals** — projected decal textures baked into the terrain, also below
+///    `art\terrain\`.
 /// 3. **Foliage sets** — foliage billboard textures (e.g. `foliage\foliageset`),
 ///    resolved as `art\{filename}_df.ddx`, `_nm.ddx`, `_op.ddx`, `_sp.ddx`.
+///
+/// [`super::terrain::terrain_texture_path`] makes the active texture and decal paths.
 ///
 /// All discovered paths are inserted into `texture_refs`.
 pub(crate) fn discover_terrain_textures(
@@ -385,27 +389,20 @@ pub(crate) fn discover_terrain_textures(
         };
 
         // Active textures — terrain splat layers
-        // Engine resolves: art\{filename}_df.ddx (diffuse), _nm, _sp, _em, _env, etc.
         for tex in &xtt_file.active_textures {
             if !tex.filename.is_empty() {
-                let name = tex.filename.replace('/', "\\");
-                let name = name.trim_start_matches('\\');
-                texture_refs.insert(format!("art\\{name}_df.ddx"));
-                texture_refs.insert(format!("art\\{name}_nm.ddx"));
-                texture_refs.insert(format!("art\\{name}_sp.ddx"));
-                texture_refs.insert(format!("art\\{name}_em.ddx"));
-                texture_refs.insert(format!("art\\{name}_env.ddx"));
+                for suffix in ["df", "nm", "sp", "em", "env"] {
+                    texture_refs.insert(terrain_texture_path(&tex.filename, suffix));
+                }
             }
         }
 
         // Active decals — baked decal textures
         for decal in &xtt_file.active_decals {
             if !decal.filename.is_empty() {
-                let name = decal.filename.replace('/', "\\");
-                let name = name.trim_start_matches('\\');
-                texture_refs.insert(format!("art\\{name}_df.ddx"));
-                texture_refs.insert(format!("art\\{name}_nm.ddx"));
-                texture_refs.insert(format!("art\\{name}_op.ddx"));
+                for suffix in ["df", "nm", "op"] {
+                    texture_refs.insert(terrain_texture_path(&decal.filename, suffix));
+                }
             }
         }
 
