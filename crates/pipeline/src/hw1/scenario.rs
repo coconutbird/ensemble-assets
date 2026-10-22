@@ -26,12 +26,12 @@ use crate::source::AssetSource;
 
 mod design_objects;
 mod diplomacy;
+mod load_steps;
 mod object;
 mod objectives;
 mod player;
 mod position;
 mod retail_text;
-mod trigger_sources;
 
 pub use design_objects::{
     DesignData, DesignLine, DesignObjectError, DesignObjects, DesignSphere, parse_design_objects,
@@ -40,6 +40,7 @@ pub use diplomacy::{
     DIPLOMACY_TEAM_COUNT, DiplomaciesWrapper, DiplomacyTable, ScenarioDiplomacy,
     ScenarioDiplomacyEntry, ScenarioRelation,
 };
+pub use load_steps::{ExternalTriggerScript, ScenarioLoadStep, scenario_load_steps};
 pub use object::{ObjectsWrapper, ScenarioObject, ScenarioObjectFile};
 pub use objectives::{ObjectiveDefinition, ObjectiveError, parse_objectives};
 pub use player::{
@@ -47,7 +48,6 @@ pub use player::{
     ScenarioPop,
 };
 pub use position::{PlayerPlacement, PlayerPlacementInfo, ScenarioPosition};
-pub use trigger_sources::{ExternalTriggerScript, ScenarioTriggerSource, scenario_trigger_sources};
 
 use retail_text::optional_float;
 
@@ -241,7 +241,7 @@ pub struct ScenarioData {
     pub sim_bounds_max_z: Option<f32>,
     /// External trigger scripts from the `<ExternalTriggerScript>` elements.
     ///
-    /// Use [`scenario_trigger_sources`] for their order relative to the
+    /// Use [`scenario_load_steps`] for their order relative to the
     /// `TriggerSystem` elements.
     #[serde(
         rename = "ExternalTriggerScript",

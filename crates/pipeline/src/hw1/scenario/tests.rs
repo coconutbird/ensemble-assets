@@ -338,29 +338,35 @@ fn object_fields_follow_the_engine_loader() {
 }
 
 #[test]
-fn trigger_sources_keep_document_order() {
+fn load_steps_keep_document_order() {
     let document = xmb::Document::from_xml(
         r#"<Scenario>
             <ExternalTriggerScript FileName="first.triggerscript" />
+            <players />
             <TriggerSystem Name="Inline" />
             <ExternalTriggerScript FileName="" />
+            <Objects />
             <externaltriggerscript filename="second.triggerscript" />
         </Scenario>"#,
     )
     .expect("valid scenario XML");
     let root = document.root().expect("scenario root");
-    let sources: Vec<String> = scenario_trigger_sources(root)
+    let steps: Vec<String> = scenario_load_steps(root)
         .into_iter()
-        .map(|source| match source {
-            ScenarioTriggerSource::Embedded(node) => format!("embedded {}", node.name),
-            ScenarioTriggerSource::External(file_name) => format!("external {file_name}"),
+        .map(|step| match step {
+            ScenarioLoadStep::Players => "players".to_owned(),
+            ScenarioLoadStep::Objects => "objects".to_owned(),
+            ScenarioLoadStep::TriggerSystem(node) => format!("embedded {}", node.name),
+            ScenarioLoadStep::ExternalTriggerScript(file_name) => format!("external {file_name}"),
         })
         .collect();
     assert_eq!(
-        sources,
+        steps,
         [
             "external first.triggerscript",
+            "players",
             "embedded TriggerSystem",
+            "objects",
             "external second.triggerscript",
         ]
     );
