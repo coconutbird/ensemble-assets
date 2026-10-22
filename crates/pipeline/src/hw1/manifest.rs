@@ -397,52 +397,6 @@ pub(crate) fn discover_terrain_textures(
     }
 }
 
-//
-// Placeholder functions for binary format processors that we track by
-// path but have no HW1-compatible crate for yet. Each function panics
-// with a descriptive message so callers know the feature is planned.
-
-/// Parse a PFX (particle effect) file.
-///
-/// HW1 particle effects (`.pfx`) are referenced via `pfxFileList.txt`
-/// preload lists. We track paths in the manifest but cannot parse the
-/// binary content yet.
-pub fn parse_pfx(_data: &[u8]) -> ! {
-    unimplemented!("PFX particle effect parsing is not yet implemented for HW1")
-}
-
-/// Parse a TFX/trigger script file.
-///
-/// HW1 trigger/effect scripts (`.tfx`) are referenced via `tfxFileList.txt`
-/// preload lists. The UFX crate targets HW2 shaders, not HW1 triggers.
-pub fn parse_tfx(_data: &[u8]) -> ! {
-    unimplemented!("TFX trigger/effect script parsing is not yet implemented for HW1")
-}
-
-/// Parse an FXB (effect bundle) file.
-///
-/// HW1 effect bundles (`.fxb`) are referenced by various gameplay systems.
-/// No format crate exists yet.
-pub fn parse_fxb(_data: &[u8]) -> ! {
-    unimplemented!("FXB effect bundle parsing is not yet implemented for HW1")
-}
-
-/// Parse a cinematic file.
-///
-/// HW1 cinematic files (`.cin`) are referenced by scenario SCN data. We
-/// track paths in the manifest but cannot parse the binary content yet.
-pub fn parse_cinematic(_data: &[u8]) -> ! {
-    unimplemented!("Cinematic file parsing is not yet implemented for HW1")
-}
-
-/// Parse a sound bank.
-///
-/// HW1 sound bank names are referenced by scenario SCN data. We track
-/// names in the manifest but cannot parse the binary content yet.
-pub fn parse_sound_bank(_name: &str) -> ! {
-    unimplemented!("Sound bank parsing is not yet implemented for HW1")
-}
-
 /// Try to find a scenario whose `.scn` file resolves from the loaded ERAs.
 ///
 /// This is called automatically during `load_from_source`. When a scenario
