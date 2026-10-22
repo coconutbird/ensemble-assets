@@ -14,6 +14,8 @@
 //! - `gamedata.xml.xmb` — global game constants
 //! - `gamemodes.xml.xmb` — skirmish game modes
 //! - `aidifficultysettings.xml.xmb` — named AI settings by difficulty
+//! - `hpbars.xml.xmb` — HP bar and other unit UI definitions
+//! - `playercolors.xml.xmb` — player color tables
 //! - `*.vis.xmb` — visual definitions (models, animations, attachments)
 //! - `*.tactics.xmb` — combat tactics (weapons, actions)
 //! - `*.physics.xmb` / `*.blueprint.xmb` / `*.shp.xmb` — physics data
@@ -25,12 +27,14 @@ pub mod civs;
 pub mod damagetypes;
 pub mod gamedata;
 pub mod gamemodes;
+pub mod hpbars;
 pub mod leaders;
 pub mod objects;
 pub mod objecttypes;
 pub mod overlay;
 pub mod pfx;
 pub mod physics;
+pub mod playercolors;
 pub mod powers;
 pub mod squads;
 pub mod tactics;
@@ -53,11 +57,13 @@ pub use civs::Civ;
 pub use damagetypes::DamageType;
 pub use gamedata::GameData;
 pub use gamemodes::GameMode;
+pub use hpbars::HpBarDefinition;
 pub use leaders::Leader;
 pub use objects::ProtoObject;
 pub use objecttypes::{ObjectType, ObjectTypeIndex};
 pub use overlay::OverlayTable;
 pub use physics::{Blueprint, Physics, Shape};
+pub use playercolors::PlayerColors;
 pub use powers::Power;
 pub use squads::Squad;
 pub use tactics::TacticData;
@@ -140,6 +146,10 @@ pub struct Database {
     pub game_modes: Vec<GameMode>,
     /// AI difficulty settings from `aidifficultysettings.xml.xmb`.
     pub ai_difficulty_settings: Vec<AIDifficultySetting>,
+    /// HP bar and other unit UI definitions from `hpbars.xml.xmb`.
+    pub hp_bars: Option<HpBarDefinition>,
+    /// Player color tables from `playercolors.xml.xmb`.
+    pub player_colors: Option<PlayerColors>,
 }
 
 impl Database {
@@ -251,6 +261,14 @@ impl Database {
                 db.load_ai_difficulty_settings(doc)?;
                 Ok(())
             }),
+            ("data\\hpbars.xml", |db, doc| {
+                db.load_hp_bars(doc)?;
+                Ok(())
+            }),
+            ("data\\playercolors.xml", |db, doc| {
+                db.load_player_colors(doc)?;
+                Ok(())
+            }),
         ];
 
         for &(path, loader) in loaders {
@@ -344,6 +362,26 @@ impl Database {
     pub fn load_ai_difficulty_settings(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
         self.ai_difficulty_settings = aidifficultysettings::parse(doc)?;
         Ok(self.ai_difficulty_settings.len())
+    }
+
+    /// Load the HP bar definitions from an `hpbars.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or a definition is invalid.
+    pub fn load_hp_bars(&mut self, doc: &xmb::Document) -> crate::Result<()> {
+        self.hp_bars = Some(hpbars::parse(doc)?);
+        Ok(())
+    }
+
+    /// Load the player color tables from a `playercolors.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document has no root or a color is invalid.
+    pub fn load_player_colors(&mut self, doc: &xmb::Document) -> crate::Result<()> {
+        self.player_colors = Some(playercolors::parse(doc)?);
+        Ok(())
     }
 
     /// Build the engine name map of the objects and the object types.
@@ -526,6 +564,18 @@ impl Database {
                     "AIDifficultySetting",
                     &self.ai_difficulty_settings,
                 )?,
+            ));
+        }
+        if let Some(hp_bars) = &self.hp_bars {
+            docs.push((
+                String::from("data\\hpbars.xml"),
+                xmb::Document::with_root(bdt_serde::to_node("HPBarDefinition", hp_bars)?),
+            ));
+        }
+        if let Some(colors) = &self.player_colors {
+            docs.push((
+                String::from("data\\playercolors.xml"),
+                xmb::Document::with_root(bdt_serde::to_node("playerColors", colors)?),
             ));
         }
 

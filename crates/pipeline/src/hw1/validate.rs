@@ -289,6 +289,45 @@ fn db_files() -> Vec<DbFile> {
                 ))
             },
         },
+        DbFile {
+            path: "data\\hpbars.xml.xmb",
+            label: "hpbars",
+            parse: |d| {
+                let doc = parse_xmb(d)?;
+                let root = doc.root().ok_or_else(|| "missing root".to_string())?;
+                let (h, w): (database::hw1::HpBarDefinition, _) =
+                    bdt_serde::from_node_warned(root).map_err(|e| format!("{e}"))?;
+                Ok((
+                    format!(
+                        "{} HP bars, {} color stage sets",
+                        h.hp_bars.len(),
+                        h.color_stages.len()
+                    ),
+                    w,
+                ))
+            },
+        },
+        DbFile {
+            path: "data\\playercolors.xml.xmb",
+            label: "playercolors",
+            parse: |d| {
+                let doc = parse_xmb(d)?;
+                let root = doc.root().ok_or_else(|| "missing root".to_string())?;
+                let (p, w): (database::hw1::PlayerColors, _) =
+                    bdt_serde::from_node_warned(root).map_err(|e| format!("{e}"))?;
+                let count = |set: Option<&database::hw1::playercolors::PlayerColorSet>| {
+                    set.map_or(0, |set| set.colors.len())
+                };
+                Ok((
+                    format!(
+                        "{} skirmish colors, {} campaign colors",
+                        count(p.skirmish.as_ref()),
+                        count(p.spc.as_ref())
+                    ),
+                    w,
+                ))
+            },
+        },
     ]
 }
 

@@ -143,6 +143,58 @@ fn shipped_game_data_has_no_unmapped_fields() {
     );
 }
 
+/// Parse the root of a shipped single-document file and fail on each unmapped tag.
+fn assert_root_schema<T>(label: &str, xml: &str) -> T
+where
+    T: DeserializeOwned,
+{
+    let document = xmb::Document::from_xml(xml)
+        .unwrap_or_else(|error| panic!("failed to read {label}: {error}"));
+    let root = document.root().expect("fixture has no root node");
+    let (value, warnings) = bdt_serde::from_node_warned::<T>(root)
+        .unwrap_or_else(|error| panic!("failed to parse {label}: {error}"));
+    let warnings = warnings
+        .into_iter()
+        .map(|warning| warning.to_string())
+        .collect::<BTreeSet<_>>();
+    assert!(
+        warnings.is_empty(),
+        "unmapped schema in {label}:\n{}",
+        warnings.into_iter().collect::<Vec<_>>().join("\n")
+    );
+    value
+}
+
+#[test]
+fn shipped_hp_bars_have_no_unmapped_fields() {
+    let definition = assert_root_schema::<database::hw1::HpBarDefinition>(
+        "hpbars.xml",
+        include_str!("../../../save/root_update.era/data/hpbars.xml"),
+    );
+    assert_eq!(definition.hp_bars.len(), 20);
+    assert_eq!(definition.color_stages.len(), 1);
+    assert_eq!(definition.veterancy_bars.len(), 6);
+    assert_eq!(definition.pie_progress.len(), 4);
+    assert_eq!(definition.bobble_heads.len(), 5);
+    assert_eq!(definition.building_strengths.len(), 1);
+}
+
+#[test]
+fn shipped_player_colors_have_no_unmapped_fields() {
+    let colors = assert_root_schema::<database::hw1::PlayerColors>(
+        "playercolors.xml",
+        include_str!("../../../save/root.era/data/playercolors.xml"),
+    );
+    for set in [&colors.skirmish, &colors.spc] {
+        let set = set.as_ref().expect("color set");
+        assert_eq!(set.colors.len(), 16);
+        assert!(set.friend_or_foe_enemy.is_some());
+    }
+    let civs: Vec<&str> = colors.civs.iter().map(|civ| civ.name.as_str()).collect();
+    assert_eq!(civs, ["UNSC", "Covenant"]);
+    assert_eq!(colors.civs[1].players.len(), 9);
+}
+
 #[test]
 fn ida_object_handler_fields_round_trip() {
     let (_, object) = assert_xml_round_trip::<database::hw1::ProtoObject>(

@@ -73,9 +73,10 @@ Loaded now:
 
 - `database`: `objects` with `objects_update`, `objecttypes`, `squads` with `squads_update`,
   `techs` with `techs_update`, `abilities`, `powers`, `civs`, `leaders`, `weapontypes`,
-  `damagetypes`, `gamedata`, `gamemodes`, `aidifficultysettings` (`data\*.xml.xmb`), `*.vis`,
-  `*.tactics`, `*.physics`, `*.blueprint`, `*.shp`, `*.pfx`. `Database::load` applies the
-  `_update` files as the engine does (see `docs/asset-resolution.md`).
+  `damagetypes`, `gamedata`, `gamemodes`, `aidifficultysettings`, `hpbars`, `playercolors`
+  (`data\*.xml.xmb`), `*.vis`, `*.tactics`, `*.physics`, `*.blueprint`, `*.shp`, `*.pfx`.
+  `Database::load` applies the `_update` files as the engine does (see
+  `docs/asset-resolution.md`).
 - `pipeline`: `.scn` scenario data, `.sc2` and `.sc3` scenario objects,
   `scenariodescriptions.xml`, `stringtable-<lang>.xml`, `.gls` and `.fls` lightsets, `.xsd`,
   `.xtd`, `.xtt` terrain, and the preload lists `visFileList.txt`, `tfxFileList.txt` and
@@ -89,8 +90,7 @@ Not loaded (the engine loads these; no crate in the three repositories parses th
 | ---- | --------------- | ----- |
 | `.lrp` | `BScenario_load` @ `0x140377be0` (string @ `0x1411b713c`) | Read in the `Pathing` branch of the scenario load. |
 | `.xth` | `sub_140667A90` (string @ `0x1411d68e0`) | Terrain file next to `.xtd` and `.xtt`. |
-| `playercolors.xml` | "BDatabase: Loaded playerColors.xml" @ `0x1411a4f60` | |
-| `hpbars.xml`, `impactsounds.xml`, `rumble.xml` | strings @ `0x1411a35c8`, `0x1411a33e8`, `0x1411a3418` | |
+| `impactsounds.xml`, `rumble.xml` | strings @ `0x1411a33e8`, `0x1411a3418` | |
 | `deathmanager.xml`, `fatalityData.xml`, `skulls.xml`, `concepts.xml` | strings @ `0x1411a55d0`, `0x1411a6f50`, `0x1411b8508`, `0x1411a8cd8` | |
 | `preloadxmlfiles.xml` | `BDatabase_setupPreloadXmlFiles` @ `0x1401fcab0` | |
 | `soundInfo.xml`, `soundTable.xml`, `chattertable.xml` | strings @ `0x1411c9310`, `0x1411a2608`, `0x1411e8620` | Sound data. |
@@ -121,8 +121,10 @@ read.
 | pfx | particle loader `sub_14079D440` | `Masks` (engine string @ `0x1411e2ba4`); `UseExternalWind`, `ExternalWindDelay`, `ExternalWindInfluence`, `CycleTime`, `CycleVariance`, `GradientPoint` (data only) |
 | scn | `BScenario_load` @ `0x140377be0`, `BScenario_loadPlayer` @ `0x1403808a0`, `BScenario_loadPosition` @ `0x14037f430`, `BScenario_loadObject` @ `0x14037d6a0`, `BDesignObjectManager_load` @ `0x140200530` | `Lights`, `ObjectGroups`, `DesignObjects` (`parse_design_objects` reads its spheres and lines from the document), `BuildingTextureIndexUNSC`, `BuildingTextureIndexCOVN`, `EnvironmentReverbPreset`, `ScenarioWorld`; `Leader2`, `Favor`, `Relics`, `Honor`, `EditorOnlyData`, `NextID`, `GlobalExcludeObjects` (data only) |
 
-Abilities, civs, leaders, weapon types, damage types, game data, object types, game modes and
-visuals have no unread tag in the retail XML.
+Abilities, civs, leaders, weapon types, damage types, game data, object types, game modes, HP
+bars, player colors and visuals have no unread tag in the retail XML. The engine does not read
+the `<VeterancyBar>` background tags of `hpbars.xml`: `BHPBar_loadVeterancyBarDef`
+@ `0x140040fb0` reads only `Texture`, `SizeX`, `SizeY`, `OffsetX` and `OffsetY`.
 
 "Data only" means that the tag is in the retail XML but `xgameFinal.exe` has no string for it.
 The engine thus ignores it, so it is not a gap.

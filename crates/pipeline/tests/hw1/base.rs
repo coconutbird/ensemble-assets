@@ -2,6 +2,7 @@
 //! models, animations, textures, and binary asset verification.
 
 use super::{load_hw1, print_report};
+use database::hw1::hpbars::HpBarUv;
 use pipeline::hw1::loader::load_game_dir;
 use test_utils::require_game_dir;
 
@@ -104,6 +105,63 @@ fn database_applies_shipped_update_overlays() {
         ]
     );
     assert_eq!(db.game_modes[2].locked, Some(true));
+}
+
+/// `BDatabase_setupHPBars` @ `0x1401ece90` reads `hpbars.xml` (from `root_update.era`) and
+/// `BDatabase_setupPlayerColors` @ `0x1401f9560` reads `playercolors.xml` (from `root.era`).
+#[test]
+#[ignore = "requires HW1_GAME_DIR"]
+fn database_loads_shipped_hp_bars_and_player_colors() {
+    let dir = require_game_dir("HW1_GAME_DIR");
+    let mut src = load_game_dir(&dir);
+
+    let db = database::hw1::Database::load(&mut src).expect("failed to load database");
+
+    let hp_bars = db.hp_bars.as_ref().expect("hpbars.xml");
+    assert_eq!(hp_bars.hp_bars.len(), 20);
+    assert_eq!(hp_bars.color_stages.len(), 1);
+    assert_eq!(hp_bars.veterancy_bars.len(), 6);
+    assert_eq!(hp_bars.pie_progress.len(), 4);
+    assert_eq!(hp_bars.bobble_heads.len(), 5);
+    assert_eq!(hp_bars.building_strengths.len(), 1);
+    let stages = hp_bars
+        .default_color_stages()
+        .expect("DEFAULT color stages");
+    assert_eq!(stages.hitpoint.stages.len(), 3);
+    assert_eq!(stages.ammo.stages.len(), 3);
+    assert_eq!(stages.shield.stages.len(), 3);
+    assert!((stages.hitpoint.stages[0].value - 0.38).abs() < 1.0e-6);
+    assert_eq!(stages.hitpoint.stages[0].color.red, 208);
+    let health = &hp_bars.hp_bars[hp_bars.hp_bar_id("UNSC_Health").expect("UNSC_Health")];
+    assert!((health.size_x - 8.0).abs() < 1.0e-6);
+    let rect = |uv: Option<HpBarUv>| uv.as_ref().and_then(HpBarUv::rect);
+    assert!(rect(health.hitpoint_uv).is_some());
+    assert_eq!(rect(health.shield_uv), None);
+    assert!(hp_bars.pie_progress.iter().all(|pie| !pie.fill));
+
+    let colors = db.player_colors.as_ref().expect("playercolors.xml");
+    for set in [&colors.skirmish, &colors.spc] {
+        let set = set.as_ref().expect("color set");
+        assert_eq!(set.colors.len(), 16);
+        assert!((0..16).all(|num| set.color(num).is_some()));
+        assert!(set.friend_or_foe_self.is_some());
+        assert!(set.friend_or_foe_ally.is_some());
+        assert!(set.friend_or_foe_neutral.is_some());
+        assert!(set.friend_or_foe_enemy.is_some());
+    }
+    let skirmish = colors.skirmish.as_ref().expect("skirmish");
+    let player_one = skirmish.color(1).expect("color 1");
+    assert_eq!(
+        (
+            player_one.selection.red,
+            player_one.selection.green,
+            player_one.selection.blue
+        ),
+        (69, 110, 24)
+    );
+    let civs: Vec<&str> = colors.civs.iter().map(|civ| civ.name.as_str()).collect();
+    assert_eq!(civs, ["UNSC", "Covenant"]);
+    assert_eq!(colors.civs[1].players.len(), 9);
 }
 
 /// Round-trip test: load every database file, serialize back to XMB via
@@ -290,6 +348,30 @@ fn roundtrip_database_serialize() {
                     database::hw1::gamemodes::parse(doc).expect("failed to re-parse gamemodes");
                 assert_eq!(reparsed.len(), original.game_modes.len());
                 println!("  gamemodes: {} ✓", reparsed.len());
+            }
+            "data\\aidifficultysettings.xml" => {
+                let reparsed = database::hw1::aidifficultysettings::parse(doc)
+                    .expect("failed to re-parse aidifficultysettings");
+                assert_eq!(reparsed.len(), original.ai_difficulty_settings.len());
+                println!("  aidifficultysettings: {} ✓", reparsed.len());
+            }
+            "data\\hpbars.xml" => {
+                let reparsed =
+                    database::hw1::hpbars::parse(doc).expect("failed to re-parse hpbars");
+                let orig = original.hp_bars.as_ref().expect("hp bars");
+                assert_eq!(reparsed.hp_bars.len(), orig.hp_bars.len());
+                assert_eq!(reparsed.color_stages.len(), orig.color_stages.len());
+                println!("  hpbars: {} ✓", reparsed.hp_bars.len());
+            }
+            "data\\playercolors.xml" => {
+                let reparsed = database::hw1::playercolors::parse(doc)
+                    .expect("failed to re-parse playercolors");
+                let orig = original.player_colors.as_ref().expect("player colors");
+                assert_eq!(
+                    reparsed.skirmish.map(|set| set.colors),
+                    orig.skirmish.as_ref().map(|set| set.colors.clone())
+                );
+                println!("  playercolors ✓");
             }
             other => panic!("unexpected document path: {other}"),
         }
