@@ -91,6 +91,36 @@ fn shipped_database_xml_has_no_unmapped_fields() {
         "DamageTypes",
         "DamageType",
     );
+    assert_table_schema::<database::hw1::ProtoObject>(
+        "objects_update.xml",
+        include_str!("../../../save/root_update.era/data/objects_update.xml"),
+        "Objects",
+        "Object",
+    );
+    assert_table_schema::<database::hw1::Squad>(
+        "squads_update.xml",
+        include_str!("../../../save/root_update.era/data/squads_update.xml"),
+        "Squads",
+        "Squad",
+    );
+    assert_table_schema::<database::hw1::Tech>(
+        "techs_update.xml",
+        include_str!("../../../save/root_update.era/data/techs_update.xml"),
+        "TechTree",
+        "Tech",
+    );
+    assert_table_schema::<database::hw1::ObjectType>(
+        "objecttypes.xml",
+        include_str!("../../../save/root.era/data/objecttypes.xml"),
+        "ObjectTypes",
+        "ObjectType",
+    );
+    assert_table_schema::<database::hw1::GameMode>(
+        "gamemodes.xml",
+        include_str!("../../../save/root_update.era/data/gamemodes.xml"),
+        "GameModes",
+        "GameMode",
+    );
 }
 
 #[test]

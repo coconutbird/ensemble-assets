@@ -4,7 +4,7 @@
 //! A mod's `ModData` folder is just an unpacked ERA, so merging is "stack the
 //! base game plus each mod as layers, resolve, and write the result back out":
 //!
-//! 1. Load the base game database (the vanilla baseline).
+//! 1. Load the base game files (the vanilla baseline), without the `_update` overlays.
 //! 2. Layer each mod's `ModData` as a folder above the base ERAs.
 //! 3. For the typed database tables, field-merge each layer's version against
 //!    the base so non-overlapping edits coexist (only true overlaps conflict,
@@ -119,10 +119,12 @@ pub fn merge_mods(
         return Err(MergeError::NoMods);
     }
 
-    // 1. Load the base game database — the vanilla baseline. Done before any
-    //    mod folder is layered on, so it reflects only the base ERAs.
+    // 1. Load the base game files — the vanilla baseline. Done before any
+    //    mod folder is layered on, so it reflects only the base ERAs. The
+    //    merge compares and writes base files, so it does not apply the
+    //    `_update` overlays. It copies `_update` files of mods as loose files.
     let mut src = load_game_dir(game_dir);
-    let base = Database::load(&mut src).map_err(|e| MergeError::Data(e.to_string()))?;
+    let base = Database::load_base_files(&mut src).map_err(|e| MergeError::Data(e.to_string()))?;
 
     // 2. Layer each mod's ModData as a folder above the base ERAs.
     for m in overlays {
@@ -131,41 +133,86 @@ pub fn merge_mods(
     }
 
     // 3. Field-merge each typed table that at least one mod overrides.
-    let mut merged = Database::new();
+    let mut docs: Vec<(&str, xmb::Document)> = Vec::new();
     let mut conflicts = Vec::new();
     let mut handled: Vec<&str> = Vec::new();
 
     macro_rules! merge_vec {
-        ($field:ident, $vpath:literal, $parse:path) => {{
+        ($field:ident, $vpath:literal, $root:literal, $record:literal, $parse:path) => {{
             handled.push($vpath);
             let layers = parse_table_layers(&src, $vpath, $parse)?;
             if !layers.is_empty() {
                 let (out, c) = merge_table(stringify!($field), &base.$field, &layers)?;
-                merged.$field = out;
+                let doc = base
+                    .to_document_single($root, $record, &out)
+                    .map_err(|e| MergeError::Data(e.to_string()))?;
+                docs.push(($vpath, doc));
                 conflicts.extend(c);
             }
         }};
     }
 
-    merge_vec!(objects, "data\\objects.xml", database::hw1::objects::parse);
-    merge_vec!(squads, "data\\squads.xml", database::hw1::squads::parse);
-    merge_vec!(techs, "data\\techs.xml", database::hw1::techs::parse);
+    merge_vec!(
+        objects,
+        "data\\objects.xml",
+        "Objects",
+        "Object",
+        database::hw1::objects::parse
+    );
+    merge_vec!(
+        squads,
+        "data\\squads.xml",
+        "Squads",
+        "Squad",
+        database::hw1::squads::parse
+    );
+    merge_vec!(
+        techs,
+        "data\\techs.xml",
+        "TechTree",
+        "Tech",
+        database::hw1::techs::parse
+    );
     merge_vec!(
         abilities,
         "data\\abilities.xml",
+        "Abilities",
+        "Ability",
         database::hw1::abilities::parse
     );
-    merge_vec!(powers, "data\\powers.xml", database::hw1::powers::parse);
-    merge_vec!(civs, "data\\civs.xml", database::hw1::civs::parse);
-    merge_vec!(leaders, "data\\leaders.xml", database::hw1::leaders::parse);
+    merge_vec!(
+        powers,
+        "data\\powers.xml",
+        "Powers",
+        "Power",
+        database::hw1::powers::parse
+    );
+    merge_vec!(
+        civs,
+        "data\\civs.xml",
+        "Civs",
+        "Civ",
+        database::hw1::civs::parse
+    );
+    merge_vec!(
+        leaders,
+        "data\\leaders.xml",
+        "Leaders",
+        "Leader",
+        database::hw1::leaders::parse
+    );
     merge_vec!(
         weapon_types,
         "data\\weapontypes.xml",
+        "WeaponTypes",
+        "WeaponType",
         database::hw1::weapontypes::parse
     );
     merge_vec!(
         damage_types,
         "data\\damagetypes.xml",
+        "DamageTypes",
+        "DamageType",
         database::hw1::damagetypes::parse
     );
 
@@ -176,19 +223,20 @@ pub fn merge_mods(
             parse_singleton_layers(&src, "data\\gamedata.xml", database::hw1::gamedata::parse)?;
         if !layers.is_empty() {
             let (out, c) = merge_singleton("gamedata", base.game_data.as_ref(), &layers)?;
-            merged.game_data = out;
+            if let Some(game_data) = out {
+                let node = bdt_serde::to_node("GameData", &game_data)
+                    .map_err(|e| MergeError::Data(e.to_string()))?;
+                docs.push(("data\\gamedata.xml", xmb::Document::with_root(node)));
+            }
             conflicts.extend(c);
         }
     }
 
     // 4. Write the merged tables into the output ModData as packed XMB.
-    let docs = merged
-        .to_documents()
-        .map_err(|e| MergeError::Data(e.to_string()))?;
     let mut files_written = Vec::new();
     for (vpath, doc) in &docs {
         let bytes = xmb::Writer::write_native(doc).map_err(|e| MergeError::Data(e.to_string()))?;
-        // to_documents yields e.g. "data\objects.xml"; the engine reads packed.
+        // The table paths are e.g. "data\objects.xml"; the engine reads packed.
         let rel = format!("{}.xmb", vpath.replace('\\', "/"));
         let fs_path = out_mod_data.join(&rel);
         if let Some(parent) = fs_path.parent() {

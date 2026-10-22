@@ -131,6 +131,7 @@ impl TableId {
 
     /// Map a normalised game path (e.g. `"data\\objects.xml"`) to a `TableId`.
     ///
+    /// An `_update` file (e.g. `"data\\objects_update.xml"`) maps to the table that it changes.
     /// Returns `None` for paths that don't correspond to a database table.
     #[must_use]
     pub fn from_game_path(path: &str) -> Option<Self> {
@@ -138,9 +139,9 @@ impl TableId {
         let p = path.to_ascii_lowercase().replace('/', "\\");
         let p = p.strip_suffix(".xmb").unwrap_or(&p);
         match p {
-            "data\\objects.xml" => Some(Self::Objects),
-            "data\\squads.xml" => Some(Self::Squads),
-            "data\\techs.xml" => Some(Self::Techs),
+            "data\\objects.xml" | "data\\objects_update.xml" => Some(Self::Objects),
+            "data\\squads.xml" | "data\\squads_update.xml" => Some(Self::Squads),
+            "data\\techs.xml" | "data\\techs_update.xml" => Some(Self::Techs),
             "data\\abilities.xml" => Some(Self::Abilities),
             "data\\powers.xml" => Some(Self::Powers),
             "data\\civs.xml" => Some(Self::Civs),

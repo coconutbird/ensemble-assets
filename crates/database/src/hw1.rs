@@ -1,9 +1,10 @@
 //! HW1 game database parser.
 //!
 //! Provides typed access to game data stored in XMB files:
-//! - `objects.xml.xmb` — proto objects (units, buildings, projectiles)
-//! - `squads.xml.xmb` — squad definitions
-//! - `techs.xml.xmb` — tech tree
+//! - `objects.xml.xmb` + `objects_update.xml.xmb` — proto objects (units, buildings, projectiles)
+//! - `objecttypes.xml.xmb` — declared object types
+//! - `squads.xml.xmb` + `squads_update.xml.xmb` — squad definitions
+//! - `techs.xml.xmb` + `techs_update.xml.xmb` — tech tree
 //! - `abilities.xml.xmb` — ability definitions
 //! - `powers.xml.xmb` — leader power definitions
 //! - `civs.xml.xmb` — civilization definitions
@@ -11,6 +12,7 @@
 //! - `weapontypes.xml.xmb` — weapon type damage tables
 //! - `damagetypes.xml.xmb` — damage type definitions
 //! - `gamedata.xml.xmb` — global game constants
+//! - `gamemodes.xml.xmb` — skirmish game modes
 //! - `*.vis.xmb` — visual definitions (models, animations, attachments)
 //! - `*.tactics.xmb` — combat tactics (weapons, actions)
 //! - `*.physics.xmb` / `*.blueprint.xmb` / `*.shp.xmb` — physics data
@@ -20,8 +22,11 @@ pub mod abilities;
 pub mod civs;
 pub mod damagetypes;
 pub mod gamedata;
+pub mod gamemodes;
 pub mod leaders;
 pub mod objects;
+pub mod objecttypes;
+pub mod overlay;
 pub mod pfx;
 pub mod physics;
 pub mod powers;
@@ -44,8 +49,11 @@ pub use abilities::Ability;
 pub use civs::Civ;
 pub use damagetypes::DamageType;
 pub use gamedata::GameData;
+pub use gamemodes::GameMode;
 pub use leaders::Leader;
 pub use objects::ProtoObject;
+pub use objecttypes::{ObjectType, ObjectTypeIndex};
+pub use overlay::OverlayTable;
 pub use physics::{Blueprint, Physics, Shape};
 pub use powers::Power;
 pub use squads::Squad;
@@ -89,18 +97,26 @@ impl_keyed!(
     Leader,
     WeaponType,
     DamageType,
+    ObjectType,
+    GameMode,
 );
 
 /// A complete HW1 game database, loaded from XMB documents.
+///
+/// [`Database::load`] gives the tables that the engine uses. A table index is the engine ID of
+/// the record.
 #[derive(Debug, Default)]
 pub struct Database {
-    /// Proto-objects from `objects.xml.xmb`.
+    /// Proto objects: `objects.xml` without its `update="true"` records, then
+    /// `objects_update.xml`.
     pub objects: Vec<ProtoObject>,
-    /// Squads from `squads.xml.xmb`.
+    /// Declared object types from `objecttypes.xml`.
+    pub object_types: Vec<ObjectType>,
+    /// Squads: `squads.xml` without its `update="true"` records, then `squads_update.xml`.
     pub squads: Vec<Squad>,
     /// `<MergedSquads>` groups from `squads.xml.xmb`, in document order.
     pub merged_squads: Vec<squads::MergedSquads>,
-    /// Techs from `techs.xml.xmb`.
+    /// Techs: `techs.xml`, then `techs_update.xml`.
     pub techs: Vec<Tech>,
     /// Abilities from `abilities.xml.xmb`.
     pub abilities: Vec<Ability>,
@@ -116,6 +132,8 @@ pub struct Database {
     pub damage_types: Vec<DamageType>,
     /// Global constants from `gamedata.xml.xmb`.
     pub game_data: Option<GameData>,
+    /// Game modes from `gamemodes.xml.xmb`.
+    pub game_modes: Vec<GameMode>,
 }
 
 impl Database {
@@ -125,108 +143,195 @@ impl Database {
         Self::default()
     }
 
-    /// Load the full HW1 database from an [`AssetResolver`].
+    /// Load the HW1 database as the engine loads it at boot (`BDatabase_setup`).
     ///
-    /// Resolves each database XMB by its well-known virtual path, parses it,
-    /// and populates the corresponding field.  Missing files are silently
-    /// skipped (the field stays at its `Default` value).
+    /// Applies the `_update` overlays to the objects, squads and techs (see [`overlay`]). Each
+    /// table index is the engine ID of the record. A missing file gives an empty table. A
+    /// missing `_update` file adds no records. If the base file of an overlay table is missing,
+    /// the table stays empty.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if a resolved asset is not valid XMB, if its contents cannot be
+    /// deserialized, or if two objects have the same name.
+    pub fn load(assets: &mut impl AssetResolver) -> crate::Result<Self> {
+        let mut db = Self::new();
+        for table in [
+            OverlayTable::Objects,
+            OverlayTable::Squads,
+            OverlayTable::Techs,
+        ] {
+            let Some(base) = read_xmb(assets, table.base_path())? else {
+                continue;
+            };
+            let update = read_xmb(assets, table.update_path())?;
+            match table {
+                OverlayTable::Objects => db.load_objects(&base, update.as_ref())?,
+                OverlayTable::Squads => db.load_squads(&base, update.as_ref())?,
+                OverlayTable::Techs => db.load_techs(&base, update.as_ref())?,
+            };
+        }
+        db.load_single_file_tables(assets)?;
+        Ok(db)
+    }
+
+    /// Load each table from its base file only, without the `_update` overlays.
+    ///
+    /// The objects and squads keep their `update="true"` records in file order. The result is
+    /// not the database of the engine. Use it only to compare or write the base files, for
+    /// example in a mod merge.
     ///
     /// # Errors
     ///
     /// Returns an error if a resolved asset is not valid XMB or its contents cannot be
-    /// deserialized into the corresponding database records.
-    pub fn load(assets: &mut impl AssetResolver) -> crate::Result<Self> {
+    /// deserialized.
+    pub fn load_base_files(assets: &mut impl AssetResolver) -> crate::Result<Self> {
         let mut db = Self::new();
+        if let Some(doc) = read_xmb(assets, OverlayTable::Objects.base_path())? {
+            db.objects = objects::parse(&doc)?;
+        }
+        if let Some(doc) = read_xmb(assets, OverlayTable::Squads.base_path())? {
+            db.squads = squads::parse(&doc)?;
+            db.merged_squads = squads::parse_merged(&doc)?;
+        }
+        if let Some(doc) = read_xmb(assets, OverlayTable::Techs.base_path())? {
+            db.techs = techs::parse(&doc)?;
+        }
+        db.load_single_file_tables(assets)?;
+        Ok(db)
+    }
 
-        // Each entry: (virtual path, loader method)
+    /// Load each table that comes from one file.
+    fn load_single_file_tables(&mut self, assets: &mut impl AssetResolver) -> crate::Result<()> {
+        // Each entry: (game path, loader method)
         let loaders: &[(&str, DbLoader)] = &[
-            ("data\\objects.xml.xmb", |db, doc| {
-                db.load_objects(doc)?;
+            ("data\\objecttypes.xml", |db, doc| {
+                db.load_object_types(doc)?;
                 Ok(())
             }),
-            ("data\\squads.xml.xmb", |db, doc| {
-                db.load_squads(doc)?;
-                Ok(())
-            }),
-            ("data\\techs.xml.xmb", |db, doc| {
-                db.load_techs(doc)?;
-                Ok(())
-            }),
-            ("data\\abilities.xml.xmb", |db, doc| {
+            ("data\\abilities.xml", |db, doc| {
                 db.load_abilities(doc)?;
                 Ok(())
             }),
-            ("data\\powers.xml.xmb", |db, doc| {
+            ("data\\powers.xml", |db, doc| {
                 db.load_powers(doc)?;
                 Ok(())
             }),
-            ("data\\civs.xml.xmb", |db, doc| {
+            ("data\\civs.xml", |db, doc| {
                 db.load_civs(doc)?;
                 Ok(())
             }),
-            ("data\\leaders.xml.xmb", |db, doc| {
+            ("data\\leaders.xml", |db, doc| {
                 db.load_leaders(doc)?;
                 Ok(())
             }),
-            ("data\\weapontypes.xml.xmb", |db, doc| {
+            ("data\\weapontypes.xml", |db, doc| {
                 db.load_weapon_types(doc)?;
                 Ok(())
             }),
-            ("data\\damagetypes.xml.xmb", |db, doc| {
+            ("data\\damagetypes.xml", |db, doc| {
                 db.load_damage_types(doc)?;
                 Ok(())
             }),
-            ("data\\gamedata.xml.xmb", |db, doc| {
+            ("data\\gamedata.xml", |db, doc| {
                 db.load_game_data(doc)?;
+                Ok(())
+            }),
+            ("data\\gamemodes.xml", |db, doc| {
+                db.load_game_modes(doc)?;
                 Ok(())
             }),
         ];
 
         for &(path, loader) in loaders {
-            if let Some(raw) = assets.resolve(path) {
-                let doc = xmb::Reader::read(&raw)?;
-                loader(&mut db, &doc)?;
+            if let Some(doc) = read_xmb(assets, path)? {
+                loader(self, &doc)?;
             }
         }
-
-        Ok(db)
+        Ok(())
     }
 
-    /// Load proto objects from an `objects.xml.xmb` document.
+    /// Load proto objects from `objects.xml.xmb` and the optional `objects_update.xml.xmb`.
+    ///
+    /// Applies [`overlay::objects`]. Returns the number of objects.
     ///
     /// # Errors
     ///
-    /// Returns an error if the document root or object contents are invalid.
-    pub fn load_objects(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
-        let objs = objects::parse(doc)?;
-        let count = objs.len();
-        self.objects = objs;
-        Ok(count)
+    /// Returns an error if a document root or object is invalid, or if two objects have the
+    /// same name.
+    pub fn load_objects(
+        &mut self,
+        base: &xmb::Document,
+        update: Option<&xmb::Document>,
+    ) -> crate::Result<usize> {
+        let update = update.map(objects::parse).transpose()?.unwrap_or_default();
+        self.objects = overlay::objects(objects::parse(base)?, update)?;
+        Ok(self.objects.len())
     }
 
-    /// Load squads and `<MergedSquads>` groups from a `squads.xml.xmb` document.
+    /// Load squads from `squads.xml.xmb` and the optional `squads_update.xml.xmb`.
+    ///
+    /// Applies [`overlay::squads`] and reads the `<MergedSquads>` groups of the base file
+    /// (`BDatabase_setupProtoSquads` pass 2 reads `squads.xml` only). Returns the number of
+    /// squads.
     ///
     /// # Errors
     ///
-    /// Returns an error if the document root or squad contents are invalid.
-    pub fn load_squads(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
-        let squads = squads::parse(doc)?;
-        let count = squads.len();
-        self.squads = squads;
-        self.merged_squads = squads::parse_merged(doc)?;
-        Ok(count)
+    /// Returns an error if a document root or squad is invalid.
+    pub fn load_squads(
+        &mut self,
+        base: &xmb::Document,
+        update: Option<&xmb::Document>,
+    ) -> crate::Result<usize> {
+        let update = update.map(squads::parse).transpose()?.unwrap_or_default();
+        self.squads = overlay::squads(squads::parse(base)?, update);
+        self.merged_squads = squads::parse_merged(base)?;
+        Ok(self.squads.len())
     }
 
-    /// Load techs from a `techs.xml.xmb` document.
+    /// Load techs from `techs.xml.xmb` and the optional `techs_update.xml.xmb`.
+    ///
+    /// Applies [`overlay::techs`]. Returns the number of techs.
     ///
     /// # Errors
     ///
-    /// Returns an error if the document root or tech contents are invalid.
-    pub fn load_techs(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
-        let techs = techs::parse(doc)?;
-        let count = techs.len();
-        self.techs = techs;
-        Ok(count)
+    /// Returns an error if a document root or tech is invalid.
+    pub fn load_techs(
+        &mut self,
+        base: &xmb::Document,
+        update: Option<&xmb::Document>,
+    ) -> crate::Result<usize> {
+        let update = update.map(techs::parse).transpose()?.unwrap_or_default();
+        self.techs = overlay::techs(techs::parse(base)?, update);
+        Ok(self.techs.len())
+    }
+
+    /// Load object types from an `objecttypes.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or an object type is invalid.
+    pub fn load_object_types(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
+        self.object_types = objecttypes::parse(doc)?;
+        Ok(self.object_types.len())
+    }
+
+    /// Load game modes from a `gamemodes.xml.xmb` document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or a game mode is invalid.
+    pub fn load_game_modes(&mut self, doc: &xmb::Document) -> crate::Result<usize> {
+        self.game_modes = gamemodes::parse(doc)?;
+        Ok(self.game_modes.len())
+    }
+
+    /// Build the engine name map of the objects and the object types.
+    ///
+    /// Use it to find the declared object types of an object.
+    #[must_use]
+    pub fn object_type_index(&self) -> ObjectTypeIndex {
+        ObjectTypeIndex::new(&self.objects, &self.object_types)
     }
 
     /// Load abilities from an `abilities.xml.xmb` document.
@@ -320,28 +425,28 @@ impl Database {
     /// backslash-separated convention as the ERA entries
     /// (e.g. `"data\\objects.xml"`).
     ///
+    /// The overlay tables give two documents each (see [`Database::overlay_documents`]). The
+    /// engine loads the same tables from the result.
+    ///
     /// # Errors
     ///
     /// Returns an error if any populated database record cannot be serialized into an XMB node.
     pub fn to_documents(&self) -> crate::Result<Vec<(String, xmb::Document)>> {
         let mut docs = Vec::new();
 
-        if !self.objects.is_empty() {
-            docs.push((
-                String::from("data\\objects.xml"),
-                self.to_document_single("Objects", "Object", &self.objects)?,
-            ));
+        for (table, empty) in [
+            (OverlayTable::Objects, self.objects.is_empty()),
+            (OverlayTable::Squads, self.squads.is_empty()),
+            (OverlayTable::Techs, self.techs.is_empty()),
+        ] {
+            if !empty {
+                docs.extend(self.overlay_documents(table)?);
+            }
         }
-        if !self.squads.is_empty() {
+        if !self.object_types.is_empty() {
             docs.push((
-                String::from("data\\squads.xml"),
-                self.to_document_single("Squads", "Squad", &self.squads)?,
-            ));
-        }
-        if !self.techs.is_empty() {
-            docs.push((
-                String::from("data\\techs.xml"),
-                self.to_document_single("TechTree", "Tech", &self.techs)?,
+                String::from("data\\objecttypes.xml"),
+                self.to_document_single("ObjectTypes", "ObjectType", &self.object_types)?,
             ));
         }
         if !self.abilities.is_empty() {
@@ -380,15 +485,56 @@ impl Database {
                 self.to_document_single("DamageTypes", "DamageType", &self.damage_types)?,
             ));
         }
-        if let Some(ref gd) = self.game_data {
+        if let Some(gd) = &self.game_data {
             let node = bdt_serde::to_node("GameData", gd)?;
             docs.push((
                 String::from("data\\gamedata.xml"),
                 xmb::Document::with_root(node),
             ));
         }
+        if !self.game_modes.is_empty() {
+            docs.push((
+                String::from("data\\gamemodes.xml"),
+                self.to_document_single("GameModes", "GameMode", &self.game_modes)?,
+            ));
+        }
 
         Ok(docs)
+    }
+
+    /// Build the base file and an empty `_update` file of an overlay table.
+    ///
+    /// The base file holds all records of the table in order, without `update` flags. The
+    /// empty `_update` file replaces the shipped `_update` file. The engine then loads the
+    /// table with the same records at the same indices. Use this to save a table of a database
+    /// from [`Database::load`].
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if a record cannot be serialized into an XMB node.
+    pub fn overlay_documents(
+        &self,
+        table: OverlayTable,
+    ) -> crate::Result<[(String, xmb::Document); 2]> {
+        let (root, record) = (table.root_name(), table.record_name());
+        let base = match table {
+            OverlayTable::Objects => self.to_document_single(
+                root,
+                record,
+                &overlay::clear_update_flags(&self.objects, |object| &mut object.update),
+            )?,
+            OverlayTable::Squads => self.to_document_single(
+                root,
+                record,
+                &overlay::clear_update_flags(&self.squads, |squad| &mut squad.update),
+            )?,
+            OverlayTable::Techs => self.to_document_single(root, record, &self.techs)?,
+        };
+        let update = xmb::Document::with_root(bdt::Node::new(root));
+        Ok([
+            (String::from(table.base_path()), base),
+            (String::from(table.update_path()), update),
+        ])
     }
 
     /// Serialize a single collection into an XMB document.
@@ -410,4 +556,17 @@ impl Database {
         }
         Ok(xmb::Document::with_root(root))
     }
+}
+
+/// Resolve the packed `.xmb` form of the game path `path` and read the document.
+///
+/// Returns `None` if the asset does not exist.
+fn read_xmb(assets: &mut impl AssetResolver, path: &str) -> crate::Result<Option<xmb::Document>> {
+    let mut packed = String::from(path);
+    packed.push_str(".xmb");
+    assets
+        .resolve(&packed)
+        .map(|raw| xmb::Reader::read(&raw))
+        .transpose()
+        .map_err(Into::into)
 }

@@ -46,6 +46,66 @@ fn load_world_base_game() {
     );
 }
 
+/// The shipped `_update` overlays give the engine tables (`BDatabase_setupDependentData`
+/// @ `0x1401ee690`): `sys_icon_53_01` moves to the end, `game_CTF_flag_01` gets the LOS of
+/// `objects_update.xml`, and the 11 balance techs follow `techs.xml`.
+#[test]
+#[ignore = "requires HW1_GAME_DIR"]
+fn database_applies_shipped_update_overlays() {
+    let dir = require_game_dir("HW1_GAME_DIR");
+    let mut src = load_game_dir(&dir);
+
+    let db = database::hw1::Database::load(&mut src).expect("failed to load database");
+
+    assert_eq!(db.objects.len(), 2496);
+    assert_eq!(db.objects[2495].name, "sys_icon_53_01");
+    let flag = db
+        .objects
+        .iter()
+        .find(|object| object.name == "game_CTF_flag_01")
+        .expect("game_CTF_flag_01");
+    assert_eq!(flag.los, Some(14.0));
+    assert_eq!(db.squads.len(), 125);
+    assert_eq!(
+        db.squads.last().map(|squad| squad.name.as_str()),
+        Some("game_CTF_monitor_01")
+    );
+    assert_eq!(db.techs.len(), 208);
+    assert_eq!(
+        db.techs.last().map(|tech| tech.name.as_str()),
+        Some("ScarabBuff")
+    );
+
+    // 53 objects list the undeclared type `Icon`; only `_Icon` is declared.
+    let index = db.object_type_index();
+    assert_eq!(db.object_types.len(), 96);
+    assert_eq!(index.declared_type("Icon"), None);
+    assert_eq!(index.declared_type("_Icon"), Some(1));
+    let with_icon = db
+        .objects
+        .iter()
+        .filter(|object| object.object_types.iter().any(|name| name == "Icon"))
+        .count();
+    assert_eq!(with_icon, 53);
+
+    let modes: Vec<&str> = db
+        .game_modes
+        .iter()
+        .map(|mode| mode.name.as_str())
+        .collect();
+    assert_eq!(
+        modes,
+        [
+            "Skirmish",
+            "Deathmatch",
+            "CapFlag",
+            "ScoreRace",
+            "WaveAttack"
+        ]
+    );
+    assert_eq!(db.game_modes[2].locked, Some(true));
+}
+
 /// Round-trip test: load every database file, serialize back to XMB via
 /// `Database::to_documents()`, re-parse, and compare counts.
 ///
@@ -206,6 +266,30 @@ fn roundtrip_database_serialize() {
                 assert_eq!(rt_res, orig_res, "resources count mismatch");
                 assert_eq!(rt_pops, orig_pops, "pops count mismatch");
                 println!("  gamedata: {rt_res} resources, {rt_pops} pops ✓");
+            }
+            "data\\objects_update.xml" => {
+                let reparsed = database::hw1::objects::parse(doc).expect("objects_update");
+                assert!(reparsed.is_empty(), "objects_update must be empty");
+            }
+            "data\\squads_update.xml" => {
+                let reparsed = database::hw1::squads::parse(doc).expect("squads_update");
+                assert!(reparsed.is_empty(), "squads_update must be empty");
+            }
+            "data\\techs_update.xml" => {
+                let reparsed = database::hw1::techs::parse(doc).expect("techs_update");
+                assert!(reparsed.is_empty(), "techs_update must be empty");
+            }
+            "data\\objecttypes.xml" => {
+                let reparsed =
+                    database::hw1::objecttypes::parse(doc).expect("failed to re-parse objecttypes");
+                assert_eq!(reparsed.len(), original.object_types.len());
+                println!("  objecttypes: {} ✓", reparsed.len());
+            }
+            "data\\gamemodes.xml" => {
+                let reparsed =
+                    database::hw1::gamemodes::parse(doc).expect("failed to re-parse gamemodes");
+                assert_eq!(reparsed.len(), original.game_modes.len());
+                println!("  gamemodes: {} ✓", reparsed.len());
             }
             other => panic!("unexpected document path: {other}"),
         }

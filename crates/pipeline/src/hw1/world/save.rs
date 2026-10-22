@@ -2,6 +2,8 @@
 
 use std::path::PathBuf;
 
+use database::hw1::OverlayTable;
+
 use crate::source::AssetSource;
 
 use super::super::edit::TableId;
@@ -294,6 +296,26 @@ impl super::World {
         Ok(written)
     }
 
+    /// Write an overlay table as its base file and an empty `_update` file.
+    ///
+    /// The engine then loads the same records at the same indices (see
+    /// [`Database::overlay_documents`](database::hw1::Database::overlay_documents)).
+    fn save_overlay_table(
+        &self,
+        src: &AssetSource<impl assets::FileProvider>,
+        table: OverlayTable,
+        written: &mut Vec<PathBuf>,
+    ) -> Result<(), String> {
+        let docs = self
+            .database
+            .overlay_documents(table)
+            .map_err(|e| format!("serialize {}: {e}", table.base_path()))?;
+        for (path, doc) in &docs {
+            written.push(src.write_xmb(path, doc)?);
+        }
+        Ok(())
+    }
+
     /// Write one dirty database or scenario table.
     fn save_database_table(
         &self,
@@ -302,27 +324,9 @@ impl super::World {
         written: &mut Vec<PathBuf>,
     ) -> Result<(), String> {
         match table {
-            TableId::Objects => {
-                let doc = self
-                    .database
-                    .to_document_single("Objects", "Object", &self.database.objects)
-                    .map_err(|e| format!("serialize objects: {e}"))?;
-                written.push(src.write_xmb("data\\objects.xml", &doc)?);
-            }
-            TableId::Squads => {
-                let doc = self
-                    .database
-                    .to_document_single("Squads", "Squad", &self.database.squads)
-                    .map_err(|e| format!("serialize squads: {e}"))?;
-                written.push(src.write_xmb("data\\squads.xml", &doc)?);
-            }
-            TableId::Techs => {
-                let doc = self
-                    .database
-                    .to_document_single("TechTree", "Tech", &self.database.techs)
-                    .map_err(|e| format!("serialize techs: {e}"))?;
-                written.push(src.write_xmb("data\\techs.xml", &doc)?);
-            }
+            TableId::Objects => self.save_overlay_table(src, OverlayTable::Objects, written)?,
+            TableId::Squads => self.save_overlay_table(src, OverlayTable::Squads, written)?,
+            TableId::Techs => self.save_overlay_table(src, OverlayTable::Techs, written)?,
             TableId::Abilities => {
                 let doc = self
                     .database

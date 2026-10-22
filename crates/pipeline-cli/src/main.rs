@@ -227,7 +227,7 @@ fn run_save(game_dir: &str, out: &str, mode: SaveMode, scenario: Option<&str>) {
         failed: 0,
     };
 
-    // 1. Database files (10 documents)
+    // 1. Database files (each `_update` file is written empty: the base file holds the table)
     let docs = world.database.to_documents().unwrap_or_else(|e| {
         eprintln!("Failed to serialize database: {e}");
         std::process::exit(1);

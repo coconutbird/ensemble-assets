@@ -1,5 +1,7 @@
 //! Incremental reload of `World` tables and single assets from the asset source.
 
+use database::hw1::OverlayTable;
+
 use crate::source::AssetSource;
 
 use super::super::edit::{AssetKind, TableId};
@@ -27,24 +29,27 @@ impl super::World {
     ) -> crate::Result<bool> {
         match table {
             TableId::Objects => {
-                if let Some(doc) = src.read_xmb("data\\objects.xml") {
-                    self.database.load_objects(&doc)?;
+                if let Some(doc) = src.read_xmb(OverlayTable::Objects.base_path()) {
+                    let update = src.read_xmb(OverlayTable::Objects.update_path());
+                    self.database.load_objects(&doc, update.as_ref())?;
                     Ok(true)
                 } else {
                     Ok(false)
                 }
             }
             TableId::Squads => {
-                if let Some(doc) = src.read_xmb("data\\squads.xml") {
-                    self.database.load_squads(&doc)?;
+                if let Some(doc) = src.read_xmb(OverlayTable::Squads.base_path()) {
+                    let update = src.read_xmb(OverlayTable::Squads.update_path());
+                    self.database.load_squads(&doc, update.as_ref())?;
                     Ok(true)
                 } else {
                     Ok(false)
                 }
             }
             TableId::Techs => {
-                if let Some(doc) = src.read_xmb("data\\techs.xml") {
-                    self.database.load_techs(&doc)?;
+                if let Some(doc) = src.read_xmb(OverlayTable::Techs.base_path()) {
+                    let update = src.read_xmb(OverlayTable::Techs.update_path());
+                    self.database.load_techs(&doc, update.as_ref())?;
                     Ok(true)
                 } else {
                     Ok(false)

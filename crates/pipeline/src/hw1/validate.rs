@@ -162,6 +162,56 @@ fn db_files() -> Vec<DbFile> {
             },
         },
         DbFile {
+            path: "data\\objects_update.xml.xmb",
+            label: "objects_update",
+            parse: |d| {
+                let doc = parse_xmb(d)?;
+                let (r, w): (Vec<database::hw1::ProtoObject>, _) =
+                    parse_children_warned(&doc, "Objects", "Object")?;
+                Ok((format!("{} proto objects", r.len()), w))
+            },
+        },
+        DbFile {
+            path: "data\\squads_update.xml.xmb",
+            label: "squads_update",
+            parse: |d| {
+                let doc = parse_xmb(d)?;
+                let (r, w): (Vec<database::hw1::Squad>, _) =
+                    parse_children_warned(&doc, "Squads", "Squad")?;
+                Ok((format!("{} squads", r.len()), w))
+            },
+        },
+        DbFile {
+            path: "data\\techs_update.xml.xmb",
+            label: "techs_update",
+            parse: |d| {
+                let doc = parse_xmb(d)?;
+                let (r, w): (Vec<database::hw1::Tech>, _) =
+                    parse_children_warned(&doc, "TechTree", "Tech")?;
+                Ok((format!("{} techs", r.len()), w))
+            },
+        },
+        DbFile {
+            path: "data\\objecttypes.xml.xmb",
+            label: "objecttypes",
+            parse: |d| {
+                let doc = parse_xmb(d)?;
+                let (r, w): (Vec<database::hw1::ObjectType>, _) =
+                    parse_children_warned(&doc, "ObjectTypes", "ObjectType")?;
+                Ok((format!("{} object types", r.len()), w))
+            },
+        },
+        DbFile {
+            path: "data\\gamemodes.xml.xmb",
+            label: "gamemodes",
+            parse: |d| {
+                let doc = parse_xmb(d)?;
+                let (r, w): (Vec<database::hw1::GameMode>, _) =
+                    parse_children_warned(&doc, "GameModes", "GameMode")?;
+                Ok((format!("{} game modes", r.len()), w))
+            },
+        },
+        DbFile {
             path: "data\\abilities.xml.xmb",
             label: "abilities",
             parse: |d| {

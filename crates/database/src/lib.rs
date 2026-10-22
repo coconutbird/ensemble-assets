@@ -29,6 +29,13 @@ pub enum Error {
         /// Root element name in the document.
         actual: String,
     },
+    /// Two records of a table have the same name, and the engine stops the database setup.
+    DuplicateName {
+        /// Kind of record, for example `"object"`.
+        table: &'static str,
+        /// Name of the second record.
+        name: String,
+    },
 }
 
 impl From<xmb::Error> for Error {
@@ -54,6 +61,9 @@ impl core::fmt::Display for Error {
                     f,
                     "unexpected root element: expected '{expected}', got '{actual}'"
                 )
+            }
+            Self::DuplicateName { table, name } => {
+                write!(f, "duplicate {table} name '{name}'")
             }
         }
     }
