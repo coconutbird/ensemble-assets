@@ -16,6 +16,8 @@
 //! - `aidifficultysettings.xml.xmb` — named AI settings by difficulty
 //! - `hpbars.xml.xmb` — HP bar and other unit UI definitions
 //! - `playercolors.xml.xmb` — player color tables
+//! - `art\ui\flash\hud\hud_decal\hud_decal.xml.xmb` + `hud_decal_cov.xml.xmb` — the Flash decal
+//!   list of each civilization (selection decal sizes)
 //! - `*.vis.xmb` — visual definitions (models, animations, attachments)
 //! - `*.tactics.xmb` — combat tactics (weapons, actions)
 //! - `*.physics.xmb` / `*.blueprint.xmb` / `*.shp.xmb` — physics data
@@ -25,6 +27,7 @@ pub mod abilities;
 pub mod aidifficultysettings;
 pub mod civs;
 pub mod damagetypes;
+pub mod flashdecals;
 pub mod gamedata;
 pub mod gamemodes;
 pub mod hpbars;
@@ -55,6 +58,7 @@ pub use abilities::Ability;
 pub use aidifficultysettings::AIDifficultySetting;
 pub use civs::Civ;
 pub use damagetypes::DamageType;
+pub use flashdecals::{CivDecalList, FlashDecalList};
 pub use gamedata::GameData;
 pub use gamemodes::GameMode;
 pub use hpbars::HpBarDefinition;
@@ -150,6 +154,9 @@ pub struct Database {
     pub hp_bars: Option<HpBarDefinition>,
     /// Player color tables from `playercolors.xml.xmb`.
     pub player_colors: Option<PlayerColors>,
+    /// The Flash decal list of each civilization, in the order of
+    /// [`flashdecals::DECAL_LIST_SOURCES`]. A missing file gives no entry.
+    pub decal_lists: Vec<CivDecalList>,
 }
 
 impl Database {
@@ -276,6 +283,11 @@ impl Database {
                 loader(self, &doc)?;
             }
         }
+        for source in flashdecals::DECAL_LIST_SOURCES {
+            if let Some(doc) = read_xmb(assets, source.path)? {
+                self.load_decal_list(source.civ, source.path, &doc)?;
+            }
+        }
         Ok(())
     }
 
@@ -382,6 +394,48 @@ impl Database {
     pub fn load_player_colors(&mut self, doc: &xmb::Document) -> crate::Result<()> {
         self.player_colors = Some(playercolors::parse(doc)?);
         Ok(())
+    }
+
+    /// Load the Flash decal list of the civilization `civ` from a decal list document.
+    ///
+    /// `path` is the game path of the file without `.xmb`. The list replaces an earlier list of
+    /// the same civilization.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the document root or an icon is invalid.
+    pub fn load_decal_list(
+        &mut self,
+        civ: &str,
+        path: &str,
+        doc: &xmb::Document,
+    ) -> crate::Result<()> {
+        let list = CivDecalList {
+            civ: String::from(civ),
+            path: String::from(path),
+            list: flashdecals::parse(doc)?,
+        };
+        match self
+            .decal_lists
+            .iter_mut()
+            .find(|entry| entry.civ.eq_ignore_ascii_case(civ))
+        {
+            Some(entry) => *entry = list,
+            None => self.decal_lists.push(list),
+        }
+        Ok(())
+    }
+
+    /// Give the Flash decal list of the civilization `civ`. The compare ignores case.
+    ///
+    /// The engine loads only the list of the civilization of the local player
+    /// (`BUIManager_initFlashDecals` @ `0x1404c73b0`).
+    #[must_use]
+    pub fn decal_list(&self, civ: &str) -> Option<&FlashDecalList> {
+        self.decal_lists
+            .iter()
+            .find(|entry| entry.civ.eq_ignore_ascii_case(civ))
+            .map(|entry| &entry.list)
     }
 
     /// Build the engine name map of the objects and the object types.
@@ -576,6 +630,12 @@ impl Database {
             docs.push((
                 String::from("data\\playercolors.xml"),
                 xmb::Document::with_root(bdt_serde::to_node("playerColors", colors)?),
+            ));
+        }
+        for entry in &self.decal_lists {
+            docs.push((
+                entry.path.clone(),
+                xmb::Document::with_root(bdt_serde::to_node("FlashMovieDefinition", &entry.list)?),
             ));
         }
 

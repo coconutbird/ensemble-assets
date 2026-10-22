@@ -527,3 +527,119 @@ fn hp_bars_and_player_colors_reload_from_to_documents() {
     assert_eq!(after.civs[0].players, before.civs[0].players);
     assert_eq!(after.civs[0].name, "Covenant");
 }
+
+const UNSC_DECALS: &str = r#"<FlashMovieDefinition>
+    <Properties>
+        <Data type="flashfile" name="Infantry">art\ui\flash\HUD\hud_decal\decal_sets\HUD_unsc_infantry.gfx</Data>
+        <Data type="Texture" name="DecalMaskInfantry">ui\flash\HUD\hud_decal\unsc_inf2</Data>
+    </Properties>
+    <Icon type="uniticon" name="Infantry" SizeX="6.0000" SizeY="" SizeZ="6.0000" Offset="" Intensity1="8.0000" Intensity2="28.0000" Intensity3="18.0000" owner="unsc_veh_warthog_01">-1</Icon>
+    <Icon type="uniticon" name="command" SizeX="37.0000" SizeY="2.0000" SizeZ="37.0000" Offset="3,-1.5,0" Intenstiy1="5.0000" owner="unsc_bldg_command_03">-1</Icon>
+    <Icon type="miscicon" name="Misc" SizeX="15.0000" SizeZ="15.0000" owner="placeholder">-1</Icon>
+    <Icon type="UnitIcon" name="Infantry" SizeX="9.0000" SizeZ="9.0000" owner="unsc_inf_marine_01">-1</Icon>
+    <Icon type="clumpdecal" name="DecalTextureVehicle" name2="DecalMaskVehicle" SizeX="8.0000" SizeZ="8.0000" owner="unsc_inf_marine_01">-1</Icon>
+    <Icon type="uniticon" name="Infantry" SizeX="5.0000" SizeZ="5.0000" owner="unsc_inf_marine_01">-1</Icon>
+    <Icon type="clumpdecal" name="DecalTextureVehicle" SizeX="1.0000" SizeZ="1.0000" owner="UNSC_VEH_WARTHOG_01">-1</Icon>
+</FlashMovieDefinition>"#;
+
+const COVENANT_DECALS: &str = r#"<FlashMovieDefinition>
+    <Icon type="uniticon" name="covInfantry" SizeX="7.0000" SizeZ="7.0000" owner="cov_inf_grunt_01">-1</Icon>
+</FlashMovieDefinition>"#;
+
+fn decal_assets() -> MemoryAssets {
+    MemoryAssets::default()
+        .with_xml("art\\ui\\flash\\hud\\hud_decal\\hud_decal.xml", UNSC_DECALS)
+        .with_xml(
+            "art\\ui\\flash\\hud\\hud_decal\\hud_decal_cov.xml",
+            COVENANT_DECALS,
+        )
+}
+
+/// `BFlashMovieIcon_load` @ `0x1402307b0` reads the sizes, the offset and the misspelled
+/// `Intenstiy1`; `BFlashUIDecals_bindDecalIndices` @ `0x14021e710` binds the `uniticon`,
+/// `clumpdecal` and `staticdecal` icons to their owner, and the first bound icon wins.
+#[test]
+fn decal_lists_read_icons_and_bind_the_first_icon_of_an_owner() {
+    let db = Database::load(&mut decal_assets()).expect("load");
+
+    let civs: Vec<&str> = db
+        .decal_lists
+        .iter()
+        .map(|entry| entry.civ.as_str())
+        .collect();
+    assert_eq!(civs, ["UNSC", "Covenant"]);
+    assert_eq!(
+        db.decal_lists[1].path,
+        "art\\ui\\flash\\hud\\hud_decal\\hud_decal_cov.xml"
+    );
+    let unsc = db.decal_list("unsc").expect("UNSC list");
+    let data = &unsc.properties.as_ref().expect("properties").data;
+    assert_eq!(data.len(), 2);
+    assert_eq!(data[0].kind.as_deref(), Some("flashfile"));
+    assert_eq!(data[0].name.as_deref(), Some("Infantry"));
+    assert_eq!(
+        data[0].path.as_deref(),
+        Some("art\\ui\\flash\\HUD\\hud_decal\\decal_sets\\HUD_unsc_infantry.gfx")
+    );
+    assert_eq!(unsc.icons.len(), 7);
+
+    // Empty `SizeY` and `Offset` give the defaults; the engine does not read `Intensity1`.
+    let warthog = unsc.owner_icon("Unsc_Veh_Warthog_01").expect("Warthog");
+    assert_eq!(warthog.size(), [6.0, 0.0, 6.0]);
+    assert_eq!(warthog.offset, None);
+    assert_eq!(warthog.intensity1, Some(8.0));
+    assert_eq!(warthog.intensities(), [1.0, 28.0, 18.0, 1.0]);
+    assert_eq!(warthog.text.as_deref(), Some("-1"));
+
+    let command = unsc.owner_icon("unsc_bldg_command_03").expect("HQ");
+    assert_eq!(command.size(), [37.0, 2.0, 37.0]);
+    let offset = command.offset();
+    assert_eq!([offset.x, offset.y, offset.z], [3.0, -1.5, 0.0]);
+    assert_eq!(command.intensities(), [5.0, 1.0, 1.0, 1.0]);
+
+    // A `miscicon` does not bind, and the type compare keeps case (`UnitIcon` does not bind).
+    assert!(unsc.owner_icon("placeholder").is_none());
+    let marine = unsc.owner_icon("unsc_inf_marine_01").expect("marine");
+    assert_eq!(marine.kind.as_deref(), Some("clumpdecal"));
+    assert_eq!(marine.size(), [8.0, 0.0, 8.0]);
+    assert_eq!(unsc.owner_icons().count(), 5);
+    assert!(unsc.owner_icon("unsc_inf_marine_01 ").is_none());
+
+    let covenant = db.decal_list("Covenant").expect("Covenant list");
+    assert!(covenant.properties.is_none());
+    assert_eq!(
+        covenant
+            .owner_icon("cov_inf_grunt_01")
+            .map(database::hw1::flashdecals::FlashIcon::size),
+        Some([7.0, 0.0, 7.0])
+    );
+    assert!(db.decal_list("Forerunner").is_none());
+}
+
+#[test]
+fn decal_lists_reload_from_to_documents() {
+    let db = Database::load(&mut decal_assets()).expect("load");
+
+    let mut assets = MemoryAssets::default();
+    for (path, doc) in db.to_documents().expect("serialize") {
+        assets.insert(&path, &doc);
+    }
+    let reloaded = Database::load(&mut assets).expect("reload");
+
+    assert_eq!(reloaded.decal_lists.len(), 2);
+    for (after, before) in reloaded.decal_lists.iter().zip(&db.decal_lists) {
+        assert_eq!(after.civ, before.civ);
+        assert_eq!(after.path, before.path);
+        assert_eq!(after.list.icons, before.list.icons);
+    }
+}
+
+#[test]
+fn a_decal_list_with_another_root_is_an_error() {
+    let mut assets = MemoryAssets::default().with_xml(
+        "art\\ui\\flash\\hud\\hud_decal\\hud_decal.xml",
+        "<FlashMovie><Icon/></FlashMovie>",
+    );
+
+    assert!(Database::load(&mut assets).is_err());
+}

@@ -331,12 +331,41 @@ fn db_files() -> Vec<DbFile> {
     ]
 }
 
+/// The Flash decal lists that `Database::load` reads, one for each civilization.
+fn decal_list_files() -> [DbFile; 2] {
+    [
+        DbFile {
+            path: "art\\ui\\flash\\hud\\hud_decal\\hud_decal.xml.xmb",
+            label: "hud_decal",
+            parse: parse_decal_list,
+        },
+        DbFile {
+            path: "art\\ui\\flash\\hud\\hud_decal\\hud_decal_cov.xml.xmb",
+            label: "hud_decal_cov",
+            parse: parse_decal_list,
+        },
+    ]
+}
+
+/// Parse a Flash decal list (`hud_decal.xml.xmb` or `hud_decal_cov.xml.xmb`).
+fn parse_decal_list(data: &[u8]) -> ParseResult {
+    let doc = parse_xmb(data)?;
+    let root = doc.root().ok_or_else(|| "missing root".to_string())?;
+    let (list, warnings): (database::hw1::FlashDecalList, _) =
+        bdt_serde::from_node_warned(root).map_err(|e| format!("{e}"))?;
+    let bound = list.owner_icons().count();
+    Ok((
+        format!("{} icons, {bound} bound to a proto", list.icons.len()),
+        warnings,
+    ))
+}
+
 /// Run validation and return structured results.
 pub fn validate(src: &mut AssetSource<impl FileProvider>) -> ValidateReport {
     let start = Instant::now();
     let mut files = Vec::new();
 
-    for db in &db_files() {
+    for db in db_files().iter().chain(&decal_list_files()) {
         let outcome = match src.resolve(db.path) {
             Some(raw) => match (db.parse)(&raw) {
                 Ok((summary, warnings)) => FileOutcome::Ok { summary, warnings },

@@ -196,6 +196,32 @@ fn shipped_player_colors_have_no_unmapped_fields() {
 }
 
 #[test]
+fn shipped_decal_lists_have_no_unmapped_fields() {
+    for (label, xml, icons, bound) in [
+        (
+            "hud_decal.xml",
+            include_str!("../../../save/root.era/art/ui/flash/hud/hud_decal/hud_decal.xml"),
+            354,
+            352,
+        ),
+        (
+            "hud_decal_cov.xml",
+            include_str!("../../../save/root.era/art/ui/flash/hud/hud_decal/hud_decal_cov.xml"),
+            334,
+            332,
+        ),
+    ] {
+        let list = assert_root_schema::<database::hw1::FlashDecalList>(label, xml);
+        assert_eq!(list.icons.len(), icons, "{label}");
+        assert_eq!(list.owner_icons().count(), bound, "{label}");
+        let command = list
+            .owner_icon("unsc_bldg_command_03")
+            .expect("HQ icon in each list");
+        assert_eq!(command.size(), [37.0, 2.0, 37.0]);
+    }
+}
+
+#[test]
 fn ida_object_handler_fields_round_trip() {
     let (_, object) = assert_xml_round_trip::<database::hw1::ProtoObject>(
         "synthetic proto object",

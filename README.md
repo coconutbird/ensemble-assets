@@ -74,7 +74,9 @@ Loaded now:
 - `database`: `objects` with `objects_update`, `objecttypes`, `squads` with `squads_update`,
   `techs` with `techs_update`, `abilities`, `powers`, `civs`, `leaders`, `weapontypes`,
   `damagetypes`, `gamedata`, `gamemodes`, `aidifficultysettings`, `hpbars`, `playercolors`
-  (`data\*.xml.xmb`), `*.vis`, `*.tactics`, `*.physics`, `*.blueprint`, `*.shp`, `*.pfx`.
+  (`data\*.xml.xmb`), the Flash decal lists `hud_decal` and `hud_decal_cov`
+  (`art\ui\flash\hud\hud_decal\*.xml.xmb`), `*.vis`, `*.tactics`, `*.physics`, `*.blueprint`,
+  `*.shp`, `*.pfx`.
   `Database::load` applies the `_update` files as the engine does (see
   `docs/asset-resolution.md`).
 - `pipeline`: `.scn` scenario data, `.sc2` and `.sc3` scenario objects,
@@ -99,9 +101,10 @@ Not loaded (the engine loads these; no crate in the three repositories parses th
 | `.cin` | string `*.cin` @ `0x1411abab0` | The manifest records `.cin` paths, but no crate parses them. |
 | `dlc%02u.xml` | string @ `0x1411a8448` | `loader.rs` loads `dlcNN.era`, but not the DLC XML files. |
 
-UI files (`art\ui\flash\**.xml`, `renderPasses.xml`, `renderTargets.xml`, `fonts.xml`,
-`gamepads.xml`, `controllerconfigs.xml`) are also not loaded. They are outside the scope of the
-data layer.
+Other UI files (`art\ui\game\uigame.xml`, the other `art\ui\flash\**.xml`, `renderPasses.xml`,
+`renderTargets.xml`, `fonts.xml`, `gamepads.xml`, `controllerconfigs.xml`) are also not loaded.
+They are outside the scope of the data layer. `flashdecals::DECAL_LIST_SOURCES` copies the
+`<Decals>` entries of `uigame.xml` (`BUIGame_loadFlashResources` @ `0x1404c07c0`).
 
 ### Tags
 
@@ -124,7 +127,9 @@ read.
 Abilities, civs, leaders, weapon types, damage types, game data, object types, game modes, HP
 bars, player colors and visuals have no unread tag in the retail XML. The engine does not read
 the `<VeterancyBar>` background tags of `hpbars.xml`: `BHPBar_loadVeterancyBarDef`
-@ `0x140040fb0` reads only `Texture`, `SizeX`, `SizeY`, `OffsetX` and `OffsetY`.
+@ `0x140040fb0` reads only `Texture`, `SizeX`, `SizeY`, `OffsetX` and `OffsetY`. The engine does
+not read the `Intensity1` attribute of the decal list icons: `BFlashMovieIcon_load`
+@ `0x1402307b0` reads the misspelled name `Intenstiy1`.
 
 "Data only" means that the tag is in the retail XML but `xgameFinal.exe` has no string for it.
 The engine thus ignores it, so it is not a gap.

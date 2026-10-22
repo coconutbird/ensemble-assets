@@ -116,6 +116,27 @@ where
     }
 }
 
+/// Deserialize an optional vector that the engine reads with `BXMLAttribute_getValueAsVector`
+/// @ `0x1406217a0`.
+///
+/// Empty text gives `None`. The engine gives the zero vector for empty text, the same as for an
+/// absent value.
+pub(crate) fn deserialize_optional_vector3_text<'de, D>(
+    deserializer: D,
+) -> Result<Option<Vector3>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let Some(text) = Option::<String>::deserialize(deserializer)? else {
+        return Ok(None);
+    };
+    let text = text.trim();
+    if text.is_empty() {
+        return Ok(None);
+    }
+    Vector3::parse(text).map(Some).map_err(D::Error::custom)
+}
+
 /// Deserialize element text as `BString_parseBool` @ `0x140688070` does.
 ///
 /// The engine compares without case: `true` or `1` gives `true`, `false` or `0` gives `false`.

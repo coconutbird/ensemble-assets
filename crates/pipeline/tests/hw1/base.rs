@@ -177,6 +177,62 @@ fn database_loads_shipped_hp_bars_and_player_colors() {
     assert_eq!(colors.civs[1].players.len(), 9);
 }
 
+/// `BUIGame_loadFlashResources` @ `0x1404c07c0` gives `hud_decal.xml` to the UNSC and
+/// `hud_decal_cov.xml` to the Covenant. `BSquad_drawSelectionDecal` @ `0x1403abea0` sizes the
+/// decal of a squad from its first bound icon.
+#[test]
+#[ignore = "requires HW1_GAME_DIR"]
+fn database_loads_shipped_decal_lists() {
+    let dir = require_game_dir("HW1_GAME_DIR");
+    let mut src = load_game_dir(&dir);
+
+    let db = database::hw1::Database::load(&mut src).expect("failed to load database");
+
+    let report = pipeline::hw1::validate(&mut src);
+    for label in ["hud_decal", "hud_decal_cov"] {
+        let file = report
+            .files
+            .iter()
+            .find(|file| file.label == label)
+            .expect("decal list in the report");
+        match &file.outcome {
+            pipeline::hw1::validate::FileOutcome::Ok { warnings, .. } => {
+                let warnings: Vec<String> = warnings.iter().map(ToString::to_string).collect();
+                assert!(warnings.is_empty(), "{label} warnings: {warnings:?}");
+            }
+            _ => panic!("{label} did not parse"),
+        }
+    }
+    let civs: Vec<&str> = db
+        .decal_lists
+        .iter()
+        .map(|entry| entry.civ.as_str())
+        .collect();
+    assert_eq!(civs, ["UNSC", "Covenant"]);
+
+    let unsc = db.decal_list("unsc").expect("UNSC decal list");
+    assert_eq!(unsc.icons.len(), 354);
+    // The `.xmb` root has the text "a", which the `.xml` form of the file does not show.
+    assert_eq!(unsc.text.as_deref(), Some("a"));
+    let warthog = unsc
+        .owner_icon("unsc_veh_warthog_01")
+        .expect("Warthog icon");
+    assert_eq!(warthog.size(), [6.0, 0.0, 6.0]);
+    let command = unsc.owner_icon("UNSC_BLDG_COMMAND_03").expect("HQ icon");
+    assert_eq!(command.size(), [37.0, 2.0, 37.0]);
+    let offset = command.offset();
+    assert_eq!([offset.x, offset.y, offset.z], [3.0, -1.5, 0.0]);
+    // The engine reads `Intenstiy1`, so the shipped `Intensity1` gives the default 1.
+    assert_eq!(warthog.intensities(), [1.0, 28.0, 18.0, 1.0]);
+
+    let covenant = db.decal_list("Covenant").expect("Covenant decal list");
+    assert_eq!(covenant.icons.len(), 334);
+    let command = covenant
+        .owner_icon("unsc_bldg_command_03")
+        .expect("HQ icon in the Covenant list");
+    assert_eq!(command.size(), [37.0, 2.0, 37.0]);
+}
+
 /// Round-trip test: load every database file, serialize back to XMB via
 /// `Database::to_documents()`, re-parse, and compare counts.
 ///
@@ -216,181 +272,203 @@ fn roundtrip_database_serialize() {
 
     // Re-parse each document and compare counts
     for (path, doc) in &docs {
-        match path.as_str() {
-            "data\\objects.xml" => {
-                let reparsed =
-                    database::hw1::objects::parse(doc).expect("failed to re-parse objects");
-                assert_eq!(
-                    reparsed.len(),
-                    original.objects.len(),
-                    "objects count mismatch after round-trip"
-                );
-                let orig = &original.objects[0];
-                let rt = &reparsed[0];
-                assert_eq!(orig.name, rt.name, "object name mismatch");
-                assert_eq!(
-                    orig.hitpoints, rt.hitpoints,
-                    "hitpoints mismatch for {}",
-                    orig.name
-                );
-                println!(
-                    "  objects: {} → {} ✓",
-                    original.objects.len(),
-                    reparsed.len()
-                );
-            }
-            "data\\squads.xml" => {
-                let reparsed =
-                    database::hw1::squads::parse(doc).expect("failed to re-parse squads");
-                assert_eq!(
-                    reparsed.len(),
-                    original.squads.len(),
-                    "squads count mismatch"
-                );
-                println!("  squads: {} → {} ✓", original.squads.len(), reparsed.len());
-            }
-            "data\\techs.xml" => {
-                let reparsed = database::hw1::techs::parse(doc).expect("failed to re-parse techs");
-                assert_eq!(reparsed.len(), original.techs.len(), "techs count mismatch");
-                println!("  techs: {} → {} ✓", original.techs.len(), reparsed.len());
-            }
-
-            "data\\abilities.xml" => {
-                let reparsed =
-                    database::hw1::abilities::parse(doc).expect("failed to re-parse abilities");
-                assert_eq!(
-                    reparsed.len(),
-                    original.abilities.len(),
-                    "abilities count mismatch"
-                );
-                println!(
-                    "  abilities: {} → {} ✓",
-                    original.abilities.len(),
-                    reparsed.len()
-                );
-            }
-            "data\\powers.xml" => {
-                let reparsed =
-                    database::hw1::powers::parse(doc).expect("failed to re-parse powers");
-                assert_eq!(
-                    reparsed.len(),
-                    original.powers.len(),
-                    "powers count mismatch"
-                );
-                println!("  powers: {} → {} ✓", original.powers.len(), reparsed.len());
-            }
-            "data\\civs.xml" => {
-                let reparsed = database::hw1::civs::parse(doc).expect("failed to re-parse civs");
-                assert_eq!(reparsed.len(), original.civs.len(), "civs count mismatch");
-                println!("  civs: {} → {} ✓", original.civs.len(), reparsed.len());
-            }
-            "data\\leaders.xml" => {
-                let reparsed =
-                    database::hw1::leaders::parse(doc).expect("failed to re-parse leaders");
-                assert_eq!(
-                    reparsed.len(),
-                    original.leaders.len(),
-                    "leaders count mismatch"
-                );
-                println!(
-                    "  leaders: {} → {} ✓",
-                    original.leaders.len(),
-                    reparsed.len()
-                );
-            }
-            "data\\weapontypes.xml" => {
-                let reparsed =
-                    database::hw1::weapontypes::parse(doc).expect("failed to re-parse weapontypes");
-                assert_eq!(
-                    reparsed.len(),
-                    original.weapon_types.len(),
-                    "weapontypes count mismatch"
-                );
-                println!(
-                    "  weapontypes: {} → {} ✓",
-                    original.weapon_types.len(),
-                    reparsed.len()
-                );
-            }
-            "data\\damagetypes.xml" => {
-                let reparsed =
-                    database::hw1::damagetypes::parse(doc).expect("failed to re-parse damagetypes");
-                assert_eq!(
-                    reparsed.len(),
-                    original.damage_types.len(),
-                    "damagetypes count mismatch"
-                );
-                println!(
-                    "  damagetypes: {} → {} ✓",
-                    original.damage_types.len(),
-                    reparsed.len()
-                );
-            }
-            "data\\gamedata.xml" => {
-                let reparsed =
-                    database::hw1::gamedata::parse(doc).expect("failed to re-parse gamedata");
-                let orig_gd = original.game_data.as_ref().unwrap();
-                let rt_res = reparsed.resources.as_ref().map_or(0, |r| r.entries.len());
-                let orig_res = orig_gd.resources.as_ref().map_or(0, |r| r.entries.len());
-                let rt_pops = reparsed.pops.as_ref().map_or(0, |p| p.entries.len());
-                let orig_pops = orig_gd.pops.as_ref().map_or(0, |p| p.entries.len());
-                assert_eq!(rt_res, orig_res, "resources count mismatch");
-                assert_eq!(rt_pops, orig_pops, "pops count mismatch");
-                println!("  gamedata: {rt_res} resources, {rt_pops} pops ✓");
-            }
-            "data\\objects_update.xml" => {
-                let reparsed = database::hw1::objects::parse(doc).expect("objects_update");
-                assert!(reparsed.is_empty(), "objects_update must be empty");
-            }
-            "data\\squads_update.xml" => {
-                let reparsed = database::hw1::squads::parse(doc).expect("squads_update");
-                assert!(reparsed.is_empty(), "squads_update must be empty");
-            }
-            "data\\techs_update.xml" => {
-                let reparsed = database::hw1::techs::parse(doc).expect("techs_update");
-                assert!(reparsed.is_empty(), "techs_update must be empty");
-            }
-            "data\\objecttypes.xml" => {
-                let reparsed =
-                    database::hw1::objecttypes::parse(doc).expect("failed to re-parse objecttypes");
-                assert_eq!(reparsed.len(), original.object_types.len());
-                println!("  objecttypes: {} ✓", reparsed.len());
-            }
-            "data\\gamemodes.xml" => {
-                let reparsed =
-                    database::hw1::gamemodes::parse(doc).expect("failed to re-parse gamemodes");
-                assert_eq!(reparsed.len(), original.game_modes.len());
-                println!("  gamemodes: {} ✓", reparsed.len());
-            }
-            "data\\aidifficultysettings.xml" => {
-                let reparsed = database::hw1::aidifficultysettings::parse(doc)
-                    .expect("failed to re-parse aidifficultysettings");
-                assert_eq!(reparsed.len(), original.ai_difficulty_settings.len());
-                println!("  aidifficultysettings: {} ✓", reparsed.len());
-            }
-            "data\\hpbars.xml" => {
-                let reparsed =
-                    database::hw1::hpbars::parse(doc).expect("failed to re-parse hpbars");
-                let orig = original.hp_bars.as_ref().expect("hp bars");
-                assert_eq!(reparsed.hp_bars.len(), orig.hp_bars.len());
-                assert_eq!(reparsed.color_stages.len(), orig.color_stages.len());
-                println!("  hpbars: {} ✓", reparsed.hp_bars.len());
-            }
-            "data\\playercolors.xml" => {
-                let reparsed = database::hw1::playercolors::parse(doc)
-                    .expect("failed to re-parse playercolors");
-                let orig = original.player_colors.as_ref().expect("player colors");
-                assert_eq!(
-                    reparsed.skirmish.map(|set| set.colors),
-                    orig.skirmish.as_ref().map(|set| set.colors.clone())
-                );
-                println!("  playercolors ✓");
-            }
-            other => panic!("unexpected document path: {other}"),
-        }
+        assert_document_round_trip(&original, path, doc);
     }
 
     println!("Round-trip validation passed!");
+}
+
+/// Re-parse one serialized document and compare it with the loaded database.
+fn assert_document_round_trip(original: &database::hw1::Database, path: &str, doc: &xmb::Document) {
+    match path {
+        "data\\objects.xml" => {
+            let reparsed = database::hw1::objects::parse(doc).expect("failed to re-parse objects");
+            assert_eq!(
+                reparsed.len(),
+                original.objects.len(),
+                "objects count mismatch after round-trip"
+            );
+            let orig = &original.objects[0];
+            let rt = &reparsed[0];
+            assert_eq!(orig.name, rt.name, "object name mismatch");
+            assert_eq!(
+                orig.hitpoints, rt.hitpoints,
+                "hitpoints mismatch for {}",
+                orig.name
+            );
+            println!(
+                "  objects: {} → {} ✓",
+                original.objects.len(),
+                reparsed.len()
+            );
+        }
+        "data\\squads.xml" => {
+            let reparsed = database::hw1::squads::parse(doc).expect("failed to re-parse squads");
+            assert_eq!(
+                reparsed.len(),
+                original.squads.len(),
+                "squads count mismatch"
+            );
+            println!("  squads: {} → {} ✓", original.squads.len(), reparsed.len());
+        }
+        "data\\techs.xml" => {
+            let reparsed = database::hw1::techs::parse(doc).expect("failed to re-parse techs");
+            assert_eq!(reparsed.len(), original.techs.len(), "techs count mismatch");
+            println!("  techs: {} → {} ✓", original.techs.len(), reparsed.len());
+        }
+
+        "data\\abilities.xml" => {
+            let reparsed =
+                database::hw1::abilities::parse(doc).expect("failed to re-parse abilities");
+            assert_eq!(
+                reparsed.len(),
+                original.abilities.len(),
+                "abilities count mismatch"
+            );
+            println!(
+                "  abilities: {} → {} ✓",
+                original.abilities.len(),
+                reparsed.len()
+            );
+        }
+        "data\\powers.xml" => {
+            let reparsed = database::hw1::powers::parse(doc).expect("failed to re-parse powers");
+            assert_eq!(
+                reparsed.len(),
+                original.powers.len(),
+                "powers count mismatch"
+            );
+            println!("  powers: {} → {} ✓", original.powers.len(), reparsed.len());
+        }
+        "data\\civs.xml" => {
+            let reparsed = database::hw1::civs::parse(doc).expect("failed to re-parse civs");
+            assert_eq!(reparsed.len(), original.civs.len(), "civs count mismatch");
+            println!("  civs: {} → {} ✓", original.civs.len(), reparsed.len());
+        }
+        "data\\leaders.xml" => {
+            let reparsed = database::hw1::leaders::parse(doc).expect("failed to re-parse leaders");
+            assert_eq!(
+                reparsed.len(),
+                original.leaders.len(),
+                "leaders count mismatch"
+            );
+            println!(
+                "  leaders: {} → {} ✓",
+                original.leaders.len(),
+                reparsed.len()
+            );
+        }
+        "data\\weapontypes.xml" => {
+            let reparsed =
+                database::hw1::weapontypes::parse(doc).expect("failed to re-parse weapontypes");
+            assert_eq!(
+                reparsed.len(),
+                original.weapon_types.len(),
+                "weapontypes count mismatch"
+            );
+            println!(
+                "  weapontypes: {} → {} ✓",
+                original.weapon_types.len(),
+                reparsed.len()
+            );
+        }
+        "data\\damagetypes.xml" => {
+            let reparsed =
+                database::hw1::damagetypes::parse(doc).expect("failed to re-parse damagetypes");
+            assert_eq!(
+                reparsed.len(),
+                original.damage_types.len(),
+                "damagetypes count mismatch"
+            );
+            println!(
+                "  damagetypes: {} → {} ✓",
+                original.damage_types.len(),
+                reparsed.len()
+            );
+        }
+        "data\\gamedata.xml" => {
+            let reparsed =
+                database::hw1::gamedata::parse(doc).expect("failed to re-parse gamedata");
+            let orig_gd = original.game_data.as_ref().unwrap();
+            let rt_res = reparsed.resources.as_ref().map_or(0, |r| r.entries.len());
+            let orig_res = orig_gd.resources.as_ref().map_or(0, |r| r.entries.len());
+            let rt_pops = reparsed.pops.as_ref().map_or(0, |p| p.entries.len());
+            let orig_pops = orig_gd.pops.as_ref().map_or(0, |p| p.entries.len());
+            assert_eq!(rt_res, orig_res, "resources count mismatch");
+            assert_eq!(rt_pops, orig_pops, "pops count mismatch");
+            println!("  gamedata: {rt_res} resources, {rt_pops} pops ✓");
+        }
+        "data\\objects_update.xml" => {
+            let reparsed = database::hw1::objects::parse(doc).expect("objects_update");
+            assert!(reparsed.is_empty(), "objects_update must be empty");
+        }
+        "data\\squads_update.xml" => {
+            let reparsed = database::hw1::squads::parse(doc).expect("squads_update");
+            assert!(reparsed.is_empty(), "squads_update must be empty");
+        }
+        "data\\techs_update.xml" => {
+            let reparsed = database::hw1::techs::parse(doc).expect("techs_update");
+            assert!(reparsed.is_empty(), "techs_update must be empty");
+        }
+        "data\\objecttypes.xml" => {
+            let reparsed =
+                database::hw1::objecttypes::parse(doc).expect("failed to re-parse objecttypes");
+            assert_eq!(reparsed.len(), original.object_types.len());
+            println!("  objecttypes: {} ✓", reparsed.len());
+        }
+        "data\\gamemodes.xml" => {
+            let reparsed =
+                database::hw1::gamemodes::parse(doc).expect("failed to re-parse gamemodes");
+            assert_eq!(reparsed.len(), original.game_modes.len());
+            println!("  gamemodes: {} ✓", reparsed.len());
+        }
+        "data\\aidifficultysettings.xml" => {
+            let reparsed = database::hw1::aidifficultysettings::parse(doc)
+                .expect("failed to re-parse aidifficultysettings");
+            assert_eq!(reparsed.len(), original.ai_difficulty_settings.len());
+            println!("  aidifficultysettings: {} ✓", reparsed.len());
+        }
+        "data\\hpbars.xml" => {
+            let reparsed = database::hw1::hpbars::parse(doc).expect("failed to re-parse hpbars");
+            let orig = original.hp_bars.as_ref().expect("hp bars");
+            assert_eq!(reparsed.hp_bars.len(), orig.hp_bars.len());
+            assert_eq!(reparsed.color_stages.len(), orig.color_stages.len());
+            println!("  hpbars: {} ✓", reparsed.hp_bars.len());
+        }
+        "data\\playercolors.xml" => {
+            let reparsed =
+                database::hw1::playercolors::parse(doc).expect("failed to re-parse playercolors");
+            let orig = original.player_colors.as_ref().expect("player colors");
+            assert_eq!(
+                reparsed.skirmish.map(|set| set.colors),
+                orig.skirmish.as_ref().map(|set| set.colors.clone())
+            );
+            println!("  playercolors ✓");
+        }
+        decal if decal.starts_with(DECAL_DIR) => {
+            assert_decal_list_round_trip(original, decal, doc);
+        }
+        other => panic!("unexpected document path: {other}"),
+    }
+}
+
+/// The game directory of the Flash decal lists.
+const DECAL_DIR: &str = "art\\ui\\flash\\hud\\hud_decal\\";
+
+/// Re-parse a serialized decal list and compare its icons with the loaded list.
+fn assert_decal_list_round_trip(
+    original: &database::hw1::Database,
+    path: &str,
+    doc: &xmb::Document,
+) {
+    let reparsed = database::hw1::flashdecals::parse(doc).expect("failed to re-parse a decal list");
+    let orig = original
+        .decal_lists
+        .iter()
+        .find(|entry| entry.path == path)
+        .expect("decal list");
+    assert_eq!(reparsed.icons, orig.list.icons);
+    println!("  {path}: {} icons ✓", reparsed.icons.len());
 }
 
 #[test]
